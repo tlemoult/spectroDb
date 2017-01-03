@@ -1,0 +1,26 @@
+Check_coord_cibles:
+
+Print "Verification des coordonnes des cibles"
+Print "------------------------"
+for i=1 NbCibles
+	if Alpha[i]$="undef" THEN
+		Print NomObjet[i]$
+		Print Comment[i]$
+		Print "Coordonnee objet non definie, utilisation de la base de Prism"
+		getobjectcoord NomObjet[i]$ alpha delta
+		RAD_TO_RA  alpha alpha$
+		Print "alpha=" alpha$
+		RAD_TO_DEC delta delta$
+		Print "delta=" delta$
+		alpha[i]$=alpha$
+		delta[i]$=delta$		
+	ELSE
+		Print NomObjet[i]$
+		print "Alpha:" alpha[i]$
+		print "Delta:" delta[i]$ 
+	ENDIF
+ 
+ print "-----------------------------------------"
+next i
+
+return

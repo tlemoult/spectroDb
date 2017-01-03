@@ -1,0 +1,319 @@
+
+	raisonEchec$=""
+	GOSUB generalSettings:
+	GOSUB Dialog_param_et_Charge_LST_et_defini_cible:
+	GOSUB LampCalibOff:
+
+	Print "Boucle seance lancee."
+	if (ActiveLancementImmediat=1) THEN
+		Print "On observe sans attendre la meteo"
+		CompteurBeauTemp=ValMinBelleMeteo+1
+		GOTO entreSeanceImmediat:
+	ENDIF
+	
+boucleSeance:
+	Print "attente d un ciel noir"
+	gosub set_cooling_camera_off:
+	GOSUB BoucleAttendBeauTemp:
+entreSeanceImmediat:
+	GOSUB seance-observation:
+	goto boucleSeance:
+exit
+
+seance-observation:
+	print "on commence a observer"
+
+	GOSUB set_cooling_camera_on:
+	gosub init_dome_telescope:
+	
+	GOSUB setWorkDirGeneral:
+	GOSUB OuvreFichierLog:
+	GOSUB wait_cooling_camera_ready:
+	GOSUB ConfigCamera:
+	gosub Oriente_Camera:
+
+RebouclageGeneral:
+
+	FlagPremierObjet=1
+	// compteur Sucess de la boucle
+	nbSucess=0
+	// compteur Sucess total, cette boucle et les precedantes.
+	nbTRUE=0
+
+For iobj=1 nbCibles
+	Print "------------------------------------------------------------"
+	/////////////// test meteo , s il faut mauvais on arrete les observations
+	GOSUB ReadMeteo:
+	if (BeauTemp=0)
+		now date
+		DATETOSTR  Date  Date$
+		log$=Date$+": Il ne fait pas beau, on arrete les observations."
+		WriteFileTxt fileLog log$
+		Print log$
+		goto MinaLoopGeneralSoleilLevé:
+	endif
+
+	/////////////////// test du leve du soleil
+	gosub test_levee_soleil:
+	if (soleil_levee=1)
+		goto MinaLoopGeneralSoleilLevé:
+	endif
+	
+	//// recupere les données de l'objet courant
+	ProjectObject$=ProjectObject[iobj]$
+	IsRef$=IsRef[iobj]$
+	
+	AlphaObjet$=Alpha[iobj]$
+	RA_TO_RAD AlphaObjet$ AlphaObjet
+	DeltaObjet$=Delta[iobj]$
+	DEC_TO_RAD DeltaObjet$ DeltaObjet
+	nbExposureObjet=nbExposureObjet[iobj]
+	exposureTimeObjet=exposureTimeObjet[iobj]
+	NomObjet$=NomObjet[iobj]$
+	AltName$=AltName[iobj]$
+	Comment$=Comment[iobj]$
+	MagnitudeObjet=Magnitude[iobj]
+	STR MagnitudeObjet MagnitudeObjet$
+	
+	GuideMode$=GuideMode[iobj]$
+	RAGuide$=GuideRA[iobj]$
+	DECGuide$=GuideDEC[iobj]$
+	ExposureMode$=ExposureMode[iobj]$
+	exposureTimeObjet=ExposureUnit[iobj]
+    nbExposureObjet=Nbexposure[iobj]
+    TotExposure=TotExposure[iobj]
+	
+	// objet deja observé
+	if (Observe[iobj]$="TRUE") then
+		nbTRUE=nbTRUE+1
+		goto MaincibleSuivante:
+	ENDIF
+	
+	// test visibilitée =  mini<hauteur<max 
+	now date
+	gosub test_visibilitee:
+	if OK_visible=0 THEN
+		goto MaincibleSuivante:
+	ENDIF
+	
+	// affine la position de la fente en l eclairant 
+	if activeAffinePositionFenteAuto=1 then
+		GOSUB affine_position_fente:
+	endif
+	
+	GOSUB setWorkDir:
+	currentStatusObs$="started"
+	GOSUB write_JSON_Observation:
+	//////////////// Pointage initial et test du meridien
+	Print "Cible suivante" NomObjet$ "  " AltName$ " " Comment$ "  Mag=" MagnitudeObjet$
+	Print "Project=" ProjectObject$
+
+	// on interdit le changement de meridien, sauf au premier pointage evideament..
+	// la premiere cible determine donc le coté du méridien pour la suite
+	GOSUB test_retournement_necessaire:	
+	if (FlagPremierObjet=0) then
+		if (RetournementNecessaire+bloqueChangementCoteMeridien=2) then
+			Print "Cible " NomObjet$ " ignore car du mauvais cote du meridien"
+			raisonEchec$="Pas du bon cote du meridien"
+			GOSUB LogObservationEchec:
+			goto MaincibleSuivante:
+		endif
+	endif
+
+	
+	GOSUB Pointe_et_gere_retournement:
+	GOSUB attente_dome:
+
+	GOSUB LampCalibOff:
+	// si double calibration demande
+	IF  CalibrationAsk[iobj]=2 THEN
+		// on ajoute un prefixe au nomb de l objet pour eviter d ecraser cette calib
+		// lors de la calib apres acquisition
+		NomObjet$=NomObjet[iobj]$+"-a"
+		GOSUB Calibration:
+	ENDIF
+
+	// affine le pointage
+	GOSUB High_level_Centrage:
+	if (ResultatHighLevelCentrage=0) then
+		Print "Cible suivante"
+		raisonEchec$="Pb de pointage, astrometrie"
+		GOSUB LogObservationEchec:
+		goto MaincibleSuivante:
+	ENDIF
+	
+	// parametrage du guidage //
+	Gosub determine_etoile_guide:
+
+	// observation
+	GOSUB lance_guidage:
+	if valid<>0 then
+		// autoguidage a echoue
+		raisonEchec$="Pb de guidage"
+		GOSUB LogObservationEchec:
+		goto MaincibleSuivante:
+	endif
+	GOSUB auto_exposure:
+	//GOSUB PosePhotometrieChercheur:
+	GOSUB Acquisition:
+	GOSUB arret_guidage:
+	
+	// si deuxieme calibration demande
+	IF  CalibrationAsk[iobj]<>0 THEN
+		STOPTELESCOPE
+		GOSUB Calibration:
+	ENDIF
+	
+	// tout c est bien passé
+	GOSUB LogObservationSuccess:
+	Observe[iobj]$="TRUE"
+	nbTRUE=nbTRUE+1
+	nbSucess=nbSucess+1
+	// On prepare le fichier JSON pour le pipeline de traitement des données
+	currentStatusObs$="finished"
+	GOSUB write_JSON_Observation:
+
+	// integration a la base de donne
+	// Remplace par signals...   //EXECEXTERNAL   PathBatBaseIn$ PathBatBaseInArgs$
+	
+MaincibleSuivante:
+	Print "passe a la cible suivante"
+NEXT iobj
+
+MinaLoopFinSeance:
+
+	//  si on a fini, on sort de la boucle... 
+	if (nbTRUE=nbCibles) then
+		msg$="Tous les objets de la liste ont ete observe avec succes."
+		Print msg$
+		WriteFileTxt fileLog msg$
+		GOSUB finseance:
+		GOSUB GeneNextLSTTarget:
+		GOSUB FermeFichierLog:
+		END
+		
+	ENDIF
+	
+	// Il reste des objet a observer, on va reboucler..
+	if (nbSucess=0) then
+		GOSUB attente_sans_succes:
+	endif
+
+	now date
+	STR nbSucess nbSucess$
+	DATETOSTR  Date  Date$
+	WriteFileTxt fileLog Date$+": Rebouclage sur les cibles, apres "+nbSucess$+" sucess" 
+	WriteFileTxt fileLog Date$+"-----------------------------------------------------------"
+
+	Print "rebouclage"
+	goto RebouclageGeneral:
+	
+MinaLoopGeneralSoleilLevé:
+	GOSUB finseance:
+	gosub set_cooling_camera_off:
+	GOSUB GeneNextLSTTarget:
+	GOSUB FermeFichierLog:
+	return
+
+attente_sans_succes:
+		// aucun success...  on attend un peu que ca passe...
+		Print "Aucun success dans la boucle precedante, attente que ca passe"
+		print "stop entrainment horaire"
+		STOPTELESCOPE
+		now date
+		DATETOSTR  Date  Date$
+		WriteFileTxt fileLog Date$+": Aucun success dans la boucle precedante, attente que ca passe, arret entrainement horaire"
+		for irty=1 DureeAttenteSiAucunSucces
+// Ajout ici..
+			GOSUB ReadMeteo:
+			if (BeauTemp=0) THEN
+				print "Mauvais temps pendant l attente"
+				now date
+				DATETOSTR  Date  Date$
+				WriteFileTxt fileLog Date$+": Mauvais temps detectee pendant l attente"
+				return
+			ENDIF		
+
+			print "    " irty "/" DureeAttenteSiAucunSucces
+			delay 60000
+			waitForendDelay
+		next irty
+		now date
+		DATETOSTR  Date  Date$
+		WriteFileTxt fileLog Date$+"Rebouclage----------------------------------------------------------"		
+		return
+				
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+High_level_Centrage:
+	if (FlagPremierObjet+RetournementNecessaire<>0) then
+	    print "c est le premier pointage ou on vient de se retourner"
+		FlagPremierObjet=0
+		GOTO AstroPasseParLeChercheur:
+	endif
+	
+	GOSUB RecaleAllSkyAstrometrieChamp:
+	if (resultat_astrometrie_absolue=1) then
+		// on est bon
+		ResultatHighLevelCentrage=1
+		return
+	endif
+	
+AstroPasseParLeChercheur:
+	Print "tentative au chercheur"
+	now date
+	STR nbSucess nbSucess$
+	DATETOSTR  Date  Date$
+	WriteFileTxt fileLog Date$+": passage par le recentrage au chercheur.." 
+	GOSUB RecaleAllSkyAstrometrieChercheur:
+	if (resultat_astrometrie_absolue=0) then
+		DATETOSTR  Date  Date$
+		WriteFileTxt fileLog Date$+": Echec recentrage au chercheur.."
+		ResultatHighLevelCentrage=0
+		return
+	ENDIF
+
+	GOSUB RecaleAllSkyAstrometrieChamp:
+	if (resultat_astrometrie_absolue=1) then
+		DATETOSTR  Date  Date$
+		WriteFileTxt fileLog Date$+": reussite astrometrie sur le champ apres recentrage au chercheur.." 
+		ResultatHighLevelCentrage=1
+		return
+	ELSE
+		DATETOSTR  Date  Date$
+		WriteFileTxt fileLog Date$+": Echec astrometrie sur le champ apres recentrage au chercheur.." 
+		Print "Echec de la fonction de centrage...."
+		ResultatHighLevelCentrage=0
+		return
+	ENDIF
+
+return
+
+// on place toutes les procedures a la fin, sinon elle sont executee sans meme un appel...
+#include "generalSettings.pgm"
+#include "generalSubroutine.pgm"
+#include "init_dome_telescope.pgm"
+#include "init_camera.pgm"
+#include "approcheEtoileBrillante.pgm"
+#include "recaleAstrometrieAllSky-et-precis.pgm"
+#include "check_coord_cibles.pgm"
+#include "finSeance.pgm"
+#include "acquisition_Calibration.pgm"
+#include "pointe_et_gere_retournement.pgm"
+#include "pointe_etoile_brillante_proche.pgm"
+#include "guidage.pgm"
+#include "quick_brightest_star.pgm"
+#include "find_best_guide_star.pgm"
+#include "attente_dome.pgm"
+#include "affiche_planning.pgm"
+#include "meteo.pgm"
+#include "test_visibilitee.pgm"
+#include "liste_etoile_cat.pgm"
+#include "auto_exposure.pgm"
+#include "affine_position_fente.pgm"
+#include "test_etoile_seule_fenetre.pgm"
+#include "test_etoile_seule_fenetre_bright.pgm"
+#include "dialog_param_charge_LST_et_defini_cible.pgm"
+#include "photometrieChercheur.pgm"
+#include "JSON_obs.pgm"
+

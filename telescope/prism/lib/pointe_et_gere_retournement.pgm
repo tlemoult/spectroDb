@@ -1,0 +1,79 @@
+#include "generalSubroutine.pgm"
+
+test_retournement_necessaire:
+
+	// De quel côté est le télescope ?
+	GOSUB CalcPierSide:
+
+	// De quel côté sera l'objet pointé ?
+	PIERSIDEDEST_TEL AlphaObjet DeltaObjet SideObject$
+	If SideObject$="NO ORIENTATION" then
+		Now Date
+		GetDistanceToMeridien AlphaObjet Date Longitude Distance
+		if Distance<0 then
+			SideObject$="WEST"
+		EndIf
+		if Distance>0 then
+			SideObject$="EAST"
+		EndIf
+	EndIf
+	Chaine$=STR_02$+SideObject$
+	PRINT Chaine$
+
+	// Faut-il faire un retournement ?
+	if ActualSide$=SideObject$ then
+		RetournementNecessaire=0
+		PRINT STR_03$
+	else
+		RetournementNecessaire=1
+		PRINT STR_04$
+	EndIf
+
+return
+
+Pointe_et_gere_retournement:
+// S'il faut faire un retournement, passer par la zone du type AH=+3H et DEC=45° si ObjectSide$="EAST"
+//                                                             AH=-3H et DEC=45° si ObjectSide$="WEST"
+
+if RetournementNecessaire=1 then
+
+   AHDegagementRAD=3*PI/12
+   // Temps Sidéral
+   Now Date
+   SideralTime Date Longitude TSL
+   // DEC vas-y !
+   STR_DEC_TO_RAD 45 00 00 DeltaRetournement
+   
+   if SideObject$="EAST" then
+      // RA vas-y !
+      AlphaRetournement=TSL-AHDegagementRAD
+   else
+      AlphaRetournement=TSL+AHDegagementRAD
+   EndIf
+   
+   // on realise le degagement
+   AlphaDest=AlphaRetournement
+   DeltaDest=DeltaRetournement
+   GOSUB Pointage:
+      
+	// on pointe l'objet
+   AlphaDest=AlphaObjet
+   DeltaDest=DeltaObjet
+   GOSUB Pointage:
+   delay 5000
+   waitforenddelay
+   // reconfigure l'orientation des camera suite au retournement
+   GOSUB Oriente_Camera:
+ELSE
+	// sans retournement, on a juste a pointer.
+	AlphaDest=AlphaObjet
+	DeltaDest=DeltaObjet
+	GOSUB Pointage:
+    delay 5000
+    waitforenddelay
+
+EndIf
+
+
+return
+   

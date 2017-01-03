@@ -1,0 +1,60 @@
+test_etoile_seule_fenetre_bright:
+	// X,Y  centre fenetre
+	// w:  demilargeur
+	// img:  image
+
+	
+//	open img "F:\work\champ4.fits" 
+//	X=548-1
+//	Y=475-1
+//	w=30
+
+	// sortie: dist et etoile seule
+	X1=X-w
+	Y1=Y-w
+	X2=X+w
+	Y2=Y+w
+	
+	if X1<0 then 
+		X1=0
+	endif
+	if Y1<0 then 
+		X1=0
+	endif
+	if X2<0 then 
+		X1=0
+	endif
+	if Y2<0 then 
+		X1=0
+	endif
+	HEIGHT img h 
+	Width  img l
+	if X1>l-1 then
+		X1=l-1
+	endif
+	if X2>l-1 then
+		X2=l-1
+	endif
+	if Y1>h-1 then
+		Y1=h-1
+	endif
+	if Y2>h-1 then
+		Y2=h-1
+	endif
+
+	GETMINMAX  X1  X2  Y1  Y2  img  Xmin  Ymin  Valmin  Xmax  Ymax  Valmax  
+	
+	print "Bright star of windows center X=" X " Y=" Y "   BrightX=" Xmax " BrightY=" Ymax
+	Xbright=Xmax
+	Ybright=Ymax
+	SQR (X-Xmax)*(X-Xmax)+(Y-Ymax)*(Y-Ymax) dist
+	print "dist=" dist
+ 	if (dist<8) then
+		etoile_seule=1
+		fluxetoileSeule=Valmax
+	else
+		etoile_seule=0
+	endif
+	
+	print "   resultat=" etoile_seule
+return

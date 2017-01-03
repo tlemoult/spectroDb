@@ -1,0 +1,210 @@
+Dialog_param_et_Charge_LST_et_defini_cible:
+
+	resetdlgbox
+
+	adddlgbox 1 30000 1 "Temps d exposition maximum par cible" DefaultTotalExposure
+	adddlgbox 2 200 1 "Nombre de pose maximum par cible"  NbPoseMax
+	adddlgbox 2 200 1 "Nombre de pose minimum par cible" NbPoseMin
+	adddlgbox 2 10000000 1 "FLUX a cummuler par cible" TargetFlux
+	adddlgbox 2 125000 1 "FLUX max par pose unitaire" maxDyn
+	adddlgbox 6 "repertoire du fichier . LST des cibles" DirCible$
+	adddlgbox 5 "Lancement immediat des observations, sans condition meteo"  ActiveLancementImmediat
+	adddlgbox 5 "Parking telescope en fin de session" ActiveParkingTelescope
+	adddlgbox 5 "Coupure alimentation des cameras en fin de session" ActiveCoupureCameraFinSession
+	adddlgbox 5 "acquisition de Flat LISALHIRES en Fin de session" ActiveFlatLISALHIRESFinSession
+	adddlgbox 2 200 1 "Nombre de pose FLAT LISA LHIRES" NbFlatLISALHIRES
+	adddlgbox 2 200 1 "Temps de pose en secondes des FLAT LISA LHIRES" exposureTimeFLATLISA
+	
+	dispdlgbox result
+	if (result=1)
+		getdlgbox DefaultTotalExposure
+		getdlgbox NbPoseMax
+		getdlgbox NbPoseMin
+		getdlgbox TargetFlux
+		getdlgbox maxDyn
+		getdlgbox DirCible$
+		getdlgbox ActiveLancementImmediat
+		getdlgbox ActiveParkingTelescope
+		getdlgbox ActiveCoupureCameraFinSession
+		getdlgbox ActiveFlatLISALHIRESFinSession
+		getdlgbox NbFlatLISALHIRES
+		getdlgbox exposureTimeFLATLISA
+	endif
+	
+	GETLISTFILENAMEEX  "selection des cibles"  "*.lst" DirCible$  FilesList$  NbFichier
+
+	if NBFichier=0 then
+		print "aucun fichier cible selectionne"
+		nBCibles=0
+		return
+	endif
+	
+REM	NomFichier$="C:\Users\tlemoult\Dropbox\astro\scriptPrism\spectroAuto\spectroAutoV1.10 BeChelles\cibles\B-mag6-11-ra1-2.lst"
+	NomFichier$=FilesList[1]$
+	print "Chargement du fichier de cible et verification syntaxe"
+	print "Fichier de cible=" NomFichier$
+	FileExists NomFichier$ ResultatTest
+	
+	if ResultatTest=0 then
+		Print "Le fichier " NomFichier$ "n existe pas"
+		Print "Aucune cible chargee"
+		nBCibles=0
+		return
+	endif
+
+	Niveau1LST$=""""
+	NIveau2LST$=" "
+	
+	OPEN_FILETXT_FOR_READ f1 NomFichier$
+
+	i=1
+boucle_read_cible:
+	READFILETXT f1 ligne$
+	if ligne$="" then
+		print "ligne vide, on est a la fin du fichier"
+		goto exit_boucle_read_cible:
+	else
+		rem print "Ligne=" ligne$
+	endif
+	
+	CUTSTR ligne$ Niveau1LST$ 1 Nom$
+	CUTSTR ligne$ Niveau1LST$ 3 Comment$
+	CUTSTR ligne$ Niveau1LST$ 2 ligne1$
+	CUTSTR ligne1$ Niveau2LST$ 1 RA$
+	CUTSTR ligne1$ Niveau2LST$ 2 DEC$
+	CUTSTR ligne1$ Niveau2LST$ 3 MAG$
+	CUTSTR ligne1$ Niveau2LST$ 4 Observe$
+
+//	print "-----------------------"
+	print "cible no " i
+	print "nom= " Nom$
+//	print "Comment= " Comment$
+//	print "RA= " RA$
+//	print "DEC= " DEC$
+//	print "Mag= " MAG$
+//	print "Observe= " Observe$
+	
+	if Observe$="TRUE" then
+		print "deja observe, on le saute"
+		goto boucle_read_cible:
+	endif
+
+	// pour verifier le format RA et DEC
+	RA_TO_RAD RA$ alphaObjet
+	DEC_TO_RAD DEC$ deltaObjet
+	val MAG$ mag
+
+	NomObjet[i]$=Nom$
+	AltName[i]$=""
+	Comment[i]$=Comment$
+	Magnitude[i]=mag
+	Alpha[i]$=RA$
+	Delta[i]$=DEC$
+	nbExposureObjet[i]=0
+	exposureTimeObjet[i]=DefaultTotalExposure
+	CalibrationAsk[i]=1
+	Observe[i]$="FALSE"
+	LigneLST[i]$=ligne$
+	
+	GOSUB read_key_word_in_comment:
+
+	// stocke les resultats definis par les mots clef.
+	ProjectObject[i]$=ProjectObject$
+	IsRef[i]$=IsRef$
+	GuideMode[i]$=GuideMode$
+	GuideRA[i]$=RAGuide$
+	GuideDEC[i]$=DECGuide$
+	ExposureMode[i]$=ExposureMode$
+	ExposureUnit[i]=ExposureUnit
+    Nbexposure[i]=Nbexposure
+    TotExposure[i]=TotExposure
+	
+	i=i+1
+	
+	goto boucle_read_cible:
+exit_boucle_read_cible:
+
+	nBCibles=i-1
+	Print "Chargement d un total de " nBCibles " cibles"
+	
+	return
+	
+/////////////////////
+//  lit les mots clef dans la variable  comment$
+////////////////////
+read_key_word_in_comment:
+
+// compte le nombre de champ separee par & 
+   id=1
+loop_terme:
+   cutstr Comment$ "&" id terme$
+   if  terme$="" then
+		nbTerme=id-1
+		goto exit_terme:
+	endif
+   Tabterme[id]$=terme$
+   id=id+1
+   goto loop_terme:
+exit_terme:
+
+// lit    key=value
+// on definit les valeur par default.
+   GuideMode$="default"
+   RAGuide$=""
+   DECGuide$=""
+   ProjectObject$="none"
+   IsRef$="false"
+
+   ExposureMode$="default"
+   ExposureUnit=1
+   Nbexposure=1
+   TotExposure=1
+
+// ici on scrute	
+   for j=1 nbTerme
+		posStr Tabterme[j]$ "=" pos
+		if pos<>0 then
+			cutstr Tabterme[j]$ "=" 1 key$
+			cutstr Tabterme[j]$ "=" 2 value$
+			//print "key:" key$ "  value:" value$
+			
+			if key$="GuideRA" then
+				RAGuide$=value$
+				RA_TO_RAD RAGuide$ RAGuide
+			endif
+			
+			if key$="GuideDEC" then
+				DECGuide$=value$
+				DEC_TO_RAD DECGuide$ DECGuide
+				GuideMode$="Coord"
+			endif
+
+			if key$="ExposureTime" then
+				val value$ value
+				ExposureUnit=value
+			endif
+
+			if key$="NbExposure" then
+				val value$ value
+				Nbexposure=value
+			    ExposureMode$="define"
+			endif
+			
+			if key$="TotExposure" then
+				val value$ value
+				TotExposure=value
+				ExposureMode$="totExposure"
+			endif
+			
+			if key$="Project" then
+				ProjectObject$=value$
+				print "Project=" value$
+			endif
+			
+			if key$="IsRef" then
+				IsRef$=value$
+			endif
+			
+	   endif		
+   next j
+   return

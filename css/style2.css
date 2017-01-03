@@ -1,0 +1,50 @@
+
+body {
+	color: white;
+	background-color: #333377;
+}
+
+table {
+    border-collapse: collapse;
+     width: 100%;
+}
+
+table, th, td {
+   padding: 0 10px;
+   border: 1px solid black;
+   
+}
+
+
+tr:nth-child(even) {
+ background-color: #444488;
+ }
+
+tr:hover {
+ background-color: #885555;
+}
+
+th {
+    background-color: #111155;
+    color: white;
+    font-size: 18px;
+    text-align: left; 
+}
+
+td {
+    font-size: 14px;	
+}
+
+a { 
+ color: #BBBBFF;
+}
+
+input[type=text]{
+  border-radius:7px;
+}
+
+input[type=submit]{
+  border-radius:7px;
+  background-color: #111155;
+    color: white;
+}

@@ -1,0 +1,77 @@
+finSeance:
+	print "-------------------------------------------------"
+	print "Fin de seance"
+	print "stop entrainment horaire"
+	STOPTELESCOPE
+
+	IF (coupole=1) then
+		print "fermeture du dome"
+		CLOSE_DOME
+	ENDIF
+
+	IF (ActiveFlatLISALHIRESFinSession=1) then
+		GOSUB acquisition-FLAT-LISA_LHIRES:
+		REM on ne fait les flat que une fois par lancement du script..
+		ActiveFlatLISALHIRESFinSession=0
+	endif
+	
+	IF (ActiveParkingTelescope=1) then
+		print "parking du telescope"
+		delay 5000
+		WAITFORENDDELAY
+		PARK_TELESCOPE ParkHa ParkDe
+	ENDIF
+	
+	delay 5000
+	WAITFORENDDELAY
+	print "recupere position telescope"
+	GET_TELESCOPE_POSITION  Alpha2000  Delta2000  Hauteur  Azimuth  AngleHor
+	STR_RAD_TO_RA AngleHor HH$ MM$ SS$
+	STR_RAD_TO_DEC Delta2000 DD$ DM$ DS$
+	PRINT "Etat du telescope fin de seance:"
+	PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
+	PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
+	STR_RAD_TO_DEC Hauteur DD$ DM$ DS$
+	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
+	STR_RAD_TO_DEC Azimuth DD$ DM$ DS$
+	print "    Azimuth       = " DD$ "d " DM$ "m" DS$ "s"
+	
+	IF (ActiveCoupureCameraFinSession=1) then
+		print "Fermeture des panneaux cameras"
+		CLOSE_CCD_CAMERA_EX CameraChamp
+		CLOSE_CCD_CAMERA_EX CameraSpectre
+		if (CameraChercheurPresente=1) then
+			CLOSE_CCD_CAMERA_EX CameraChercheur
+		ENDIF
+		print "Coupure alimentation"
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptFinDeSeance$		
+	ENDIF
+	
+RETURN
+
+acquisition-FLAT-LISA_LHIRES:
+
+	Print "Realisation des FLAT LISA/LHIRES"
+	NomObjet$="FLAT"
+	GOSUB setWorkDir:
+
+	Print "   allume lampe FLAT"
+	EXECEXTERNAL   pathPythonInterpreter$  PythonScriptFLATLISALHIRESOn$
+	Print "   attente apres manipulation lampe " pauseAfterLightOn " secondes"
+	delay pauseAfterLightOn*1000
+	WaitForEndDelay
+	intituleCalib$="flat"
+	
+	For j=1 NbFlatLISALHIRES
+		STR j idCalib$
+		Print intituleCalib$ " ,    debut de la pose " j "/" NbFlatLISALHIRES " duree " exposureTimeFLATLISA " secondes"
+		StartExposure_EX CameraSpectre (exposureTimeFLATLISA*1000)
+		WaitForEndExposure_EX CameraSpectre
+		GetLastImageExposure_EX CameraSpectre img1
+		
+		SaveFIT Img1 WorkDir$+"flat-"+idCalib$
+		Close Img1
+	Next j
+	print "    eteind la lampe FLAT"
+	EXECEXTERNAL   pathPythonInterpreter$  PythonScriptFLATLISALHIRESOff$
+RETURN

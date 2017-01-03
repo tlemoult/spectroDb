@@ -1,0 +1,152 @@
+
+Test_calculFlux_spectre:
+
+	print "-------------------------"
+	open Img "C:\Users\tlemoult\Dropbox\astro\scriptPrism\spectroAuto\spectroAutoV1.09 BeChelles\test1.fits" 
+	GOSUB Calcul_flux_spectre:
+	print "-------------------------"
+	open Img "C:\Users\tlemoult\Dropbox\astro\scriptPrism\spectroAuto\spectroAutoV1.09 BeChelles\test2.fits" 
+	GOSUB Calcul_flux_spectre:
+	exit
+	
+Test_Autoexposure:
+	print "test Auto_exposure"
+	exposureTimeObjet=300
+	CameraSpectre=2
+	DefaultTotalExposure=3600
+	NbPoseMax=29
+	NbPoseMin=3
+	maxDyn=25000
+	TargetFlux=300000
+	
+	GOSUB Auto_exposure:
+	exit
+	
+Auto_exposure:
+	if (ExposureMode$="define") then 
+		print "Temps de pose definis par le fichier cible"
+		print "   Pose unitaire= " exposureTimeObjet " secondes"
+		print "   Nb Pose      = " nbExposureObjet " secondes"
+		return
+	else
+		DureeMax=DefaultTotalExposure
+	endif
+
+	print "determination du temps de pose et nb de pose optimum"
+	print "dureMax= " dureeMax
+
+	poseEval=1
+	i=0
+boucle_eval_exposure_spectre:
+	i=i+1
+	Print "   pose evaluation spectre dure:"  poseEval " secondes"
+	StartExposure_EX CameraSpectre poseEval*1000
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img
+	STR i i$
+	SaveFIT img WorkDir$+NomObjet$+"_evalflux_"+i$+"_"
+	GOSUB Calcul_flux_spectre:
+	
+	if flux<(maxDyn/20) then
+		if (poseEval>8) then
+			goto exit_boucle_eval_exposure:
+		endif
+		poseEval=poseEval*10
+		Goto boucle_eval_exposure_spectre:
+	endif
+
+	if flux>maxDyn then
+		if (poseEval<0.005) then
+			goto exit_boucle_eval_exposure:
+		endif
+		poseEval=poseEval/10
+		Goto boucle_eval_exposure_spectre:
+	endif	
+	
+exit_boucle_eval_exposure:
+
+	
+	Expo=poseEval*maxDyn/flux
+	int flux flux
+	print "   La pose d evaluation de " poseEval " secondes donne un max ADU=" flux
+
+	GOSUB trunc_single_exposure:
+	Print "   La pose unitaire choisie est de " expo " secondes"
+	
+	if (ExposureMode$="totExposure") THEN
+		Print "    Temps exposition total fixe TotExposure=" TotExposure " secondes" 
+		NbPose=TotExposure/Expo+1
+		Int NbPose NbPose
+
+		if NbPose<NbPoseMin THEN
+			NbPose=NbPoseMin
+		ENDIF
+		
+		Expo=TotExposure/NbPose
+	ELSE
+	
+		TotalExpNecessaire=poseEval*TargetFlux/flux
+		// additionne 1,  pour eviter de raccourcir trop les temps genre 1.6s, lors de la conversion entiere.
+		TotalExpNecessaire=TotalExpNecessaire+1
+		print "log TotalExpNecessaire=" TotalExpNecessaire
+		int TotalExpNecessaire TotalExpNecessaire
+		print "   Temps total exposition necessaire " TotalExpNecessaire " secondes, pour obtenir un flux total minimum de " TargetFlux
+		If TotalExpNecessaire>DureeMax THEN
+			TotalExpNecessaire=DureeMax
+		ENDIF
+		print "logf TotalExpNecessaire=" TotalExpNecessaire
+		
+		NbPose=TotalExpNecessaire/Expo
+		
+		Int NbPose NbPose
+		NbPose=NbPose+1
+		print "Loga NbPose=" NbPose
+		if NbPose<NbPoseMin THEN
+			NbPose=NbPoseMin
+			expo=TotalExpNecessaire/NbPoseMin
+			print "logb expo=" expo
+		ENDIF
+		
+		if (Expo>DureeMax) then
+				Expo=DureeMax
+		endif
+		
+		if NbPose>NbPoseMax THEN
+			NbPose=NbPoseMax
+		ENDIF
+
+
+	ENDIF
+
+	print "   On choisit de realiser " NbPose " poses unitaires exposees pendant " Expo " secondes"
+	print "   Soit un total de " NbPose*Expo " secondes"
+	
+	// recupere les valeurs pour la suite du programme.
+	nbExposureObjet=NbPose
+	exposureTimeObjet=Expo
+	
+return
+
+trunc_single_exposure:
+	if Expo>600 THEN
+		Expo=600
+	ENDIF
+return
+
+Calcul_flux_spectre:
+	HEIGHT img h 
+	Width  img l 
+	//GETBACKGROUND  Img  Background  Sigma
+	//print "      Background=" Background
+	
+	DETOURAGEEXT  img  5  5  (l-5)  (h-5)  OffsetValueCameraSpectre
+	median img 1 4 
+	GETMINMAX  1  l-1  1  h-1  img  Xmin  Ymin  Valmin  Xmax  Ymax  Valmax  
+	flux=Valmax-OffsetValueCameraSpectre
+	if (flux<1) then
+		flux=1
+	endif
+	print "      Flux= " flux
+	CLEARIMGWINDOWS
+
+return

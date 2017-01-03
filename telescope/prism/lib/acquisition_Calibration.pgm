@@ -1,0 +1,358 @@
+
+
+//##########################
+//#        ACQUISITON      #
+//##########################
+Acquisition:
+
+//Parametres
+//  ->  NomObjet$
+//  ->  nbExposureObjet
+//  ->  exposureTimeObjet
+
+	print "commence l aquisition de l objet=" NomObjet$
+	GOSUB LampCalibOff:
+	intitule$="spectre de "+NomObjet$
+	exposure=exposureTimeObjet
+	nbExposure=nbExposureObjet
+	FileNameEnd$="OBJECT-"
+	GOSUB boucleAcquisitionObjet:
+RETURN
+
+//#############################################
+//# boucle d'acquisition spectre
+//##############################################
+boucleAcquisitionObjet:
+
+iacqu=1
+baoi:
+	GOSUB testMeridien_Hauteur:
+	// Si la hauteur du telescope est trop basse on passe a la calibration..
+	IF HauteurPointageOK=0 THEN
+		GOTO fbaoi:	
+	ENDIF
+
+	STR iacqu id$
+	Print intitule$ " ,debut de la pose " iacqu "/" nbExposure " duree " exposure " secondes"
+	int exposure*1000 expomilli
+	StartExposure_EX CameraSpectre expomilli
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img1
+	SaveFIT Img1 WorkDir$+FileNameEnd$+id$
+	Close Img1
+
+	GOSUB ReadMeteo:
+	if (MeteoOK=0) then
+		print "il faut mauvais temps on arrete les acquisitions au milieu"
+		GOTO fbaoi:
+	endif
+	
+	if iacqu<>nbExposure then
+		iacqu=iacqu+1
+		goto baoi:
+	ENDIF
+
+fbaoi:	
+Print ""
+RETURN
+
+//#############################################
+//# boucle calibration
+//##############################################
+boucleAcquisitionCalib:
+
+Print "attente apres manipulation lampe " pauseAfterLightOn " secondes"
+delay pauseAfterLightOn*1000
+WaitForEndDelay
+
+For j=1 nbExposureCalib
+	STR j idCalib$
+	Print intituleCalib$ " ,debut de la pose " j "/" nbExposureCalib " duree " exposureCalib " secondes"
+
+	StartExposure_EX CameraSpectre (exposureCalib*1000)
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img1
+	
+	SaveFIT Img1 WorkDir$+FileNameEndCalib$+idCalib$
+	Close Img1
+Next j
+Print ""
+RETURN
+
+
+//###########################
+//# lampe calibration  off  #
+//###########################
+LampCalibOff:
+	Print "Extinction de toutes les lampes."
+	IF LampeCalibAuto=0 then
+		GETYESNO "eteindre toutes les lampes" rep
+	ELSE
+		IF SPECTROGRAPHE$="ESHEL" then	
+			SETSWITCH switchthar OFF
+			delay delayswitch
+			WaitForEndDelay
+			SETSWITCH switchtungsten OFF
+			delay delayswitch
+			WaitForEndDelay
+			SETSWITCH switchled OFF
+			delay delayswitch
+			WaitForEndDelay
+			SETSWITCH switchmirroir OFF
+		ELSE
+			IF SPECTROGRAPHE$="LISA" then
+				EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
+			ELSE
+				IF SPECTROGRAPHE$="LHIRES" then
+					EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+RETURN
+
+//////////////////////////////////////////////////
+Calibration:
+	if SPECTROGRAPHE$="ESHEL" then
+		GOSUB CalibEshel:
+	ELSE
+		IF SPECTROGRAPHE$="LISA" then
+			GOSUB CalibLISA:
+		ELSE
+			IF SPECTROGRAPHE$="LHIRES" then
+				GOSUB CalibLHIRES:
+			ENDIF
+		ENDIF
+	ENDIF
+
+RETURN
+
+//######################"
+//# Calibration ESHELL #
+//######################""
+CalibEshel:
+
+PRINT "allume la lampe tungsten"
+SETSWITCH switchmirroir ON
+delay delayswitch
+WaitForEndDelay
+SETSWITCH switchtungsten ON
+intituleCalib$="Tungsten de "+NomObjet$
+exposureCalib=exposureTimeTungsten
+nbExposureCalib=nbExposureTungsten
+FileNameEndCalib$="TUNGSTEN-"
+GOSUB boucleAcquisitionCalib:
+
+Print "Allume les LED"
+SETSWITCH switchled ON
+intituleCalib$="LED de "+NomObjet$
+exposureCalib=exposureTimeLED
+nbExposureCalib=nbExposureLED
+FileNameEndCalib$="LED-"
+GOSUB boucleAcquisitionCalib:
+
+Print "Allume la lampe Thorium-Argon"
+SETSWITCH switchled OFF
+delay delayswitch
+WaitForEndDelay
+SETSWITCH switchtungsten OFF
+delay delayswitch
+WaitForEndDelay
+SETSWITCH switchthar ON
+intituleCalib$="Thorium Argon de "+NomObjet$
+exposureCalib=exposureTimeThar
+nbExposureCalib=nbExposureThar
+FileNameEndCalib$="CALIB-"
+GOSUB boucleAcquisitionCalib:
+GOSUB LampCalibOff:
+
+RETURN
+
+//####################
+//# Calibration LISA #
+//####################
+CalibLISA:
+	Print "Allume la lampe Neon"
+	IF LampeCalibAuto=0 then
+		GETYESNO "allumer la lampe neon" rep
+	ELSE
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOn$
+	ENDIF
+
+	intituleCalib$="Neon long de "+NomObjet$
+	exposureCalib=exposureTimeNeonLISA1
+	nbExposureCalib=1
+	FileNameEndCalib$="NEON-"
+	GOSUB boucleAcquisitionCalib:
+
+	GOSUB LampCalibOff:
+RETURN
+
+//######################
+//# Calibration LHIRES #
+//######################
+CalibLHIRES:
+	Print "Allume la lampe Neon"
+	IF LampeCalibAuto=0 then
+		GETYESNO "allumer la lampe neon" rep
+	ELSE
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOn$
+	ENDIF
+	intituleCalib$="Neon de "+NomObjet$
+	exposureCalib=exposureTimeNeonLHIRES1
+	nbExposureCalib=1
+	FileNameEndCalib$="NEON-"
+	GOSUB boucleAcquisitionCalib:
+
+	GOSUB LampCalibOff:
+RETURN
+
+
+//####################################
+//#  fenetre d'entrée des parametres
+//####################################
+EntreeParametre:
+REM *****************************
+resetdlgbox
+adddlgbox 4 "Nom objet" NomObjet$
+adddlgbox 6 "Repertoire des images" Directory$
+adddlgbox 3 100 0 "Nombre de pose objet" nbExposureObjet
+adddlgbox 2 3600 0 "Temps de pose unitaire Objet" exposureTimeObjet
+adddlgbox 3 50 1 "Nombre de pose Tungsten(flat)" nbExposureTungsten
+adddlgbox 2 60 0 "Temps de pose unitaire Tungsten(flat)" exposureTimeTungsten
+adddlgbox 3 50 1 "Nombre de pose LED" nbExposureLED
+adddlgbox 2 60 0 "Temps de pose unitaire LED" exposureTimeLED
+adddlgbox 3 50 1 "Nombre de pose Thorium Argon" nbExposureThar
+adddlgbox 2 60 0 "Temps de pose unitaire Thorium Argon" exposureTimeThar
+adddlgbox 5 "Test hauteur mini telescope actif ?" 0
+adddlgbox 2 60 0 "hauteur mini telescope en degree" HautDegMiniTelescope
+adddlgbox 5 "Test passage meridien actif ?" 0
+adddlgbox 3 300 0 "Nombre de boucle Globale Spectre/Calib" nbLoopProcessGlobal
+
+REM La boîte de dialogue apparaît à l'écran
+dispdlgbox result
+if (result=1)
+ getdlgbox NomObjet$
+ getdlgbox Directory$
+ getdlgbox nbExposureObjet
+ getdlgbox exposureTimeObjet
+ getdlgbox nbExposureTungsten
+ getdlgbox exposureTimeTungsten
+ getdlgbox nbExposureLED
+ getdlgbox exposureTimeLED
+ getdlgbox nbExposureThar
+ getdlgbox exposureTimeThar
+ getdlgbox testHauteurTelescope
+ getdlgbox HautDegMiniTelescope
+ getdlgbox testColisionMeridien
+ getdlgbox nbLoopProcessGlobal
+ 
+else
+ print "Annulé !"
+ exit
+endif
+
+Print "Acquisition des spectres suivit des calibrations pour le spectro eShel"
+Print "Repertoire de travail : "+Directory$
+Print "Objet : "+NomObjet$
+
+RETURN
+
+//##########################"
+//# repertoire de travail #
+//#########################""
+setWorkDir:
+
+NOW Cyear Cmonth Cday Chour CMinute CSecond CMillisec
+STR Cyear Cyear$
+STR Cmonth Cmonth$
+STR Cday Cday$
+STR Chour Chour$
+STR CMinute CMinute$
+STR CSecond CSecond$
+WorkDir$=GeneralWorkDir$+Cyear$+"-"+Cmonth$+"-"+Cday$+"_"+Chour$+"h"+CMinute$+"m"+CSecond$+"\"
+rem WorkDir$=GeneralWorkDir$
+Print "Repertoire de travail : "+WorkDir$
+CreateDir WorkDir$
+
+RETURN
+
+//##########################
+//# test colision pilier et pointage trop bas
+//########################
+testMeridien_Hauteur:
+  	// variable pour le resultat du test
+	resultTestMeridien=0 
+
+	// on fait ce code que si c'est active dans le general settings.
+	IF testColisionMeridien=1 THEN
+		// De quel côté est le télescope ?
+		PIERSIDE_TEL ActualSide$
+		GET_TELESCOPE_POSITION AD2000 DEC2000 Haut Azi AHor	
+		// Ramene l'angle dans l' intervale [-pi/2...+pi]
+		if AHor>3.1416 THEN
+			AHor=AHor-6.283185
+		ENDIF
+		if AHor<-3.1416 THEN
+			AHor=AHor+6.283185
+		ENDIF
+		
+		print "actualSide=" ActualSide$ " AHor=" AHor
+
+		IF ActualSide$="WEST" THEN
+			// en minutes
+			MiniChgMeridien=10
+			MaxiChgMeridien=30
+			// en radian
+			MiniChgMeridien=MiniChgMeridien/60/12*3.1415
+			MaxiChgMeridien=MaxiChgMeridien/60/12*3.1415
+			
+			// exposure en seconde
+			angExposure=exposure/60/60/12*3.1415
+			IF AHor>MiniChgMeridien THEN
+				print "Ahor MiniChgMeridien"
+				resultTestMeridien=1
+			ENDIF
+			
+			IF (AHor+angExposure)>MaxiChgMeridien
+				print "Ahor+angleExposure > MaxiChgMeridien"
+				resultTestMeridien=1
+			ENDIF
+		ENDIF
+		
+		IF resultTestMeridien=1 THEN
+			STOPTELESCOPE
+			Print "On a passe le meridien, on repointe"
+			GOSUB arret_guidage:
+			IF  CalibrationAsk[iobj]=1 THEN
+				//   sur un spectro eShel le passage du meridien  n'implique une calib suplementaire
+				IF SPECTROGRAPHE$<>"ESHEL" then
+					GOSUB Calibration:
+					// relance la numerotation des poses a 1 et avec un mon modifie
+					nbExposure=nbExposure-iacqu+1
+					iacqu=1
+					NomObjet$=NomObjet$+"-apm"
+				ENDIF
+			ENDIF
+			GOSUB Pointe_et_gere_retournement:
+			GOSUB attente_dome:
+			GOSUB High_level_Centrage:
+			GOSUB lance_guidage:
+		ENDIF
+		
+	ENDIF
+
+	HauteurPointageOK=1
+	IF testHauteurTelescope=1 THEN
+		GET_TELESCOPE_POSITION AD2000 DEC2000 Haut Azi AHor
+		HautDeg=Haut*360.0/(3.1415*2.0)
+		IF HautDeg<HautDegMiniTelescope THEN
+			STOPTELESCOPE
+			Print "hauteur trop faible"
+			Print "hauteur actuelle: " HautDeg " degree"
+			Print "hauteur limite: "  HautDegMiniTelescope " degree"
+			HauteurPointageOK=0
+		ENDIF
+	ENDIF
+	
+RETURN

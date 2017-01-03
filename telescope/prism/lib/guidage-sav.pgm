@@ -1,0 +1,245 @@
+arret_guidage:
+	// Arrêt du guidage
+	PRINT "Arrêt de l'autoguidage sur Consigne"
+	STOPGUIDE_EX CameraChamp CCDNum
+return
+	
+lance_guidage:
+	PRINT "autoguidage"
+	GOSUB init_param_guiding:
+	GOSUB find_exposure_time_guide_star:
+	GOSUB center_guide_star:
+	If Valid=2 then
+		PRINT "   Autoguidage de centrage échoué" 
+		PRINT message$
+		return
+	Endif
+	If Valid=0 then
+		print "   centrage OK"
+	endif
+
+	GOSUB reduce_agressivity_guide:
+	GOSUB start_exposure_field_save:
+	GOSUB start_final_guide_star:
+	
+	// Valid           : 0 = OK  1 = Guidage en cours  2 = Pas d'etoile Guide, probleme d'initialisation de guidage
+	If Valid=2 then
+		PRINT "   Autoguidage final échoué" 
+		PRINT message$
+		return
+	Endif
+	If Valid=0 then
+	   print "   Autoguidage definitif en cours"
+	endif
+	
+return
+
+//////////////////////
+/ parameter of guiding
+///////
+init_param_guiding:
+	NumCam=CameraChamp
+	CCDNum=1
+	DelayACQSec=1
+	WindowSize=80
+	CentroSize=10
+	StarThresADU=20
+	RaMin=0
+	RaMax=500
+	DecMin=0
+	DecMax=500
+	Backlash=0
+	CurrentDEC=0
+	AlarmEnabled=0
+	GuidePosX=consigneX
+	GuidePosY=consigneY
+	DeltaMoveFashion=0
+	SaveImagettes=0
+	DirSaveImg$="c:\ccd"
+	AllFrame=1
+	MinADUguidage=3500
+	//WindowAllFrame definis dans general setting
+return
+
+
+///////////////////////////////////////
+// center the guide star
+///////////////////////////////////
+center_guide_star:
+	AgressRA=1
+	AgressDEC=1
+	Print "   lance centrage rapide: agressivite RA,DEC=" AgressRA "," AgressDEC
+	print "      WindowSize=" WindowSize
+	print "      AllFrame=" AllFrame 
+	print "      WindowAllFrame=" WindowAllFrame
+	STARTGUIDECONSIGNE NumCam CCDNum ExpTime/1000 DelayACQSec WindowSize CentroSize StarThresADU AgressRA AgressDEC RaMin RaMax DecMin DecMax Backlash CurrentDEC AlarmEnabled DeltaMoveFashion GuidePosX GuidePosY SaveImagettes DirSaveImg$ AllFrame WindowAllFrame Valid message$
+	PRINT "   centrage stop"
+	STOPGUIDE_EX NumCam CCDNum
+return
+
+/////////////////////
+// reduce agressivity of guiding, according spectrograph type and guide star type
+/////////////////////	
+reduce_agressivity_guide:
+	if (activeGuideAggressiviteRalentie=1) then	
+		if SPECTROGRAPHE$="ESHEL" then
+			print "   agressivite pour guidage sur fibre"
+			AgressRA=0.3
+			AgressDEC=0.3
+		else
+			if OrientationFente=OriFenteHorizon then
+				AgressRA=1
+				AgressDEC=0.3
+			else
+				AgressRA=0.3
+				AgressDEC=1
+			endif
+		endif
+	endif
+return
+
+/////////////////////
+// long exposure on the field to get history
+////////////////////
+start_exposure_field_save:
+	print "   Pose sur le champ pour sauvegarde"
+	StartExposure_EX CameraChamp 3000
+	WaitForEndExposure_EX CameraChamp
+	GetLastImageExposure_EX CameraChamp ImgChamp
+	SaveFIT ImgChamp WorkDir$+NomObjet$+"_champ.fits"
+	CLEARIMGWINDOWS
+return
+
+///////////////////////
+// final guiding
+//////////////////////	
+start_final_guide_star:
+	print  "   lance autoguidage final Agressivite RA=" AgressRA " DEC=" AgressDEC
+	print "      WindowSize=" WindowSize
+	print "      AllFrame=" AllFrame 
+	print "      WindowAllFrame=" WindowAllFrame
+	STARTGUIDECONSIGNE NumCam CCDNum ExpTime/1000 DelayACQSec WindowSize CentroSize StarThresADU AgressRA AgressDEC RaMin RaMax DecMin DecMax Backlash CurrentDEC AlarmEnabled DeltaMoveFashion GuidePosX GuidePosY SaveImagettes DirSaveImg$ AllFrame WindowAllFrame Valid message$
+return
+	
+///////////////////
+///// determination du temps de guidage optimum
+//////////////////
+find_exposure_time_guide_star:
+	print "Determine le temps de pose pour le guidage"
+	X1=binCameraChamp*(consigneX-WindowEvalGuideStar)
+	INT X1 X1
+	Y1=binCameraChamp*(consigneY-WindowEvalGuideStar)
+	INT Y1 Y1
+	X2=binCameraChamp*(consigneX+WindowEvalGuideStar)
+	INT X2 X2
+	Y2=binCameraChamp*(consigneY+WindowEvalGuideStar)
+	INT Y2 Y2
+
+	SETWINDOW_EX CameraChamp X1 Y1 X2 Y2
+	
+	// exposition max du guidage en ms
+	MaxExpTime=10000
+	
+	// temps de guidage de depart en millisec
+	ExpTime=10
+boucle_temps_guidage:	
+	StartExposure_EX CameraChamp ExpTime
+	WaitForEndExposure_EX CameraChamp
+	GetLastImageExposure_EX CameraChamp ImgGuide
+	//GETBACKGROUND  ImgGuide  Background  Sigma
+	//OFFSET ImgGuide -Background
+	STAT  ImgGuide   Moyenne  MoyenneQuadratique  Ecarttype  Max  Min  Flux  Mediane
+	max=max-OffsetValueCameraChamp
+	if (max<1) then
+		max=1
+	endif
+	print "   pose de " expTime/1000 " secondes  donne une etoile a " max " ADU"
+	if (max>MinADUguidage) then
+		goto ok_flux_guide_g:
+	endif
+	// pas assez de flux, on augmente le temps
+	if ExpTime>MaxExpTime then
+		goto ok_flux_guide_g:
+	endif
+	ExpTime=ExpTime*3
+	goto boucle_temps_guidage:
+		
+ok_flux_guide_g:
+
+	// ajuste le temps exposition pour obtenir a peut pret un flux "MinADUguidage"
+	Exptime=ExpTime*MinADUguidage/max
+
+	if ExpTime>MaxExpTime then
+		ExpTime=MaxExpTime
+		print "maximum de temps de guidage utilise"
+	endif
+	print "   On choisit un temps de pose de guidage de =" ExpTime/1000 " secondes"
+	CLEARIMGWINDOWS
+	SetWindowFullFrame_Ex CameraChamp
+	
+return
+
+///////////////////////
+// etoile guide
+///////////////////////
+determine_etoile_guide:
+	if GuideMode$="Coord"
+		print "etoile guide imposée"
+//		consigneX=243
+//		consigneY=295
+//		activeGuideAggressiviteRalentie=1
+
+		alphaEtoileGuide$=RAGuide$
+		deltaEtoileGuide$=DECGuide$
+		RA_TO_RAD  alphaEtoileGuide$ alphaEtoileGuide
+		DEC_TO_RAD  deltaEtoileGuide$ deltaEtoileGuide
+		GETIMG_RADDEC_TO_XY  ImgAstrometrie  alphaEtoileGuide  deltaEtoileGuide  XGuideTh  YGuideTh  Erreur
+		GETIMG_RADDEC_TO_XY  ImgAstrometrie  AlphaObjet  DeltaObjet  XCibleTh  YCibleTh  Erreur	
+		consigneX=fentePosX+XGuideTh-XCibleTh
+		consigneY=fentePosY+YGuideTh-YCibleTh
+		activeGuideAggressiviteRalentie=0
+		print "   L etoile guide n est pas la cible, on guide normalement"
+	ELSE
+		print "   La cible est l'etoile de guidage on va guider doucement"
+		activeGuideAggressiviteRalentie=1
+		consigneX=fentePosX
+		consigneY=fentePosY
+	ENDIF
+	
+	INT consigneX consigneX
+	INT consigneY consigneY
+	print "consigne X,Y=" consigneX "," consigneY
+return
+
+// test de guidage par script
+// STARTGUIDECONSIGNE NumCam CCDNum ExpTime DelayACQSec WindowSize CentroSize StarThresADU AgressRA AgressDelta RaMin RaMax DecMin DecMax Backlash CurrentDEC
+//                    AlarmEnabled  DeltaMoveFashion ConsignePosX ConsignePosY SaveImagettes DirSaveImg AllFrame WindowAllFrame Valid message$
+//
+//In
+//1  NumCam          : Numero de la camera : principale, secondaire ou tertiaire
+//2  CCDNum          : Numero de ccd de guidage 0=principal 1=CCD auxiliaire
+//3  ExpTime         : Temp de pose en sec
+//4  DelayACQSec     : Delai d'acquisition en seconde
+//5  WindowSize      : Demi Taille de la fenetre de guidage (pixels)
+//6  CentroSize      : Demi Taille pour le centroide (pixels)
+//7  StarThresADU    : Seuil de l'etoile, si pas d'etoile au dessus du seuil, = erreur pas de guidage
+//8  AgressRA        : Agressivite RA  (0-1)
+//9  AgressDelta     : Agressivite DEC (0-1)
+//10 RaMin           : Nbre de pixels Min de deplacement en RA (Pixels)
+//11 RaMax           : Nbre de pixels Max de deplacement en RA (Pixels)
+//12 DecMin          : Nbre de pixels Min de deplacement en DEC (Pixels)
+//13 DecMax          : Nbre de pixels Max de deplacement en DEC (Pixels)
+//14 Backlash        : Nbre de pixel de Backlash
+//15 CurrentDEC      : Delta courant (ignoré si codeurs sont actifs telescope actifs)
+//16 AlarmEnabled    : 0 = Pas d'alarmes  1 = Alarmes
+//17 DeltaMoveFashion: 0 = Normal, 1 pas de mvt delta, 2 Mvt positifs seulement, 3 Mvt Negatifs seulements
+//18 ConsignePosX    : Position consigne suivant X
+//19 ConsignePosY    : Position consigne suivant Y
+//20 SaveImagettes   : 1 = Sauver - 0 = Pas sauver
+//21 DirSaveImg      : Répertoire de sauvegarde des imagettes si OK
+//22 AllFrame        : Guidage sur toute l'image.
+//23 WindowAllFrame  : Taille de la fenetre de recherche autour de la consigne  (evite d'aller chercher n'importe quoi dans l'image ALL Frame)
+//
+//Out
+//24 Valid           : 0 = OK  1 = Guidage en cours  2 = Pas d'etoile Guide, probleme d'initialisation de guidage
+//25 Message$        : Message d'erreur, si existant

@@ -1,0 +1,15 @@
+quick_brightest_star:
+	HEIGHT img h 
+	Width  img l 
+	DETOURAGEEXT  img  5  5  (l-5)  (h-5)  0 
+	median img 1 3 
+	stat  img  Moyenne  MoyenneQuadratique  Ecarttype  Max  Min  Flux  Mediane  
+	GETMINMAX  1  l-1  1  h-1  img  Xmin  Ymin  Valmin  Xmax  Ymax  Valmax  
+	print "   GETMINMAX: Xmax=" Xmax " Ymax=" Ymax
+	//CENTROIDEGAUSS  img  Xmax  Ymax  DemiLargeur  Xcentro  Ycentro  SigW  SigH  Angle  Flux  OMC  HOMC  ErrFlux
+	XCENTRO=Xmax
+	YCENTRO=Ymax
+	CENTROADU=Valmax
+	Print "   Brightest star: X="  XCENTRO  " Y=" YCENTRO 
+
+return

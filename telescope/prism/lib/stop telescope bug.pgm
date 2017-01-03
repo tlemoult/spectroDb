@@ -1,0 +1,10 @@
+
+
+
+GET_TELESCOPE_POSITION AlphaDest DeltaDest Haut Azi AHor
+DeltaDest=DeltaDest-0.01
+MoveTelescope AlphaDest DeltaDest
+WaitForEndMoveTelescope
+Print "fin du mouvement"
+
+  

@@ -1,0 +1,119 @@
+// lecture des parametres de la station meteo Sentinel
+ReadMeteo:
+
+rem Print "Donnees de la station meteo Sentinel:"
+pathSentinel$="C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt"
+Open_FileTxt_For_Read fichier pathSentinel$
+
+for i=1 7
+	ReadFileTXT fichier ligneDummy$
+next i
+
+ReadFileTXT fichier ligneTempExt$
+CUTSTR ligneTempExt$ "=" 2 out$
+val out$ TempExt
+rem print "tempExt=" out$
+
+ReadFileTXT fichier ligneHumidity$
+CUTSTR ligneHumidity$ "=" 2 out$
+val out$ Humidity
+rem print "Humidity=" out$
+
+ReadFileTXT fichier ligneDummy$
+ReadFileTXT fichier ligneDummy$
+
+ReadFileTXT fichier ligneTempSkyIR$
+CUTSTR  ligneTempSkyIR$  "="  2  out$
+val out$ TempskyIR
+rem print "TempskyIR=" out$
+
+ReadFileTXT fichier ligneTempDetectorIR$
+CUTSTR ligneTempDetectorIR$ "=" 2 out$
+val out$ TempDetectorIR
+rem print "TempDetectorIR=" out$
+
+ReadFileTXT fichier ligneRainFall$
+CUTSTR ligneRainFall$ "=" 2 out$
+if Out$="No" then
+		RainFall=0
+ELSE
+		RainFall=1
+ENDIF
+rem print "RainFall=" out$
+
+ReadFileTXT fichier ligneWindSpeedGust$
+CUTSTR ligneWindSpeedGust$ "=" 2 out$
+val out$ WindSpeedGust
+rem print "WindSpeedGust=" out$
+
+ReadFileTXT fichier ligneDummy$
+ReadFileTXT fichier ligneDummy$
+ReadFileTXT fichier ligneDummy$
+ReadFileTXT fichier ligneDummy$
+
+ReadFileTXT fichier ligneLightLevel$
+CUTSTR ligneLightLevel$ "=" 2 out$
+val out$ LightLevel
+rem print "LightLevel=" out$
+
+tempCiel=TempSkyIR-TempExt
+STR tempCiel tempCiel$
+rem print "calcul temperature ciel =" tempCiel$
+
+////////////////////////
+if (tempCiel<LimitTempCiel) then
+	if RainFall=0 then
+		if LightLevel>LimitMagnitudeCiel
+			BeauTemp=1
+		ELSE
+			BeauTemp=0
+		ENDIF
+	ELSE
+		BeauTemp=0
+	ENDIF
+ELSE
+	BeauTemp=0
+ENDIF	
+
+// Beautemp est obtenus en regardant que la derniere valeur du  Sentinel.
+if BeauTemp=1 then
+	CompteurBeauTemp=CompteurBeauTemp+1
+ELSE
+	CompteurBeauTemp=0
+ENDIF
+
+// MeteoOK donne un résultat filtree..
+if CompteurBeauTemp>ValMinBelleMeteo then
+	rem NOW Annee Mois Jour Heure Minutes Secondes MS
+	rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+	rem Print "Il fait beau depuis un moment.. On va pouvoir observer"
+	MeteoOK=1
+else
+	MeteoOK=0
+	IF (BeauTemp=1) then
+		rem NOW Annee Mois Jour Heure Minutes Secondes MS
+		rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+		rem Print "Si le beau temps se maintien, on pourra observer"
+	ELSE
+		rem Print "Il ne fait pas assez beau pour observer"
+	ENDIF
+ENDIF
+
+CLOSEFILETXT  fichier
+return
+
+BoucleAttendBeauTemp:
+
+	GOSUB ReadMeteo:
+	DELAY 60000
+	WAITFORENDDELAY
+	
+	if MeteoOK=0 THEN
+		GOTO BoucleAttendBeauTemp:
+	ENDIF
+
+	NOW Annee Mois Jour Heure Minutes Secondes MS
+	PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+	print "Il faut beau"
+	
+return

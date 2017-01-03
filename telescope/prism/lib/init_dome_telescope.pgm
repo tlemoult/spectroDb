@@ -1,0 +1,32 @@
+
+
+init_dome_telescope:
+	Print "----------------------------------------------------------------"
+	Print "Initialisation dome et telescope"
+	if coupole=1 THEN
+	
+		// dome asservit sur suivit et pointage
+		DOME_SET_CONTROL 1 1
+
+		GET_DOME_POS  Azimuth  Status Statusb
+		IF Statusb=3
+			print "Le dome est fermé, donc on l'ouvre"
+			OPEN_DOME
+
+			print "deparking"
+			UnPark_telescope
+			print "apres deparking, attend 5 secondes"
+			delay 5000
+			WAITFORENDDELAY
+			print "recalibre le telescope"
+			NOW date
+			GetStdrLongitude Longitude
+			SIDERALTIME Date Longitude TSL
+			Ha=TSL-ParkHa
+			CALIBRATE_TELESCOPE  Ha ParkDe
+		ELSE
+			print "dome deja ouvert, on considere que le telescope est déparké"
+		ENDIF
+	endif
+		
+return

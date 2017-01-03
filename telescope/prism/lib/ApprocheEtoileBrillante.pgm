@@ -1,0 +1,70 @@
+approcheEtoileChamp:
+	name$="Champ"
+	camera=CameraChamp
+	exposure=3
+	PSFMin=1.5
+	DemiLargeur=15
+	SeuilDetection=500
+	Xpos=fentePosX
+	Ypos=fentePosY
+	GOSUB approcheetoile:
+	
+return
+
+approcheEtoileChercheur:
+	name$="Chercheur"
+	camera=CameraChercheur
+	exposure=3
+	PSFMin=1.5
+	DemiLargeur=15
+	SeuilDetection=500
+	Xpos=ChercheurPosXBin
+	Ypos=ChercheurPosYBin
+	GOSUB approcheetoile:
+
+return
+
+approcheetoile:
+	GOSUB Oriente_Camera:
+	print Name$ ": approche etoile "
+	//#je recupere les coor ou je veux aller !
+	GET_TELESCOPE_POSITION CIBLEAD2000 CIBLEDEC2000 Haut Azi AHor
+
+	print "   lancement d une pose sur le ciel pendant " exposure " secondes"
+	StartExposure_EX camera (exposure*1000)
+	WaitForEndExposure_EX camera
+	GetLastImageExposure_EX camera Imga
+//	SaveFIT Imga WorkDir$+NomObjet$+"_Brightstar_"+name$+"_initial"
+//	BRIGHTEST_STAR Imga SeuilDetection PSFMin DemiLargeur Xcentro Ycentro
+	duplicate Imga img
+	GOSUB quick_brightest_star:
+	close img
+	errx=Xcentro-Xpos
+	erry=Ycentro-Ypos
+	INT errx errx
+	INT erry erry
+	Print "   erreur position initiale etoile " name$ " X=" errx " Y=" erry
+	Print "   corrige l erreur"
+	OFFSET_TELESCOPE Imga Xcentro Ycentro Xpos Ypos
+	WaitForEndMoveTelescope
+	CALIBRATE_TELESCOPE CIBLEAD2000 CIBLEDEC2000
+	close imga
+
+	print "   lancement d une pose sur le ciel pendant " exposure " secondes"
+	StartExposure_EX camera (exposure*1000)
+	WaitForEndExposure_EX camera
+	GetLastImageExposure_EX camera Imgb
+//	BRIGHTEST_STAR Imgb SeuilDetection PSFMin DemiLargeur Xcentro Ycentro
+	duplicate Imgb img
+	GOSUB quick_brightest_star:
+	close img
+	errx=Xcentro-Xpos
+	erry=Ycentro-Ypos
+	INT errx errx
+	INT erry erry
+	Print "   erreur position finale etoile " name$ " X=" errx " Y=" erry
+//	SaveFIT Img WorkDir$+NomObjet$+"_Brightstar_"+name$+"_final"
+	close Imgb
+	CLEARIMGWINDOWS
+
+return

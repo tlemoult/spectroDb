@@ -1,0 +1,34 @@
+{"type":"FeatureCollection",
+	"features":[
+	{
+		"type":"Feature",
+		"id":"M31",
+		"properties":{
+			"name":"plasket",
+			"type":"s",
+			"mag":3.4,
+			"dim":"189x61"
+			}
+		,"geometry":{
+			"type":"Point",
+			"coordinates":[10.68,41.267]
+			}
+		}
+		
+	,{
+		"type":"Feature",
+		"id":"NGC752",
+		"properties":{
+			"name":"gam cas",
+			"type":"s",
+			"mag":5.7,
+			"dim":"50"
+			}
+		,"geometry":{
+			"type":"Point",
+			"coordinates":[29.43,37.667]
+			}
+		}
+
+
+	]}

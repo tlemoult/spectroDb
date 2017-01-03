@@ -1,0 +1,228 @@
+#ifndef __general__setting__
+#define __general__setting__
+
+generalSettings:
+
+// parametre d'exposition automatique sur le spectre  (auto_exposure.pgm)
+DefaultTotalExposure=3600
+NbPoseMax=29
+NbPoseMin=3
+maxDyn=25000
+TargetFlux=300000
+
+DirCible$="C:\Users\DELL\Dropbox\astro\cibles\journalier\"
+
+REM chemin de sauvegarde des acquistions
+Directory$="X:\astro\base\in"
+DirectorySignals$="X:\astro\base\signals\fromPRISM"
+REM Chemin racines des catalogues pour l astrometrie
+sDirCatalogue$="C:\catalogues\"
+
+REM Chemin des scripts python qui declenchent les lampes de calibration via le port serie
+pathPythonInterpreter$="C:\Python27\python.exe"
+pathPythonScript$="C:\Users\thierry\Dropbox\python\powercontrol\"
+PythonScriptNeonLISALHIRESOn$=pathPythonScript$+"neon-on.py"
+PythonScriptNeonLISALHIRESOff$=pathPythonScript$+"neon-off.py"
+PythonScriptFinDeSeance$=pathPythonScript$+"alim-off-fin-seance.py"
+PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
+PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
+
+PythonScriptControlIPX800$="C:\Users\thierry\Dropbox\python\powercontrol\wget.py"
+
+PathBatBaseIn$="C:\Program Files\putty\plink.exe"
+PathBatBaseInArgs$="-load Linux-bureau -l tlemoult /home/tlemoult/Dropbox/python/spectroAutoPubli/robot-1-in-db/run.sh"
+		
+// type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
+SPECTROGRAPHE$="ESHEL"
+
+// lampe de calibration commande par ordinateur (1) ou manuel (0)
+LampeCalibAuto=1
+
+// logique de recalage
+ask_astrometrie_champ_absolue=1
+ask_astrometrie_champ=0
+ask_astrometrie_chercheur=0
+ask_approche_plusbrillante_champ=0
+
+// taille fenetre recherche etoile de guidage
+WindowAllFrame=50
+// taille fenetre evaluation flux etoile guide
+WindowEvalGuideStar=20
+
+//parametres des cameras
+CameraChamp=1
+binCameraChamp=2
+MiroirXCameraChamp=0
+MiroirYCameraChamp=0
+TempCameraChamp=0
+DirRepChamp=0
+AngleCCDChampWEST=174
+FocaleCameraChamp=2111
+
+CameraSpectre=2
+binCameraSpectre=2
+MiroirXCameraSpectre=0
+MiroirYCameraSpectre=0
+TempCameraSpectre=0
+
+// 1-> camera presente  0->1
+CameraChercheurPresente=1
+CameraChercheur=3
+binCameraChercheur=1
+MiroirXCameraChercheur=0
+MiroirYCameraChercheur=0
+DirRepChercheur=0
+AngleCCDChercheurWEST=179
+FocaleCameraChercheur=133.5
+// position de l etoile dans le chercheur quand l etoile est dans la fente/trou
+ChercheurPosXBin=30
+ChercheurPosYBin=568
+//  ZWO120 Bin2.  X=301 Y=215  Angle 179
+//  Lodestar Bin1 X=30 Y=568   Angle 179
+exposurephotometriechercheur=3
+
+/////////////////////Limite liee au pointage ////////////////////
+// securitee hauteur pointage     1->actif  0->inactif
+testHauteurTelescope=1
+HautDegMiniTelescope=20
+HautDegMaxTelecope=80
+// gestion du passage du meridien  pendant les poses(monture allemande)
+testColisionMeridien=1
+// blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement coté de méridien.
+// 1->Bloque    0-> authorisé
+bloqueChangementCoteMeridien=0
+//hauteur limite du soleil sous l'horizon en degré
+ElevationMaxSun=-8
+// attente en minute avant un rebouclage si tout a echoue.. 
+DureeAttenteSiAucunSucces=30
+// Flag pour declencher le parking a la fin du script, sinon l entrainment horaire s'arrete simplement.
+ActiveParkingTelescope=0
+// Position pour le parking en radian
+// HA=Hangle horaire   De=Declinaison
+ParkHa=0.0174
+ParkDe=-0.717330
+
+// delas en ms apres un pointage pour reprise de l'entrainement horaire
+DelayRepriseRA=10000
+
+// Flag pour couper l alimentation des cameras en fin de session.
+ActiveCoupureCameraFinSession=0
+
+
+// presence d'une coupole  1=> Oui   0=>non
+coupole=1
+
+// parametrage liee a la fente / trou de guidage
+// affine position de la fente au cours du temps
+//  0-> non actif   1->actif
+activeAffinePositionFenteAuto=0
+
+// orientation de la fente
+OriFenteHorizon=1
+OriFentevertical=2
+OrientationFente=OriFentevertical
+
+// Position cible du guidage
+// attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
+// refocus...
+// 17-02-2016: en bin1:  X=686, Y=548,  en bin 2: 343, 275
+// 12-03-2016. 347, 275
+// 13-03-2016  avant meridien: 343, 274
+//         apres meridien:  344, 275  344, 275
+// 14-03-2016   343, 275
+
+// 05-07-2016   344, 274
+
+fentePosX=342
+fentePosY=274
+
+
+// FLAT LISA LHIRES
+ActiveFlatLISALHIRESFinSession=0
+NbFlatLISALHIRES=31
+exposureTimeFLATLISA=5
+
+// temps de pose des calibrations
+// LISA  => deux poses de calibration
+exposureTimeNeonLISA1=5
+exposureTimeNeonLISA2=10
+
+// LHIRES => deux poses de calibration
+exposureTimeNeonLHIRES1=2
+exposureTimeNeonLHIRES2=10
+
+// eShel temps et quantitee poses de calibration 
+nbExposureTungsten=8
+exposureTimeTungsten=10
+nbExposureLED=3
+exposureTimeLED=10
+nbExposureThar=3
+exposureTimeThar=3
+
+// Etoile de dégagement si échec reconnaissance du ciel :
+Radius=9
+MagMin=3
+MagMax=7
+
+
+
+// heure de debut de la seance d observation
+AA_Start=2014
+Mo_Start=07
+JJ_Start=05
+HH_Start=22
+MM_Start=28
+ENCODEDATETIME  AA_Start  Mo_Start  JJ_Start  HH_Start  MM_Start  0  0  Date_Start
+DATETOSTR  Date_Start Date_Start$
+
+// temperature du ciel pour considerer qu il fait beau..
+LimitTempCiel=10
+// magnitude limite pour considere que le ciel est bien noir..
+LimitMagnitudeCiel=16.6
+// après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
+ValMinBelleMeteo=6
+CompteurBeauTemp=0
+// valeur par defaut, activation observation immediate au lance du script sans verif meteo
+ActiveLancementImmediat=1
+
+
+
+// definition interrupteurs commande module calibraion via la carte Vellmann eShell
+ON=1
+OFF=0
+switchmirroir=1
+switchled=2
+switchthar=3
+switchtungsten=4
+delayswitch=180
+pauseAfterLightOn=5
+
+// RESSOURCESTRING :
+STR_01$="Télescope côté "
+STR_02$="Objet pointé vers "
+STR_03$="Pas de retournement de monture nécessaire"
+STR_04$="Retournement de monture nécessaire"
+STR_05$="Pointe vers "
+STR_06$="Pose de reconnaissance de champ sur caméra n°"
+STR_07$="ECHEC - find all sky telescope - sur Camera n°"
+STR_08$="REUSSITE - find all sky telescope - sur Camera n°"
+STR_09$="Reconnaissance de champ au niveau de l'objet :"
+STR_10$="Comparaison lancée ..."
+STR_11$="Astrométrie sur le champ"
+STR_12$="Reconnaissance astrométrique lancée ..."
+STR_13$="Détermination de la position de l'objet sur l'image reconnue astrométriquement"
+STR_14$="Position de l'objet sur l'image étalonnée astrométriquement : X = "
+STR_15$="Déplacement vers : X = "
+STR_16$="Echec de détermination de X_objet et de Y_objet"
+STR_17$="Début de l'autoguidage sur Consigne"
+STR_18$="Status de guidage : Guidage en cours, Dernier Message=["
+STR_19$="Status de guidage : Guidage INACTIF, Dernier Message=["
+STR_20$="L'étalonnage de l'image est OK"
+STR_21$="Echec de l'étalonnage astrométrique !"
+STR_22$="On ne peut plus rien pour vous !"
+STR_23$="Pas d'étoile de dégagement. Elargir le champ de recherche !"
+
+GetStdrLongitude Longitude
+
+return
+#endif

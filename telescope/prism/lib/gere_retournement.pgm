@@ -1,0 +1,70 @@
+
+Pointe_et_gere_retournement:
+// De quel côté est le télescope ?
+PIERSIDE_TEL ActualSide$
+Chaine$=STR_01$+ActualSide$
+PRINT Chaine$ 
+
+// De quel côté sera l'objet pointé ?
+PIERSIDEDEST_TEL AlphaDest DeltaDest SideObject$
+If SideObject$="NO ORIENTATION" then
+   Now Date
+   GetDistanceToMeridien AlphaDest Date Longitude Distance
+   if Distance<0 then
+      SideObject$="WEST"
+   EndIf
+   if Distance>0 then
+      SideObject$="EAST"
+   EndIf
+EndIf
+Chaine$=STR_02$+SideObject$
+PRINT Chaine$
+
+// Faut-il faire un retournement ?
+if ActualSide$=SideObject$ then
+   RetournementNecessaire=0
+   PRINT STR_03$
+else
+   RetournementNecessaire=1
+   PRINT STR_04$
+   print "Volontairement desactive car non teste"
+   return
+EndIf
+
+// S'il faut faire un retournement, passer par la zone du type AH=+3H et DEC=45° si ObjectSide$="EAST"
+//                                                             AH=-3H et DEC=45° si ObjectSide$="WEST"
+AHDegagementRAD=3*PI/12
+if RetournementNecessaire=1 then
+  
+   // Temps Sidéral
+   Now Date
+   SideralTime Date Longitude TSL
+   // DEC vas-y !
+   STR_DEC_TO_RAD 45 00 00 DeltaRetournement
+   
+   if SideObject$="EAST" then
+      // RA vas-y !
+      AlphaRetournement=TSL-AHDegagementRAD
+   else
+      AlphaRetournement=TSL+AHDegagementRAD
+   EndIf
+   
+   tmpAlpha=AlphaDest  //backup la destination avant destination
+   tmpdelta=DeltaDest
+   AlphaDest=AlphaRetournement
+   DeltaDest=DeltaRetournement
+   GOSUB Pointage:
+      
+   AlphaDest=tmpAlpha
+   DeltaDest=tmpdelta
+   GOSUB Pointage:
+   Gosub Oriente_Camera:
+ELSE
+	// sans retournement, on a juste a pointer.
+   GOSUB Pointage:   
+   Gosub Oriente_Camera:
+EndIf
+
+
+return
+   

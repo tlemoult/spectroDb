@@ -1,0 +1,51 @@
+test_visibilitee:
+
+// argument:  date AlphaObjet  DeltaObjet  NomObjet$ AltName$ Comment$
+// sortie:    OK_visible
+
+	GetStdrLongitude Longitude
+	GetStdrLatitude Latitude
+
+	GetDistanceToMeridien AlphaObjet date Longitude Ha
+	STR Ha Ha$
+	GETHEIGHT AlphaObjet DeltaObjet date Longitude latitude hauteur
+	hauteur=hauteur*180/3.1415
+	print "Test de visibilitee de " NomObjet$ " " AltName$ " " comment$
+	print "     -angle horaire= " Ha$ " heures"
+	print "     -hauteur      = " hauteur " degre"
+
+	OK_visible=1
+	if hauteur<HautDegMiniTelescope then
+		print "     *** La cible " NomObjet$ " " Comment$ " est trop basse"
+		OK_visible=0
+		raisonEchec$="trop basse"
+		GOSUB LogObservationEchec:
+		return
+	endif
+	
+	if hauteur>HautDegMaxTelecope then
+		print "     *** La cible " NomObjet$ " " Comment$ " est trop haute"
+		OK_visible=0
+		raisonEchec$="trop haute"
+		GOSUB LogObservationEchec:
+		return
+	endif
+
+return
+
+test_levee_soleil:
+	now Date
+	DATETOSTR  Date  Date$
+	GetRaDecSun Date AlphaS DeltaS ElevationSun
+	ElevationSun=ElevationSun*180/3.1415
+	if (ElevationSun>ElevationMaxSun) then
+		Print "******************************************************"
+		Print "Le soleil est quasiment levee, elevation=" ElevationSun 
+		Print "On arrete la seance ici"
+		WriteFileTxt fileLog Date$+": Le soleil est quasiment levee, On arrete la seance ici"
+		soleil_levee=1
+	else
+		Print "Le soleil ne nous gene pas encore elevation=" ElevationSun
+		soleil_levee=0
+	endif
+	return	

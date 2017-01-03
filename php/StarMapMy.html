@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <style>
+
+    body {
+      background: black;
+    }
+    
+    .graticule {
+      fill: none;
+      stroke: #fff;
+      stroke-opacity: 0.2;
+    }
+
+    .stars {
+      fill: #fff;
+      stroke: #000;
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <script>
+
+    var width = 1820,
+        height = 930;
+        actualScale = 2400;
+
+    
+    
+    var projection = d3.geo.stereographic()
+      .scale(actualScale)
+      .clipAngle(120)
+      .translate([width/2, height/2]);
+    
+    var path = d3.geo.path()
+      .projection(projection);
+  
+    var lambda = d3.scale.linear()
+      .domain([0, width])
+      .range([-180, 180]);
+    
+    var phi = d3.scale.linear()
+      .domain([0, height])
+      .range([90, -90]);
+
+    var radius = d3.scale.linear()
+      .domain([-1, 13])
+      .range([8, 1]);
+
+    var color = d3.scale.linear()
+      .domain([-0.5, 0.3, 0.8])
+      .range(["#3030ff", "#ffffff", "ff9999"])
+      .clamp(true);
+    
+    var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+    
+    svg.append("path")
+      .attr("class", "graticule")
+      .datum(d3.geo.graticule());
+  
+    svg.append("g")
+      .attr("class", "stars");
+  
+    d3.csv("objetcsv.php", type, function(data) {
+    // The Bright Star Catalogue, 5th Revised Ed. (Hoffleit+, 1991)
+    // Vmag < 5 (1595 stars)
+  
+      function render() {
+  
+        svg.select(".graticule")
+          .attr("d", path);
+        
+        var stars = svg.select(".stars").selectAll("circle")
+          .data(data.map(function(d) {
+            var p = projection([-d.ra, d.dec]);
+            d[0] = p[0]; d[1] = p[1];
+            return d;   
+          }));
+
+        stars.enter().append("circle")
+          .attr("r", function(d) { return radius(d.magnitude); })
+          .style("fill", function(d) { return color(d.color); });;
+
+        stars
+          .attr("cx", function(d) { return d[0]; })
+          .attr("cy", function(d) { return d[1]; });
+      };
+  
+      render();
+  //mousemove
+  //mousedown
+      svg.on("mousemove", function() {
+        var p = d3.mouse(this);
+        projection.rotate([lambda(p[0]), phi(p[1])]);
+        render();
+      });
+
+//      svg.on("keydown", function() {
+//        var myKey = d3.event.key;
+//        console.log(myKey);
+//        if (myKey=="+") { actualScale=actualScale*1.5; }
+//        if (myKey=="-") { actualScale=actualScale*0.75; }
+//        projection.scale(actualScale);
+//        render();
+ //     });
+
+
+
+      //
+      // STEP 5
+      //
+
+    });
+
+    function type(d) {
+      d.ra = (+d.RAh + d.RAm/60 + d.RAs/3600) * (360/24);
+      d.dec = (+d.DEd + d.DEm/60 + d.DEs/3600);
+      d[0] = d.ra; d[1] = d.dec;
+      d.magnitude = +d.Vmag;
+      d.color = +d.BmV;
+      return d;
+    }
+
+
+
+  </script>
+</body>

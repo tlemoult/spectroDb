@@ -1,0 +1,103 @@
+#include "generalSubroutine.pgm"
+
+RecaleAllSkyAstrometrieChercheur:
+	if (CameraChercheurPresente=0) then
+		print "Attention pas de chercheur"
+		resultat_astrometrie_absolue=0
+		resultat_allsky=0
+		return
+	ENDIF
+	Print "Chercheur: Procedure Astrometrie allsky"
+	AstrometrieName$="Chercheur"
+	CameraAllSky=CameraChercheur
+	exposureAllSky=10
+	MaxStarImg=30
+	MaxStarCat=30
+	Field=10
+	Cat$="GSC-ACT"
+	Chem$=sDirCatalogue$+Cat$
+	Xpos=ChercheurPosXBin
+	Ypos=ChercheurPosYBin
+	PolyDegAstroPrecis=1
+	GOSUB RecaleAllSkyAstrometrie:
+return
+
+RecaleAllSkyAstrometrieChamp:
+	Print "Champ: Procedure Astrometrie alsky"
+	AstrometrieName$="FIELD-1"
+	CameraAllSky=CameraChamp
+	exposureAllSky=18
+	MaxStarImg=30
+	MaxStarCat=30
+	Field=2
+	Cat$="UCAC 2/3/4"
+	Chem$=sDirCatalogue$+"UCAC4"
+	Xpos=fentePosX
+	Ypos=fentePosY
+	PolyDegAstroPrecis=1
+	GOSUB RecaleAllSkyAstrometrie:
+return
+
+RecaleAllSkyAstrometrie:
+
+	CLEARIMGWINDOWS
+	print "   -Pose d astrometrie sur le ciel pendant " exposureAllSky " secondes"
+	StartExposure_EX CameraAllSky (exposureAllSky*1000)
+	WaitForEndExposure_EX CameraAllSky
+	GetLastImageExposure_EX CameraAllSky ImgAstrometrie		
+	SaveFIT ImgAstrometrie WorkDir$+AstrometrieName$
+
+	
+	print "   -debut astrometrie ALLSKY"
+	FIND_ALLSKY_POSITION ImgAstrometrie MaxStarImg MaxStarCat Field Cat$ Valid
+	resultat_allsky=valid
+	IF (resultat_allsky=1) THEN
+		PRINT "     -reconnaissance ALLSKY reussie, recalage telescope"
+	ELSE
+		PRINT "     -echec reconnaissance ALLSKY"
+		CLEARIMGWINDOWS
+		resultat_astrometrie_absolue=0
+		return
+	ENDIF
+
+	print "   -debut astrometrie precise"
+	GETSIZEPIXX  ImgAstrometrie  PIXX
+	GETSIZEPIXY  ImgAstrometrie  PIXY
+	GETBINX  ImgAstrometrie  BinX
+	GETBINY  ImgAstrometrie  BinY
+	TAILLEX=PIXX*BinX
+	TAILLEY=PIXY*BinY
+	GETFOCUS  ImgAstrometrie  FOCALE
+	getalpha ImgAstrometrie alpha
+	getDelta ImgAstrometrie delta
+	GETREPDIRHEADER  ImgAstrometrie  Dir
+	EtalonAstrometrieAuto ImgAstrometrie Cat$ FOCALE TailleX TailleY alpha delta MaxStarCat MaxStarImg Dir PolyDegAstroPrecis Chem$ resultat_astrometrie_absolue
+
+	// si la reconnaissance a reussit, on repointe,  sinon rien a faire
+	IF (resultat_astrometrie_absolue=1) THEN
+		print "      -reussite astrometrie precise, on recalibre"
+		GetImg_XY_TO_RADDEC ImgAstrometrie Xpos Ypos Alphafente Deltafente errorNo
+		// calcul et affiche l erreur
+		errAlpha=Alphafente-AlphaObjet
+		ABS errAlpha errAlpha
+		RAD_TO_DEC  errAlpha errAlphaCoord$
+		errDelta=Deltafente-DeltaObjet
+		ABS errDelta errDelta
+		RAD_TO_DEC  errDelta errDeltaCoord$
+		print "         erreur RA=" errAlphaCoord$ " DEC=" errDeltaCoord$
+		print "      -recalibre telescope"
+		CALIBRATE_TELESCOPE Alphafente Deltafente
+		delay 500
+		waitforenddelay
+		print "     -repointe cible"
+		MoveTelescope AlphaObjet DeltaObjet
+		WaitForEndMoveTelescope
+		print "   attente rattrage entrainement horaire"
+		delay DelayRepriseRA
+		waitforenddelay
+	ENDIF
+	
+return
+
+
+

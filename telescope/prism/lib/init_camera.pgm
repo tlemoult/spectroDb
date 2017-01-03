@@ -1,0 +1,134 @@
+
+ConfigCamera:
+
+	if CameraChercheurPresente=1 then
+		Print "Configuration camera Chercheur"
+		SETBINNINGX_EX CameraChercheur binCameraChercheur
+		SETBINNINGY_EX CameraChercheur binCameraChercheur
+		SetWindowFullFrame_EX CameraChercheur
+		SetFlagShutter_EX CameraChercheur 0
+		StartExposure_EX CameraChercheur 0
+		WaitForEndExposure_EX CameraChercheur
+		GetLastImageExposure_EX CameraChercheur img1
+		GetSizePixX img1 TaillePixXCameraChercheur
+		GetSizePixY img1 TaillePixYCameraChercheur
+		GetFocus img1 FocaleCameraChercheur
+		WIDTH img1 WidthImgCameraChercheur
+		HEIGHT Img1 HeightImgCameraChercheur
+		Close Img1
+		CLEARIMGWINDOWS
+	endif
+	
+	Print "Configuration Camera Champ"
+	SETBINNINGX_EX CameraChamp binCameraChamp
+	SETBINNINGY_EX CameraChamp binCameraChamp
+	SetWindowFullFrame_EX CameraChamp
+	SetFlagShutter_EX CameraChamp 0
+	
+	StartExposure_EX CameraChamp 0
+	WaitForEndExposure_EX CameraChamp
+	GetLastImageExposure_EX CameraChamp img2
+	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma
+	Print "Offset Camera Champ " OffsetValueCameraChamp " ADU"
+	GetSizePixX img2 TaillePixXCameraChamp
+	GetSizePixY img2 TaillePixYCameraChamp
+	GetFocus img2 FocaleCameraChamp
+	WIDTH img2 WidthImgCameraChamp
+	HEIGHT Img2 HeightImgCameraChamp
+	Close Img2
+	CLEARIMGWINDOWS
+
+	Print "Configuration Camera Spectre"
+	SETBINNINGX_EX CameraSpectre binCameraSpectre
+	SETBINNINGY_EX CameraSpectre binCameraSpectre
+	SetMirror_EX CameraSpectre MiroirXCameraSpectre MiroirYCameraSpectre
+	SetWindowFullFrame_EX CameraSpectre
+	SetFlagShutter_EX CameraSpectre 0
+	
+	StartExposure_EX CameraSpectre 0
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img3
+	GETBACKGROUND  Img3  OffsetValueCameraSpectre  Sigma
+	Print "Offset Camera Spectre " OffsetValueCameraSpectre " ADU"
+	Close img3
+	CLEARIMGWINDOWS
+	
+	if AngleCCDChercheurWEST<180 then
+		AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
+	else
+		AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
+	EndIf
+	
+	if AngleCCDChampWEST<180 then
+		AngleCCDChampEAST=AngleCCDChampWEST+180
+	else
+		AngleCCDChampEAST=AngleCCDChampWEST-180
+	EndIf
+	
+	
+return
+
+
+set_cooling_camera_on:
+	print "Mise en route des refroidissements de camera"
+	SETCCDTEMPERATURE_EX CameraChamp  1 TempCameraChamp
+	SETCCDTEMPERATURE_EX CameraSpectre  1 TempCameraSpectre
+	return
+
+wait_cooling_camera_ready:
+	print "On attend que la temperature de consigne soit atteinte"
+	
+boucle_cooling_ready:
+	// fait une image pour recuperer la temperature du capteur
+	StartExposure_EX CameraSpectre 0
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img1
+	GetTCCD  Img1  ActualTempSpectre
+	Close img1
+	CLEARIMGWINDOWS
+	
+	difTemp=ActualTempSpectre-TempCameraSpectre
+	abs difTemp difTemp
+	if difTemp>4.0 then
+		print "    Consigne temp=" TempCameraSpectre " actualTemp=" ActualTempSpectre " delta=" difTemp
+		delay 10000
+		WAITFORENDDELAY
+		goto boucle_cooling_ready:
+	endif
+	print "Temperature de consigne atteinte"
+	
+return
+
+set_cooling_camera_off:
+	print "Arret du refroidissement des cameras"
+	TempCameraHot=45
+	SETCCDTEMPERATURE_EX CameraChamp  1 TempCameraHot
+	SETCCDTEMPERATURE_EX CameraSpectre  1 TempCameraHot
+return
+
+//#########################
+//#  Orientation Camera   #
+//#########################
+Oriente_Camera:
+	Print "Orientation des cameras suivant position du telescope"
+	GOSUB CalcPierSide:
+
+	SetMirror_EX CameraChamp MiroirXCameraChamp MiroirYCameraChamp
+	SetCCDRepDirCamHeader CameraChamp DirRepChamp
+
+	SetMirror_EX CameraChamp MiroirXCameraChercheur MiroirYCameraChercheur
+	SetCCDRepDirCamHeader CameraChercheur DirRepChercheur
+	
+	if ActualSide$="WEST" then
+		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurWEST
+		SetCCDOriCamHeader CameraChamp  AngleCCDChampWEST
+	else
+		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurEAST
+		SetCCDOriCamHeader CameraChamp  AngleCCDChampEAST
+	EndIf
+
+return
+
+
+
+

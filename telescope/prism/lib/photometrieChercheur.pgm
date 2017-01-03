@@ -1,0 +1,17 @@
+#include "generalSubroutine.pgm"
+
+PosePhotometrieChercheur:
+	if CameraChercheurPresente=1 then
+		Print "Pose Photometrie au Chercheur"
+		StartExposure_EX CameraChercheur (exposurePhotometrieChercheur*1000)
+		WaitForEndExposure_EX CameraChercheur
+		GetLastImageExposure_EX CameraChercheur ImgPhotometrie
+		SaveFIT ImgPhotometrie WorkDir$+NomObjet$+"_PhotoChercheur"
+		close ImgPhotometrie
+		CLEARIMGWINDOWS
+	endif
+
+return
+
+
+

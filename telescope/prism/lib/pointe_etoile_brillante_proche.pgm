@@ -1,0 +1,39 @@
+#include "generalSettings.pgm"
+
+Pointe_etoile_brillante_proche:
+
+	//#je recupere les coor ou je veux aller !
+	GET_TELESCOPE_POSITION CIBLEAD2000 CIBLEDEC2000 Haut Azi AHor
+   // Pointe un étoile d'une certaine magnitude le plus proche possible
+   FIND_GSCACT_STAR CIBLEAD2000 CIBLEDEC2000 MagMin MagMax Radius NbEtoile Distance ListeAD ListeDEC ListMagn
+   Print "NbEtoiles de dégagement =" NbEtoile 
+   For i=1 NbEtoile
+      RAD_TO_RA  ListeAD[i] alpha$    
+      RAD_TO_DEC ListeDEC[i] delta$    
+      str i i$
+      STR Distance[i] distance$
+      Print i$ "   Distance(°)=" distance$ "  RA=" alpha$ " DEC=" delta$  " Magnitude=" ListMagn[i]
+   next i
+
+   // Prendre celle qui ne demande pas de retournement et la pointer :
+   i=0
+   If NbEtoile>0 then
+      Test_Degagement:
+      i=i+1
+	  STR i i$
+      PIERSIDEDEST_TEL ListeAD[i] ListeDEC[i] SideObject$
+      If SideObject$=ActualSide$ then
+		 Chaine$="Etoile n°"+i$+" ne demande pas de retournement ! Retenue !"
+	     PRINT Chaine$ 
+	  Else
+	     Chaine$="Etoile n°"+i$+" demande un retournement ! Non retenue !"
+	     PRINT Chaine$
+         Goto Test_Degagement:
+      EndIf
+   Else
+      PRINT STR_23$
+   EndIf
+   AlphaDest=ListeAD[i]
+   DeltaDest=ListeDEC[i]
+   GOSUB Pointage:
+return

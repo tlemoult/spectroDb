@@ -1,0 +1,87 @@
+Affiche_planning:
+	DureeJour=24*60*60
+	if SPECTROGRAPHE$="ESHEL" then
+		DureeCalib=60*7.0
+	else
+		DureeCalib=30
+	endif
+	DureePointage=60*3
+	DureeDownload=3
+Print "***********************************************"
+Print "Planning de la seance d observation"
+
+now Date_start
+pdate=Date_start
+
+DATETOSTR  pdate pdate$
+Print "Commence a : " pdate$
+
+for  ip=1 NbCibles
+	STR ip ip$
+	print
+	Print "cible no " ip$ 
+	
+	// calcul debut de pose
+	RA_TO_RAD alpha[ip]$ alphaObjet
+	DEC_TO_RAD Delta[ip]$ deltaObjet
+	NomObjet$=NomObjet[ip]$
+	AltName$=AltName[ip]$
+	Comment$=Comment[ip]$
+	STR nbExposureObjet[ip] nbex$
+	STR exposureTimeObjet[ip] sec$
+	DATETOSTR  pdate pdate$
+
+	Print pdate$ " : Pointe cible " NomObjet$ "  " AltName$ " " Comment$		
+
+	date=pdate
+	gosub test_visibilitee:
+	if OK_visible=0 THEN
+		goto PlanningCibleSuivante:
+	ENDIF
+
+	if CalibrationAsk[ip]=2 THEN
+		print "   -calibration initiale " pdate$
+		pdate=pdate+DureeCalib/DureeJour
+		DATETOSTR  pdate pdate$
+	ELSE
+		print "   -fin de pose a " pdate$
+	ENDIF
+	
+	// duree pointage et affinage pointage
+	pdate=pdate+DureePointage/DureeJour
+	
+	DATETOSTR  pdate pdate$
+	print "   -debut pose a  " pdate$ " pauses " nbex$ "x" sec$ " secondes"
+	// la pose est finie
+	if nbExposureObjet[ip]<>0 THEN
+		pdate=pdate+nbExposureObjet[ip]*(exposureTimeObjet[ip]+DureeDownload)/DureeJour
+	else
+		pdate=pdate+1*(exposureTimeObjet[ip]+DureeDownload)/DureeJour
+	endif
+	
+	DATETOSTR  pdate pdate$
+	GetDistanceToMeridien alphaObjet pdate Longitude Ha
+	STR Ha Ha$
+	GETHEIGHT alphaObjet deltaObjet pdate Longitude latitude hauteur
+	RAD_TO_DEC   hauteur hauteur$	
+	print "   -fin de pose a "  pdate$
+	print "      -angle horaire= " Ha$ " heures"
+	print "      -hauteur      = " hauteur$
+
+	if CalibrationAsk[ip]<>0 THEN
+		print "   -calibration finale a " pdate$
+		pdate=pdate+DureeCalib/DureeJour
+		DATETOSTR  pdate pdate$
+	ELSE
+		print "   -fin de pose a " pdate$
+	ENDIF
+	print
+
+PlanningCibleSuivante:
+	
+next ip
+
+print
+print "-------------------------fin planning---------------------------------"
+print
+return

@@ -1,0 +1,47 @@
+find_best_guide_star:
+	print "find_best_guide_star:"
+	HEIGHT img h 
+	Width  img l
+	Resol=3
+	maxDynamique=40000
+	w=10
+
+	DETOURAGEEXT  img  w  w  (l-w)  (h-w)  0
+	GETSTARLIST  Img  Resol  NbStars  ListX  ListY  ListFlux
+	print "   Nbstar=" NbStars
+	
+	iiii=0
+boucle_cherche_good_star:
+//	GETPIXELVALUE  Img  ListX[iiii]  ListY[iiii]  Max
+	X1=ListX[iiii]-w
+	INT X1 X1
+	Y1=ListY[iiii]-w
+	INT Y1 Y1
+	X2=ListX[iiii]+w
+	INT X2 X2
+	Y2=ListY[iiii]+w
+	INT Y2 Y2
+	STATWINDOW  Img  X1 Y1 X2 Y2  Moyenne  MoyenneQuadratique  Ecarttype  Max  Min  Flux  Mediane
+	print "etoile i=" iiii " Max=" Max
+	if Max<maxDynamique then
+		print "etoile i=" iiii
+		XCENTRO=ListX[iiii]
+		YCENTRO=ListY[iiii]
+		CENTROADU=Max
+		Goto OK_good_star_find:
+	endif
+next_star_cherche_best:
+	iiii=iiii+1
+	if (iiii=NbStars) then
+		print "**********pas d etoile de guidage trouve"
+		goto OK_good_star_find:
+	endif
+
+	goto boucle_cherche_good_star:
+
+OK_good_star_find:
+	Print "   Chosen star: X="  XCENTRO  " Y=" YCENTRO  "  max value ADU=" Max  "i=" iiii
+//	GETEXPTIME  Img  exposureImg
+//	Print "   exposure=" exposureImg
+
+return

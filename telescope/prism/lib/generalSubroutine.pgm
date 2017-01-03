@@ -1,0 +1,93 @@
+
+#ifndef __general__subroutine__
+#define __general__subroutine__
+
+//############################
+//# Pointage    au coord    AlphaDest et  DeltaDest
+//############################
+Pointage:
+  allowmovedome=1
+  MoveTelescope AlphaDest DeltaDest allowmovedome
+  RAD_TO_RA AlphaDest AlphaDest$
+  RAD_TO_DEC DeltaDest DeltaDest$
+  Chaine$="pointe le telescope sur "+AlphaDest$+"  "+DeltaDest$
+  PRINT Chaine$
+  WaitForEndMoveTelescope
+  PRINT "   Pointage termine"
+RETURN
+
+
+CalcPierSide:
+// De quel côté est le télescope ?
+PIERSIDE_TEL ActualSide$
+Chaine$=STR_01$+ActualSide$
+PRINT Chaine$
+return
+
+setWorkDirGeneral:
+	NOW Cyear Cmonth Cday Chour CMinute CSecond CMillisec
+	STR Cyear Cyear$
+	STR Cmonth Cmonth$
+	STR Cday Cday$
+	STR Chour Chour$
+	STR CMinute CMinute$
+	STR CSecond CSecond$
+	DateSession$=Cyear$+"-"+Cmonth$+"-"+Cday$+"_"+Chour$+"h"+CMinute$+"m"+CSecond$
+	GeneralWorkDir$=Directory$+"\"+DateSession$+"_"+SPECTROGRAPHE$+"_RACINE\"
+	Print "Repertoire de travail general: "+GeneralWorkDir$
+	CreateDir GeneralWorkDir$
+RETURN
+
+
+OuvreFichierLog:
+	Open_FileTxt_For_Rewrite fileLog GeneralWorkDir$+"logAutoObservation-"+DateSession$+".txt"
+	Open_FileTxt_For_Rewrite fileRealise GeneralWorkDir$+"realise-"+DateSession$+".LST"
+	
+	WriteFileTxt fileLog "Fichier general de log"
+	WriteFileTxt fileLog "----------------------"
+	RETURN
+
+FermeFichierLog:
+	CloseFileTxt fileLog
+	RETURN
+
+LogObservationSuccess:
+	now date
+	DATETOSTR  Date  Date$
+	STR nbExposureObjet nbExposureObjet$
+	STR exposureTimeObjet exposureTimeObjet$
+	STR hauteur hauteur$
+	LogMessage$=Date$+": reussite "+NomObjet$+" "+AltName$+" "+Comment$+" Mag="+MagnitudeObjet$+"  Exposition="+nbExposureObjet$+"x"+exposureTimeObjet$+"sec  Hauteur="+hauteur$+" deg Ha="+Ha$
+	writeFileTxt fileLog LogMessage$
+	Ligne$=LigneLST[iobj]$
+	WriteFileTxt fileRealise Ligne$
+	Return
+
+LogObservationEchec:
+	now date
+	DATETOSTR  Date  Date$
+	STR hauteur hauteur$
+	LogMessage$=Date$+": Echec "+raisonEchec$+NomObjet$+" "+AltName$+" "+Comment$+" Mag="+MagnitudeObjet$+" Hauteur="+hauteur$+" deg  Ha="+Ha$
+	writeFileTxt fileLog LogMessage$
+	Return
+
+GeneNextLSTTarget:
+	print "prepare les listes au format LST du reste a faire., et realise."
+	Open_FileTxt_For_Rewrite fileReste GeneralWorkDir$+"resteAfaire-"+DateSession$+".LST"
+
+	success=0
+	For iobj=1 nbCibles
+		if (Observe[iobj]$="FALSE") then
+			Ligne$=LigneLST[iobj]$
+			WriteFileTxt fileReste Ligne$
+		ELSE
+			success=success+1
+		endif
+	next iobj
+	Print "Total des succes " success " sur un total de " nbCibles
+	CloseFileTxt fileReste
+	CloseFileTxt fileRealise
+	return
+	
+#endif
+

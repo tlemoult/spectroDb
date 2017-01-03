@@ -1,0 +1,37 @@
+test_etoile_seule_fenetre:
+	// X,Y  centre fenetre
+	// w:  demilargeur
+	// img:  image
+
+	
+//	open img "F:\work\champ4.fits" 
+//	X=548-1
+//	Y=475-1
+//	w=30
+
+	// sortie: dist et etoile seule
+
+	WINDOW  img  X-w  Y-w  X+w  Y+w	
+	Resol=3
+	GETSTARLIST img Resol NbStars ListX ListY ListFlux
+	
+	print "   Nbstar=" NbStars
+	if Nbstars=0 then
+		// c est pas bon pas d etoile du tout..  (trop grosse ?)
+		etoile_seule=0
+		return
+	endif
+
+	print "Bright star of windows center X=" X " Y=" Y "   BrightX=" ListX[0]-w+X " BrightY=" ListY[0]-w+Y
+
+	SQR (w-ListX[0])*(w-ListX[0])+(w-ListY[0])*(w-ListY[0]) dist
+	print "dist=" dist
+ 	if (dist<8) then
+		etoile_seule=1
+		fluxetoileSeule=ListFlux[0]
+	else
+		etoile_seule=0
+	endif
+	
+	print "   resultat=" etoile_seule
+return

@@ -1,0 +1,92 @@
+liste_etoile_cat_chercheur:
+	focale=focaleCameraChercheur
+	SizeX=WidthImgCameraChercheur
+	SizeY=HeightImgCameraChercheur
+	TaillePixX=TaillePixXCameraChercheur 
+	TaillePixY=TaillePixYCameraChercheur
+
+	MagMin=0
+	MagMax=9
+
+	// pour un test uniquement
+	getobjectcoord "BSC7796" AlphaObjet DeltaObjet
+	RAD_TO_RA  AlphaObjet alpha$    
+	RAD_TO_DEC DeltaObjet delta$    
+	Print "Cible   RA=" alpha$ " DEC=" delta$
+	GOSUB liste_etoile_cat:
+return
+
+liste_etoile_cat_champ:
+	focale=focaleCameraChamp
+	SizeX=WidthImgCameraChamp
+	SizeY=HeightImgCameraChamp
+	TaillePixX=TaillePixXCameraChamp
+	TaillePixY=TaillePixYCameraChamp
+	
+	
+	
+
+	// pour un test uniquement
+	getobjectcoord "hd170061" AlphaObjet DeltaObjet
+//	getobjectcoord "bsc6956" AlphaObjet DeltaObjet
+
+	MagObjet=6
+	STR MagObjet MagObjet$
+	
+	RAD_TO_RA  AlphaObjet alpha$    
+	RAD_TO_DEC DeltaObjet delta$
+	
+	Print "Cible   RA=" alpha$ " DEC=" delta$ " magnitude=" MagObjet$
+	
+	MagMin=0
+	MagMax=MagObjet+2
+	GOSUB liste_etoile_cat:
+return
+
+  
+liste_etoile_cat:
+
+	rem Nom du catalogue a utiliser
+	// Catalog that can be used
+	Cat[1]$="GSC"
+	Cat[2]$="USNO SA"
+	Cat[3]$="USNO A1"
+	Cat[4]$="USNO A2"
+	Cat[5]$="Hipparcos"
+	Cat[6]$="SAO"
+	Cat[7]$="BSC"
+	Cat[8]$="Tycho1"
+	Cat[9]$="GSC-ACT"
+	Cat[10]$="Tycho2"
+	Cat[10]$="UCAC 2/3/4"
+
+	Catalog$=Cat[10]$
+
+	Coul$="R" 
+	FactC=1
+	Now DateUTC
+
+	ChampX=SizeX*TaillePixX/focale/1000
+	RAD_TO_DEC ChampX ChampX$
+	ChampY=SizeY*TaillePixY/focale/1000
+	RAD_TO_DEC ChampY ChampY$
+	Print "Champ " ChampX$ " x " ChampY$
+	
+	
+	// Distance d'exclusion
+	DistAS=0
+
+	GetStarListCat Catalog$ focale TaillePixX TaillePixY AlphaObjet DeltaObjet Coul$ sDirCatalogue$ FactC MagMin MagMax DateUTC SizeX SizeY DistAS NbEtoile ListeAD ListeDEC ListMagn
+
+	Print "NbEtoile=" NbEtoile 
+	for icat=1 NbEtoile
+		RAD_TO_RA  ListeAD[icat] alpha$    
+		RAD_TO_DEC ListeDEC[icat] delta$  
+		DISTSKY ListeAD[icat] AlphaObjet ListeDEC[icat]  DeltaObjet dist
+		RAD_TO_DEC dist dist$
+		str icat icat$
+		Print icat$ "  RA=" alpha$ " DEC=" delta$  " Magnitude=" ListMagn[icat] " distance=" dist$
+	next i
+
+return
+

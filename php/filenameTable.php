@@ -1,0 +1,80 @@
+
+<head>
+<link rel="stylesheet" type="text/css" href="../css/style2.css">
+</head>
+
+<?php
+
+include 'lib/connectDb.php';
+
+
+$link=connectDb();
+
+
+error_reporting(E_ALL);
+if(empty($_GET['obsId']))
+{
+	echo "<H1>All files in archive..</H1>";
+    echo "Do not display, this table is to long..<br>";
+    echo "use  filenameTable?obsId=...<br>";
+    exit;
+}
+else
+{
+	echo "<H2>files associated to observation Id=".$_GET['obsId']."</H2>";
+
+}
+
+// Attempt select query execution
+$sql = "select * from fileName where obsId=".$_GET['obsId']." ORDER by date";
+
+echo $sql;
+
+if($result = mysqli_query($link, $sql)){
+	
+	$rowcount=mysqli_num_rows($result);
+	
+	echo "<br>".$rowcount." files entry.<br>";
+		
+    if($rowcount > 0){
+		
+		
+        echo "\n<table border=2>";
+            echo "<tr>";
+  				echo "<th>fileId</th>";
+                echo "<th>phase</th>";
+                echo "<th>filetype</th>";
+                echo "<th>serieId</th>";         
+                echo "<th>date</th>";
+                echo "<th>tempCCD(°C)</th>";
+                echo "<th>binning</th>";
+                echo "<th>detector</th>";            
+            echo "</tr>\n";
+        while($row = mysqli_fetch_array($result)){
+            echo "<tr>";
+                echo "<td>" . $row['fileId'] . "</td>";				
+                echo "<td>" . $row['phase'] . "</td>";
+                echo "<td>" . $row['filetype'] . "</td>";
+                echo "<td>" . $row['serieId'] . "</td>";
+                echo "<td>" . $row['date'] . "</td>";
+                echo "<td>" . $row['tempCCD'] . "</td>";
+                echo "<td>" . $row['binning'] . "</td>";
+                echo "<td>" . $row['detector'] . "</td>";
+            echo "</tr>\n";
+        }
+        echo "</table>";
+        echo '</form>';
+        // Close result set
+        mysqli_free_result($result);
+    } else{
+        echo "No records matching your query were found.";
+    }
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+}
+
+
+// Close connection
+mysqli_close($link);
+
+?>

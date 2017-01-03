@@ -1,0 +1,18 @@
+attente_dome:
+	if coupole<>1 then
+		GOTO S13285:
+	ENDIF
+
+	Print "attente 1 minute max que le dome arrive"
+	for d=1 60
+		GET_DOME_POS  Azimuth  Status Statusb
+		IF status=1 then
+			
+			GOTO S13285:
+		ENDIF
+		delay 1000
+		waitforenddelay
+	next d
+S13285:
+	Print "    Fin d attente:  duree: " d " sec"
+return

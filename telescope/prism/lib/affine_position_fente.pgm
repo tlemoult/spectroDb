@@ -1,0 +1,53 @@
+// affine la position de la fente d'un LISA ou LHIRES
+//  variable modifie:  fentePosX  fentePosY
+// 
+
+
+affine_position_fente:
+
+	exposure_milli_affine_fente=1000*30
+	demi_larg_bande=1
+	demi_hauteur_bande=10
+	
+	test=0
+	
+	IF test=1 then
+		OriFenteHorizon=1
+		OriFentevertical=2
+		OrientationFente=OriFenteHorizon
+		fentePosX=704
+		fentePosY=529
+		OPEN img "H:\work\champ-test2.fits"
+	else
+		//Print "Allume la lampe Neon"
+		//EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOn$
+		StartExposure_EX CameraChamp exposure_milli_affine_fente
+		WaitForEndExposure_EX CameraChamp
+		GetLastImageExposure_EX CameraChamp img
+	endif
+	
+	print "affine_position_fente:"
+	print "   initialement  X=" fentePosX " Y=" fentePosY
+//	median img 1 3 
+	
+	
+	if OrientationFente=OriFenteHorizon then
+		print "   fente horizontale"
+		// fenetre une bande perpendiculaire a la position approximaive de la fente
+
+		X1=fentePosX-demi_larg_bande
+		Y1=fentePosY-demi_hauteur_bande
+		X2=fentePosX+demi_larg_bande
+		Y2=fentePosY+demi_hauteur_bande
+		GETMINMAX  X1  X2 Y1 Y2 img  Xmin  Ymin  Valmin  Xmax  Ymax  Valmax  
+		GuidePosYBin=Ymin
+		WINDOW  Img  X1 Y1 X2 Y2
+		autovisu Img
+		
+	endif
+
+	//EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
+	print "   ajuste  X= " fentePosX "  Y= " fentePosY
+	close img
+	CLEARIMGWINDOWS
+return

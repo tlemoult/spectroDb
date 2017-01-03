@@ -1,0 +1,7 @@
+{"type":"FeatureCollection",
+	"features":[
+	{"type":"Feature","id":88,	"properties":{"name":"","desig":"τ","con":"Phe","mag":-1.869,"bv":0.911},"geometry":{"type":"Point","coordinates":[0.2691,-48.8099]}},
+	{"type":"Feature","id":107,"properties":{"name":"","desig":"HD224865","con":"","mag":-2.6243,"bv":1.615},"geometry":{"type":"Point","coordinates":[0.3338,-50.3374]}},
+	{"type":"Feature","id":122,"properties":{"name":"","desig":"θ","con":"Oct","mag":-2.9354,"bv":1.254},"geometry":{"type":"Point","coordinates":[0.3988,-77.0657]}}
+	]
+}

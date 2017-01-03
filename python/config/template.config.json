@@ -1,0 +1,16 @@
+{
+
+	"_comments":"setup your own settings, and save as config.json",
+	
+	"db": {
+		"host":"localhost",
+		"userName":"root",
+		"password":"xxxx",
+		"dataBase":"spectro"
+	},
+	"path": {
+		"archive":"/media/tlemoult/extdata/base",
+		"signalPrism":"/signals/fromPRISM",
+		"eShelPipe":"/home/tlemoult/audela/pipeEshel"
+	}
+}

@@ -38,9 +38,8 @@ def parseXmlISIS(path,filename,ret):
 	ret['dateObs']="unknow"
 	for spectroType in xmlDict.keys():   # find dateObs from first RAW file
 		fileNameImg=xmlDict[spectroType]['GenericName']+'1.fits'
+		#print "fileNameImg",fileNameImg 
 		s=filename.split('_')
-		rootfileName='_'+s[1]+'_'+s[2]+'_'+s[3]+'_'
-		fileNameSpec = [f for f in listdir(path) if isfile(join(path, f)) and f.startswith(rootfileName) and f.endswith('.fits')][0]
 		try:
 			hdu=pyfits.open(path+'/'+fileNameImg)
 			header=hdu[0].header
@@ -48,11 +47,16 @@ def parseXmlISIS(path,filename,ret):
 		except:
 			print "can't open Image file: "+fileNameImg
 			try:
+				rootfileName='_'+s[1]+'_'+s[2]+'_'+s[3]+'_'
+				fileNameSpec = [f for f in listdir(path) if isfile(join(path, f)) and f.startswith(rootfileName) and f.endswith('.fits')][0]
 				hdu=pyfits.open(path+'/'+fileNameSpec)
 				header=hdu[0].header
 				ret['dateObs']=header['DATE-OBS'][:19]
 			except:
-				print "can't open Image file: "+fileNameSpec+ " so, can't find obstime for "+filename
+				print "can't open Image file: so, can't find obstime for "+filename
+
+		if spectroType!="eShel":
+			ret['Response']=xmlDict[spectroType]['ResponseFile']
 		return ret
 
 def parseLogFileISIS(path,filename,ret):
@@ -86,6 +90,16 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
 			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
+			#rint metasReturn[filename]
+			fileResponse=metasReturn[filename]['Response']+'.fits'
+			r={'phase':'PROCESS'}
+			r['sourcePath']=srcPath
+			r['filename']=fileResponse
+			r['md5sum']=calcMd5sum(srcPath,fileResponse)
+			r['dateObs']=metasReturn[filename]['dateObs']
+			r['fileType']='REPONSE'
+			key=filename+'->'+fileResponse
+			metasReturn[key]=r
 
 		if filename.endswith('.log') and filename.startswith('_'):  # probablement un fichier de log isis
 			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)

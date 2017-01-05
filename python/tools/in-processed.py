@@ -91,15 +91,16 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
 			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
 			#rint metasReturn[filename]
-			fileResponse=metasReturn[filename]['Response']+'.fits'
-			r={'phase':'PROCESS'}
-			r['sourcePath']=srcPath
-			r['filename']=fileResponse
-			r['md5sum']=calcMd5sum(srcPath,fileResponse)
-			r['dateObs']=metasReturn[filename]['dateObs']
-			r['fileType']='REPONSE'
-			key=filename+'->'+fileResponse
-			metasReturn[key]=r
+			if not 'eShel' in metasReturn[filename].keys():   # ce n est pas un xml type eShel
+				fileResponse=metasReturn[filename]['Response']+'.fits'
+				r={'phase':'PROCESS'}
+				r['sourcePath']=srcPath
+				r['filename']=fileResponse
+				r['md5sum']=calcMd5sum(srcPath,fileResponse)
+				r['dateObs']=metasReturn[filename]['dateObs']
+				r['fileType']='REPONSE'
+				key=filename+'->'+fileResponse
+				metasReturn[key]=r
 
 		if filename.endswith('.log') and filename.startswith('_'):  # probablement un fichier de log isis
 			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)
@@ -136,9 +137,10 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
 
-				if ret['filename'].startswith('@pro'):  # partial spectrum from ISIS serie
-					ret['order']=ret['filename'][4:6]
-					ret['BSS_ORD']='@pro'
+				if ret['filename'].startswith('@pro'): # partial spectrum from ISIS serie
+					if ret['filename'][6]=='-' and ret['filename'][4:6].isdigit():   # is it a echelle spectrum ?
+						ret['order']=ret['filename'][4:6]
+						ret['BSS_ORD']='@pro'
 				elif 'BSS_ORD' in header.keys(): # echelle spectrum
 					ret['BSS_ORD']=header['BSS_ORD']
 					ret['order']=ret['filename'].split(ret['BSS_ORD'])[1].split('.')[0]

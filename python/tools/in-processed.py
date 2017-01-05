@@ -117,10 +117,14 @@ def getMetaDataFiles(path,filenames):
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
-				if 'BSS_ORD' in header.keys(): # echelle spectrum
+
+				if ret['filename'].startswith('@pro'):  # partial spectrum from ISIS serie
+					ret['order']=ret['filename'][4:6]
+					ret['BSS_ORD']='@pro'
+				elif 'BSS_ORD' in header.keys(): # echelle spectrum
 					ret['BSS_ORD']=header['BSS_ORD']
 					ret['order']=ret['filename'].split(ret['BSS_ORD'])[1].split('.')[0]
-				elif ret['filename'].split('.')[0].endswith('_full'):
+				elif ret['filename'].split('.')[0].endswith('_full'):  # merged spectrum
 					ret['BSS_ORD']=ret['filename'].split('full.')[0]
 					ret['order']='Merged'
 				else:

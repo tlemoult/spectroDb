@@ -114,7 +114,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				ret['fileType']="MULTIPLAN"
 				metasReturn[filename]=ret
 				(newFiles,newBaseName)=expFits.explodeFits(srcPath,tmpPath,filename)
-				print newFiles
+				#print newFiles
 				metasReturn.update(getMetaDataFiles(tmpPath,newFiles,tmpPath))
 
 			if header['NAXIS']==1:   # SPECTRUM

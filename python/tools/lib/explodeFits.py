@@ -53,7 +53,7 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 			newBaseName='_'+headerOrg['OBJNAME'].replace(' ','').replace('*','s')+'_'+dateISIS+'_'+headerOrg['OBSERVER'].replace(' ','_')+'_'
 
 			if order!='FULL':
-				myHdu.header['BSS_ORD']=newBaseName
+				myHdu.header['BSS_ORD']=newBaseName 	
 			
 			# create new fits package
 			myHduList= pyfits.HDUList([myHdu])

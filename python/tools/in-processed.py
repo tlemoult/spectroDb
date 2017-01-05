@@ -8,6 +8,7 @@ import pyfits
 from astropy.time import Time
 
 import lib.dbSpectro as dbSpectro
+import lib.explodeFits as expFits
 import json
 
 import hashlib
@@ -75,22 +76,22 @@ def parseLogFileISIS(path,filename,ret):
 	return ret
 
 
-def getMetaDataFiles(path,filenames):
+def getMetaDataFiles(srcPath,filenames,tmpPath):
 	metasReturn={}
 	for filename in filenames:
 		ret={'phase':'PROCESS'}
-		ret['sourcePath']=path
+		ret['sourcePath']=srcPath
 		ret['filename']=filename
-		ret['md5sum']=calcMd5sum(path,filename)
+		ret['md5sum']=calcMd5sum(srcPath,filename)
 
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
-			metasReturn[filename]=parseXmlISIS(path,filename,ret)
+			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
 
 		if filename.endswith('.log') and filename.startswith('_'):  # probablement un fichier de log isis
-			metasReturn[filename]=parseLogFileISIS(path,filename,ret)
+			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)
 		
 		if (filename.endswith('.fits') or filename.endswith('.fit')):  # fichier fits
-			hdu=pyfits.open(path+'/'+filename)
+			hdu=pyfits.open(srcPath+'/'+filename)
 			header=hdu[0].header
 			ret['naxis1']=header['NAXIS1']
 			if 'DATE-OBS' in header.keys():
@@ -112,6 +113,9 @@ def getMetaDataFiles(path,filenames):
 			if len(hdu)>1:   # FITS multiplan
 				ret['fileType']="MULTIPLAN"
 				metasReturn[filename]=ret
+				(newFiles,newBaseName)=expFits.explodeFits(srcPath,tmpPath,filename)
+				print newFiles
+				metasReturn.update(getMetaDataFiles(tmpPath,newFiles,tmpPath))
 
 			if header['NAXIS']==1:   # SPECTRUM
 				ret['fileType']="1DSPECTRUM"
@@ -124,7 +128,7 @@ def getMetaDataFiles(path,filenames):
 				elif 'BSS_ORD' in header.keys(): # echelle spectrum
 					ret['BSS_ORD']=header['BSS_ORD']
 					ret['order']=ret['filename'].split(ret['BSS_ORD'])[1].split('.')[0]
-				elif ret['filename'].split('.')[0].endswith('_full'):  # merged spectrum
+				elif ret['filename'].split('.')[0].endswith('_full') or ret['filename'].split('.')[0].endswith('_FULL'):   # merged spectrum
 					ret['BSS_ORD']=ret['filename'].split('full.')[0]
 					ret['order']='Merged'
 				else:
@@ -240,6 +244,8 @@ def calibProcess(srcPath,tmpPath):
 		print 'Md5Sum=',meta['Md5'],""
 	return metas
 
+
+
 def archiveFiles(metas):
 	#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
 	# mais un lien vers le fichier doit exister
@@ -272,7 +278,7 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	else:
 		print "************************************************"
 		print "****** Enter Directory "+dirpath+"  **********"
-		metas=getMetaDataFiles(dirpath,filenames)
+		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 
 	print "******** Find directory ********"
 	metas=setDstPath(metas,db)

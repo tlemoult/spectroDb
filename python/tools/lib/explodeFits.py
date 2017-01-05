@@ -51,15 +51,18 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 
 			dateISIS=headerOrg['DATE-OBS'][:10].replace('-','')+'_'+(("%.3f")%headerOrg['MJD-OBS']).split('.')[1]
 			newBaseName='_'+headerOrg['OBJNAME'].replace(' ','').replace('*','s')+'_'+dateISIS+'_'+headerOrg['OBSERVER'].replace(' ','_')+'_'
-			myHdu.header['BSS_ORD']=newBaseName
+
+			if order!='FULL':
+				myHdu.header['BSS_ORD']=newBaseName
 			
 			# create new fits package
 			myHduList= pyfits.HDUList([myHdu])
 			filename=newBaseName+order+'.fits'
 			try:
+
 				myHduList.writeto(pathDst+'/'+filename)
-				if order!='FULL':
-					files.append(filename)
+
+				files.append(filename)
 
 			except:
 				print ".",

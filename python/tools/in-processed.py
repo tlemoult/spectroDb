@@ -81,6 +81,12 @@ def parseLogFileISIS(path,filename,ret):
 
 
 def getMetaDataFiles(srcPath,filenames,tmpPath):
+
+	if dirpath.endswith('/calib'):		
+		return calibProcess(dirpath,tmpPath)
+
+	# ce n'est pas un dossier de calib ISIS, on regarde
+	print "****** Enter Directory "+dirpath+"  **********"
 	metasReturn={}
 	for filename in filenames:
 		ret={'phase':'PROCESS'}
@@ -91,7 +97,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
 			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
 			#rint metasReturn[filename]
-			if not 'eShel' in metasReturn[filename].keys():   # ce n est pas un xml type eShel
+			if not 'eShel' in metasReturn[filename].keys():   # ce n est pas un xml type eShel, on regarde quelle est la reponse instrumentale
 				fileResponse=metasReturn[filename]['Response']+'.fits'
 				r={'phase':'PROCESS'}
 				r['sourcePath']=srcPath
@@ -199,11 +205,12 @@ def setDstPath(metas,db):
 			print "DateObs unknow"
 			continue
 
-		path=findPathFromObsDate(metas[f]['dateObs'],db)
+		r=findPathFromObsDate(metas[f]['dateObs'],db)
 
-		if path!="":
-			print path
-			metas[f]['destinationPath']=path
+		if 'path' in r.keys():
+			print r['path']+" obsId="+str(r['obsId'])
+			metas[f]['destinationPath']=r['path']
+			metas[f]['obsId']=r['obsId']
 		else:
 			print "Warning path not found"
 			noDirFound.append(f)
@@ -216,32 +223,36 @@ def setDstPath(metas,db):
 					if metas[m]['fileType']=='LOGFILEISIS':
 						dateObs=metas[f]['dateObs']
 						metas[m]['dateObs']=dateObs
-				path=findPathFromObsDate(dateObs,db)
-				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+path
+				r=findPathFromObsDate(dateObs,db)
+				
+				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+r['obsId']
 
-				metas[f]['destinationPath']=path
-				print path
+				metas[f]['destinationPath']=r['path']
+				metas[f]['obsId']=r['obsId']
 			else:
 				print "unknow path"
 
 	return metas
 
 def findPathFromObsDate(dateObs,db):
-	global globPathCache  # cache pour les path connus en fonction de dateObs
+	global globPathCache  # cache pour les path et ObsId connus en fonction de dateObs
 	if not dateObs in globPathCache.keys():  # on ne connais pas de repertoire pour cette date
-		path=dbSpectro.getDirectory_from_STRdate(db,dateObs)
-		if path!="":
-			globPathCache[dateObs]=path
+		r=dbSpectro.getDirectory_from_STRdate(db,dateObs)
+		if 'path' in r.keys():
+			globPathCache[dateObs]=r
 		else:
 			path=""
 	else:
-		path=globPathCache[dateObs]  # path deja connus pour cette date d'observation
-	return path
+		r=globPathCache[dateObs]  # path et obsID deja connus pour cette date d'observation
+	return r
 
 
 
 
 def calibProcess(srcPath,tmpPath):
+	print "************************************************"
+	print "*******C A L I B    P r o c e s s **************"
+
 	metas={}
 	print "srcpath", srcPath
 	parentSrc=srcPath.split('/calib')[0]
@@ -299,16 +310,7 @@ print "temporary dir", 	tmpPath
 
 for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
-	if dirpath.endswith('/calib'):
-		print "************************************************"
-		print "*******C A L I B    P r o c e s s **************"
-		metas=calibProcess(dirpath,tmpPath)
-	else:
-		print "************************************************"
-		print "****** Enter Directory "+dirpath+"  **********"
-		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
-
-	print "******** Find directory ********"
+	metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 	metas=setDstPath(metas,db)
 	#print json.dumps(metas,sort_keys=True, indent=4)
 	archiveFiles(metas)

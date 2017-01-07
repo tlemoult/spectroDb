@@ -136,20 +136,32 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
+				sf=ret['filename'].split('.')[0]  # short access on filename without extension
 
-				if ret['filename'].startswith('@pro'): # partial spectrum from ISIS serie
-					if ret['filename'][6]=='-' and ret['filename'][4:6].isdigit():   # is it a echelle spectrum ?
+				if sf.startswith('@pro'): # partial spectrum from ISIS serie  @pro
+					p=sf[4:]  # after  @pro
+					if p.isdigit():  # simple spectrum serie
+						ret['BSS_ORD']=''
+						ret['order']='1'
+					elif p[2]=='-' and p.split('-')[0].isdigit() and p.split('-')[1].isdigit():   # is it a echelle spectrum ?
 						ret['order']=ret['filename'][4:6]
 						ret['BSS_ORD']='@pro'
+					else:
+						continue  # ignore file with @pro but bad format
 				elif 'BSS_ORD' in header.keys(): # echelle spectrum
 					ret['BSS_ORD']=header['BSS_ORD']
-					ret['order']=ret['filename'].split(ret['BSS_ORD'])[1].split('.')[0]
-				elif ret['filename'].split('.')[0].endswith('_full') or ret['filename'].split('.')[0].endswith('_FULL'):   # merged spectrum
-					ret['BSS_ORD']=ret['filename'].split('full.')[0]
+					ret['order']=sf.split(ret['BSS_ORD'])[1]
+				elif sf.endswith('_full'):   # merged spectrum
+					ret['BSS_ORD']=sf.split('full')[0]
 					ret['order']='Merged'
-				else:
+				elif sf.endswith('_FULL'):   # merged spectrum
+					ret['BSS_ORD']=sf.split('FULL')[0]
+					ret['order']='Merged'
+				elif sf.startswith('_'):
 					ret['BSS_ORD']=''
 					ret['order']='1'
+				else:
+					continue
 				metasReturn[filename]=ret
 
 			if header['NAXIS']==2:

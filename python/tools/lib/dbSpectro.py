@@ -74,15 +74,15 @@ def getFileId_from_date(db,date):
 	return commit_query_sql(db,query)
 
 def getDirectory_from_STRdate(db,date):
-	query='SELECT destDir FROM fileName where phase="RAW" and date="%s"'%(date.replace('T',' ')[:19])
+	query='SELECT destDir,obsId FROM fileName where phase="RAW" and date="%s"'%(date.replace('T',' ')[:19])
 	result=commit_query_sql_table(db,query)
 	if result=='None':
-		return ''
+		return {}
 
 	try:
-		return result[0].split('/raw')[0]
+		return {'path':result[0].split('/raw')[0],'obsId':result[1]}
 	except:
-		return ''
+		return {}
 
 def get_observerId_from_alias(db,observer):
 	query='SELECT observerID from observer where alias="'+observer['alias']+'"'

@@ -4,31 +4,18 @@ import sys,os,shutil
 import urllib,glob
 import pyfits
 
-print "renome les fichiers profil facon ISIS"
+def renameSpectrumFile(observer,path,f):
 
-if len(sys.argv)<2:
-	print "nombre d'argument incorrect"
-	print "utiliser: python main-rename-bess-profile.py diretory"
-	exit(1)
-
-observer="TLE"
-basePath=sys.argv[1]
-print "basePath=",basePath
-
-fileList=glob.glob(basePath+'*.fit*')
-print fileList
-
-for f in fileList:
 	print "********************"
 	print "oldName",f
 
-	hdulist = pyfits.open(f)
+	hdulist = pyfits.open(path+'/'+f)
 	prihdr  = hdulist[0].header
 
 
 	if prihdr['NAXIS']!=1:
-		print "Pas de donne a une dimention"
-		continue
+		print "Ce n est pas un spectre"
+		return
 
 	t=time.strptime(prihdr['DATE-OBS'][:19],"%Y-%m-%dT%H:%M:%S")
 	t=prihdr['DATE-OBS'][11:19].replace(':','')
@@ -57,15 +44,36 @@ for f in fileList:
 	print "extensionFit=",extensionFit
 
 	newName=newbaseName+addOrder+'.'+extensionFit
-	print "newName",basePath+newName
+	print "newName",newName
 	
 
 	
-	hdulist.writeto(f+'tmp')  # ecris fichier tmps
-	hdulist.close(f)		   # ferme initial
-	os.remove(f)              # efface initial
-	os.rename(f+'tmp',basePath+newName) # renome 
+	hdulist.writeto(path+'/'+f+'tmp')  # ecris fichier tmps
+	hdulist.close(path+'/'+f)		   # ferme initial
+	os.remove(path+'/'+f)              # efface initial
+	os.rename(path+'/'+f+'tmp',path+'/'+newName) # renome 
 
+#########
+# main  #
+#########
+print "renome les fichiers profil facon ISIS"
+
+if len(sys.argv)<2:
+	print "nombre d'argument incorrect"
+	print "utiliser: python main-rename-bess-profile.py diretory"
+	exit(1)
+
+observer="TLE"
+basePath=sys.argv[1]
+print "basePath=",basePath
+
+fileList=glob.glob(basePath+'*.fit*')
+print fileList
+
+for f in fileList:
+	filename=os.path.basename(f)
+	path=os.path.dirname(f)
+	renameSpectrumFile(observer,path,filename)
 print "------------------------"
 print "Fin du robot"
 

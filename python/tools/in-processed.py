@@ -79,7 +79,7 @@ def parseLogFileISIS(path,filename,ret):
 	f.close()
 	return ret
 
-
+## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnée.
 def getMetaDataFiles(srcPath,filenames,tmpPath):
 
 	if dirpath.endswith('/calib'):		
@@ -115,6 +115,10 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			hdu=pyfits.open(srcPath+'/'+filename)
 			header=hdu[0].header
 			ret['naxis1']=header['NAXIS1']
+
+			if 'OBJNAME' in header.keys():
+				ret['objName']=header['OBJNAME']
+
 			if 'DATE-OBS' in header.keys():
 				if header['DATE-OBS']!="":
 					ret['dateObs']=header['DATE-OBS']
@@ -147,7 +151,6 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				if sf.startswith('@pro'): # partial spectrum from ISIS serie  @pro
 					p=sf[4:]  # after  @pro
 					if p.isdigit():  # simple spectrum serie
-						ret['BSS_ORD']=''
 						ret['order']='1'
 					elif p[2]=='-' and p.split('-')[0].isdigit() and p.split('-')[1].isdigit():   # is it a echelle spectrum ?
 						ret['order']=ret['filename'][4:6]
@@ -159,15 +162,16 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 					ret['order']=sf.split(ret['BSS_ORD'])[1]
 				elif sf.endswith('_full'):   # merged spectrum
 					ret['BSS_ORD']=sf.split('full')[0]
-					ret['order']='Merged'
+					ret['order']='FULL'
 				elif sf.endswith('_FULL'):   # merged spectrum
 					ret['BSS_ORD']=sf.split('FULL')[0]
-					ret['order']='Merged'
+					ret['order']='FULL'
 				elif sf.startswith('_'):
-					ret['BSS_ORD']=''
 					ret['order']='1'
 				else:
 					continue
+				# ici on a bien un spectre valide
+				ret=defineTargetNameSpectrumFile(ret)
 				metasReturn[filename]=ret
 
 			if header['NAXIS']==2:
@@ -284,12 +288,33 @@ def calibProcess(srcPath,tmpPath):
 	return metas
 
 
+def defineTargetNameSpectrumFile(meta):
+	observer="TLE"
+	filename=meta['filename']
+	 	
+	hours=int(meta['dateObs'][11:13])
+	minutes=int(meta['dateObs'][14:16])
+	seconds=int(meta['dateObs'][17:19])
+	fracDay=str(hours/24.0+minutes/24.0/60.0+seconds/24.0/60.0/60.0)[2:5]
+
+	datestr=meta['dateObs'][:10].replace('-','')
+
+	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+observer
+	extensionFit=filename.split('.')[-1]
+
+	if 'BSS_ORD' in meta.keys():
+		addOrder='_'+meta['order']
+		meta['destinationBSS_ORD']=newBaseName
+	else:
+		addOrder=''
+	meta['destinationFilename']=newBaseName+addOrder+'.'+extensionFit
+
+	return meta
 
 def archiveFiles(metas):
 	#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
 	# mais un lien vers le fichier doit exister
 	return
-
 
 
 #########
@@ -312,5 +337,6 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
 	metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 	metas=setDstPath(metas,db)
-	#print json.dumps(metas,sort_keys=True, indent=4)
+	print json.dumps(metas,sort_keys=True, indent=4)
+	#defineTargetNameSpectrumFile(metas)
 	archiveFiles(metas)

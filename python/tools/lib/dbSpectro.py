@@ -2,7 +2,7 @@
 import MySQLdb,json
 import datetime,time
 
-logLevel=0
+
 
 def init_connection():
 	global logLevel
@@ -13,8 +13,11 @@ def init_connection():
 	print 'Init db connection, host=%s dataBase=%s'%(config['db']['host'],config['db']['dataBase'])	
 	return db
 
-def logLevel(n):
+def setLogLevel(n):
+	global logLevel
+	print "loglevel=",n
 	logLevel=n
+	return 1
 
 def commit_query_sql(db,query):
 	global logLevel
@@ -66,6 +69,7 @@ def getDirectory_from_STRdate(db,date):
 		
 def commit_insert_sql(db,sql):
 	global logLevel
+	print "logLevel=",logLevel
 	if logLevel>2: print "insert sql=",sql,
 	cursor=db.cursor()
 	try:
@@ -164,14 +168,26 @@ def update_files_serieId(db,fileId,serieId):
 	
 	commit_insert_sql(db,sql)
 
-def insert_filename_meta(db,obsId,phase,destDir,f):
-	if obsId==None: obsId='NULL'
-	if f['binning']==None: f['binning']=''
-	if f['ccdTemp']==None: f['ccdTemp']='NULL'
-	if f['detector']==None: f['detector']=''
+def insert_filename_meta(db,meta):
 
-	sql="""INSERT INTO fileName(obsId,phase,filetype,filename,date,serieId,destDir,tempCCD,binning,detector)"""
-	sql+=""" VALUES (%s,'%s','%s','%s','%s','%s','%s',%s,'%s','%s')"""%(str(obsId),phase,f['typ'],f['filename'],
-															f['date'].strftime('%Y-%m-%d %H:%M:%S'),
-															f['serieId'],destDir,str(f['ccdTemp']),str(f['binning']),str(f['detector']))
-	commit_insert_sql(db,sql)
+	if 'obsId' not in meta.keys():
+		print "ignore this, obsId not defined."+ json.dumps(meta,sort_keys=True, indent=4)
+		return
+
+	if meta['fileType']=='1DSPECTRUM':
+		if 'BSS_ORD' in meta.keys():
+			orderSuffix="'"+meta['destinationBSS_ORD']+"'"
+		else:
+			orderSuffix='NULL'
+
+		sql="""INSERT INTO fileSpectrum(obsId,filename,path,"""
+		sql+="""dateObs,filetype,expTime,lStart,lStop,"""
+		sql+="""md5sum,naxis1,orderNo,orderSuffix)"""
+		sql+=""" VALUES (%s,'%s','%s',  '%s','%s',%s,%s,%s,  '%s',%s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
+															meta['dateObs'].replace('T',' '),meta['fileType'],meta['expTime'],meta['lStart'],meta['lStop'],
+															meta['md5sum'],meta['naxis1'],meta['order'],orderSuffix)
+		commit_insert_sql(db,sql)
+
+	else:
+		print "normal file"
+

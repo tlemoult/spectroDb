@@ -15,6 +15,7 @@ import hashlib
 import xmltodict
 import tempfile
 import zipfile
+import shutil
 
 
 def calcMd5sum(path,filename):
@@ -79,7 +80,7 @@ def parseLogFileISIS(path,filename,ret):
 	f.close()
 	return ret
 
-## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnée.
+## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnee.
 def getMetaDataFiles(srcPath,filenames,tmpPath):
 
 	if dirpath.endswith('/calib'):		
@@ -91,7 +92,8 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 	for filename in filenames:
 		ret={'phase':'PROCESS'}
 		ret['sourcePath']=srcPath
-		ret['filename']=filename
+		ret['sourceFilename']=filename
+		ret['destinationFilename']=filename  # default value, could be redefined		
 		ret['md5sum']=calcMd5sum(srcPath,filename)
 
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
@@ -146,14 +148,14 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
-				sf=ret['filename'].split('.')[0]  # short access on filename without extension
+				sf=ret['sourceFilename'].split('.')[0]  # short access on filename without extension
 
 				if sf.startswith('@pro'): # partial spectrum from ISIS serie  @pro
 					p=sf[4:]  # after  @pro
 					if p.isdigit():  # simple spectrum serie
 						ret['order']='1'
 					elif p[2]=='-' and p.split('-')[0].isdigit() and p.split('-')[1].isdigit():   # is it a echelle spectrum ?
-						ret['order']=ret['filename'][4:6]
+						ret['order']=sf[4:6]
 						ret['BSS_ORD']='@pro'
 					else:
 						continue  # ignore file with @pro but bad format
@@ -266,13 +268,14 @@ def calibProcess(srcPath,tmpPath):
 	calibFiles= [f for f in listdir(srcPath) if isfile(join(srcPath, f))]
 #	print logFiles
 	for f in logFiles:
-		metaLog={'filename':f,'sourcePath':parentSrc}
+		metaLog={'sourceFilename':f,'sourcePath':parentSrc}
 		metaLog=parseLogFileISIS(parentSrc,f,metaLog)
 		print "dateObs "+metaLog['dateObs']
 		archiveName=metaLog['dateObs'].replace(' ','-').replace(':','-')+'-calib.zip'
 		print "create",archiveName
 		meta={}
-		meta['filename']=archiveName
+		meta['sourceFilename']=archiveName
+		meta['destinationFilename']=archiveName
 		meta['sourcePath']=tmpPath
 		with zipfile.ZipFile(tmpPath+'/'+archiveName,'w') as myzip:
 			for f in calibFiles:
@@ -282,15 +285,16 @@ def calibProcess(srcPath,tmpPath):
 		meta['dateObs']=metaLog['dateObs']
 		meta['Md5']=calcMd5sum(tmpPath,archiveName)
 
-		metas[meta['filename']]=meta
+		metas[meta['sourceFilename']]=meta
 
 		print 'Md5Sum=',meta['Md5'],""
 	return metas
 
 
 def defineTargetNameSpectrumFile(meta):
+	print json.dumps(meta,sort_keys=True, indent=4)
 	observer="TLE"
-	filename=meta['filename']
+	filename=meta['sourceFilename']
 	 	
 	hours=int(meta['dateObs'][11:13])
 	minutes=int(meta['dateObs'][14:16])
@@ -312,10 +316,43 @@ def defineTargetNameSpectrumFile(meta):
 	return meta
 
 def archiveFiles(metas):
+
+	def createDir(dirpath):
+		#print "dirpath="+dirpath
+		paths=dirpath.split('/')
+		pwd="/"
+		for path in paths:
+			pwd+=path+'/'
+			try:
+				os.stat(pwd)
+			except:
+				print "create dir"+pwd
+				os.mkdir(pwd)
+
+	print "******************"
+	print "*  archiveFiles  *"
+	print "******************"
 	#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
 	# mais un lien vers le fichier doit exister
-	return
+	json_text=open("../config/config.json").read()
+	config=json.loads(json_text)
+	pathArchive=config['path']['archive']
+	print "pathArchive="+pathArchive
 
+	for f in metas:
+		meta=metas[f]
+
+		dbSpectro.insert_filename_meta(db,meta)
+
+
+		if 'destinationPath' in meta.keys():
+			#print "destinationPath="+meta['destinationPath']+"  ",
+			#print "destinationFilename="+meta['destinationFilename']
+
+			dstDir=pathArchive+"/archive"+meta['destinationPath']+'/wrk'
+			createDir(dstDir)
+			shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
+	return
 
 #########
 # main  #
@@ -328,6 +365,7 @@ if len(sys.argv)==1:  # pas d argument
 	exit()
 
 db=dbSpectro.init_connection()
+dbSpectro.setLogLevel(4)
 
 tmpPath=tempfile.mkdtemp()
 print "temporary dir", 	tmpPath
@@ -338,5 +376,9 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 	metas=setDstPath(metas,db)
 	print json.dumps(metas,sort_keys=True, indent=4)
-	#defineTargetNameSpectrumFile(metas)
+
+	for f in metas:
+		meta=metas[f]
+		if meta['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(meta)
+
 	archiveFiles(metas)

@@ -57,8 +57,9 @@ def getObjId_fromObjName(db,name):
 	return commit_query_sql(db,query)
 
 def getDirectory_from_STRdate(db,date):
-	query='SELECT destDir,obsId FROM fileName where phase="RAW" and date="%s"'%(date.replace('T',' ')[:19])
+	query='SELECT destDir,obsId FROM fileName where phase="RAW" and filetype="OBJECT" and date="%s"'%(date.replace('T',' ')[:19])
 	result=commit_query_sql_table(db,query)
+	print "result",result
 	if result=='None':
 		return {}
 
@@ -161,6 +162,12 @@ def getFilesPerObsId(db,obsId,fileTypeLst): # 'OBJECT','CALIB','TUNGSTEN','LED'
 	query+="order by fileName.date ASC"
 	return commit_query_sql_All_table(db,query)
 
+def getPathFilename_from_md5sum(db,md5sum):
+	query="select fileName.destDir,fileName.filename from fileName "
+	query+="""where fileName.md5sum='%s' """%md5sum
+	return commit_query_sql_table(db,query)
+
+
 def update_files_serieId(db,fileId,serieId):
 	sql="""UPDATE fileName SET """
 	sql+="""serieId='"""+serieId+"""'"""
@@ -183,11 +190,27 @@ def insert_filename_meta(db,meta):
 		sql="""INSERT INTO fileSpectrum(obsId,filename,path,"""
 		sql+="""dateObs,filetype,expTime,lStart,lStop,"""
 		sql+="""md5sum,naxis1,orderNo,orderSuffix)"""
-		sql+=""" VALUES (%s,'%s','%s',  '%s','%s',%s,%s,%s,  '%s',%s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
+		sql+=""" VALUES (%s,'%s','%s',  '%s','%s',%s,%s,%s,  '%s',%s,'%s',%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
 															meta['dateObs'].replace('T',' '),meta['fileType'],meta['expTime'],meta['lStart'],meta['lStop'],
-															meta['md5sum'],meta['naxis1'],meta['order'],orderSuffix)
+															meta['md5sum'],meta['naxis1'],str(meta['order']),orderSuffix)
 		commit_insert_sql(db,sql)
 
 	else:
-		print "normal file"
+		print "normal file destinationFile="+ meta['destinationFilename']
+
+		if 'detector' in meta.keys(): detector="'"+meta['detector']+"'" 	
+		else:  detector='NULL'
+		if 'tempCCD' in meta.keys(): tempCCD=meta['tempCCD'] 				
+		else: tempCCD='NULL'
+		if 'binning' in meta.keys(): binning="'"+meta['binning']+"'"		
+		else: binning='NULL'
+
+		sql="""INSERT INTO fileName(obsId,filename,destDir,"""
+		sql+="""date,filetype,md5sum,phase,"""
+		sql+="""binning,detector,tempCCD)"""
+		sql+=""" VALUES (%s,'%s','%s',  '%s','%s','%s','DATA',  %s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
+															meta['dateObs'].replace('T',' '),meta['fileType'],meta['md5sum'],
+															binning,detector,tempCCD)
+		commit_insert_sql(db,sql)
+
 

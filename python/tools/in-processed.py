@@ -118,9 +118,6 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			header=hdu[0].header
 			ret['naxis1']=header['NAXIS1']
 
-			if 'OBJNAME' in header.keys():
-				ret['objName']=header['OBJNAME']
-
 			if 'DATE-OBS' in header.keys():
 				if header['DATE-OBS']!="":
 					ret['dateObs']=header['DATE-OBS']
@@ -131,11 +128,14 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				#ret['dateObs2']=Time(header['DATE-OBS'],format='isot', scale='utc')
 			if 'EXPTIME' in header.keys():
 				ret['expTime']=header['EXPTIME']
-			elif 'EXPOSURE' in header.keys():
+			elif 'EXPOSURE' in header.keys(): 		
 				ret['expTime']=header['EXPOSURE']
 
-			if 'OBJNAME' in header.keys():
-				ret['objName']=header['OBJNAME']
+			if 'OBJNAME' in header.keys():			ret['objName']=header['OBJNAME']
+			if 'DETNAM' in header.keys(): 			ret['detector']=header['DETNAM']
+			if 'CCD-TEMP' in header.keys():			ret['tempCCD']=header['CCD-TEMP']
+			if 'BIN1' in header.keys():    			ret['binning']=str(header['BIN1'])+'x'+str(header['BIN2'])
+			if 'BINX' in header.keys():    			ret['binning']=str(header['BINX'])+'x'+str(header['BINY'])
 							
 			if len(hdu)>1:   # FITS multiplan
 				ret['fileType']="MULTIPLAN"
@@ -200,6 +200,9 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 
 
 def setDstPath(metas,db):
+
+	
+
 	noDirFound=[]
 
 	for f in metas:
@@ -215,7 +218,7 @@ def setDstPath(metas,db):
 
 		if 'path' in r.keys():
 			print r['path']+" obsId="+str(r['obsId'])
-			metas[f]['destinationPath']=r['path']
+			metas[f]['destinationPath']=r['path']+'/wrk'
 			metas[f]['obsId']=r['obsId']
 		else:
 			print "Warning path not found"
@@ -233,7 +236,7 @@ def setDstPath(metas,db):
 				
 				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+r['obsId']
 
-				metas[f]['destinationPath']=r['path']
+				metas[f]['destinationPath']=r['path']+'/wrk'
 				metas[f]['obsId']=r['obsId']
 			else:
 				print "unknow path"
@@ -271,23 +274,30 @@ def calibProcess(srcPath,tmpPath):
 		metaLog={'sourceFilename':f,'sourcePath':parentSrc}
 		metaLog=parseLogFileISIS(parentSrc,f,metaLog)
 		print "dateObs "+metaLog['dateObs']
-		archiveName=metaLog['dateObs'].replace(' ','-').replace(':','-')+'-calib.zip'
+		archiveName='calib.zip'  # metaLog['dateObs'].replace(' ','-').replace(':','-')+
 		print "create",archiveName
 		meta={}
 		meta['sourceFilename']=archiveName
 		meta['destinationFilename']=archiveName
 		meta['sourcePath']=tmpPath
+		pythonPath=os.getcwd()
+		os.chdir(srcPath)
+
+		fileMd5sum=open(tmpPath+'/md5sum.txt','w')  # store all md5sum
 		with zipfile.ZipFile(tmpPath+'/'+archiveName,'w') as myzip:
 			for f in calibFiles:
-				myzip.write(srcPath+'/'+f)
+				fileMd5sum.write(calcMd5sum('.',f))
+				myzip.write(f)
+		fileMd5sum.close()
 
+		os.chdir(pythonPath)  # return to original path
 		meta['fileType']='CALIBDIRISIS'
-		meta['dateObs']=metaLog['dateObs']
-		meta['Md5']=calcMd5sum(tmpPath,archiveName)
+		meta['dateObs']=metaLog['dateObs']			# use logfile
+		meta['md5sum']=calcMd5sum(tmpPath,'md5sum.txt')   # md5sum on md5sum
 
 		metas[meta['sourceFilename']]=meta
 
-		print 'Md5Sum=',meta['Md5'],""
+		print 'Md5sum=',meta['md5sum'],""
 	return metas
 
 
@@ -303,7 +313,7 @@ def defineTargetNameSpectrumFile(meta):
 
 	datestr=meta['dateObs'][:10].replace('-','')
 
-	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+observer
+	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+str(meta['expTime'])+'_'+observer
 	extensionFit=filename.split('.')[-1]
 
 	if 'BSS_ORD' in meta.keys():
@@ -332,8 +342,7 @@ def archiveFiles(metas):
 	print "******************"
 	print "*  archiveFiles  *"
 	print "******************"
-	#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
-	# mais un lien vers le fichier doit exister
+	
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
 	pathArchive=config['path']['archive']
@@ -342,16 +351,36 @@ def archiveFiles(metas):
 	for f in metas:
 		meta=metas[f]
 
-		dbSpectro.insert_filename_meta(db,meta)
-
-
 		if 'destinationPath' in meta.keys():
 			#print "destinationPath="+meta['destinationPath']+"  ",
 			#print "destinationFilename="+meta['destinationFilename']
 
-			dstDir=pathArchive+"/archive"+meta['destinationPath']+'/wrk'
-			createDir(dstDir)
-			shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
+
+			#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
+			# mais un lien vers le fichier doit exister
+
+			
+			if meta['fileType']=='CALIBDIRISIS':
+				packExist=dbSpectro.getPathFilename_from_md5sum(db,meta['md5sum'])
+				print "packExist=",packExist, "   type(packExist)=",type(packExist)
+				#(ExistPath,ExistFilename)
+			else:
+				packExist=None
+
+			if packExist!=None:
+				# fichier deja trouve,  on modifie le fichier cible
+				print "file already exist here"+ packExist[0]+'/'+packExist[1] 
+				meta['destinationPath']=packExist[0]
+				meta['destinationFilename']=packExist[1]
+			else:
+				# nouveau fichier, on le copie dans les dossiers
+				dstDir=pathArchive+"/archive"+meta['destinationPath']
+				createDir(dstDir)
+				shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
+
+			dbSpectro.insert_filename_meta(db,meta)
+
+
 	return
 
 #########
@@ -382,3 +411,6 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 		if meta['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(meta)
 
 	archiveFiles(metas)
+
+print "remove temporary Path=",tmpPath
+shutil.rmtree(tmpPath)

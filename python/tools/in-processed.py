@@ -222,6 +222,7 @@ def setDstPath(metas,db):
 		r=findPathFromObsDate(metas[f]['dateObs'],db)
 
 		if 'path' in r.keys():
+			goodR=r  # pour recylage... dans le block en dessous
 			print r['path']+" obsId="+str(r['obsId'])
 			metas[f]['destinationPath']=r['path']+'/wrk'
 			metas[f]['obsId']=r['obsId']
@@ -237,9 +238,12 @@ def setDstPath(metas,db):
 					if metas[m]['fileType']=='LOGFILEISIS':
 						dateObs=metas[f]['dateObs']
 						metas[m]['dateObs']=dateObs
+						print "LOGFILEISIS Found"
 				r=findPathFromObsDate(dateObs,db)
+				if 'path' not in r.keys():
+					r=goodR  # recyclage d'un valeur dans le dossier
 				
-				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+r['obsId']
+				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+str(r['obsId'])
 
 				metas[f]['destinationPath']=r['path']+'/wrk'
 				metas[f]['obsId']=r['obsId']

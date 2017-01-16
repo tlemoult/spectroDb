@@ -376,6 +376,7 @@ def archiveFiles(metas):
 				shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
 
 			dbSpectro.insert_filename_meta(db,meta)
+			dbSpectro.update_observation_status(db,meta['obsId'],'REDUCED')
 
 		else:
 			# can't store the file.., copy file to Exception

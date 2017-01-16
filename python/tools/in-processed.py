@@ -357,18 +357,10 @@ def archiveFiles(metas):
 		meta=metas[f]
 
 		if 'destinationPath' in meta.keys():
-			#print "destinationPath="+meta['destinationPath']+"  ",
-			#print "destinationFilename="+meta['destinationFilename']
-
-
-			#si le fichier existe deja (d apres MD5sum, alors on ne le restocke pas ??
-			# mais un lien vers le fichier doit exister
-
 			
 			if meta['fileType']=='CALIBDIRISIS':
 				packExist=dbSpectro.getPathFilename_from_md5sum(db,meta['md5sum'])
 				print "packExist=",packExist, "   type(packExist)=",type(packExist)
-				#(ExistPath,ExistFilename)
 			else:
 				packExist=None
 
@@ -385,6 +377,11 @@ def archiveFiles(metas):
 
 			dbSpectro.insert_filename_meta(db,meta)
 
+		else:
+			# can't store the file.., copy file to Exception
+			dstDir=pathArchive+"/Except-in-processed"+meta['sourcePath']
+			createDir(dstDir)
+			shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
 
 	return
 
@@ -411,9 +408,8 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	metas=setDstPath(metas,db)
 	print json.dumps(metas,sort_keys=True, indent=4)
 
-	for f in metas:
-		meta=metas[f]
-		if meta['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(meta)
+	for f in metas: 
+		if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])
 
 	archiveFiles(metas)
 

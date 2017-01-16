@@ -49,6 +49,7 @@ def parseXmlISIS(path,filename,ret):
 			print "can't open Image file: "+fileNameImg
 			try:
 				rootfileName='_'+s[1]+'_'+s[2]+'_'+s[3]+'_'
+				print "looking for rootfileName="+rootfileName
 				fileNameSpec = [f for f in listdir(path) if isfile(join(path, f)) and f.startswith(rootfileName) and f.endswith('.fits')][0]
 				hdu=pyfits.open(path+'/'+fileNameSpec)
 				header=hdu[0].header
@@ -103,12 +104,16 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				fileResponse=metasReturn[filename]['Response']+'.fits'
 				r={'phase':'PROCESS'}
 				r['sourcePath']=srcPath
-				r['filename']=fileResponse
-				r['md5sum']=calcMd5sum(srcPath,fileResponse)
-				r['dateObs']=metasReturn[filename]['dateObs']
-				r['fileType']='REPONSE'
-				key=filename+'->'+fileResponse
-				metasReturn[key]=r
+				r['sourceFilename']=fileResponse
+				r['destinationFilename']=fileResponse
+				try:
+					r['md5sum']=calcMd5sum(srcPath,fileResponse)
+					r['dateObs']=metasReturn[filename]['dateObs']
+					r['fileType']='REPONSE'
+					key=filename+'->'+fileResponse
+					metasReturn[key]=r
+				except:   # if the response file do not exist !
+					print "failed to load "+srcPath+'/'+fileResponse
 
 		if filename.endswith('.log') and filename.startswith('_'):  # probablement un fichier de log isis
 			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)

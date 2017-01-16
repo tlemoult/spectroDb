@@ -175,6 +175,12 @@ def update_files_serieId(db,fileId,serieId):
 	
 	commit_insert_sql(db,sql)
 
+def update_observation_status(db,obsId,status):
+	sql="""UPDATE observation"""
+	sql+=""" SET status='%s'"""%status
+	sql+=""" WHERE obsId=%d"""%obsId
+	commit_insert_sql(db,sql)
+
 def insert_filename_meta(db,meta):
 
 	if 'obsId' not in meta.keys():

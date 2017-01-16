@@ -21,7 +21,7 @@ if(empty($_GET['obsId']))
 }
 else
 {
-	echo "<H2>files associated to observation Id=".$_GET['obsId']."</H2>";
+	echo "<H2>Raw files associated to observation Id=".$_GET['obsId']."</H2>";
 
 }
 
@@ -72,6 +72,51 @@ if($result = mysqli_query($link, $sql)){
 } else{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
+
+echo "<h2>Reduced spectrums associated</h2>";
+$sql = "select * from fileSpectrum where obsId=".$_GET['obsId']." ORDER by dateObs,orderNo";
+echo $sql;
+if($result = mysqli_query($link, $sql)){
+    
+    $rowcount=mysqli_num_rows($result);
+    
+    echo "<br>".$rowcount." files entry.<br>";
+        
+    if($rowcount > 0){
+        
+        
+        echo "\n<table border=2>";
+            echo "<tr>";
+                echo "<th>fileId</th>";
+                echo "<th>filename</th>";
+                echo "<th>dateObs(UTC)</th>";
+                echo "<th>exposure(s)</th>";
+                echo "<th>start(A)</th>";
+                echo "<th>stop(A)</th>";
+                echo "<th>orderNo</th>";            
+            echo "</tr>\n";
+        while($row = mysqli_fetch_array($result)){
+            echo "<tr>";
+                echo "<td>" . $row['fileId'] . "</td>";             
+                echo "<td>" . $row['filename'] . "</td>";
+                echo "<td>" . $row['dateObs'] . "</td>";
+                echo "<td>" . $row['expTime'] . "</td>";
+                echo "<td>" . $row['lStart'] . "</td>";
+                echo "<td>" . $row['lStop'] . "</td>";
+                echo "<td>" . $row['orderNo'] . "</td>";
+            echo "</tr>\n";
+        }
+        echo "</table>";
+        echo '</form>';
+        // Close result set
+        mysqli_free_result($result);
+    } else{
+        echo "No records matching your query were found.";
+    }
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+}
+
 
 
 // Close connection

@@ -99,11 +99,8 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>phase</th>";
                 echo "<th>filetype</th>";
                 echo "<th>filename</th>";
-                echo "<th>serieId</th>";         
                 echo "<th>date</th>";
-                echo "<th>tempCCD(°C)</th>";
-                echo "<th>binning</th>";
-                echo "<th>detector</th>";            
+                      
             echo "</tr>\n";
         while($row = mysqli_fetch_array($result)){
             echo "<tr>";
@@ -111,11 +108,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['phase'] . "</td>";
                 echo "<td>" . $row['filetype'] . "</td>";
                 echo "<td>" . $row['filename'] . "</td>";
-                echo "<td>" . $row['serieId'] . "</td>";
                 echo "<td>" . $row['date'] . "</td>";
-                echo "<td>" . $row['tempCCD'] . "</td>";
-                echo "<td>" . $row['binning'] . "</td>";
-                echo "<td>" . $row['detector'] . "</td>";
             echo "</tr>\n";
         }
         echo "</table>";

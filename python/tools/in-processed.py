@@ -84,12 +84,15 @@ def parseLogFileISIS(path,filename,ret):
 ## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnee.
 def getMetaDataFiles(srcPath,filenames,tmpPath):
 
-	if dirpath.endswith('/calib'):		
+	print "filename"+str(filenames)
+
+	if dirpath.endswith('/calib'):
 		return calibProcess(dirpath,tmpPath)
 
 	# ce n'est pas un dossier de calib ISIS, on regarde
 	print "****** Enter Directory "+dirpath+"  **********"
 	metasReturn={}
+	responseFound=False
 	for filename in filenames:
 		ret={'phase':'PROCESS'}
 		ret['sourcePath']=srcPath
@@ -100,20 +103,24 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
 			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
 			#rint metasReturn[filename]
-			if not 'eShel' in metasReturn[filename].keys():   # ce n est pas un xml type eShel, on regarde quelle est la reponse instrumentale
-				fileResponse=metasReturn[filename]['Response']+'.fits'
-				r={'phase':'PROCESS'}
-				r['sourcePath']=srcPath
-				r['sourceFilename']=fileResponse
-				r['destinationFilename']=fileResponse
-				try:
+			if 'eShel' in metasReturn[filename].keys():   # c est un spectro eShel, la reponse na pas besoin d etre trouve,  elle est le dossier calib
+				responseFound=True
+			else:
+				fileResponse=""  # ce n est pas un xml type eShel, on regarde quelle est la reponse instrumentale
+				for fr in filenames:
+					if fr.startswith(metasReturn[filename]['Response']+'.') and (fr.endswith('.fits') or fr.endswith('.fit') or fr.endswith('.dat')):
+						fileResponse=fr
+				if fileResponse!="":   # we found the response file.
+					responseFound=True
+					r={'phase':'PROCESS'}
+					r['sourcePath']=srcPath
+					r['sourceFilename']=fileResponse
+					r['destinationFilename']=fileResponse
 					r['md5sum']=calcMd5sum(srcPath,fileResponse)
-					r['dateObs']=metasReturn[filename]['dateObs']
+					r['dateObs']=metasReturn[filename]['dateObs'] # recupere dateObs definis dans XML pour la reponse
 					r['fileType']='REPONSE'
 					key=filename+'->'+fileResponse
 					metasReturn[key]=r
-				except:   # if the response file do not exist !
-					print "failed to load "+srcPath+'/'+fileResponse
 
 		if filename.endswith('.log') and filename.startswith('_'):  # probablement un fichier de log isis
 			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)
@@ -149,7 +156,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				#print newFiles
 				metasReturn.update(getMetaDataFiles(tmpPath,newFiles,tmpPath))
 
-			if header['NAXIS']==1:   # SPECTRUM
+			if header['NAXIS']==1 and 'CRVAL1' in header.keys():   # SPECTRUM
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
@@ -199,6 +206,43 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			else:
 				orderLog=""
 			print "FoundFileType("+filename+")-> "+ metasReturn[filename]['fileType'] + "   DateObs=" + metasReturn[filename]['dateObs']+orderLog
+
+
+	if not responseFound:
+		# try to find a response file
+		print "Try to find a response"
+		for filename in filenames:
+			if 'reponse' in filename or 'response' in filename:
+				fileResponse=filename
+				responseFound=True
+				break
+
+		if responseFound:
+			print "ReponseFilenmae=",fileResponse
+			# build a list of targets
+			targets={}
+			for filename in metasReturn: 
+				meta=metasReturn[filename]
+				if meta['fileType']=='1DSPECTRUM':
+					if not meta['objName']=='':
+						targets[meta['objName']]=meta['dateObs']
+
+			print "Target List=",targets
+			r={'phase':'PROCESS'}
+			r['sourcePath']=srcPath
+			r['sourceFilename']=fileResponse
+			r['destinationFilename']=fileResponse
+			r['md5sum']=calcMd5sum(srcPath,fileResponse)
+			r['fileType']='REPONSE'
+
+			# for each object, we add a the response file
+			for objName in targets:
+				newR=r
+				newR['dateObs']=targets[objName]
+				synthName=objName+'_gess_reponse'
+				metasReturn[synthName]=newR
+				print "synthName",synthName
+				print newR
 
 	return metasReturn
 
@@ -311,13 +355,17 @@ def calibProcess(srcPath,tmpPath):
 
 
 def defineTargetNameSpectrumFile(meta):
-	print json.dumps(meta,sort_keys=True, indent=4)
+#	print json.dumps(meta,sort_keys=True, indent=4)
 	observer="TLE"
 	filename=meta['sourceFilename']
-	 	
-	hours=int(meta['dateObs'][11:13])
-	minutes=int(meta['dateObs'][14:16])
-	seconds=int(meta['dateObs'][17:19])
+	try:
+		hours=int(meta['dateObs'][11:13])
+		minutes=int(meta['dateObs'][14:16])
+		seconds=int(meta['dateObs'][17:19])
+	except:
+		print filename+"-> Cannot rename file, the DateObs is incorrect"
+		return meta
+
 	fracDay=str(hours/24.0+minutes/24.0/60.0+seconds/24.0/60.0/60.0)[2:5]
 
 	datestr=meta['dateObs'][:10].replace('-','')
@@ -411,7 +459,7 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
 	metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 	metas=setDstPath(metas,db)
-	print json.dumps(metas,sort_keys=True, indent=4)
+	#print json.dumps(metas,sort_keys=True, indent=4)
 
 	for f in metas: 
 		if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])

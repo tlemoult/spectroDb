@@ -382,28 +382,24 @@ def defineTargetNameSpectrumFile(meta):
 
 	return meta
 
-def archiveFiles(metas):
+def createDir(dirpath):
+	#print "dirpath="+dirpath
+	paths=dirpath.split('/')
+	pwd="/"
+	for path in paths:
+		pwd+=path+'/'
+		try:
+			os.stat(pwd)
+		except:
+			print "create dir"+pwd
+			os.mkdir(pwd)
 
-	def createDir(dirpath):
-		#print "dirpath="+dirpath
-		paths=dirpath.split('/')
-		pwd="/"
-		for path in paths:
-			pwd+=path+'/'
-			try:
-				os.stat(pwd)
-			except:
-				print "create dir"+pwd
-				os.mkdir(pwd)
+def archiveFiles(metas,pathArchive):
 
 	print "******************"
 	print "*  archiveFiles  *"
 	print "******************"
 	
-	json_text=open("../config/config.json").read()
-	config=json.loads(json_text)
-	pathArchive=config['path']['archive']
-	print "pathArchive="+pathArchive
 
 	for f in metas:
 		meta=metas[f]
@@ -432,7 +428,7 @@ def archiveFiles(metas):
 
 		else:
 			# can't store the file.., copy file to Exception
-			dstDir=pathArchive+"/Except-in-processed"+meta['sourcePath']
+			dstDir=pathArchive+"/Except-in-processed/dest-not-find"+meta['sourcePath']
 			createDir(dstDir)
 			shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
 
@@ -451,20 +447,35 @@ if len(sys.argv)==1:  # pas d argument
 db=dbSpectro.init_connection()
 dbSpectro.setLogLevel(4)
 
-tmpPath=tempfile.mkdtemp()
-print "temporary dir", 	tmpPath
+json_text=open("../config/config.json").read()
+config=json.loads(json_text)
+pathArchive=config['path']['archive']
+print "pathArchive="+pathArchive
+
 
 
 for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
-	metas=getMetaDataFiles(dirpath,filenames,tmpPath)
-	metas=setDstPath(metas,db)
-	#print json.dumps(metas,sort_keys=True, indent=4)
+	tmpPath=tempfile.mkdtemp()
+	print "temporary dir", 	tmpPath
 
-	for f in metas: 
-		if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])
+	try:
+		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
+		metas=setDstPath(metas,db)
+		#print json.dumps(metas,sort_keys=True, indent=4)
 
-	archiveFiles(metas)
+		for f in metas: 
+			if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])
 
-print "remove temporary Path=",tmpPath
-shutil.rmtree(tmpPath)
+		archiveFiles(metas,pathArchive)
+	except:
+		dstDir=pathArchive+'/Except-in-processed/except-python'
+		print "Exception python, copy dir "+dirpath+" to "+dstDir
+		createDir(dstDir)
+		try:
+			shutil.copytree(dirpath,dstDir+dirpath)
+		except:
+			print "exist"
+
+	print "remove temporary Path=",tmpPath
+	shutil.rmtree(tmpPath)

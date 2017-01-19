@@ -9,7 +9,7 @@ function getJsonVal () {
 _base=`cat ../config/config.json | getJsonVal "['path']['archive']" | tr -d '"' `
 
 
-_now=$(date +%Y_%m_%_%H_%M_%S)
+_now=$(date +%Y_%m_%d_%H_%M_%S)
 _log_file="$_base/log/in.$_now.log"
 _err_file="$_base/log/in.$_now.err"
 _source_dir="$_base/in/"

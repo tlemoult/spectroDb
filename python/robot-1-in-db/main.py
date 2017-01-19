@@ -37,7 +37,7 @@ elif len(sys.argv)==4:
 BasePath=sys.argv[1]
 print "nom de dossier source : "+BasePath
 print "Configuration instrumentale par default: InstrumId= ",defaultInstruId, dbSpectro.get_confInstru_fromId(db,defaultInstruId)
-exit()
+
 # boucle sur les dossiers		
 lstDir=fixHeader.listdirectory(BasePath)
 for i in lstDir:

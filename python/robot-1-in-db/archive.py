@@ -1,10 +1,17 @@
-import sys,os,shutil
+import sys,os,shutil,json
 
 Excep_dir_unknow="unknow_object"
 Excep_dir_noFits="no-fits"
 
-racineArchive="/mnt/gdrive/astro/base"  # linux
+#racineArchive="/mnt/gdrive/astro/base"  # linux
 
+def loadConfig():
+	print "load config archive: ",
+	global racineArchive
+	json_text=open("../config/config.json").read()
+	config=json.loads(json_text)
+	racineArchive= config['path']['archive']
+	print "Path archive archive=",racineArchive
 
 def getFileRaw(fileLST,destDir,pathPipeline,obsId):
 	for f in fileLST:

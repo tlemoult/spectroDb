@@ -9,6 +9,7 @@ import dbSpectro,fixHeader,archive,cds,myJson  #mes modules
 print "Robot integration acquisition dans la base"
 
 db=dbSpectro.init_connection()
+archive.loadConfig()
 #dbSpectro.listObs(db)
 #BasePath=sys.path[0]
 
@@ -34,9 +35,9 @@ elif len(sys.argv)==4:
 
 
 BasePath=sys.argv[1]
-print "nom de dossier: "+BasePath
+print "nom de dossier source : "+BasePath
 print "Configuration instrumentale par default: InstrumId= ",defaultInstruId, dbSpectro.get_confInstru_fromId(db,defaultInstruId)
-
+exit()
 # boucle sur les dossiers		
 lstDir=fixHeader.listdirectory(BasePath)
 for i in lstDir:

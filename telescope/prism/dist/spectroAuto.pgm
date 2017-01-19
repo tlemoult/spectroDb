@@ -373,10 +373,11 @@ DirRepChercheur=0
 AngleCCDChercheurWEST=179
 FocaleCameraChercheur=133.5
 // position de l etoile dans le chercheur quand l etoile est dans la fente/trou
-ChercheurPosXBin=30
-ChercheurPosYBin=568
+ChercheurPosXBin=150	
+ChercheurPosYBin=496
 //  ZWO120 Bin2.  X=301 Y=215  Angle 179
 //  Lodestar Bin1 X=30 Y=568   Angle 179
+//  Le 19-01-2017  Lodestar Bin1  X=150   Y=496    mesuré Tube=West
 exposurephotometriechercheur=3
 
 /////////////////////Limite liee au pointage ////////////////////
@@ -428,11 +429,11 @@ OrientationFente=OriFentevertical
 // 13-03-2016  avant meridien: 343, 274
 //         apres meridien:  344, 275  344, 275
 // 14-03-2016   343, 275
-
 // 05-07-2016   344, 274
+// jusqu'au 18/01/2017   X=342 Y=274
 
-fentePosX=342
-fentePosY=274
+fentePosX=341
+fentePosY=273
 
 
 // FLAT LISA LHIRES

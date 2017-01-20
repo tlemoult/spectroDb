@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,datetime
 from os import walk
 from os import listdir
 from os.path import isfile, join
@@ -428,11 +428,12 @@ def archiveFiles(metas,pathArchive):
 
 		else:
 			# can't store the file.., copy file to Exception
-			dstDir=pathArchive+"/Except-in-processed/dest-not-find"+meta['sourcePath']
-			createDir(dstDir)
-			shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
+			logException(meta['sourcePath']+meta['sourceFilename'],'noDestPathFound')
 
 	return
+
+def logException(msg,reason):
+	globalExceptFile.write(str(datetime.datetime.today()).replace(' ','T').replace(':','-')+';'+reason+";"+msg+"\n")
 
 #########
 # main  #
@@ -447,12 +448,14 @@ if len(sys.argv)==1:  # pas d argument
 db=dbSpectro.init_connection()
 dbSpectro.setLogLevel(4)
 
+# load configuration
 json_text=open("../config/config.json").read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
 print "pathArchive="+pathArchive
 
-
+# open exception file
+globalExceptFile=open(pathArchive+'/Except-in-processed/except-'+str(datetime.datetime.today()).replace(' ','T').replace(':','-')+'.log','a')
 
 for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
@@ -469,13 +472,9 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 
 		archiveFiles(metas,pathArchive)
 	except:
-		dstDir=pathArchive+'/Except-in-processed/except-python'
-		print "Exception python, copy dir "+dirpath+" to "+dstDir
-		createDir(dstDir)
-		try:
-			shutil.copytree(dirpath,dstDir+dirpath)
-		except:
-			print "exist"
+		logException(dirpath,'mainException')
 
 	print "remove temporary Path=",tmpPath
 	shutil.rmtree(tmpPath)
+
+globalExceptFile.close()

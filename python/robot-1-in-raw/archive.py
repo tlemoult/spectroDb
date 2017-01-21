@@ -7,16 +7,19 @@ Excep_dir_noFits="no-fits"
 
 def loadConfig():
 	print "load config archive: ",
-	global racineArchive
+	global racineArchive,pathPipeline
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
 	racineArchive= config['path']['archive']
+	pathPipeline= config['path']['eShelPipe']
 	print "Path archive archive=",racineArchive
+	print "Path Pipeline traitement"
 
-def getFileRaw(fileLST,destDir,pathPipeline,obsId):
+def getFileRaw(fileLST,destDir,obsId):
+	pathDst=pathPipeline+'/raw'
 	for f in fileLST:
 		if f['typ']=='CALIB' or f['typ']=='TUNGSTEN' or f['typ']=='FLAT' or f['typ']=='OBJECT' or f['typ']=='NEON':
-			shutil.copyfile(racineArchive+"/archive"+destDir+"/"+f['filename'], pathPipeline+"/obsId"+str(obsId)+'_'+f['filename'])
+			shutil.copyfile(racineArchive+"/archive"+destDir+"/"+f['filename'], pathDst+"/obsId"+str(obsId)+'_'+f['filename'])
 
 def createDir(dateobs):
 	dirs=[dateobs[:4],dateobs[5:7],dateobs[8:10],dateobs[11:13]+"h"+dateobs[14:16]+"m"+dateobs[17:19]+"s"]

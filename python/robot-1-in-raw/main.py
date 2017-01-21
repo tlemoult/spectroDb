@@ -168,8 +168,7 @@ for dirSource in lstDir:
 				
 				
 		#copie les fichiers vers le pipeline de traitement
-		pathPipeline="/mnt/audela-pipe/raw"
-		archive.getFileRaw(returnedFileLST,destDir,pathPipeline,obsId)
+		archive.getFileRaw(returnedFileLST,destDir,obsId)
 
 		
 	else:

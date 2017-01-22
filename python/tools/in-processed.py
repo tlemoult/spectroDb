@@ -423,8 +423,10 @@ def archiveFiles(metas,pathArchive):
 				createDir(dstDir)
 				shutil.copyfile(meta['sourcePath']+'/'+meta['sourceFilename'],dstDir+'/'+meta['destinationFilename'])
 
-			dbSpectro.insert_filename_meta(db,meta)
-			dbSpectro.update_observation_status(db,meta['obsId'],'REDUCED')
+			if dbSpectro.insert_filename_meta(db,meta):
+				dbSpectro.update_observation_status(db,meta['obsId'],'REDUCED')
+			else:
+				logException(meta['sourcePath']+meta['sourceFilename'],'errorInsertDb')
 
 		else:
 			# can't store the file.., copy file to Exception

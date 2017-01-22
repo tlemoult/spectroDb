@@ -173,13 +173,13 @@ def update_files_serieId(db,fileId,serieId):
 	sql+="""serieId='"""+serieId+"""'"""
 	sql+=""" WHERE fileId=%d"""%(fileId)
 	
-	commit_insert_sql(db,sql)
+	return commit_insert_sql(db,sql)
 
 def update_observation_status(db,obsId,status):
 	sql="""UPDATE observation"""
 	sql+=""" SET status='%s'"""%status
 	sql+=""" WHERE obsId=%d"""%obsId
-	commit_insert_sql(db,sql)
+	return commit_insert_sql(db,sql)
 
 def insert_filename_meta(db,meta):
 
@@ -199,7 +199,7 @@ def insert_filename_meta(db,meta):
 		sql+=""" VALUES (%s,'%s','%s',  '%s','%s',%s,%s,%s,  '%s',%s,'%s',%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
 															meta['dateObs'].replace('T',' '),meta['fileType'],meta['expTime'],meta['lStart'],meta['lStop'],
 															meta['md5sum'],meta['naxis1'],str(meta['order']),orderSuffix)
-		commit_insert_sql(db,sql)
+		return commit_insert_sql(db,sql)
 
 	else:
 		print "normal file destinationFile="+ meta['destinationFilename']
@@ -217,6 +217,6 @@ def insert_filename_meta(db,meta):
 		sql+=""" VALUES (%s,'%s','%s',  '%s','%s','%s','DATA',  %s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
 															meta['dateObs'].replace('T',' '),meta['fileType'],meta['md5sum'],
 															binning,detector,tempCCD)
-		commit_insert_sql(db,sql)
+		return commit_insert_sql(db,sql)
 
 

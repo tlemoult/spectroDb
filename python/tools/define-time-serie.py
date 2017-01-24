@@ -16,56 +16,67 @@ db=dbSpectro.init_connection()
 
 if len(sys.argv)<3:
 	print "nombre d'argument incorrect"
-	print "utiliser: python main-redefine-Time-serie.py ObsId NbRawPerStack"
+	print "utiliser: "
+	print "    python define-time-serie.py ObsId NbRawPerStack"
+	print "ou  python define-time-serie.py range obsIdStart obsIdStop NbRawPerStack"
 	exit(1)
 
-obsId=int(sys.argv[1])
-NbRawPerStack=int(sys.argv[2])
-
-print "obsId=",obsId
+if len(sys.argv)==3:
+	obsIds=[int(sys.argv[1])]
+	NbRawPerStack=int(sys.argv[2])
+elif len(sys.argv)==5 and sys.argv[1]=='range':
+	obsIds=range(int(sys.argv[2]),int(sys.argv[3])+1)
+	NbRawPerStack=int(sys.argv[4])
+else:
+	print "arguments incorrects"
+	exit()
+print "obsIds=",obsIds
 print "NbRawPerStack=",NbRawPerStack
 
-fileList=dbSpectro.getFilesPerObsId(db,obsId,"""'OBJECT'""")
-print "-----------------------"
+for obsId in obsIds:
+	print "process obsId=",obsId
+	fileList=dbSpectro.getFilesPerObsId(db,obsId,"""'OBJECT'""")
+	print "-----------------------"
 
-i=1
-for row in fileList:
-	print row
-	fileSource=PathBaseSpectro+row[0]+'/'+row[2]
-	fileDest=fileSource+".tmp"
-	
-	fileId=row[1]
-	fileDate=row[3]
-	serieId=row[4]
-
-
-	hdulist = pyfits.open(fileSource)
-	prihdr  = hdulist[0].header
-
-	if i==1:  # au premier passage
-		newSerieId=str(fileDate).replace(' ','T')
-
-	if i==NbRawPerStack:
-		i=1
-	else:
-		i=i+1
+	i=1
+	for row in fileList:
+		print row
+		fileSource=PathBaseSpectro+row[0]+'/'+row[2]
+		fileDest=fileSource+".tmp"
 		
-	prihdr['SERIESID']=newSerieId
-
-	print "fileId=",fileId,"fileDate=",fileDate,"serieId=",serieId, "New SerieId=",newSerieId
-	print "fileSource",fileSource
-	print "fileDest",fileDest
-	print 
-
-	dbSpectro.update_files_serieId(db,fileId,newSerieId)
-
-	hdulist.writeto(fileSource+'tmp')  # ecris fichier tmps
-	hdulist.close(fileSource)		   # ferme initial
-	os.remove(fileSource)              # efface initial
-	os.rename(fileSource+'tmp',fileSource) # renome 
+		fileId=row[1]
+		fileDate=row[3]
+		serieId=row[4]
 
 
-print "------------------------"
+		hdulist = pyfits.open(fileSource)
+		prihdr  = hdulist[0].header
+
+		if i==1:  # au premier passage
+			newSerieId=str(fileDate).replace(' ','T')
+
+		if i==NbRawPerStack:
+			i=1
+		else:
+			i=i+1
+			
+		prihdr['SERIESID']=newSerieId
+
+		print "fileId=",fileId,"fileDate=",fileDate,"serieId=",serieId, "New SerieId=",newSerieId
+		print "fileSource",fileSource
+		print "fileDest",fileDest
+		print 
+
+		dbSpectro.update_files_serieId(db,fileId,newSerieId)
+
+		hdulist.writeto(fileSource+'tmp')  # ecris fichier tmps
+		hdulist.close(fileSource)		   # ferme initial
+		os.remove(fileSource)              # efface initial
+		os.rename(fileSource+'tmp',fileSource) # renome 
+
+
+	print "------------------------"
+
 print "Fin du robot"
 db.close()
 

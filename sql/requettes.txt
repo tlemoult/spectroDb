@@ -1,0 +1,11 @@
+Comptage Plasketts
+---------------------
+
+select count(*),sum(fileSpectrum.expTime)/3600 from fileSpectrum 
+left join observation on observation.obsId=fileSpectrum.obsId  
+where observation.objId=251 and fileSpectrum.orderNo like '34' and observation.dateObs>'2016-08-01'
+
+Comptage global
+-------------------
+select count(*),sum(fileSpectrum.expTime)/3600 from fileSpectrum 
+where fileSpectrum.orderNo like '34' or fileSpectrum.orderNo like '1'

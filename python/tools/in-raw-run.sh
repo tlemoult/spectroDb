@@ -19,4 +19,4 @@ echo "source dir: $_source_dir"
 echo "save log in $_log_file"
 echo "save err in $_err_file"
 
-python main.py $_source_dir > $_log_file 2> $_err_file
+python in-raw.py $_source_dir > $_log_file 2> $_err_file

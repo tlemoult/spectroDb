@@ -2,9 +2,13 @@ import datetime,time
 from datetime import datetime
 import sys,os
 import urllib,glob
-import dbSpectro,fixHeader,archive,cds,myJson  #mes modules
-
-
+#mes modules
+import libr1.dbSpectro as dbSpectro
+import libr1.fixHeader as fixHeader
+import libr1.archive as archive
+import libr1.cds as cds
+import libr1.myJson as myJson
+import defineTimeSerie
 
 print "Robot integration acquisition dans la base"
 
@@ -166,7 +170,13 @@ for dirSource in lstDir:
 			else:
 				print "File: "+f['filename']+" @ "+str(f['date'])+' already in filename database'
 				
-				
+		
+		#redefine serieId si "time serie"
+		timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
+		if timeSerie=='YES':
+			print "Redefine time Serie individual"
+			defineTimeSerie.redefineTimeSerieObject([obsId],1)
+			
 		#copie les fichiers vers le pipeline de traitement
 		archive.getFileRaw(returnedFileLST,destDir,obsId)
 

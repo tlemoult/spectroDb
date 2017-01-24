@@ -104,6 +104,11 @@ def get_confInstru_fromId(db,instruId):
 	confInstru['guideDetname']=result[5]
 	return confInstru
 
+def get_confObs_from_objId(db,objectId):
+	query='SELECT timeSerie FROM object WHERE objectId=%d'%objectId
+	result=commit_query_sql_table(db,query)
+	return { 'timeSerie': result[0]}
+
 def get_instruId_from_name(db,confInstru):
 	confName=confInstru['configName']
 	query='SELECT instruId FROM instrum where name="%s"'%(confName)

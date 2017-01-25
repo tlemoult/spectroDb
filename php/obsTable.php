@@ -39,6 +39,7 @@ if(!empty($_POST['choix']))
 $sql = "select observation.obsId,observation.dateObs,
 observer.alias as observer,
 site.name as siteName,
+object.objectId as objId,
 object.name as obj,
 object.bayerName as obj2,
 object.OTYPE_V as objtype,
@@ -78,10 +79,11 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>dateObs (UTC)</th>";
                 echo "<th>site</th>";
                 echo "<th>project</th>";
-                echo "<th>REF</th>";         
-                echo "<th>target name</th>";
+                echo "<th>REF</th>";
+                echo "<th>objId</th>";
+                echo "<th>object name</th>";
                 echo "<th>bayer name</th>";
-                echo "<th>target description</th>";
+                echo "<th>object description</th>";
                 echo "<th>SpType</th>";            
                 echo "<th>MagV</th>";            
                 echo "<th>instrument</th>";
@@ -95,6 +97,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['siteName'] . "</td>";
                 echo "<td>" . $row['projName'] . "</td>";
                 echo "<td>" . $row['isRef'] . "</td>";
+                echo "<td>" . $row['objId'] . "</td>";
                 echo "<td>" . $row['obj'] . "</td>";
                 echo "<td>" . $row['obj2'] . "</td>";
                 echo "<td>" . $row['objtype'] . "</td>";

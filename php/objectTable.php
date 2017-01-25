@@ -22,7 +22,9 @@ $link=connectDb();
 // Attempt select query execution
 //$sql = "select * from object order by alpha";
 
-$sql = "select DISTINCT object.name as name,bayerName,noHD,OTYPE_V,alpha,delta,FLUX_V,FLUX_B,FLUX_R,FLUX_K,FLUX_H,RV_VALUE,SP_TYPE,MK_Spectral_type,project.name as projectName from object
+$sql = "select DISTINCT object.objectId as objId,
+object.name as name,bayerName,noHD,OTYPE_V,alpha,delta,FLUX_V,FLUX_B,FLUX_R,FLUX_K,FLUX_H,RV_VALUE,SP_TYPE,MK_Spectral_type,project.name as projectName 
+from object
 LEFT join observation on object.objectId=observation.objId
 LEFT join project on observation.projectId=project.projectId
 ORDER BY project.name,SP_TYPE;";
@@ -37,6 +39,7 @@ if($result = mysqli_query($link, $sql)){
     if($rowcount > 0){
         echo "<table border=2>\n";
             echo "<tr>";
+                echo "<th>ObjId</th>";
 				echo "<th>Project</th>";
                 echo "<th>name</th>";
                 echo "<th>bayerName</th>";
@@ -44,11 +47,11 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>OTYPE_V</th>";         
                 echo "<th>alpha</th>";
                 echo "<th>delta</th>";
-                echo "<th>FLUX_V</th>";
-                echo "<th>FLUX_B</th>";            
-                echo "<th>FLUX_R</th>";            
-                echo "<th>FLUX_K</th>";
-                echo "<th>FLUX_H</th>";
+                echo "<th>MagV</th>";
+                echo "<th>MagB</th>";            
+                echo "<th>MagR</th>";            
+                echo "<th>MagK</th>";
+                echo "<th>MagH</th>";
                 echo "<th>RV_VALUE</th>";
                 echo "<th>SP_TYPE</th>";
                 echo "<th>MK_Spectral_type</th>";
@@ -56,6 +59,7 @@ if($result = mysqli_query($link, $sql)){
             echo "</tr>\n";
         while($row = mysqli_fetch_array($result)){
             echo "<tr>";
+                echo "<td>" . $row['objId'] . "</td>";
                 echo "<td>" . $row['projectName'] . "</td>";
                 echo "<td>" . $row['name'] . "</td>";
                 echo "<td>" . $row['bayerName'] . "</td>";

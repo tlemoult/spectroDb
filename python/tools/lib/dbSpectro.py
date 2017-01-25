@@ -162,6 +162,17 @@ def getFilesPerObsId(db,obsId,fileTypeLst): # 'OBJECT','CALIB','TUNGSTEN','LED'
 	query+="order by fileName.date ASC"
 	return commit_query_sql_All_table(db,query)
 
+def getFilesSpcPerObjId(db,objId):
+	query="select fileSpectrum.path,fileSpectrum.filename from fileSpectrum"
+	query+=" left join observation on fileSpectrum.obsId=observation.obsId "
+	query+=" left join object on observation.objId=object.objectId"
+	query+=" where object.objectId=%d"%objId
+	return commit_query_sql_All_table(db,query)
+
+def getFilesSpcPerObsId(db,obsId):
+	query="select path,filename from fileSpectrum where obsId=%d"%obsId
+	return commit_query_sql_All_table(db,query)
+
 def getPathFilename_from_md5sum(db,md5sum):
 	query="select fileName.destDir,fileName.filename from fileName "
 	query+="""where fileName.md5sum='%s' """%md5sum

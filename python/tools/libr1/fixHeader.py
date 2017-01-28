@@ -254,12 +254,13 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 				if 'BINX' in prihdr.keys():
 					prihdr['BIN1']=(prihdr['BINX'],'X binning')
 					prihdr['BIN2']=(prihdr['BINY'],'Y binning')
-				else:
-					prihdr['BIN1']=(1,'X binning')
+				elif 'X1' in prihdr.keys() and 'X2' in prihdr.keys():
+					binning=int(round((prihdr['X2']-prihdr['X1'])/float(prihdr['NAXIS1'])))
+					prihdr['BIN1']=(binning,'X binning')
 					prihdr['BIN2']=prihdr['BIN1']
 					prihdr['BINX']=prihdr['BIN1']
 					prihdr['BINY']=prihdr['BIN1']
-
+					print "binning calcule=",binning
 					
 				if (filetype=="BIAS"):
 					prihdr['EXPOSURE']=(0,'Exposure time seconds')

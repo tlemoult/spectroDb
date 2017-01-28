@@ -7,7 +7,7 @@ path=config['path']
 racineArchive=path['archive']
 signalPrism=path['signalPrism']
 PathFileNewRaw=racineArchive+signalPrism+"/newRawData"
-cmdSignalNewRaw="../robot-1-in-db/run.sh"
+cmdSignalNewRaw="../tools/in-raw-run.sh"
 
 print "Majordome, check every 60 seconds."
 print "  Signals: "+PathFileNewRaw+"   => action="+cmdSignalNewRaw

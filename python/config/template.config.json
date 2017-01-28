@@ -12,5 +12,13 @@
 		"archive":"/media/tlemoult/extdata/base",
 		"signalPrism":"/signals/fromPRISM",
 		"eShelPipe":"/home/tlemoult/audela/pipeEshel"
+	},
+	"email": {
+		"smtp":"smtp.gmail.com:587",
+		"login":"thierry.lemoult@gmail.com", 
+        "password":"xxxx",
+        "from":"thierry.lemoult@gmail.com",
+        "to":"thierry.lemoult@gmail.com",
+        "cc":" "
 	}
 }

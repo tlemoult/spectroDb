@@ -8,6 +8,7 @@ import libr1.fixHeader as fixHeader
 import libr1.archive as archive
 import libr1.cds as cds
 import libr1.myJson as myJson
+import lib.emailFnc as emailFnc
 import defineTimeSerie
 
 print "Robot integration acquisition dans la base"
@@ -58,8 +59,28 @@ for dirSource in lstDir:
 		
 		if json['statusObs']=='started':
 			print "statusObs=started   Do not process"
+			try:
+				emailFnc.sendEmail("[Carl]Obs started "+json['target']['objname'][0],"Your dear Carl.")
+			except:
+				print "pb dans l envois de le mail"
 			continue  # on ne traite pas les observations en cours
-		
+
+		if json['statusObs']!='finished':
+			continue 
+		# on traite que ce qui est finis
+
+		#email sur l'observation
+		msg="Target Name="+json['target']['objname'][0]+"\n"
+		try:
+			msg+="Exposure: "+str(json['obsConfig']['NbExposure'])+" x "+str(json['obsConfig']['ExposureTime'])+" seconds.\n"
+			msg+="Total Exposure: "+str(json['obsConfig']['TotalExposure'])+" seconds.\n"
+		except:
+			msg="No detail on observation\n"
+		try:
+			emailFnc.sendEmail('[Carl]Obs finished '+json['target']['objname'][0],msg+"\nYour dear Carl.")
+		except:
+			print "pb dans l envois de le mail"
+
 		ra=json['target']['coord']['ra']
 		dec=json['target']['coord']['dec']
 		objname=json['target']['objname'][0]

@@ -75,7 +75,7 @@ class MySchedule(object):
 				(ra,dec)=coord.split(' ')
 				line='"'+name+'"  '+ra[:-3]+'s  '+dec[:-3]+'s  '+str(FLUX_V)+'  FALSE  "Project='+str(project)
 				line+="&uid="+str(uid)
-				line+="&calib="+calib
+				line+="&calib="+str(calib)
 				if ExposureTime!=None:  line+="&ExposureTime="+str(ExposureTime)
 				if NbExposure!=None: line+="&NbExposure="+str(NbExposure)
 				if TotExposure!=None: line+="&TotExposure="+str(TotExposure)

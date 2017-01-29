@@ -10,8 +10,8 @@ _base=`cat ../config/config.json | getJsonVal "['path']['archive']" | tr -d '"' 
 
 
 _now=$(date +%Y_%m_%d_%H_%M_%S)
-_log_file="$_base/log/in.$_now.log"
-_err_file="$_base/log/in.$_now.err"
+_log_file="$_base/log/in.raw.$_now.log"
+_err_file="$_base/log/in.raw.$_now.err"
 _source_dir="$_base/in/"
 
 echo "robot integration fichiers acquisitions" 

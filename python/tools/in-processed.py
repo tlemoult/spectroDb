@@ -160,7 +160,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
-				sf=ret['sourceFilename'].split('.')[0]  # short access on filename without extension
+				sf=ret['sourceFilename'].split('.fit')[0]  # short access on filename without extension
 
 				if sf.startswith('@pro'): # partial spectrum from ISIS serie  @pro
 					p=sf[4:]  # after  @pro
@@ -394,12 +394,7 @@ def createDir(dirpath):
 			print "create dir"+pwd
 			os.mkdir(pwd)
 
-def archiveFiles(metas,pathArchive):
-
-	print "******************"
-	print "*  archiveFiles  *"
-	print "******************"
-	
+def archiveFiles(metas,pathArchive,enableDelete):
 
 	for f in metas:
 		meta=metas[f]
@@ -425,6 +420,8 @@ def archiveFiles(metas,pathArchive):
 
 			if dbSpectro.insert_filename_meta(db,meta):
 				dbSpectro.update_observation_status(db,meta['obsId'],'REDUCED')
+				if enableDelete:
+					os.remove(meta['sourcePath']+'/'+meta['sourceFilename'])
 			else:
 				logException(meta['sourcePath']+meta['sourceFilename'],'errorInsertDb')
 
@@ -442,10 +439,15 @@ def logException(msg,reason):
 #########
 print "in-process.py"
 
-
 if len(sys.argv)==1:  # pas d argument
-	print "prend un argument: repertoire de travail"
+	print "prend un argument pour laisser la source: repertoire"
+	print "ou deux arguments pour effacer la source apres integration:   repertoire delete"
 	exit()
+elif len(sys.argv)==2:  # un seul argument
+	enableDelete=False
+elif len(sys.argv)==3 and sys.argv[2]=='delete':
+	enableDelete=True
+	print "efface les fichiers apres integration"
 
 db=dbSpectro.init_connection()
 dbSpectro.setLogLevel(4)
@@ -467,12 +469,12 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	try:
 		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 		metas=setDstPath(metas,db)
-		#print json.dumps(metas,sort_keys=True, indent=4)
+		print json.dumps(metas,sort_keys=True, indent=4)
 
 		for f in metas: 
 			if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])
 
-		archiveFiles(metas,pathArchive)
+		archiveFiles(metas,pathArchive,enableDelete)
 	except:
 		logException(dirpath,'mainException')
 

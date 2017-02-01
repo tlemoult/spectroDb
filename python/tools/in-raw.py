@@ -138,7 +138,12 @@ for dirSource in lstDir:
 	
 	if objname!='':   # arrive si on a que des darks , flat dans le dossier
 		print 'interroge le CDS obj="'+objname+'" ',
-		cdsInfo=cds.getsimbadMesurement(objname)
+		try:
+			cdsInfo=cds.getsimbadMesurement(objname)
+		except:
+			print("Unexpected error:", sys.exc_info()[0])
+			raise
+			
 		if 'alpha' in cdsInfo.keys():  # objet connus du CDS ?
 			print " OK"
 			ra=cdsInfo['alpha']

@@ -169,6 +169,11 @@ def getFilesSpcPerObjId(db,objId):
 	query+=" where object.objectId=%d"%objId
 	return commit_query_sql_All_table(db,query)
 
+def getAllFileIdFileName(db,fileTypeList):
+	query="select fileId,phase,destDir,filename from fileName"
+	query+=""" where filetype in (%s)"""%fileTypeList
+	return commit_query_sql_All_table(db,query)
+
 def getFilesSpcPerObsId(db,obsId):
 	query="select path,filename from fileSpectrum where obsId=%d"%obsId
 	return commit_query_sql_All_table(db,query)
@@ -183,7 +188,12 @@ def update_files_serieId(db,fileId,serieId):
 	sql="""UPDATE fileName SET """
 	sql+="""serieId='"""+serieId+"""'"""
 	sql+=""" WHERE fileId=%d"""%(fileId)
-	
+	return commit_insert_sql(db,sql)
+
+def update_expTime_fileId(db,fileId,expTime):
+	sql="""UPDATE fileName SET """
+	sql+="expTime="+str(expTime)
+	sql+=" WHERE fileId=%d"%(fileId)	
 	return commit_insert_sql(db,sql)
 
 def update_observation_status(db,obsId,status):

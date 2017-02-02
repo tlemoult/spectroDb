@@ -264,6 +264,10 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 					
 				if (filetype=="BIAS"):
 					prihdr['EXPOSURE']=(0,'Exposure time seconds')
+
+				if 'EXPOSURE' not in prihdr.keys():
+					prihdr['EXPOSURE']=(0,'Exposure time seconds')
+
 				hdulist.writeto(path+'tmp')
 				hdulist.close(path)
 				os.remove(path)
@@ -275,13 +279,13 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 				#info pour stokage dans la base de donne
 				returnedFileLST.append({'typ':filetype,'date':datetime.datetime.strptime(prihdr['DATE-OBS'][:19],'%Y-%m-%dT%H:%M:%S'),
 										'filename':os.path.basename(newpath),'serieId':serieID[filetype],'detector':prihdr['DETNAM'],
-										'ccdTemp':prihdr['CCD-TEMP'],'binning':str(prihdr['BINX'])+'x'+str(prihdr['BINY'])})
+										'ccdTemp':prihdr['CCD-TEMP'],'expTime':str(prihdr['EXPOSURE']),'binning':str(prihdr['BINX'])+'x'+str(prihdr['BINY'])})
 
 	# traite les fichiers json
 	for ff in os.listdir(directory):
 		if fnmatch.fnmatch(ff,'*.json'):
 			returnedFileLST.append({'typ':'JSON','date':datetime.datetime.fromtimestamp(os.path.getmtime(directory+'/'+ff)),
-									'filename':ff,'serieId':'None','ccdTemp':None,'binning':None,'detector':None})
+									'filename':ff,'serieId':'None','ccdTemp':None,'binning':None,'detector':None,'expTime':None})
 				
 	returnedFileLST=renameFileSeries(directory,returnedFileLST)
 

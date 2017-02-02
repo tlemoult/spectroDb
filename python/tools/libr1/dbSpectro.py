@@ -197,11 +197,12 @@ def insert_filename(db,obsId,phase,destDir,f):
 	if f['binning']==None: f['binning']=''
 	if f['ccdTemp']==None: f['ccdTemp']='NULL'
 	if f['detector']==None: f['detector']=''
+	if f['expTime']==None: f['expTime']='NULL'
 
-	sql="""INSERT INTO fileName(obsId,phase,filetype,filename,date,serieId,destDir,tempCCD,binning,detector)"""
-	sql+=""" VALUES (%s,'%s','%s','%s','%s','%s','%s',%s,'%s','%s')"""%(str(obsId),phase,f['typ'],f['filename'],
+	sql="""INSERT INTO fileName(obsId,phase,filetype,filename,date,serieId,destDir,tempCCD,binning,detector,expTime)"""
+	sql+=""" VALUES (%s,'%s','%s','%s','%s','%s','%s',%s,'%s','%s',%s)"""%(str(obsId),phase,f['typ'],f['filename'],
 															f['date'].strftime('%Y-%m-%d %H:%M:%S'),
-															f['serieId'],destDir,str(f['ccdTemp']),str(f['binning']),str(f['detector']))
+															f['serieId'],destDir,str(f['ccdTemp']),str(f['binning']),str(f['detector']),f['expTime'])
 	commit_insert_sql(db,sql)
 	
 def insert_observation(db,projectId,objID,dateObs,isRef,observerId,instruId,siteId):

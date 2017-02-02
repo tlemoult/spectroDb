@@ -11,6 +11,7 @@
 	"path": {
 		"archive":"/media/tlemoult/extdata/base",
 		"signalPrism":"/signals/fromPRISM",
+		"signalAudela":"/signals/fromAudela",
 		"eShelPipe":"/home/tlemoult/audela/pipeEshel"
 	},
 	"email": {

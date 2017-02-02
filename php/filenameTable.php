@@ -115,6 +115,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>filename</th>";
                 echo "<th>dateObs(UTC)</th>";
                 echo "<th>serieId</th>";         
+                echo "<th>exposure(s)</th>";
                 echo "<th>tempCCD(°C)</th>";
                 echo "<th>binning</th>";
                 echo "<th>detector</th>";            
@@ -128,6 +129,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['filename'] . "</td>";
                 echo "<td>" . $row['date'] . "</td>";
                 echo "<td>" . $row['serieId'] . "</td>";
+                echo "<td>" . $row['expTime'] . "</td>";
                 echo "<td>" . $row['tempCCD'] . "</td>";
                 echo "<td>" . $row['binning'] . "</td>";
                 echo "<td>" . $row['detector'] . "</td>";
@@ -168,6 +170,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>path</th>";
                 echo "<th>filename</th>";
                 echo "<th>date</th>";
+                echo "<th>exposure(s)</th>";
                       
             echo "</tr>\n";
         while($row = mysqli_fetch_array($result)){
@@ -178,6 +181,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['destDir'] . "</td>";
                 echo "<td>" . $row['filename'] . "</td>";
                 echo "<td>" . $row['date'] . "</td>";
+                echo "<td>" . $row['expTime'] . "</td>";
             echo "</tr>\n";
         }
         echo "</table>";

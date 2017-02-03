@@ -69,7 +69,8 @@ left join instrum on instrum.instruId=observation.instruId
 left join site on site.siteId=observation.siteId
 left join observer on observer.observerID=observation.observerId
 left join project on project.projectId =observation.projectId
-where object.name like '". $searchStar. "%'  and project.name like '".$projectName. "%' and observation.status like '".$statusValue."%'
+where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
+and project.name like '".$projectName. "%' and observation.status like '".$statusValue."%'
 order by observation.dateObs DESC ";
 
 //echo $sql;

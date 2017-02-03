@@ -15,11 +15,26 @@ if(!empty($_POST['searchStar']))
 else 
 { $searchStar=""; }
 
+if(!empty($_POST['projectName']))
+{ $projectName=$_POST['projectName']; }
+else 
+{ $projectName=""; }
+
+if(!empty($_POST['statusValue']))
+{ $statusValue=$_POST['statusValue']; }
+else 
+{ $statusValue=""; }
+
 
 echo '<form action="obsTable.php" method="post">';
-echo '<p> SearchStar ';
+echo '<p>object name ';
 echo '    <input type="text" name="searchStar" value="'.$searchStar .'"/>';
-echo '    <input type="submit"  value="rechercher" />';
+echo ' project ';
+echo '    <input type="text" name="projectName" value="'.$projectName .'"/>';
+echo ' status';
+echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/>';
+echo '';
+echo '    <input type="submit"  value="apply filter" />';
 echo '</form>';
 
 
@@ -54,7 +69,8 @@ left join instrum on instrum.instruId=observation.instruId
 left join site on site.siteId=observation.siteId
 left join observer on observer.observerID=observation.observerId
 left join project on project.projectId =observation.projectId
-where object.name like '". $searchStar. "%' order by observation.dateObs DESC ";
+where object.name like '". $searchStar. "%'  and project.name like '".$projectName. "%' and observation.status like '".$statusValue."%'
+order by observation.dateObs DESC ";
 
 //echo $sql;
 

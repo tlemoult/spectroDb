@@ -231,11 +231,13 @@ def insert_filename_meta(db,meta):
 		else: tempCCD='NULL'
 		if 'binning' in meta.keys(): binning="'"+meta['binning']+"'"		
 		else: binning='NULL'
+		if 'expTime' in meta.keys(): expTime=str(meta['expTime'])
+		else: expTime='NULL'
 
-		sql="""INSERT INTO fileName(obsId,filename,destDir,"""
+		sql="""INSERT INTO fileName(obsId,filename,destDir,expTime,"""
 		sql+="""date,filetype,md5sum,phase,"""
 		sql+="""binning,detector,tempCCD)"""
-		sql+=""" VALUES (%s,'%s','%s',  '%s','%s','%s','DATA',  %s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],
+		sql+=""" VALUES (%s,'%s','%s',%s,  '%s','%s','%s','DATA',  %s,%s,%s)"""%(meta['obsId'],meta['destinationFilename'],meta['destinationPath'],expTime,
 															meta['dateObs'].replace('T',' '),meta['fileType'],meta['md5sum'],
 															binning,detector,tempCCD)
 		return commit_insert_sql(db,sql)

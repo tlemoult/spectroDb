@@ -16,6 +16,7 @@ import xmltodict
 import tempfile
 import zipfile
 import shutil
+import logging
 
 
 def calcMd5sum(path,filename):
@@ -370,7 +371,7 @@ def defineTargetNameSpectrumFile(meta):
 
 	datestr=meta['dateObs'][:10].replace('-','')
 
-	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+str(meta['expTime'])+'_'+observer
+	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+str(int(round(float(meta['expTime']))))+'_'+observer
 	extensionFit=filename.split('.')[-1]
 
 	if 'BSS_ORD' in meta.keys():
@@ -476,7 +477,8 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 
 		archiveFiles(metas,pathArchive,enableDelete)
 	except:
-		logException(dirpath,'mainException')
+		logging.exception("Main Loop:")
+		logException(dirpath,'mainException'+str(sys.exc_info()[0]))
 
 	print "remove temporary Path=",tmpPath
 	shutil.rmtree(tmpPath)

@@ -97,7 +97,7 @@ ElevationMaxSun=-8
 // attente en minute avant un rebouclage si tout a echoue.. 
 DureeAttenteSiAucunSucces=30
 // Flag pour declencher le parking a la fin du script, sinon l entrainment horaire s'arrete simplement.
-ActiveParkingTelescope=0
+ActiveParkingTelescope=1
 // Position pour le parking en radian
 // HA=Hangle horaire   De=Declinaison
 ParkHa=0.0174
@@ -107,7 +107,7 @@ ParkDe=-0.717330
 DelayRepriseRA=10000
 
 // Flag pour couper l alimentation des cameras en fin de session.
-ActiveCoupureCameraFinSession=0
+ActiveCoupureCameraFinSession=1
 
 
 // presence d'une coupole  1=> Oui   0=>non

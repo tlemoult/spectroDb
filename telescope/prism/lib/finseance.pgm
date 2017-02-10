@@ -17,9 +17,11 @@ finSeance:
 	
 	IF (ActiveParkingTelescope=1) then
 		print "parking du telescope"
-		delay 5000
+		delay 3000
 		WAITFORENDDELAY
 		PARK_TELESCOPE ParkHa ParkDe
+		delay 3000
+		WAITFORENDDELAY
 	ENDIF
 	
 	delay 5000
@@ -36,6 +38,8 @@ finSeance:
 	STR_RAD_TO_DEC Azimuth DD$ DM$ DS$
 	print "    Azimuth       = " DD$ "d " DM$ "m" DS$ "s"
 	
+	gosub set_cooling_camera_off:
+
 	IF (ActiveCoupureCameraFinSession=1) then
 		print "Fermeture des panneaux cameras"
 		CLOSE_CCD_CAMERA_EX CameraChamp

@@ -17,7 +17,7 @@
 	
 boucleSeance:
 	Print "attente d un ciel noir"
-	gosub set_cooling_camera_off:
+	// gosub set_cooling_camera_off:
 	GOSUB BoucleAttendBeauTemp:
 entreSeanceImmediat:
 	GOSUB seance-observation:
@@ -26,15 +26,16 @@ exit
 
 seance-observation:
 	print "on commence a observer"
-
+	GOSUB ConfigCamera:
 	GOSUB set_cooling_camera_on:
+	
 	gosub init_dome_telescope:
+	gosub Oriente_Camera:
 	
 	GOSUB setWorkDirGeneral:
 	GOSUB OuvreFichierLog:
+
 	GOSUB wait_cooling_camera_ready:
-	GOSUB ConfigCamera:
-	gosub Oriente_Camera:
 
 RebouclageGeneral:
 
@@ -214,7 +215,6 @@ MinaLoopFinSeance:
 	
 MinaLoopGeneralSoleilLevÃ©:
 	GOSUB finseance:
-	gosub set_cooling_camera_off:
 	GOSUB GeneNextLSTTarget:
 	GOSUB FermeFichierLog:
 	return
@@ -325,7 +325,8 @@ PythonScriptFinDeSeance$=pathPythonScript$+"alim-off-fin-seance.py"
 PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
-PythonScriptControlIPX800$="C:\Users\thierry\Dropbox\python\powercontrol\wget.py"
+PythonScriptControlIPX800$="C:\Users\DELL\Dropbox\python\powercontrol\IPX800set.py"
+PythonScriptControlBox$="C:\Users\DELL\Dropbox\python\powercontrol\PowerBoxSet.py"
 
 PathBatBaseIn$="C:\Program Files\putty\plink.exe"
 PathBatBaseInArgs$="-load Linux-bureau -l tlemoult /home/tlemoult/Dropbox/python/spectroAutoPubli/robot-1-in-db/run.sh"
@@ -395,7 +396,7 @@ ElevationMaxSun=-8
 // attente en minute avant un rebouclage si tout a echoue.. 
 DureeAttenteSiAucunSucces=30
 // Flag pour declencher le parking a la fin du script, sinon l entrainment horaire s'arrete simplement.
-ActiveParkingTelescope=0
+ActiveParkingTelescope=1
 // Position pour le parking en radian
 // HA=Hangle horaire   De=Declinaison
 ParkHa=0.0174
@@ -405,7 +406,8 @@ ParkDe=-0.717330
 DelayRepriseRA=10000
 
 // Flag pour couper l alimentation des cameras en fin de session.
-ActiveCoupureCameraFinSession=0
+ActiveCoupureCameraFinSession=1
+DurationAttenteAvantCoupeCameraMillis=180000
 
 
 // presence d'une coupole  1=> Oui   0=>non
@@ -476,8 +478,8 @@ DATETOSTR  Date_Start Date_Start$
 
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
-// magnitude limite pour considere que le ciel est bien noir..
-LimitMagnitudeCiel=16.6
+// magnitude limite pour considere que le ciel est bien noir..  16.6
+LimitMagnitudeCiel=13
 // après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=6
 CompteurBeauTemp=0
@@ -647,8 +649,8 @@ init_dome_telescope:
 			NOW date
 			GetStdrLongitude Longitude
 			SIDERALTIME Date Longitude TSL
-			Ha=TSL-ParkHa
-			CALIBRATE_TELESCOPE  Ha ParkDe
+			RaPark=TSL-ParkHa
+			CALIBRATE_TELESCOPE  RaPark ParkDe
 		ELSE
 			print "dome deja ouvert, on considere que le telescope est déparké"
 		ENDIF
@@ -661,8 +663,16 @@ return
 
 ConfigCamera:
 
+    ////// Chercheur   ////////////
 	if CameraChercheurPresente=1 then
-		Print "Configuration camera Chercheur"
+		Print "Initialise camera Chercheur"
+		print "   Connexion"
+		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		if Valid<>2 THEN
+			print "erreur" Cause$
+		endif
+
+		print "  Configuration"		
 		SETBINNINGX_EX CameraChercheur binCameraChercheur
 		SETBINNINGY_EX CameraChercheur binCameraChercheur
 		SetWindowFullFrame_EX CameraChercheur
@@ -677,9 +687,32 @@ ConfigCamera:
 		HEIGHT Img1 HeightImgCameraChercheur
 		Close Img1
 		CLEARIMGWINDOWS
+		
+		if AngleCCDChercheurWEST<180 then
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
+		else
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
+		EndIf
+
 	endif
+
 	
-	Print "Configuration Camera Champ"
+	
+    //////////  Champ	  ///////////
+	Print "Initialise camera Champ"	
+	print "   Mise sous tension"
+	parm$=PythonScriptControlBox$+" 1=1"
+	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	delay 3000
+	WAITFORENDDELAY
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraChamp Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	print "  Configuration"
 	SETBINNINGX_EX CameraChamp binCameraChamp
 	SETBINNINGY_EX CameraChamp binCameraChamp
 	SetWindowFullFrame_EX CameraChamp
@@ -697,8 +730,30 @@ ConfigCamera:
 	HEIGHT Img2 HeightImgCameraChamp
 	Close Img2
 	CLEARIMGWINDOWS
+	
+	if AngleCCDChampWEST<180 then
+		AngleCCDChampEAST=AngleCCDChampWEST+180
+	else
+		AngleCCDChampEAST=AngleCCDChampWEST-180
+	EndIf
 
-	Print "Configuration Camera Spectre"
+
+	
+	//////  Spectro ///////////
+	Print "Initialize Camera Spectro"
+	print "   Mise sous tension"
+	parm$=PythonScriptControlIPX800$+"  5=1"
+	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	delay 3000
+	WAITFORENDDELAY
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraSpectre Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	print "  Configuration"	
 	SETBINNINGX_EX CameraSpectre binCameraSpectre
 	SETBINNINGY_EX CameraSpectre binCameraSpectre
 	SetMirror_EX CameraSpectre MiroirXCameraSpectre MiroirYCameraSpectre
@@ -712,20 +767,7 @@ ConfigCamera:
 	Print "Offset Camera Spectre " OffsetValueCameraSpectre " ADU"
 	Close img3
 	CLEARIMGWINDOWS
-	
-	if AngleCCDChercheurWEST<180 then
-		AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
-	else
-		AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
-	EndIf
-	
-	if AngleCCDChampWEST<180 then
-		AngleCCDChampEAST=AngleCCDChampWEST+180
-	else
-		AngleCCDChampEAST=AngleCCDChampWEST-180
-	EndIf
-	
-	
+		
 return
 
 
@@ -739,14 +781,8 @@ wait_cooling_camera_ready:
 	print "On attend que la temperature de consigne soit atteinte"
 	
 boucle_cooling_ready:
-	// fait une image pour recuperer la temperature du capteur
-	StartExposure_EX CameraSpectre 0
-	WaitForEndExposure_EX CameraSpectre
-	GetLastImageExposure_EX CameraSpectre img1
-	GetTCCD  Img1  ActualTempSpectre
-	Close img1
-	CLEARIMGWINDOWS
-	
+	// recupere la temperature du capteur
+	GETCCDTEMPERATURE_Ex CameraSpectre 1 ActualTempSpectre
 	difTemp=ActualTempSpectre-TempCameraSpectre
 	abs difTemp difTemp
 	if difTemp>4.0 then
@@ -1024,10 +1060,11 @@ finSeance:
 		REM on ne fait les flat que une fois par lancement du script..
 		ActiveFlatLISALHIRESFinSession=0
 	endif
-	
+
+    ///  Telescope ///	
 	IF (ActiveParkingTelescope=1) then
 		print "parking du telescope"
-		delay 5000
+		delay 3000
 		WAITFORENDDELAY
 		PARK_TELESCOPE ParkHa ParkDe
 	ENDIF
@@ -1045,7 +1082,10 @@ finSeance:
 	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
 	STR_RAD_TO_DEC Azimuth DD$ DM$ DS$
 	print "    Azimuth       = " DD$ "d " DM$ "m" DS$ "s"
-	
+
+	/// Camera ///
+	gosub set_cooling_camera_off:
+
 	IF (ActiveCoupureCameraFinSession=1) then
 		print "Fermeture des panneaux cameras"
 		CLOSE_CCD_CAMERA_EX CameraChamp
@@ -1053,8 +1093,19 @@ finSeance:
 		if (CameraChercheurPresente=1) then
 			CLOSE_CCD_CAMERA_EX CameraChercheur
 		ENDIF
-		print "Coupure alimentation"
-		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptFinDeSeance$		
+		
+		Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
+		delay DurationAttenteAvantCoupeCameraMillis
+		WAITFORENDDELAY
+		
+    	print "Coupure alimentation camera guidage"
+		parm$=PythonScriptControlBox$+" 1=0"
+		EXECEXTERNAL   pathPythonInterpreter$ parm$
+		
+		print "Coupure alimentation camera eShel"
+		parm$=PythonScriptControlIPX800$+"  5=0"
+		EXECEXTERNAL   pathPythonInterpreter$ parm$
+		
 	ENDIF
 	
 RETURN

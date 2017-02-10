@@ -22,8 +22,8 @@ init_dome_telescope:
 			NOW date
 			GetStdrLongitude Longitude
 			SIDERALTIME Date Longitude TSL
-			Ha=TSL-ParkHa
-			CALIBRATE_TELESCOPE  Ha ParkDe
+			RaPark=TSL-ParkHa
+			CALIBRATE_TELESCOPE  RaPark ParkDe
 		ELSE
 			print "dome deja ouvert, on considere que le telescope est déparké"
 		ENDIF

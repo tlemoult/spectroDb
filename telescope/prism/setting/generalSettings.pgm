@@ -27,7 +27,8 @@ PythonScriptFinDeSeance$=pathPythonScript$+"alim-off-fin-seance.py"
 PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
-PythonScriptControlIPX800$="C:\Users\thierry\Dropbox\python\powercontrol\wget.py"
+PythonScriptControlIPX800$="C:\Users\DELL\Dropbox\python\powercontrol\IPX800set.py"
+PythonScriptControlBox$="C:\Users\DELL\Dropbox\python\powercontrol\PowerBoxSet.py"
 
 PathBatBaseIn$="C:\Program Files\putty\plink.exe"
 PathBatBaseInArgs$="-load Linux-bureau -l tlemoult /home/tlemoult/Dropbox/python/spectroAutoPubli/robot-1-in-db/run.sh"
@@ -108,6 +109,7 @@ DelayRepriseRA=10000
 
 // Flag pour couper l alimentation des cameras en fin de session.
 ActiveCoupureCameraFinSession=1
+DurationAttenteAvantCoupeCameraMillis=180000
 
 
 // presence d'une coupole  1=> Oui   0=>non
@@ -178,7 +180,7 @@ DATETOSTR  Date_Start Date_Start$
 
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
-// magnitude limite pour considere que le ciel est bien noir..
+// magnitude limite pour considere que le ciel est bien noir..  16.6
 LimitMagnitudeCiel=16.6
 // après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=6

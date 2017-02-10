@@ -14,14 +14,13 @@ finSeance:
 		REM on ne fait les flat que une fois par lancement du script..
 		ActiveFlatLISALHIRESFinSession=0
 	endif
-	
+
+    ///  Telescope ///	
 	IF (ActiveParkingTelescope=1) then
 		print "parking du telescope"
 		delay 3000
 		WAITFORENDDELAY
 		PARK_TELESCOPE ParkHa ParkDe
-		delay 3000
-		WAITFORENDDELAY
 	ENDIF
 	
 	delay 5000
@@ -37,7 +36,8 @@ finSeance:
 	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
 	STR_RAD_TO_DEC Azimuth DD$ DM$ DS$
 	print "    Azimuth       = " DD$ "d " DM$ "m" DS$ "s"
-	
+
+	/// Camera ///
 	gosub set_cooling_camera_off:
 
 	IF (ActiveCoupureCameraFinSession=1) then
@@ -47,8 +47,19 @@ finSeance:
 		if (CameraChercheurPresente=1) then
 			CLOSE_CCD_CAMERA_EX CameraChercheur
 		ENDIF
-		print "Coupure alimentation"
-		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptFinDeSeance$		
+		
+		Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
+		delay DurationAttenteAvantCoupeCameraMillis
+		WAITFORENDDELAY
+		
+    	print "Coupure alimentation camera guidage"
+		parm$=PythonScriptControlBox$+" 1=0"
+		EXECEXTERNAL   pathPythonInterpreter$ parm$
+		
+		print "Coupure alimentation camera eShel"
+		parm$=PythonScriptControlIPX800$+"  5=0"
+		EXECEXTERNAL   pathPythonInterpreter$ parm$
+		
 	ENDIF
 	
 RETURN

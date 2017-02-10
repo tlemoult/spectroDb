@@ -188,6 +188,7 @@ MinaLoopFinSeance:
 		Print msg$
 		WriteFileTxt fileLog msg$
 		GOSUB finseance:
+		gosub set_cooling_camera_off:
 		GOSUB GeneNextLSTTarget:
 		GOSUB FermeFichierLog:
 		END

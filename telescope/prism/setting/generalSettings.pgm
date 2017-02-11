@@ -68,19 +68,25 @@ TempCameraSpectre=0
 
 // 1-> camera presente  0->1
 CameraChercheurPresente=1
+CameraChercheurName$="ZWO"
 CameraChercheur=3
-binCameraChercheur=1
 MiroirXCameraChercheur=0
 MiroirYCameraChercheur=0
 DirRepChercheur=0
 AngleCCDChercheurWEST=179
 FocaleCameraChercheur=133.5
-// position de l etoile dans le chercheur quand l etoile est dans la fente/trou
-ChercheurPosXBin=150	
-ChercheurPosYBin=496
-//  ZWO120 Bin2.  X=301 Y=215  Angle 179
-//  Lodestar Bin1 X=30 Y=568   Angle 179
-//  Le 19-01-2017  Lodestar Bin1  X=150   Y=496    mesuré Tube=West
+
+if CameraChercheurName$="ZWO" then
+	binCameraChercheur=2
+	ChercheurPosXBin=300
+	ChercheurPosYBin=215
+else
+    // Lodestar (config de backup)
+	binCameraChercheur=1
+	ChercheurPosXBin=150	
+	ChercheurPosYBin=496
+endif
+
 exposurephotometriechercheur=3
 
 /////////////////////Limite liee au pointage ////////////////////
@@ -102,14 +108,14 @@ ActiveParkingTelescope=1
 // Position pour le parking en radian
 // HA=Hangle horaire   De=Declinaison
 ParkHa=0.0174
-ParkDe=-0.717330
+ParkDe=-0.677330
 
 // delas en ms apres un pointage pour reprise de l'entrainement horaire
 DelayRepriseRA=10000
 
 // Flag pour couper l alimentation des cameras en fin de session.
 ActiveCoupureCameraFinSession=1
-DurationAttenteAvantCoupeCameraMillis=180000
+DurationAttenteAvantCoupeCameraMillis=60000
 
 
 // presence d'une coupole  1=> Oui   0=>non

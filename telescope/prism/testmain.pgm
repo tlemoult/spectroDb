@@ -1,0 +1,37 @@
+
+	GOSUB generalSettings:
+	GOSUB ConfigCamera:
+	GOSUB set_cooling_camera_on:
+	GOSUB wait_cooling_camera_ready:
+	GOSUB finseance:
+
+	END
+
+// on place toutes les procedures a la fin, sinon elle sont executee sans meme un appel...
+#include "generalSettings.pgm"
+#include "generalSubroutine.pgm"
+#include "init_dome_telescope.pgm"
+#include "init_camera.pgm"
+#include "approcheEtoileBrillante.pgm"
+#include "recaleAstrometrieAllSky-et-precis.pgm"
+#include "check_coord_cibles.pgm"
+#include "finSeance.pgm"
+#include "acquisition_Calibration.pgm"
+#include "pointe_et_gere_retournement.pgm"
+#include "pointe_etoile_brillante_proche.pgm"
+#include "guidage.pgm"
+#include "quick_brightest_star.pgm"
+#include "find_best_guide_star.pgm"
+#include "attente_dome.pgm"
+#include "affiche_planning.pgm"
+#include "meteo.pgm"
+#include "test_visibilitee.pgm"
+#include "liste_etoile_cat.pgm"
+#include "auto_exposure.pgm"
+#include "affine_position_fente.pgm"
+#include "test_etoile_seule_fenetre.pgm"
+#include "test_etoile_seule_fenetre_bright.pgm"
+#include "dialog_param_charge_LST_et_defini_cible.pgm"
+#include "photometrieChercheur.pgm"
+#include "JSON_obs.pgm"
+

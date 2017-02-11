@@ -1,0 +1,1 @@
+cpp  -traditional-cpp  -E -x none -I./lib -I./cibles -I./setting -o ./dist/test.pgm < testmain.pgm  

@@ -1,47 +1,12 @@
 
 ConfigCamera:
 
-    ////// Chercheur   ////////////
-	if CameraChercheurPresente=1 then
-		Print "Initialise camera Chercheur"
-		print "   Connexion"
-		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
-		if Valid<>2 THEN
-			print "erreur" Cause$
-		endif
-
-		print "  Configuration"		
-		SETBINNINGX_EX CameraChercheur binCameraChercheur
-		SETBINNINGY_EX CameraChercheur binCameraChercheur
-		SetWindowFullFrame_EX CameraChercheur
-		SetFlagShutter_EX CameraChercheur 0
-		StartExposure_EX CameraChercheur 0
-		WaitForEndExposure_EX CameraChercheur
-		GetLastImageExposure_EX CameraChercheur img1
-		GetSizePixX img1 TaillePixXCameraChercheur
-		GetSizePixY img1 TaillePixYCameraChercheur
-		GetFocus img1 FocaleCameraChercheur
-		WIDTH img1 WidthImgCameraChercheur
-		HEIGHT Img1 HeightImgCameraChercheur
-		Close Img1
-		CLEARIMGWINDOWS
-		
-		if AngleCCDChercheurWEST<180 then
-			AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
-		else
-			AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
-		EndIf
-
-	endif
-
-	
-	
     //////////  Champ	  ///////////
 	Print "Initialise camera Champ"	
 	print "   Mise sous tension"
 	parm$=PythonScriptControlBox$+" 1=1"
 	EXECEXTERNAL   pathPythonInterpreter$ parm$
-	delay 3000
+	delay 5000
 	WAITFORENDDELAY
 	
 	print "   Connexion"
@@ -50,7 +15,7 @@ ConfigCamera:
 		print "erreur" Cause$
 	endif
 
-	print "  Configuration"
+	print "   Configuration"
 	SETBINNINGX_EX CameraChamp binCameraChamp
 	SETBINNINGY_EX CameraChamp binCameraChamp
 	SetWindowFullFrame_EX CameraChamp
@@ -60,7 +25,7 @@ ConfigCamera:
 	WaitForEndExposure_EX CameraChamp
 	GetLastImageExposure_EX CameraChamp img2
 	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma
-	Print "Offset Camera Champ " OffsetValueCameraChamp " ADU"
+	Print "   Offset Camera Champ " OffsetValueCameraChamp " ADU"
 	GetSizePixX img2 TaillePixXCameraChamp
 	GetSizePixY img2 TaillePixYCameraChamp
 	GetFocus img2 FocaleCameraChamp
@@ -76,13 +41,12 @@ ConfigCamera:
 	EndIf
 
 
-	
 	//////  Spectro ///////////
 	Print "Initialize Camera Spectro"
 	print "   Mise sous tension"
 	parm$=PythonScriptControlIPX800$+"  5=1"
 	EXECEXTERNAL   pathPythonInterpreter$ parm$
-	delay 3000
+	delay 5000
 	WAITFORENDDELAY
 	
 	print "   Connexion"
@@ -91,7 +55,7 @@ ConfigCamera:
 		print "erreur" Cause$
 	endif
 
-	print "  Configuration"	
+	print "   Configuration"	
 	SETBINNINGX_EX CameraSpectre binCameraSpectre
 	SETBINNINGY_EX CameraSpectre binCameraSpectre
 	SetMirror_EX CameraSpectre MiroirXCameraSpectre MiroirYCameraSpectre
@@ -102,10 +66,48 @@ ConfigCamera:
 	WaitForEndExposure_EX CameraSpectre
 	GetLastImageExposure_EX CameraSpectre img3
 	GETBACKGROUND  Img3  OffsetValueCameraSpectre  Sigma
-	Print "Offset Camera Spectre " OffsetValueCameraSpectre " ADU"
+	Print "   Offset Camera Spectre " OffsetValueCameraSpectre " ADU"
 	Close img3
 	CLEARIMGWINDOWS
+
+	
+    ////// Chercheur   ////////////
+	if CameraChercheurPresente=1 then
+		Print "Initialise camera Chercheur"
+		print "   Connexion"
+
+		// commente car fonction buggue pour le chercheur (cam 3)  fonctionne bien pour les deux premiere cameras
+		//INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		//if Valid<>2 THEN
+		//	print "erreur" Cause$
+		//endif
+
+		print "   Configuration"		
+		SETBINNINGX_EX CameraChercheur binCameraChercheur
+		SETBINNINGY_EX CameraChercheur binCameraChercheur
+		SetWindowFullFrame_EX CameraChercheur
+		SetFlagShutter_EX CameraChercheur 0
+		StartExposure_EX CameraChercheur  0
+		WaitForEndExposure_EX CameraChercheur
+		GetLastImageExposure_EX CameraChercheur img1
+		GetSizePixX img1 TaillePixXCameraChercheur
+		GetSizePixY img1 TaillePixYCameraChercheur
+		GetFocus img1 FocaleCameraChercheur
+		WIDTH img1 WidthImgCameraChercheur
+		HEIGHT Img1 HeightImgCameraChercheur
+		end
+		Close Img1
+		CLEARIMGWINDOWS
 		
+		if AngleCCDChercheurWEST<180 then
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
+		else
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
+		EndIf
+
+	endif
+
+	
 return
 
 

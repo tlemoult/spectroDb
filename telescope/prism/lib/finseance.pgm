@@ -18,14 +18,29 @@ finSeance:
     ///  Telescope ///	
 	IF (ActiveParkingTelescope=1) then
 		print "parking du telescope"
-		delay 3000
-		WAITFORENDDELAY
-		PARK_TELESCOPE ParkHa ParkDe
+		
+		STR_RAD_TO_RA ParkHa HH$ MM$ SS$
+		STR_RAD_TO_DEC ParkDe DD$ DM$ DS$
+		PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
+   	    PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
+		
+		GetStdrLongitude Longitude
+		NOW date
+		SIDERALTIME Date Longitude TSL
+		ParkRa=TSL-ParkHa
+		STR_RAD_TO_RA ParkRa HH$ MM$ SS$
+		PRINT "    Alpha calcule = " HH$ "h " MM$ "m " SS$ "s"
+
+		print "    execution mouvement telescope"
+		MoveTelescope  ParkRa ParkDe
+		print "    attente fin mouvement telescope"
+		WaitForEndMoveTelescope
+		print "    arret entrainement"
+		STOPTELESCOPE
+
 	ENDIF
 	
-	delay 5000
-	WAITFORENDDELAY
-	print "recupere position telescope"
+	print "  recupere position telescope"
 	GET_TELESCOPE_POSITION  Alpha2000  Delta2000  Hauteur  Azimuth  AngleHor
 	STR_RAD_TO_RA AngleHor HH$ MM$ SS$
 	STR_RAD_TO_DEC Delta2000 DD$ DM$ DS$
@@ -45,7 +60,8 @@ finSeance:
 		CLOSE_CCD_CAMERA_EX CameraChamp
 		CLOSE_CCD_CAMERA_EX CameraSpectre
 		if (CameraChercheurPresente=1) then
-			CLOSE_CCD_CAMERA_EX CameraChercheur
+			// commente car l init camera chercheur est bugue dans PRISM V10
+			//CLOSE_CCD_CAMERA_EX CameraChercheur
 		ENDIF
 		
 		Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis

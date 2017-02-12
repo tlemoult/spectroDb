@@ -49,8 +49,6 @@ finSeance:
 	PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
 	STR_RAD_TO_DEC Hauteur DD$ DM$ DS$
 	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
-	STR_RAD_TO_DEC Azimuth DD$ DM$ DS$
-	print "    Azimuth       = " DD$ "d " DM$ "m" DS$ "s"
 
 	/// Camera ///
 	gosub set_cooling_camera_off:

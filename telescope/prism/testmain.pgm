@@ -1,4 +1,6 @@
 
+	
+
 	GOSUB generalSettings:
 	GOSUB ConfigCamera:
 	GOSUB set_cooling_camera_on:

@@ -70,18 +70,23 @@ TempCameraSpectre=0
 CameraChercheurPresente=1
 CameraChercheurName$="ZWO"
 CameraChercheur=3
-MiroirXCameraChercheur=0
-MiroirYCameraChercheur=0
-DirRepChercheur=0
-AngleCCDChercheurWEST=179
-FocaleCameraChercheur=133.5
 
 if CameraChercheurName$="ZWO" then
+	DirRepChercheur=1
+	MiroirXCameraChercheur=1
+	MiroirYCameraChercheur=0
+	FocaleCameraChercheur=147
 	binCameraChercheur=2
-	ChercheurPosXBin=300
-	ChercheurPosYBin=215
+	AngleCCDChercheurWEST=0
+	ChercheurPosXBin=297
+	ChercheurPosYBin=249
 else
     // Lodestar (config de backup)
+	DirRepChercheur=0
+	MiroirXCameraChercheur=0
+	MiroirYCameraChercheur=0
+	FocaleCameraChercheur=133.5
+	AngleCCDChercheurWEST=179
 	binCameraChercheur=1
 	ChercheurPosXBin=150	
 	ChercheurPosYBin=496

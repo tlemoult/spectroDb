@@ -1,0 +1,44 @@
+ume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de HD47129 ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+14/02/2017 00:30:49: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 10h 14m 46.764s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 18.994s
+    Declinaison   = -38d 48m28.87s
+    Hauteur       = +02d 18m23.37s
+Arret du refroidissement des cameras
+Attente rechauffement camera avant coupure alimentation en millisec=60000
+Fermeture des panneaux cameras
+Coupure alimentation camera guidage
+Coupure alimentation camera eShel
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 2 sur un total de 35
+attente d un ciel noir
+Nous sommes le 14/2/2017à 3:25:53,714( en UT ! )
+Il faut beau
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+Le script s'est arrêté à cause d'une erreur fatale : Ligne :  @ 687 -> "	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma  ERREUR : Variable "IMG2" non reconnue ou non initialisée!
+Script terminé ...

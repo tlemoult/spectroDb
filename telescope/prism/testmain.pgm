@@ -1,11 +1,18 @@
 
 	
-
 	GOSUB generalSettings:
+	NbBoucleGlobal=5
+
+For indexGlobalI=1 NbBoucleGlobal
+	print "*************************************************************"
+	print "Test: Nouveau cycle No " indexGlobalI " sur " NbBoucleGlobal
+	print "*************************************************************"
 	GOSUB ConfigCamera:
 	GOSUB set_cooling_camera_on:
 	GOSUB wait_cooling_camera_ready:
 	GOSUB finseance:
+	print "Test: Fin de cycle"
+Next indexGlobalI
 
 	END
 

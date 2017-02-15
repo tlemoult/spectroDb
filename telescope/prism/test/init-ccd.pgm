@@ -1,0 +1,39 @@
+
+
+
+
+totali=3
+for i=1 to totali
+	print "****** Boucle de test iteration " i " sur " totali
+	CameraChamp=1
+	durationOffsetInit=200
+	
+	Print " Initialise camera Champ"	
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraChamp Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	print "   recupere image rapide"
+	
+	StartExposure_EX CameraChamp durationOffsetInit
+	WaitForEndExposure_EX CameraChamp
+	GetLastImageExposure_EX CameraChamp img2
+	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma
+	Print "   Offset Camera Champ " OffsetValueCameraChamp " ADU"
+	close img2
+	CLEARIMGWINDOWS
+	
+	Print "Attente avant fermeture panneau camera"
+	delay 2000
+	WAITFORENDDELAY
+	
+	CLOSE_CCD_CAMERA_EX CameraChamp
+
+	Print "Attente avant rebouclage"
+	delay 2000
+	WAITFORENDDELAY
+	
+Next i

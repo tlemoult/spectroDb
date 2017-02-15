@@ -72,14 +72,14 @@ CameraChercheurName$="ZWO"
 CameraChercheur=3
 
 if CameraChercheurName$="ZWO" then
-	DirRepChercheur=1
-	MiroirXCameraChercheur=1
+	DirRepChercheur=0
+	MiroirXCameraChercheur=0
 	MiroirYCameraChercheur=0
 	FocaleCameraChercheur=147
 	binCameraChercheur=2
-	AngleCCDChercheurWEST=0
-	ChercheurPosXBin=297
-	ChercheurPosYBin=249
+	AngleCCDChercheurWEST=179
+	ChercheurPosXBin=344.8
+	ChercheurPosYBin=256.7
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0
@@ -148,7 +148,7 @@ OrientationFente=OriFentevertical
 // jusqu'au 18/01/2017   X=342 Y=274
 
 fentePosX=341
-fentePosY=273
+fentePosY=274
 
 
 // FLAT LISA LHIRES

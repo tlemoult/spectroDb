@@ -834,12 +834,16 @@ finSeance:
 		WAITFORENDDELAY
 
 		print "Fermeture des panneaux cameras"
-		CLOSE_CCD_CAMERA_EX CameraChamp
-		CLOSE_CCD_CAMERA_EX CameraSpectre
+//		CLOSE_CCD_CAMERA_EX CameraChamp
+//		CLOSE_CCD_CAMERA_EX CameraSpectre
 		if (CameraChercheurPresente=1) then
 			// commente car l init camera chercheur est bugue dans PRISM V10
 			//CLOSE_CCD_CAMERA_EX CameraChercheur
 		ENDIF
+
+		Print "Attente avant coupure alim camera"
+		delay 5000
+		WAITFORENDDELAY
 		
     	print "Coupure alimentation camera guidage"
 		parm$=PythonScriptControlBox$+" 1=0"
@@ -848,6 +852,12 @@ finSeance:
 		print "Coupure alimentation camera eShel"
 		parm$=PythonScriptControlIPX800$+"  5=0"
 		EXECEXTERNAL   pathPythonInterpreter$ parm$
+
+		Print "Attente apres coupure alim camera"
+		delay 5000
+		WAITFORENDDELAY
+
+		CLEARIMGWINDOWS
 		
 	ENDIF
 	

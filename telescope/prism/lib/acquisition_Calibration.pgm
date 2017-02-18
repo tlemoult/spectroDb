@@ -44,6 +44,11 @@ baoi:
 	GOSUB ReadMeteo:
 	if (MeteoOK=0) then
 		print "il faut mauvais temps on arrete les acquisitions au milieu"
+		STOPTELESCOPE
+		IF (coupole=1) then
+			print "fermeture du dome"
+			CLOSE_DOME
+		ENDIF
 		GOTO fbaoi:
 	endif
 	

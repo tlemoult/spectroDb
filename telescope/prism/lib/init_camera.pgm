@@ -1,6 +1,11 @@
 
 ConfigCamera:
 
+	if configCameraDone=1 THEN
+		print "cameras deja configure, on passe a la suite"
+		return
+	endif
+
 	CLEARIMGWINDOWS
 	durationOffsetInit=10
     //////////  Champ	  ///////////
@@ -122,15 +127,22 @@ wait_cooling_camera_ready:
 	print "On attend que la temperature de consigne soit atteinte"
 	
 boucle_cooling_ready:
+	iboucleCollingReady=1
 	// recupere la temperature du capteur
 	GETCCDTEMPERATURE_Ex CameraSpectre 1 ActualTempSpectre
 	difTemp=ActualTempSpectre-TempCameraSpectre
 	abs difTemp difTemp
-	if difTemp>4.0 then
+	if difTemp>3.0 then
 		print "    Consigne temp=" TempCameraSpectre " actualTemp=" ActualTempSpectre " delta=" difTemp
 		delay 10000
 		WAITFORENDDELAY
-		goto boucle_cooling_ready:
+		iboucleCollingReady=iboucleCollingReady+1
+		if iboucleCollingReady<>30 Then
+			goto boucle_cooling_ready:
+		endif
+		print "Mise en temperature trop longue, on abandonne"
+		return
+		
 	endif
 	print "Temperature de consigne atteinte"
 	

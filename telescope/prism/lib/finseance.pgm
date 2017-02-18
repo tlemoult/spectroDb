@@ -50,41 +50,54 @@ finSeance:
 	STR_RAD_TO_DEC Hauteur DD$ DM$ DS$
 	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
 
+	
 	/// Camera ///
 	gosub set_cooling_camera_off:
 
-	IF (ActiveCoupureCameraFinSession=1) then
-		
-		Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
-		delay DurationAttenteAvantCoupeCameraMillis
-		WAITFORENDDELAY
+	if (soleil_levee=1) THEN
+	    // On ferme les camera que quand il fait jours
+		IF (ActiveCoupureCameraFinSession=1) then
+			
+			Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
+			delay DurationAttenteAvantCoupeCameraMillis
+			WAITFORENDDELAY
 
-		print "Fermeture des panneaux cameras"
-//		CLOSE_CCD_CAMERA_EX CameraChamp
-//		CLOSE_CCD_CAMERA_EX CameraSpectre
-		if (CameraChercheurPresente=1) then
-			// commente car l init camera chercheur est bugue dans PRISM V10
-			//CLOSE_CCD_CAMERA_EX CameraChercheur
+			print "Fermeture des panneaux cameras"
+			CLOSE_CCD_CAMERA_EX CameraChamp
+			CLOSE_CCD_CAMERA_EX CameraSpectre
+			if (CameraChercheurPresente=1) then
+				// commente car l init camera chercheur est bugue dans PRISM V10
+				//CLOSE_CCD_CAMERA_EX CameraChercheur
+			ENDIF
+
+			Print "Attente avant coupure alim camera"
+			delay 5000
+			WAITFORENDDELAY
+			
+			print "Coupure alimentation camera guidage"
+			parm$=PythonScriptControlBox$+" 1=0"
+			EXECEXTERNAL   pathPythonInterpreter$ parm$
+			
+			print "Coupure alimentation camera eShel"
+			parm$=PythonScriptControlIPX800$+"  5=0"
+			EXECEXTERNAL   pathPythonInterpreter$ parm$
+
+			Print "Attente apres coupure alim camera"
+			delay 5000
+			WAITFORENDDELAY
+
+			CLEARIMGWINDOWS
+			
 		ENDIF
+	ENDIF
 
-		Print "Attente avant coupure alim camera"
-		delay 5000
-		WAITFORENDDELAY
-		
-    	print "Coupure alimentation camera guidage"
-		parm$=PythonScriptControlBox$+" 1=0"
-		EXECEXTERNAL   pathPythonInterpreter$ parm$
-		
-		print "Coupure alimentation camera eShel"
-		parm$=PythonScriptControlIPX800$+"  5=0"
-		EXECEXTERNAL   pathPythonInterpreter$ parm$
+	GOSUB GeneNextLSTTarget:
+	GOSUB FermeFichierLog:
 
-		Print "Attente apres coupure alim camera"
-		delay 5000
-		WAITFORENDDELAY
-
-		CLEARIMGWINDOWS
-		
+	
+	if (soleil_levee=1) THEN
+		print "arret du script ici, il fait jours"
+		END
 	ENDIF
 	
 RETURN

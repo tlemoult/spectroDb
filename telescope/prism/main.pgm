@@ -1,6 +1,7 @@
 
 	raisonEchec$=""
 	GOSUB generalSettings:
+	GOSUB checkDstDirOk:
 	GOSUB Dialog_param_et_Charge_LST_et_defini_cible:
 	GOSUB LampCalibOff:
 
@@ -140,6 +141,8 @@ For iobj=1 nbCibles
 		Print "Cible suivante"
 		raisonEchec$="Pb de pointage, astrometrie"
 		GOSUB LogObservationEchec:
+		currentStatusObs$="failed"
+		GOSUB write_JSON_Observation:
 		goto MaincibleSuivante:
 	ENDIF
 	
@@ -159,7 +162,7 @@ For iobj=1 nbCibles
 	GOSUB Acquisition:
 	GOSUB arret_guidage:
 	
-	// si deuxieme calibration demande
+	// calibration a la fin de l acqusition
 	IF  CalibrationAsk[iobj]<>0 THEN
 		STOPTELESCOPE
 		GOSUB Calibration:
@@ -181,16 +184,12 @@ MaincibleSuivante:
 	Print "passe a la cible suivante"
 NEXT iobj
 
-MinaLoopFinSeance:
-
 	//  si on a fini, on sort de la boucle... 
 	if (nbTRUE=nbCibles) then
 		msg$="Tous les objets de la liste ont ete observe avec succes."
 		Print msg$
 		WriteFileTxt fileLog msg$
 		GOSUB finseance:
-		GOSUB GeneNextLSTTarget:
-		GOSUB FermeFichierLog:
 		END
 		
 	ENDIF
@@ -211,8 +210,7 @@ MinaLoopFinSeance:
 	
 MinaLoopGeneralSoleilLevé:
 	GOSUB finseance:
-	GOSUB GeneNextLSTTarget:
-	GOSUB FermeFichierLog:
+
 	return
 
 attente_sans_succes:

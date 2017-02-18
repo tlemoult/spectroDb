@@ -50,6 +50,8 @@ WindowAllFrame=50
 // taille fenetre evaluation flux etoile guide
 WindowEvalGuideStar=20
 
+// dit que les cameras ne sont pas initialise
+configCameraDone=0
 //parametres des cameras
 CameraChamp=1
 binCameraChamp=2
@@ -75,7 +77,7 @@ if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
 	MiroirXCameraChercheur=0
 	MiroirYCameraChercheur=0
-	FocaleCameraChercheur=147
+	FocaleCameraChercheur=133.5
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=179
 	ChercheurPosXBin=344.8
@@ -192,7 +194,7 @@ DATETOSTR  Date_Start Date_Start$
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
-LimitMagnitudeCiel=16.6
+LimitMagnitudeCiel=16.8
 // après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=6
 CompteurBeauTemp=0

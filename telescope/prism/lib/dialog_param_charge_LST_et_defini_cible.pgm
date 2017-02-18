@@ -14,6 +14,7 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 	adddlgbox 5 "acquisition de Flat LISALHIRES en Fin de session" ActiveFlatLISALHIRESFinSession
 	adddlgbox 2 200 1 "Nombre de pose FLAT LISA LHIRES" NbFlatLISALHIRES
 	adddlgbox 2 200 1 "Temps de pose en secondes des FLAT LISA LHIRES" exposureTimeFLATLISA
+	adddlgbox 1 25 0 "Ciel: Mag limite pour observer" LimitMagnitudeCiel
 	
 	dispdlgbox result
 	if (result=1)
@@ -29,6 +30,7 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 		getdlgbox ActiveFlatLISALHIRESFinSession
 		getdlgbox NbFlatLISALHIRES
 		getdlgbox exposureTimeFLATLISA
+		getdlgbox LimitMagnitudeCiel
 	endif
 	
 	GETLISTFILENAMEEX  "selection des cibles"  "*.lst" DirCible$  FilesList$  NbFichier

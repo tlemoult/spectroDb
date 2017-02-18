@@ -38,6 +38,12 @@ setWorkDirGeneral:
 	CreateDir GeneralWorkDir$
 RETURN
 
+checkDstDirOk:
+	print "checkDstDir " Directory$
+	testfilename$=Directory$+"\"+"testFilePRISM"
+	Open_FileTxt_For_Rewrite fileTest testfilename$
+	CloseFileTxt fileTest
+	return
 
 OuvreFichierLog:
 	Open_FileTxt_For_Rewrite fileLog GeneralWorkDir$+"logAutoObservation-"+DateSession$+".txt"

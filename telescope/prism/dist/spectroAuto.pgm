@@ -5,6 +5,7 @@
 
 	raisonEchec$=""
 	GOSUB generalSettings:
+	GOSUB checkDstDirOk:
 	GOSUB Dialog_param_et_Charge_LST_et_defini_cible:
 	GOSUB LampCalibOff:
 
@@ -144,6 +145,8 @@ For iobj=1 nbCibles
 		Print "Cible suivante"
 		raisonEchec$="Pb de pointage, astrometrie"
 		GOSUB LogObservationEchec:
+		currentStatusObs$="failed"
+		GOSUB write_JSON_Observation:
 		goto MaincibleSuivante:
 	ENDIF
 	
@@ -163,7 +166,7 @@ For iobj=1 nbCibles
 	GOSUB Acquisition:
 	GOSUB arret_guidage:
 	
-	// si deuxieme calibration demande
+	// calibration a la fin de l acqusition
 	IF  CalibrationAsk[iobj]<>0 THEN
 		STOPTELESCOPE
 		GOSUB Calibration:
@@ -185,16 +188,12 @@ MaincibleSuivante:
 	Print "passe a la cible suivante"
 NEXT iobj
 
-MinaLoopFinSeance:
-
 	//  si on a fini, on sort de la boucle... 
 	if (nbTRUE=nbCibles) then
 		msg$="Tous les objets de la liste ont ete observe avec succes."
 		Print msg$
 		WriteFileTxt fileLog msg$
 		GOSUB finseance:
-		GOSUB GeneNextLSTTarget:
-		GOSUB FermeFichierLog:
 		END
 		
 	ENDIF
@@ -215,8 +214,7 @@ MinaLoopFinSeance:
 	
 MinaLoopGeneralSoleilLevÃ©:
 	GOSUB finseance:
-	GOSUB GeneNextLSTTarget:
-	GOSUB FermeFichierLog:
+
 	return
 
 attente_sans_succes:
@@ -348,6 +346,8 @@ WindowAllFrame=50
 // taille fenetre evaluation flux etoile guide
 WindowEvalGuideStar=20
 
+// dit que les cameras ne sont pas initialise
+configCameraDone=0
 //parametres des cameras
 CameraChamp=1
 binCameraChamp=2
@@ -373,7 +373,7 @@ if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
 	MiroirXCameraChercheur=0
 	MiroirYCameraChercheur=0
-	FocaleCameraChercheur=147
+	FocaleCameraChercheur=133.5
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=179
 	ChercheurPosXBin=344.8
@@ -490,7 +490,7 @@ DATETOSTR  Date_Start Date_Start$
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
-LimitMagnitudeCiel=16.6
+LimitMagnitudeCiel=16.8
 // après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=6
 CompteurBeauTemp=0
@@ -537,7 +537,7 @@ STR_23$="Pas d'étoile de dégagement. Elargir le champ de recherche !"
 GetStdrLongitude Longitude
 
 return
-# 294 "<stdin>" 2
+# 292 "<stdin>" 2
 
 # 1 "./lib/generalSubroutine.pgm" 1
 
@@ -580,6 +580,12 @@ setWorkDirGeneral:
 	CreateDir GeneralWorkDir$
 RETURN
 
+checkDstDirOk:
+	print "checkDstDir " Directory$
+	testfilename$=Directory$+"\"+"testFilePRISM"
+	Open_FileTxt_For_Rewrite fileTest testfilename$
+	CloseFileTxt fileTest
+	return
 
 OuvreFichierLog:
 	Open_FileTxt_For_Rewrite fileLog GeneralWorkDir$+"logAutoObservation-"+DateSession$+".txt"
@@ -633,7 +639,7 @@ GeneNextLSTTarget:
 	
 
 
-# 295 "<stdin>" 2
+# 293 "<stdin>" 2
 
 # 1 "./lib/init_dome_telescope.pgm" 1
 
@@ -655,12 +661,19 @@ init_dome_telescope:
 	endif
 		
 return
-# 296 "<stdin>" 2
+# 294 "<stdin>" 2
 
 # 1 "./lib/init_camera.pgm" 1
 
 ConfigCamera:
 
+	if configCameraDone=1 THEN
+		print "cameras deja configure, on passe a la suite"
+		return
+	endif
+
+	CLEARIMGWINDOWS
+	durationOffsetInit=10
     //////////  Champ	  ///////////
 	Print "Initialise camera Champ"	
 	print "   Mise sous tension"
@@ -681,7 +694,7 @@ ConfigCamera:
 	SetWindowFullFrame_EX CameraChamp
 	SetFlagShutter_EX CameraChamp 0
 	
-	StartExposure_EX CameraChamp 0
+	StartExposure_EX CameraChamp durationOffsetInit
 	WaitForEndExposure_EX CameraChamp
 	GetLastImageExposure_EX CameraChamp img2
 	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma
@@ -722,7 +735,7 @@ ConfigCamera:
 	SetWindowFullFrame_EX CameraSpectre
 	SetFlagShutter_EX CameraSpectre 0
 	
-	StartExposure_EX CameraSpectre 0
+	StartExposure_EX CameraSpectre durationOffsetInit
 	WaitForEndExposure_EX CameraSpectre
 	GetLastImageExposure_EX CameraSpectre img3
 	GETBACKGROUND  Img3  OffsetValueCameraSpectre  Sigma
@@ -734,20 +747,20 @@ ConfigCamera:
     ////// Chercheur   ////////////
 	if CameraChercheurPresente=1 then
 		Print "Initialise camera Chercheur"
-		print "   Connexion"
+		//print "   Connexion"
 
 		// commente car fonction buggue pour le chercheur (cam 3)  fonctionne bien pour les deux premiere cameras
-		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
-		if Valid<>2 THEN
-			print "erreur" Cause$
-		endif
+		//INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		//if Valid<>2 THEN
+		//	print "erreur" Cause$
+		//endif
 
 		print "   Configuration"		
 		SETBINNINGX_EX CameraChercheur binCameraChercheur
 		SETBINNINGY_EX CameraChercheur binCameraChercheur
 		SetWindowFullFrame_EX CameraChercheur
 		SetFlagShutter_EX CameraChercheur 0
-		StartExposure_EX CameraChercheur  10
+		StartExposure_EX CameraChercheur  durationOffsetInit
 		WaitForEndExposure_EX CameraChercheur
 		GetLastImageExposure_EX CameraChercheur img1
 		GetSizePixX img1 TaillePixXCameraChercheur
@@ -780,15 +793,22 @@ wait_cooling_camera_ready:
 	print "On attend que la temperature de consigne soit atteinte"
 	
 boucle_cooling_ready:
+	iboucleCollingReady=1
 	// recupere la temperature du capteur
 	GETCCDTEMPERATURE_Ex CameraSpectre 1 ActualTempSpectre
 	difTemp=ActualTempSpectre-TempCameraSpectre
 	abs difTemp difTemp
-	if difTemp>4.0 then
+	if difTemp>3.0 then
 		print "    Consigne temp=" TempCameraSpectre " actualTemp=" ActualTempSpectre " delta=" difTemp
 		delay 10000
 		WAITFORENDDELAY
-		goto boucle_cooling_ready:
+		iboucleCollingReady=iboucleCollingReady+1
+		if iboucleCollingReady<>30 Then
+			goto boucle_cooling_ready:
+		endif
+		print "Mise en temperature trop longue, on abandonne"
+		return
+		
 	endif
 	print "Temperature de consigne atteinte"
 	
@@ -827,7 +847,7 @@ return
 
 
 
-# 297 "<stdin>" 2
+# 295 "<stdin>" 2
 
 # 1 "./lib/approcheEtoileBrillante.pgm" 1
 approcheEtoileChamp:
@@ -900,13 +920,13 @@ approcheetoile:
 	CLEARIMGWINDOWS
 
 return
-# 298 "<stdin>" 2
+# 296 "<stdin>" 2
 
 # 1 "./lib/recaleAstrometrieAllSky-et-precis.pgm" 1
 
 # 1 "./lib/generalSubroutine.pgm" 1
 
-# 93 "./lib/generalSubroutine.pgm"
+# 99 "./lib/generalSubroutine.pgm"
 
 # 2 "./lib/recaleAstrometrieAllSky-et-precis.pgm" 2
 
@@ -923,7 +943,7 @@ RecaleAllSkyAstrometrieChercheur:
 	exposureAllSky=10
 	MaxStarImg=30
 	MaxStarCat=30
-	Field=10
+	Field=20
 	Cat$="GSC-ACT"
 	Chem$=sDirCatalogue$+Cat$
 	Xpos=ChercheurPosXBin
@@ -1011,7 +1031,7 @@ return
 
 
 
-# 299 "<stdin>" 2
+# 297 "<stdin>" 2
 
 # 1 "./lib/check_coord_cibles.pgm" 1
 Check_coord_cibles:
@@ -1040,7 +1060,7 @@ for i=1 NbCibles
 next i
 
 return
-# 300 "<stdin>" 2
+# 298 "<stdin>" 2
 
 # 1 "./lib/finSeance.pgm" 1
 finSeance:
@@ -1095,31 +1115,54 @@ finSeance:
 	STR_RAD_TO_DEC Hauteur DD$ DM$ DS$
 	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
 
+	
 	/// Camera ///
 	gosub set_cooling_camera_off:
 
-	IF (ActiveCoupureCameraFinSession=1) then
-		
-		Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
-		delay DurationAttenteAvantCoupeCameraMillis
-		WAITFORENDDELAY
+	if (soleil_levee=1) THEN
+	    // On ferme les camera que quand il fait jours
+		IF (ActiveCoupureCameraFinSession=1) then
+			
+			Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
+			delay DurationAttenteAvantCoupeCameraMillis
+			WAITFORENDDELAY
 
-		print "Fermeture des panneaux cameras"
-		CLOSE_CCD_CAMERA_EX CameraChamp
-		CLOSE_CCD_CAMERA_EX CameraSpectre
-		if (CameraChercheurPresente=1) then
-			// commente car l init camera chercheur est bugue dans PRISM V10
-			//CLOSE_CCD_CAMERA_EX CameraChercheur
+			print "Fermeture des panneaux cameras"
+			CLOSE_CCD_CAMERA_EX CameraChamp
+			CLOSE_CCD_CAMERA_EX CameraSpectre
+			if (CameraChercheurPresente=1) then
+				// commente car l init camera chercheur est bugue dans PRISM V10
+				//CLOSE_CCD_CAMERA_EX CameraChercheur
+			ENDIF
+
+			Print "Attente avant coupure alim camera"
+			delay 5000
+			WAITFORENDDELAY
+			
+			print "Coupure alimentation camera guidage"
+			parm$=PythonScriptControlBox$+" 1=0"
+			EXECEXTERNAL   pathPythonInterpreter$ parm$
+			
+			print "Coupure alimentation camera eShel"
+			parm$=PythonScriptControlIPX800$+"  5=0"
+			EXECEXTERNAL   pathPythonInterpreter$ parm$
+
+			Print "Attente apres coupure alim camera"
+			delay 5000
+			WAITFORENDDELAY
+
+			CLEARIMGWINDOWS
+			
 		ENDIF
-		
-    	print "Coupure alimentation camera guidage"
-		parm$=PythonScriptControlBox$+" 1=0"
-		EXECEXTERNAL   pathPythonInterpreter$ parm$
-		
-		print "Coupure alimentation camera eShel"
-		parm$=PythonScriptControlIPX800$+"  5=0"
-		EXECEXTERNAL   pathPythonInterpreter$ parm$
-		
+	ENDIF
+
+	GOSUB GeneNextLSTTarget:
+	GOSUB FermeFichierLog:
+
+	
+	if (soleil_levee=1) THEN
+		print "arret du script ici, il fait jours"
+		END
 	ENDIF
 	
 RETURN
@@ -1150,7 +1193,7 @@ acquisition-FLAT-LISA_LHIRES:
 	print "    eteind la lampe FLAT"
 	EXECEXTERNAL   pathPythonInterpreter$  PythonScriptFLATLISALHIRESOff$
 RETURN
-# 301 "<stdin>" 2
+# 299 "<stdin>" 2
 
 # 1 "./lib/acquisition_Calibration.pgm" 1
 
@@ -1199,6 +1242,11 @@ baoi:
 	GOSUB ReadMeteo:
 	if (MeteoOK=0) then
 		print "il faut mauvais temps on arrete les acquisitions au milieu"
+		STOPTELESCOPE
+		IF (coupole=1) then
+			print "fermeture du dome"
+			CLOSE_DOME
+		ENDIF
 		GOTO fbaoi:
 	endif
 	
@@ -1511,7 +1559,7 @@ testMeridien_Hauteur:
 	ENDIF
 	
 RETURN
-# 302 "<stdin>" 2
+# 300 "<stdin>" 2
 
 # 1 "./lib/pointe_et_gere_retournement.pgm" 1
 
@@ -1593,7 +1641,7 @@ EndIf
 
 return
    
-# 303 "<stdin>" 2
+# 301 "<stdin>" 2
 
 # 1 "./lib/pointe_etoile_brillante_proche.pgm" 1
 
@@ -1635,7 +1683,7 @@ Pointe_etoile_brillante_proche:
    DeltaDest=ListeDEC[i]
    GOSUB Pointage:
 return
-# 304 "<stdin>" 2
+# 302 "<stdin>" 2
 
 # 1 "./lib/guidage.pgm" 1
 arret_guidage:
@@ -1895,7 +1943,7 @@ return
 //Out
 //24 Valid           : 0 = OK  1 = Guidage en cours  2 = Pas d'etoile Guide, probleme d'initialisation de guidage
 //25 Message$        : Message d'erreur, si existant
-# 305 "<stdin>" 2
+# 303 "<stdin>" 2
 
 # 1 "./lib/quick_brightest_star.pgm" 1
 quick_brightest_star:
@@ -1913,7 +1961,7 @@ quick_brightest_star:
 	Print "   Brightest star: X="  XCENTRO  " Y=" YCENTRO 
 
 return
-# 306 "<stdin>" 2
+# 304 "<stdin>" 2
 
 # 1 "./lib/find_best_guide_star.pgm" 1
 find_best_guide_star:
@@ -1963,7 +2011,7 @@ OK_good_star_find:
 //	Print "   exposure=" exposureImg
 
 return
-# 307 "<stdin>" 2
+# 305 "<stdin>" 2
 
 # 1 "./lib/attente_dome.pgm" 1
 attente_dome:
@@ -1984,7 +2032,7 @@ attente_dome:
 S13285:
 	Print "    Fin d attente:  duree: " d " sec"
 return
-# 308 "<stdin>" 2
+# 306 "<stdin>" 2
 
 # 1 "./lib/affiche_planning.pgm" 1
 Affiche_planning:
@@ -2074,7 +2122,7 @@ print
 print "-------------------------fin planning---------------------------------"
 print
 return
-# 309 "<stdin>" 2
+# 307 "<stdin>" 2
 
 # 1 "./lib/meteo.pgm" 1
 // lecture des parametres de la station meteo Sentinel
@@ -2196,7 +2244,7 @@ BoucleAttendBeauTemp:
 	print "Il faut beau"
 	
 return
-# 310 "<stdin>" 2
+# 308 "<stdin>" 2
 
 # 1 "./lib/test_visibilitee.pgm" 1
 test_visibilitee:
@@ -2250,7 +2298,7 @@ test_levee_soleil:
 		soleil_levee=0
 	endif
 	return	
-# 311 "<stdin>" 2
+# 309 "<stdin>" 2
 
 # 1 "./lib/liste_etoile_cat.pgm" 1
 liste_etoile_cat_chercheur:
@@ -2345,7 +2393,7 @@ liste_etoile_cat:
 
 return
 
-# 312 "<stdin>" 2
+# 310 "<stdin>" 2
 
 # 1 "./lib/auto_exposure.pgm" 1
 
@@ -2500,7 +2548,7 @@ Calcul_flux_spectre:
 	CLEARIMGWINDOWS
 
 return
-# 313 "<stdin>" 2
+# 311 "<stdin>" 2
 
 # 1 "./lib/affine_position_fente.pgm" 1
 // affine la position de la fente d'un LISA ou LHIRES
@@ -2556,7 +2604,7 @@ affine_position_fente:
 	close img
 	CLEARIMGWINDOWS
 return
-# 314 "<stdin>" 2
+# 312 "<stdin>" 2
 
 # 1 "./lib/test_etoile_seule_fenetre.pgm" 1
 test_etoile_seule_fenetre:
@@ -2596,7 +2644,7 @@ test_etoile_seule_fenetre:
 	
 	print "   resultat=" etoile_seule
 return
-# 315 "<stdin>" 2
+# 313 "<stdin>" 2
 
 # 1 "./lib/test_etoile_seule_fenetre_bright.pgm" 1
 test_etoile_seule_fenetre_bright:
@@ -2659,7 +2707,7 @@ test_etoile_seule_fenetre_bright:
 	
 	print "   resultat=" etoile_seule
 return
-# 316 "<stdin>" 2
+# 314 "<stdin>" 2
 
 # 1 "./lib/dialog_param_charge_LST_et_defini_cible.pgm" 1
 Dialog_param_et_Charge_LST_et_defini_cible:
@@ -2678,6 +2726,7 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 	adddlgbox 5 "acquisition de Flat LISALHIRES en Fin de session" ActiveFlatLISALHIRESFinSession
 	adddlgbox 2 200 1 "Nombre de pose FLAT LISA LHIRES" NbFlatLISALHIRES
 	adddlgbox 2 200 1 "Temps de pose en secondes des FLAT LISA LHIRES" exposureTimeFLATLISA
+	adddlgbox 1 25 0 "Ciel: Mag limite pour observer" LimitMagnitudeCiel
 	
 	dispdlgbox result
 	if (result=1)
@@ -2693,6 +2742,7 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 		getdlgbox ActiveFlatLISALHIRESFinSession
 		getdlgbox NbFlatLISALHIRES
 		getdlgbox exposureTimeFLATLISA
+		getdlgbox LimitMagnitudeCiel
 	endif
 	
 	GETLISTFILENAMEEX  "selection des cibles"  "*.lst" DirCible$  FilesList$  NbFichier
@@ -2872,7 +2922,7 @@ exit_terme:
 	   endif		
    next j
    return
-# 317 "<stdin>" 2
+# 315 "<stdin>" 2
 
 # 1 "./lib/photometrieChercheur.pgm" 1
 
@@ -2892,7 +2942,7 @@ return
 
 
 
-# 318 "<stdin>" 2
+# 316 "<stdin>" 2
 
 # 1 "./lib/JSON_obs.pgm" 1
 
@@ -2994,9 +3044,9 @@ write_JSON_Observation:
 	WriteFileTxt fileJSON "		}"
 
 	if currentStatusObs$="finished" then
-		STR nbExposure nbExposure$
+		STR iacqu nbExposure$
 		STR exposure exposure$
-		TotalExposure=exposure*nbExposure
+		TotalExposure=exposure*iacqu
 		STR  TotalExposure TotalExposure$
 		WriteFileTxt fileJSON ","
 		WriteFileTxt fileJSON "  ""obsConfig"": {"
@@ -3019,5 +3069,5 @@ write_JSON_Observation:
 	RETURN
 
 	
-# 319 "<stdin>" 2
+# 317 "<stdin>" 2
 

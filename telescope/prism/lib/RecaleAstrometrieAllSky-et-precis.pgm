@@ -13,7 +13,7 @@ RecaleAllSkyAstrometrieChercheur:
 	exposureAllSky=10
 	MaxStarImg=30
 	MaxStarCat=30
-	Field=10
+	Field=20
 	Cat$="GSC-ACT"
 	Chem$=sDirCatalogue$+Cat$
 	Xpos=ChercheurPosXBin

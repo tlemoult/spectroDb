@@ -97,9 +97,9 @@ write_JSON_Observation:
 	WriteFileTxt fileJSON "		}"
 
 	if currentStatusObs$="finished" then
-		STR nbExposure nbExposure$
+		STR iacqu nbExposure$
 		STR exposure exposure$
-		TotalExposure=exposure*nbExposure
+		TotalExposure=exposure*iacqu
 		STR  TotalExposure TotalExposure$
 		WriteFileTxt fileJSON ","
 		WriteFileTxt fileJSON "  ""obsConfig"": {"

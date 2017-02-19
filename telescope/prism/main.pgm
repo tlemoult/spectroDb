@@ -1,4 +1,7 @@
-
+//////////////////////////////////////////////
+// main                                ///////
+// lance les seances suivant les conditions //
+//////////////////////////////////////////////
 	raisonEchec$=""
 	GOSUB generalSettings:
 	GOSUB checkDstDirOk:
@@ -6,21 +9,42 @@
 	GOSUB LampCalibOff:
 
 	Print "Boucle seance lancee."
-	if (ActiveLancementImmediat=1) THEN
+	if (ActiveLancementImmediat=0) THEN
+		Print "attente initial d un ciel noir"
+		GOSUB BoucleAttendBeauTemp:
+	ELSE
 		Print "On observe sans attendre la meteo"
 		CompteurBeauTemp=ValMinBelleMeteo+1
-		GOTO entreSeanceImmediat:
 	ENDIF
-	
-boucleSeance:
-	Print "attente d un ciel noir"
-	// gosub set_cooling_camera_off:
-	GOSUB BoucleAttendBeauTemp:
-entreSeanceImmediat:
-	GOSUB seance-observation:
-	goto boucleSeance:
-exit
 
+boucleMainSeance:
+	GOSUB seance-observation:
+	Print "seance termine"
+	Print "attente d un ciel noir pour demarrer une nouvelle seance"
+	Print "ou du leve du soleil qui mettra fin au script"
+
+boucleInterSeance:
+			GOSUB ReadMeteo:
+			DELAY 60000
+			WAITFORENDDELAY
+
+			if MeteoOK=1 THEN
+				// on peut observer
+				GOTO boucleMainSeance:
+			ENDIF
+
+			gosub test_levee_soleil:
+			if (soleil_levee=1)
+				GOSUB finseance:
+			endif
+			
+			goto boucleInterSeance:
+	
+	exit
+
+/////////////////////////////////////
+// routine principale d une seance d observation.
+//////////////////////////////////////
 seance-observation:
 	print "on commence a observer"
 	GOSUB ConfigCamera:

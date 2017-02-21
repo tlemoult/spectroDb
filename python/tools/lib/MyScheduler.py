@@ -46,6 +46,7 @@ class MySchedule(object):
 
 	def optimize(self):
 		# insert blocks into the schedule, and run the scheduler
+		print "**************************"
 		print "start schedule.optimize()"
 		self.prior_scheduler(self.blocks, self.priority_schedule)
 		print "**************************"
@@ -76,6 +77,7 @@ class MySchedule(object):
 				line='"'+name+'"  '+ra[:-3]+'s  '+dec[:-3]+'s  '+str(FLUX_V)+'  FALSE  "Project='+str(project)
 				line+="&uid="+str(uid)
 				line+="&calib="+str(calib)
+				line+="&uid="+str(uid)
 				if ExposureTime!=None:  line+="&ExposureTime="+str(ExposureTime)
 				if NbExposure!=None: line+="&NbExposure="+str(NbExposure)
 				if TotExposure!=None: line+="&TotExposure="+str(TotExposure)
@@ -87,3 +89,13 @@ class MySchedule(object):
 				f.write(line+'\n')
 
 		f.close
+
+	def plotAirMas(self):
+		plt.figure(figsize = (14,6))
+		plot_schedule_airmass(self.priority_schedule)
+		plt.tight_layout()
+		plt.legend(loc="upper right")
+		plt.show()
+
+	def showTable(self):
+		print self.priority_schedule.to_table()

@@ -1,6 +1,6 @@
 
-import MyScheduler
-import dbSpectro
+import lib.MyScheduler as MyScheduler
+import lib.dbSpectro as dbSpectro
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from datetime import date

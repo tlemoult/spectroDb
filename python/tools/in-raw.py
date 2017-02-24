@@ -56,28 +56,52 @@ for dirSource in lstDir:
 	obsId=None  # pour le cas 'DARK, FLAT etc..' ou on a des fits d acquisition sans observation
 	json=fixHeader.load_json(dirSource)
 	if (json!=0):
+
+		if json['statusObs']=='failed':
+			print "statusObs=failed   Move"
+			try:
+				subject='[Carl]  Obs failed '
+				subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
+				emailFnc.sendEmail(subject,"Your dear Carl.")
+			except:
+				print "pb dans l envois de l email"
+			print "Observation status=failed"
+			archive.storeDir_Excep(dirSource,"Excep_observationFailed")
+			continue  # on ne traite pas les observations en cours
+
 		
 		if json['statusObs']=='started':
 			print "statusObs=started   Do not process"
 			try:
-				emailFnc.sendEmail("[Carl]Obs started "+json['target']['objname'][0],"Your dear Carl.")
+				subject='[Carl] Obs started '
+				subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
+				emailFnc.sendEmail(subject,"Your dear Carl.")
 			except:
-				print "pb dans l envois de le mail"
+				print "pb dans l envois de l email"
 			continue  # on ne traite pas les observations en cours
+
 
 		if json['statusObs']!='finished':
 			continue 
 		# on traite que ce qui est finis
 
 		#email sur l'observation
-		msg="Target Name="+json['target']['objname'][0]+"\n"
 		try:
+			msg=time.strftime("%A %d %B %Y %H:%M:%S")+"\n"
+			msg+="Project Name="+json['project']+"\n"
+			msg+="Target Name="+json['target']['objname'][0]+"\n"
+			msg+="Coord\n"
+			msg+="   RA="+json['target']['coord']['ra']+"\n"
+			msg+="   DEC="+json['target']['coord']['dec']+"\n"
 			msg+="Exposure: "+str(json['obsConfig']['NbExposure'])+" x "+str(json['obsConfig']['ExposureTime'])+" seconds.\n"
 			msg+="Total Exposure: "+str(json['obsConfig']['TotalExposure'])+" seconds.\n"
+			msg+="ConfigName="+json['instrument']['configName']+"\n"
 		except:
-			msg="No detail on observation\n"
+			msg="Exception, No detail on observation\n"
 		try:
-			emailFnc.sendEmail('[Carl]Obs finished '+json['target']['objname'][0],msg+"\nYour dear Carl.")
+			subject='[Carl] Obs finished'
+			subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
+			emailFnc.sendEmail(subject,msg+"\nYour dear Carl.")
 		except:
 			print "pb dans l envois de le mail"
 

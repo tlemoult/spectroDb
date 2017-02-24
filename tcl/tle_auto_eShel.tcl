@@ -1,7 +1,7 @@
 proc tle_auto_eShel { }  {
 
-#	set pathSignals "Z:/mnt/gdrive/astro/base/signals/fromAudela"  
-	set pathSignals "Z:/home/tlemoult/tmpTest/signals/fromAudela"  
+	set pathSignals "Z:/mnt/gdrive/astro/base/signals/fromAudela"  
+#	set pathSignals "Z:/home/tlemoult/tmpTest/signals/fromAudela"  
 	set startSignalFilename "eShelPipeLine-askStart"
 	set runningSignalFilename "eShelPipeline-running"
 	set endSignalFilename "eShelPipeLine-end"
@@ -30,7 +30,7 @@ proc tle_auto_eShel { }  {
 			  
 		} 
 
-		sleep 5000
+		sleep 30000
 		::console::affiche_prompt "."
 
 	}

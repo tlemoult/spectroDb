@@ -46,6 +46,8 @@ boucleInterSeance:
 // routine principale d une seance d observation.
 //////////////////////////////////////
 seance-observation:
+	NOW Annee Mois Jour Heure Minutes Secondes MS
+	PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
 	print "on commence a observer"
 	GOSUB ConfigCamera:
 	GOSUB set_cooling_camera_on:

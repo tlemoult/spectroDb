@@ -56,7 +56,7 @@ init_param_guiding:
 	DeltaMoveFashion=0
 	SaveImagettes=0
 	DirSaveImg$="c:\ccd"
-	AllFrame=0
+	AllFrame=1
 	MinADUguidage=3500
 	//WindowAllFrame definis dans general setting
 return

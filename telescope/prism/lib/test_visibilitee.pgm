@@ -45,7 +45,7 @@ test_levee_soleil:
 		WriteFileTxt fileLog Date$+": Le soleil est quasiment levee, On arrete la seance ici"
 		soleil_levee=1
 	else
-		Print "Le soleil ne nous gene pas encore elevation=" ElevationSun
+		//Print "Le soleil ne nous gene pas encore elevation=" ElevationSun
 		soleil_levee=0
 	endif
 	return	

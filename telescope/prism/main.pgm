@@ -185,6 +185,10 @@ For iobj=1 nbCibles
 	endif
 	GOSUB auto_exposure:
 	//GOSUB PosePhotometrieChercheur:
+
+	currentStatusObs$="exposing"
+	GOSUB write_JSON_Observation:
+
 	GOSUB Acquisition:
 	GOSUB arret_guidage:
 	

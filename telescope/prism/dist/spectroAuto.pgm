@@ -189,6 +189,10 @@ For iobj=1 nbCibles
 	endif
 	GOSUB auto_exposure:
 	//GOSUB PosePhotometrieChercheur:
+
+	currentStatusObs$="exposing"
+	GOSUB write_JSON_Observation:
+
 	GOSUB Acquisition:
 	GOSUB arret_guidage:
 	
@@ -563,7 +567,7 @@ STR_23$="Pas d'étoile de dégagement. Elargir le champ de recherche !"
 GetStdrLongitude Longitude
 
 return
-# 318 "<stdin>" 2
+# 322 "<stdin>" 2
 
 # 1 "./lib/generalSubroutine.pgm" 1
 
@@ -665,7 +669,7 @@ GeneNextLSTTarget:
 	
 
 
-# 319 "<stdin>" 2
+# 323 "<stdin>" 2
 
 # 1 "./lib/init_dome_telescope.pgm" 1
 
@@ -687,7 +691,7 @@ init_dome_telescope:
 	endif
 		
 return
-# 320 "<stdin>" 2
+# 324 "<stdin>" 2
 
 # 1 "./lib/init_camera.pgm" 1
 
@@ -873,7 +877,7 @@ return
 
 
 
-# 321 "<stdin>" 2
+# 325 "<stdin>" 2
 
 # 1 "./lib/approcheEtoileBrillante.pgm" 1
 approcheEtoileChamp:
@@ -946,7 +950,7 @@ approcheetoile:
 	CLEARIMGWINDOWS
 
 return
-# 322 "<stdin>" 2
+# 326 "<stdin>" 2
 
 # 1 "./lib/recaleAstrometrieAllSky-et-precis.pgm" 1
 
@@ -1057,7 +1061,7 @@ return
 
 
 
-# 323 "<stdin>" 2
+# 327 "<stdin>" 2
 
 # 1 "./lib/check_coord_cibles.pgm" 1
 Check_coord_cibles:
@@ -1086,7 +1090,7 @@ for i=1 NbCibles
 next i
 
 return
-# 324 "<stdin>" 2
+# 328 "<stdin>" 2
 
 # 1 "./lib/finSeance.pgm" 1
 finSeance:
@@ -1219,7 +1223,7 @@ acquisition-FLAT-LISA_LHIRES:
 	print "    eteind la lampe FLAT"
 	EXECEXTERNAL   pathPythonInterpreter$  PythonScriptFLATLISALHIRESOff$
 RETURN
-# 325 "<stdin>" 2
+# 329 "<stdin>" 2
 
 # 1 "./lib/acquisition_Calibration.pgm" 1
 
@@ -1585,7 +1589,7 @@ testMeridien_Hauteur:
 	ENDIF
 	
 RETURN
-# 326 "<stdin>" 2
+# 330 "<stdin>" 2
 
 # 1 "./lib/pointe_et_gere_retournement.pgm" 1
 
@@ -1667,7 +1671,7 @@ EndIf
 
 return
    
-# 327 "<stdin>" 2
+# 331 "<stdin>" 2
 
 # 1 "./lib/pointe_etoile_brillante_proche.pgm" 1
 
@@ -1709,7 +1713,7 @@ Pointe_etoile_brillante_proche:
    DeltaDest=ListeDEC[i]
    GOSUB Pointage:
 return
-# 328 "<stdin>" 2
+# 332 "<stdin>" 2
 
 # 1 "./lib/guidage.pgm" 1
 arret_guidage:
@@ -1969,7 +1973,7 @@ return
 //Out
 //24 Valid           : 0 = OK  1 = Guidage en cours  2 = Pas d'etoile Guide, probleme d'initialisation de guidage
 //25 Message$        : Message d'erreur, si existant
-# 329 "<stdin>" 2
+# 333 "<stdin>" 2
 
 # 1 "./lib/quick_brightest_star.pgm" 1
 quick_brightest_star:
@@ -1987,7 +1991,7 @@ quick_brightest_star:
 	Print "   Brightest star: X="  XCENTRO  " Y=" YCENTRO 
 
 return
-# 330 "<stdin>" 2
+# 334 "<stdin>" 2
 
 # 1 "./lib/find_best_guide_star.pgm" 1
 find_best_guide_star:
@@ -2037,7 +2041,7 @@ OK_good_star_find:
 //	Print "   exposure=" exposureImg
 
 return
-# 331 "<stdin>" 2
+# 335 "<stdin>" 2
 
 # 1 "./lib/attente_dome.pgm" 1
 attente_dome:
@@ -2058,7 +2062,7 @@ attente_dome:
 S13285:
 	Print "    Fin d attente:  duree: " d " sec"
 return
-# 332 "<stdin>" 2
+# 336 "<stdin>" 2
 
 # 1 "./lib/affiche_planning.pgm" 1
 Affiche_planning:
@@ -2148,7 +2152,7 @@ print
 print "-------------------------fin planning---------------------------------"
 print
 return
-# 333 "<stdin>" 2
+# 337 "<stdin>" 2
 
 # 1 "./lib/meteo.pgm" 1
 // lecture des parametres de la station meteo Sentinel
@@ -2270,7 +2274,7 @@ BoucleAttendBeauTemp:
 	print "Il faut beau"
 	
 return
-# 334 "<stdin>" 2
+# 338 "<stdin>" 2
 
 # 1 "./lib/test_visibilitee.pgm" 1
 test_visibilitee:
@@ -2317,14 +2321,13 @@ test_levee_soleil:
 		Print "******************************************************"
 		Print "Le soleil est quasiment levee, elevation=" ElevationSun 
 		Print "On arrete la seance ici"
-		WriteFileTxt fileLog Date$+": Le soleil est quasiment levee, On arrete la seance ici"
 		soleil_levee=1
 	else
 		//Print "Le soleil ne nous gene pas encore elevation=" ElevationSun
 		soleil_levee=0
 	endif
 	return	
-# 335 "<stdin>" 2
+# 339 "<stdin>" 2
 
 # 1 "./lib/liste_etoile_cat.pgm" 1
 liste_etoile_cat_chercheur:
@@ -2419,7 +2422,7 @@ liste_etoile_cat:
 
 return
 
-# 336 "<stdin>" 2
+# 340 "<stdin>" 2
 
 # 1 "./lib/auto_exposure.pgm" 1
 
@@ -2574,7 +2577,7 @@ Calcul_flux_spectre:
 	CLEARIMGWINDOWS
 
 return
-# 337 "<stdin>" 2
+# 341 "<stdin>" 2
 
 # 1 "./lib/affine_position_fente.pgm" 1
 // affine la position de la fente d'un LISA ou LHIRES
@@ -2630,7 +2633,7 @@ affine_position_fente:
 	close img
 	CLEARIMGWINDOWS
 return
-# 338 "<stdin>" 2
+# 342 "<stdin>" 2
 
 # 1 "./lib/test_etoile_seule_fenetre.pgm" 1
 test_etoile_seule_fenetre:
@@ -2670,7 +2673,7 @@ test_etoile_seule_fenetre:
 	
 	print "   resultat=" etoile_seule
 return
-# 339 "<stdin>" 2
+# 343 "<stdin>" 2
 
 # 1 "./lib/test_etoile_seule_fenetre_bright.pgm" 1
 test_etoile_seule_fenetre_bright:
@@ -2733,7 +2736,7 @@ test_etoile_seule_fenetre_bright:
 	
 	print "   resultat=" etoile_seule
 return
-# 340 "<stdin>" 2
+# 344 "<stdin>" 2
 
 # 1 "./lib/dialog_param_charge_LST_et_defini_cible.pgm" 1
 Dialog_param_et_Charge_LST_et_defini_cible:
@@ -2948,7 +2951,7 @@ exit_terme:
 	   endif		
    next j
    return
-# 341 "<stdin>" 2
+# 345 "<stdin>" 2
 
 # 1 "./lib/photometrieChercheur.pgm" 1
 
@@ -2968,7 +2971,7 @@ return
 
 
 
-# 342 "<stdin>" 2
+# 346 "<stdin>" 2
 
 # 1 "./lib/JSON_obs.pgm" 1
 
@@ -3095,5 +3098,5 @@ write_JSON_Observation:
 	RETURN
 
 	
-# 343 "<stdin>" 2
+# 347 "<stdin>" 2
 

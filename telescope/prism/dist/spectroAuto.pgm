@@ -1760,7 +1760,7 @@ init_param_guiding:
 	CCDNum=1
 	DelayACQSec=1
 	WindowSize=60
-	CentroSize=30
+	CentroSize=15
 	StarThresADU=20
 	RaMin=0
 	RaMax=500

@@ -46,7 +46,7 @@ ask_astrometrie_chercheur=0
 ask_approche_plusbrillante_champ=0
 
 // taille fenetre recherche etoile de guidage
-WindowAllFrame=50
+WindowAllFrame=100
 // taille fenetre evaluation flux etoile guide
 WindowEvalGuideStar=20
 

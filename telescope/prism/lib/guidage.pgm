@@ -41,8 +41,8 @@ init_param_guiding:
 	NumCam=CameraChamp
 	CCDNum=1
 	DelayACQSec=1
-	WindowSize=60
-	CentroSize=15
+	WindowSize=100
+	CentroSize=10
 	StarThresADU=20
 	RaMin=0
 	RaMax=500
@@ -56,7 +56,7 @@ init_param_guiding:
 	DeltaMoveFashion=0
 	SaveImagettes=0
 	DirSaveImg$="c:\ccd"
-	AllFrame=1
+	AllFrame=0
 	MinADUguidage=3500
 	//WindowAllFrame definis dans general setting
 return

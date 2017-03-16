@@ -92,7 +92,8 @@ finSeance:
 	ENDIF
 
 	GOSUB GeneNextLSTTarget:
-	GOSUB FermeFichierLog:
+	
+	REM GOSUB FermeFichierLog:
 
 	
 	if (soleil_levee=1) THEN

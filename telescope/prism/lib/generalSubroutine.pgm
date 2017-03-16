@@ -92,7 +92,7 @@ GeneNextLSTTarget:
 	next iobj
 	Print "Total des succes " success " sur un total de " nbCibles
 	CloseFileTxt fileReste
-	CloseFileTxt fileRealise
+	REM CloseFileTxt fileRealise
 	return
 	
 #endif

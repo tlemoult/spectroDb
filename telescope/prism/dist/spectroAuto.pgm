@@ -372,7 +372,7 @@ ask_astrometrie_chercheur=0
 ask_approche_plusbrillante_champ=0
 
 // taille fenetre recherche etoile de guidage
-WindowAllFrame=50
+WindowAllFrame=100
 // taille fenetre evaluation flux etoile guide
 WindowEvalGuideStar=20
 
@@ -664,7 +664,7 @@ GeneNextLSTTarget:
 	next iobj
 	Print "Total des succes " success " sur un total de " nbCibles
 	CloseFileTxt fileReste
-	CloseFileTxt fileRealise
+	REM CloseFileTxt fileRealise
 	return
 	
 
@@ -1187,7 +1187,8 @@ finSeance:
 	ENDIF
 
 	GOSUB GeneNextLSTTarget:
-	GOSUB FermeFichierLog:
+	
+	REM GOSUB FermeFichierLog:
 
 	
 	if (soleil_levee=1) THEN
@@ -1759,8 +1760,8 @@ init_param_guiding:
 	NumCam=CameraChamp
 	CCDNum=1
 	DelayACQSec=1
-	WindowSize=60
-	CentroSize=15
+	WindowSize=100
+	CentroSize=10
 	StarThresADU=20
 	RaMin=0
 	RaMax=500
@@ -1774,7 +1775,7 @@ init_param_guiding:
 	DeltaMoveFashion=0
 	SaveImagettes=0
 	DirSaveImg$="c:\ccd"
-	AllFrame=1
+	AllFrame=0
 	MinADUguidage=3500
 	//WindowAllFrame definis dans general setting
 return

@@ -70,10 +70,10 @@ for dirSource in lstDir:
 			continue  # on ne traite pas les observations en cours
 
 		
-		if json['statusObs']=='started':
-			print "statusObs=started   Do not process"
+		if json['statusObs']=='exposing':
+			print "statusObs=exposing   Do not process"
 			try:
-				subject='[Carl] Obs started '
+				subject='[Carl] Obs start exposure '
 				subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
 				emailFnc.sendEmail(subject,"Your dear Carl.")
 			except:
@@ -99,7 +99,7 @@ for dirSource in lstDir:
 		except:
 			msg="Exception, No detail on observation\n"
 		try:
-			subject='[Carl] Obs finished'
+			subject='[Carl] Obs finished '
 			subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
 			emailFnc.sendEmail(subject,msg+"\nYour dear Carl.")
 		except:

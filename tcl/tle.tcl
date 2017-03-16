@@ -1,4 +1,4 @@
-proc tle_auto_eShel { }  {
+proc tle { }  {
 
 	set pathSignals "Z:/mnt/gdrive/astro/base/signals/fromAudela"  
 #	set pathSignals "Z:/home/tlemoult/tmpTest/signals/fromAudela"  

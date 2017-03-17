@@ -243,3 +243,11 @@ def insert_filename_meta(db,meta):
 		return commit_insert_sql(db,sql)
 
 
+
+def getRequestToObserve(db):
+	query="select project.name,RequestToObserveList.priority,object.name,alpha,delta,ExposureTime,"
+	query+="NbExposure,TotExposure,intTime,object.FLUX_V,RequestToObserveList.uid,RequestToObserveList.config,RequestToObserveList.calib"
+	query+=" from RequestToObserveList "
+	query+="LEFT join object on RequestToObserveList.objectId=object.objectId "
+	query+="LEFT join project on RequestToObserveList.projectId=project.projectId"
+	return commit_query_sql_All_table(db,query)

@@ -62,14 +62,14 @@ print  "ra.hms=",target.ra.hms," dec=",target.dec
 
 print "*********Phase 0.91 ********************"
 t=[]
-for j in range(2574,2620):
+for j in range(2740,2780):
 	t.append(jd_RR_phi(j+0.91))
 T=Time(t,format='jd', scale='utc')
 disp_date(target,observer,T)
 
 print "**********Phase 0.3 *************"
 t=[]
-for j in range(2574,2620):
+for j in range(2740,2780):
 	t.append(jd_RR_phi(j+0.3))
 T=Time(t,format='jd', scale='utc')
 disp_date(target,observer,T)

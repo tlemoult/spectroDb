@@ -56,6 +56,10 @@ def getObjId_fromObjName(db,name):
 	query='SELECT objectId from object where name="'+name+'"'
 	return commit_query_sql(db,query)
 
+def getObjId_fromRaDec(db,alpha,delta):
+	query='SELECT objectId from object where alpha like "%s%s" and delta like "%s%s"'%(alpha[:8],'%',delta[:9],'%')
+	return commit_query_sql(db,query)
+
 def getDirectory_from_STRdate(db,date):
 	query='SELECT destDir,obsId FROM fileName where phase="RAW" and filetype="OBJECT" and date="%s"'%(date.replace('T',' ')[:19])
 	result=commit_query_sql_table(db,query)
@@ -109,6 +113,10 @@ def getProjectId_fromProjectName(db,ProjectName):
 def insert_request_observation(db,projectId,objId,priority,exposure):
 	sql="""INSERT INTO RequestToObserveList(projectId,objectId,priority,TotExposure)
 	VALUES (%d,%d,%d,%d)"""%(projectId,objId,priority,exposure)
+	commit_insert_sql(db,sql)
+
+def insert_Obj(db,name,hd,alpha,delta):
+	sql="""INSERT INTO object(name,noHD,alpha,delta) VALUES ('%s',%d,'%s','%s')"""% (name,hd,alpha,delta)
 	commit_insert_sql(db,sql)
 
 def insert_request_observation_with_name(db,ProjectName,objName,alpha,delta,priority,exposure):

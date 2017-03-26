@@ -426,7 +426,7 @@ exposurephotometriechercheur=3
 // securitee hauteur pointage     1->actif  0->inactif
 testHauteurTelescope=1
 HautDegMiniTelescope=20
-HautDegMaxTelecope=80
+HautDegMaxTelecope=83
 // gestion du passage du meridien  pendant les poses(monture allemande)
 testColisionMeridien=1
 // blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement coté de méridien.
@@ -2757,6 +2757,8 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 	adddlgbox 2 200 1 "Nombre de pose FLAT LISA LHIRES" NbFlatLISALHIRES
 	adddlgbox 2 200 1 "Temps de pose en secondes des FLAT LISA LHIRES" exposureTimeFLATLISA
 	adddlgbox 1 25 0 "Ciel: Mag limite pour observer" LimitMagnitudeCiel
+	adddlgbox 1 90 1 "Hauteur Max" HautDegMaxTelecope
+	adddlgbox 1 90 1 "Hauteur Min" HautDegMiniTelescope
 	
 	dispdlgbox result
 	if (result=1)
@@ -2773,6 +2775,8 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 		getdlgbox NbFlatLISALHIRES
 		getdlgbox exposureTimeFLATLISA
 		getdlgbox LimitMagnitudeCiel
+		getdlgbox HautDegMaxTelecope
+		getdlgbox HautDegMiniTelescope
 	endif
 	
 	GETLISTFILENAMEEX  "selection des cibles"  "*.lst" DirCible$  FilesList$  NbFichier

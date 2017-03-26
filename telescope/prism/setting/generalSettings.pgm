@@ -100,7 +100,7 @@ exposurephotometriechercheur=3
 // securitee hauteur pointage     1->actif  0->inactif
 testHauteurTelescope=1
 HautDegMiniTelescope=20
-HautDegMaxTelecope=80
+HautDegMaxTelecope=83
 // gestion du passage du meridien  pendant les poses(monture allemande)
 testColisionMeridien=1
 // blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement coté de méridien.

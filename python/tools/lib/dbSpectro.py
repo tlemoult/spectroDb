@@ -60,6 +60,10 @@ def getObjId_fromRaDec(db,alpha,delta):
 	query='SELECT objectId from object where alpha like "%s%s" and delta like "%s%s"'%(alpha[:8],'%',delta[:9],'%')
 	return commit_query_sql(db,query)
 
+def getObjName_fromRaDec(db,alpha,delta):
+	query='SELECT name from object where alpha like "%s%s" and delta like "%s%s"'%(alpha[:8],'%',delta[:9],'%')
+	return commit_query_sql(db,query)
+
 def getDirectory_from_STRdate(db,date):
 	query='SELECT destDir,obsId FROM fileName where phase="RAW" and filetype="OBJECT" and date="%s"'%(date.replace('T',' ')[:19])
 	result=commit_query_sql_table(db,query)
@@ -101,6 +105,15 @@ def update_Obj_info(db,cdsInfo,objID):
 	sql=sql[:-1]  # enleve la virgule en trop
 	sql+=""" WHERE objectId=%d"""%(objID)
 	commit_insert_sql(db,sql)
+
+def insert_Alias(db,objIdbyCoord,objName):
+	query="""SELECT * from objalias where objId=%d and alias like '%s'"""%(objIdbyCoord,objName)
+	if commit_query_sql(db,query)==0:
+		print "   ajoute le nouveau alias : ",objName
+		sql="""INSERT INTO objalias(objId,alias) VALUES ('%d','%s')"""%(objIdbyCoord,objName)
+		commit_insert_sql(db,sql)
+	else:
+		print "   alias ",objName," deja connus"
 
 def insert_Project(db,ProjectName):
 	sql="""INSERT INTO project(name) VALUES ('%s')"""%(ProjectName)
@@ -170,11 +183,12 @@ def getFilesPerObsId(db,obsId,fileTypeLst): # 'OBJECT','CALIB','TUNGSTEN','LED'
 	query+="order by fileName.date ASC"
 	return commit_query_sql_All_table(db,query)
 
-def getFilesSpcPerObjId(db,objId):
+def getFilesSpcPerObjId(db,objId,orderNo):
 	query="select fileSpectrum.path,fileSpectrum.filename from fileSpectrum"
 	query+=" left join observation on fileSpectrum.obsId=observation.obsId "
 	query+=" left join object on observation.objId=object.objectId"
 	query+=" where object.objectId=%d"%objId
+	query+=""" and fileSpectrum.orderNo like '%s' """%orderNo
 	return commit_query_sql_All_table(db,query)
 
 def getAllFileIdFileName(db,fileTypeList):
@@ -182,8 +196,9 @@ def getAllFileIdFileName(db,fileTypeList):
 	query+=""" where filetype in (%s)"""%fileTypeList
 	return commit_query_sql_All_table(db,query)
 
-def getFilesSpcPerObsId(db,obsId):
+def getFilesSpcPerObsId(db,obsId,orderNo):
 	query="select path,filename from fileSpectrum where obsId=%d"%obsId
+	query+=""" and fileSpectrum.orderNo like '%s' """%orderNo
 	return commit_query_sql_All_table(db,query)
 
 def getPathFilename_from_md5sum(db,md5sum):

@@ -47,8 +47,6 @@ checkDstDirOk:
 
 OuvreFichierLog:
 	Open_FileTxt_For_Rewrite fileLog GeneralWorkDir$+"logAutoObservation-"+DateSession$+".txt"
-	Open_FileTxt_For_Rewrite fileRealise GeneralWorkDir$+"realise-"+DateSession$+".LST"
-	
 	WriteFileTxt fileLog "Fichier general de log"
 	WriteFileTxt fileLog "----------------------"
 	RETURN
@@ -65,8 +63,6 @@ LogObservationSuccess:
 	STR hauteur hauteur$
 	LogMessage$=Date$+": reussite "+NomObjet$+" "+AltName$+" "+Comment$+" Mag="+MagnitudeObjet$+"  Exposition="+nbExposureObjet$+"x"+exposureTimeObjet$+"sec  Hauteur="+hauteur$+" deg Ha="+Ha$
 	writeFileTxt fileLog LogMessage$
-	Ligne$=LigneLST[iobj]$
-	WriteFileTxt fileRealise Ligne$
 	Return
 
 LogObservationEchec:
@@ -80,19 +76,21 @@ LogObservationEchec:
 GeneNextLSTTarget:
 	print "prepare les listes au format LST du reste a faire., et realise."
 	Open_FileTxt_For_Rewrite fileReste GeneralWorkDir$+"resteAfaire-"+DateSession$+".LST"
-
+	Open_FileTxt_For_Rewrite fileRealise GeneralWorkDir$+"realise-"+DateSession$+".LST"
+	
 	success=0
 	For iobj=1 nbCibles
+		Ligne$=LigneLST[iobj]$
 		if (Observe[iobj]$="FALSE") then
-			Ligne$=LigneLST[iobj]$
 			WriteFileTxt fileReste Ligne$
 		ELSE
 			success=success+1
+			WriteFileTxt fileRealise Ligne$		
 		endif
 	next iobj
 	Print "Total des succes " success " sur un total de " nbCibles
 	CloseFileTxt fileReste
-	REM CloseFileTxt fileRealise
+	CloseFileTxt fileRealise
 	return
 	
 #endif

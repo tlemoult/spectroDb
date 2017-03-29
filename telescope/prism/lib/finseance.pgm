@@ -93,8 +93,7 @@ finSeance:
 
 	GOSUB GeneNextLSTTarget:
 	
-	REM GOSUB FermeFichierLog:
-
+	GOSUB FermeFichierLog:
 	
 	if (soleil_levee=1) THEN
 		print "arret du script ici, il fait jours"

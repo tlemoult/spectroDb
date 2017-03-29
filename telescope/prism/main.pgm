@@ -219,6 +219,8 @@ NEXT iobj
 		msg$="Tous les objets de la liste ont ete observe avec succes."
 		Print msg$
 		WriteFileTxt fileLog msg$
+		REM pour forcer l extinction des cameras
+		soleil_levee=1
 		GOSUB finseance:
 		END
 		

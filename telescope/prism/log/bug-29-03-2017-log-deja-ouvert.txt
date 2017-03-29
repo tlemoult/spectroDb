@@ -1,0 +1,54 @@
+Thorium Argon de HD47129 ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+28/03/2017 20:53:57: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 09h 26m 09.066s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 17.387s
+    Declinaison   = -38d 48m29.21s
+    Hauteur       = +02d 18m23.25s
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 1 sur un total de 35
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+Nous sommes le 28/3/2017Ã  21:17:16,425( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 329 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 604 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----------------------------------------------------------------
+Initialisation dome et telescope
+Le dome est fermé, donc on l'ouvre
+Orientation des cameras suivant position du telescope
+Télescope côté EAST
+Repertoire de travail general: X:\astro\base\in\2017-3-28_21h18m18_ESHEL_RACINE\
+Le script s'est arrêté à cause d'une erreur fatale : Ligne :  @ 621 -> "	Open_FileTxt_For_Rewrite fileLog GeneralWorkDir$+"logAutoObservation-"+DateSession$+".txt"  ERREUR : Nom de fichier déjà alloué : X:\astro\base\in\2017-3-28_21h18m18_ESHEL_RACINE\logAutoObservation-2017-3-28_21h18m18.txt -> FILELOG
+Script terminé ...

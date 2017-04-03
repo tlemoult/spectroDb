@@ -16,6 +16,34 @@ include 'lib/connectDb.php';
 
 echo "<H2>stats</H2>\n";
 
+if(!empty($_POST['searchStar']))
+{ $searchStar=$_POST['searchStar'];	}
+else 
+{ $searchStar=""; }
+
+if(!empty($_POST['projectName']))
+{ $projectName=$_POST['projectName']; }
+else 
+{ $projectName=""; }
+
+if(!empty($_POST['statusValue']))
+{ $statusValue=$_POST['statusValue']; }
+else 
+{ $statusValue=""; }
+
+echo '<form action="stats.php" method="post">';
+echo '<p>object name ';
+echo '    <input type="text" name="searchStar" value="'.$searchStar .'"/>';
+echo ' project ';
+echo '    <input type="text" name="projectName" value="'.$projectName .'"/>';
+echo ' status';
+echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/>';
+echo '';
+echo '    <input type="submit"  value="apply filter" />';
+echo '</form>';
+
+
+
 $link=connectDb();
 
 
@@ -27,7 +55,11 @@ count(DISTINCT substring(observation.dateObs,1,11)) as night,
  sum(expTime)/3600 as hours
 from observation
 left join fileName on fileName.obsId=observation.obsId
-where fileName.phase='RAW'
+left join object on object.objectId=observation.objId
+left join project on project.projectId =observation.projectId
+where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
+AND fileName.phase='RAW' and project.name like '".$projectName. "%'
+AND observation.status like '".$statusValue."%'
 group by mo
 order by mo desc
 limit 1000

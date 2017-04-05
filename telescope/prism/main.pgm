@@ -19,24 +19,37 @@
 
 boucleMainSeance:
 	GOSUB seance-observation:
+	GOSUB finseance:
+
 	Print "seance termine"
 	Print "attente d un ciel noir pour demarrer une nouvelle seance"
 	Print "ou du leve du soleil qui mettra fin au script"
 
 boucleInterSeance:
-			GOSUB ReadMeteo:
+
+			gosub test_levee_soleil:
+			if (soleil_levee=1)
+				GOSUB shutDownCameraFinal:
+				print "arret du script ici, il fait jours"
+				END
+			endif
+			
+			if (nbTRUE=nbCibles) then
+				GOSUB shutDownCameraFinal:
+				print "arret du script ici, on a tout observe"
+				END
+			endif
+
 			DELAY 60000
 			WAITFORENDDELAY
+
+			GOSUB ReadMeteo:
 
 			if MeteoOK=1 THEN
 				// on peut observer
 				GOTO boucleMainSeance:
 			ENDIF
 
-			gosub test_levee_soleil:
-			if (soleil_levee=1)
-				GOSUB finseance:
-			endif
 			
 			goto boucleInterSeance:
 	
@@ -78,13 +91,13 @@ For iobj=1 nbCibles
 		log$=Date$+": Il ne fait pas beau, on arrete les observations."
 		WriteFileTxt fileLog log$
 		Print log$
-		goto MinaLoopGeneralSoleilLevé:
+		return
 	endif
 
 	/////////////////// test du leve du soleil
 	gosub test_levee_soleil:
 	if (soleil_levee=1)
-		goto MinaLoopGeneralSoleilLevé:
+		return
 	endif
 	
 	//// recupere les données de l'objet courant
@@ -219,11 +232,7 @@ NEXT iobj
 		msg$="Tous les objets de la liste ont ete observe avec succes."
 		Print msg$
 		WriteFileTxt fileLog msg$
-		REM pour forcer l extinction des cameras
-		soleil_levee=1
-		GOSUB finseance:
-		END
-		
+		return
 	ENDIF
 	
 	// Il reste des objet a observer, on va reboucler..
@@ -240,11 +249,8 @@ NEXT iobj
 	Print "rebouclage"
 	goto RebouclageGeneral:
 	
-MinaLoopGeneralSoleilLevé:
-	GOSUB finseance:
 
-	return
-
+	
 attente_sans_succes:
 		// aucun success...  on attend un peu que ca passe...
 		Print "Aucun success dans la boucle precedante, attente que ca passe"

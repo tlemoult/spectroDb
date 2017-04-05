@@ -40,7 +40,8 @@ RETURN
 
 checkDstDirOk:
 	print "checkDstDir " Directory$
-	testfilename$=Directory$+"\"+"testFilePRISM"
+	testfilename$=Directory$+"\"+"testFilePRISM.txt"
+	print "testfilename=" testfilename$
 	Open_FileTxt_For_Rewrite fileTest testfilename$
 	CloseFileTxt fileTest
 	return

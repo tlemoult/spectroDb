@@ -54,10 +54,14 @@ finSeance:
 	/// Camera ///
 	gosub set_cooling_camera_off:
 
-	if (soleil_levee=1) THEN
-	    // On ferme les camera que quand il fait jours
-		IF (ActiveCoupureCameraFinSession=1) then
-			
+	GOSUB GeneNextLSTTarget:
+	GOSUB FermeFichierLog:
+	
+	
+RETURN
+
+shutDownCameraFinal:
+	IF (ActiveCoupureCameraFinSession=1) then		
 			Print "Attente rechauffement camera avant coupure alimentation en millisec=" DurationAttenteAvantCoupeCameraMillis
 			delay DurationAttenteAvantCoupeCameraMillis
 			WAITFORENDDELAY
@@ -87,20 +91,10 @@ finSeance:
 			WAITFORENDDELAY
 
 			CLEARIMGWINDOWS
-			
 		ENDIF
-	ENDIF
 
-	GOSUB GeneNextLSTTarget:
-	
-	GOSUB FermeFichierLog:
-	
-	if (soleil_levee=1) THEN
-		print "arret du script ici, il fait jours"
-		END
-	ENDIF
-	
-RETURN
+  return
+
 
 acquisition-FLAT-LISA_LHIRES:
 

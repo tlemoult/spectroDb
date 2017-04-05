@@ -1,0 +1,1377 @@
+checkDstDir X:\astro\base\in
+Chargement du fichier de cible et verification syntaxe
+Fichier de cible=C:\USERS\DELL\DROPBOX\ASTRO\CIBLES\JOURNALIER\2017-03-27-RR-PLASKET.LST
+cible no 1
+nom= HD47129
+Project=plasket
+cible no 2
+nom= HD47129
+Project=plasket
+cible no 3
+nom= HD47129
+Project=plasket
+cible no 4
+nom= HD47129
+Project=plasket
+cible no 5
+nom= HD47129
+Project=plasket
+cible no 6
+nom= HD47129
+Project=plasket
+cible no 7
+nom= HD47129
+Project=plasket
+cible no 8
+nom= HD47129
+Project=plasket
+cible no 9
+nom= HD47129
+Project=plasket
+cible no 10
+nom= HD47129
+Project=plasket
+cible no 11
+nom= HD47129
+Project=plasket
+cible no 12
+nom= HD47129
+Project=plasket
+cible no 13
+nom= HD47129
+Project=plasket
+cible no 14
+nom= HD47129
+Project=plasket
+cible no 15
+nom= HD47129
+Project=plasket
+cible no 16
+nom= HD47129
+Project=plasket
+cible no 17
+nom= HD47129
+Project=plasket
+cible no 18
+nom= HD47129
+Project=plasket
+cible no 19
+nom= HD47129
+Project=plasket
+cible no 20
+nom= HD47129
+Project=plasket
+cible no 21
+nom= HD47129
+Project=plasket
+cible no 22
+nom= HD47129
+Project=plasket
+cible no 23
+nom= RR lyr
+Project=RR_lyr
+cible no 24
+nom= RR lyr
+Project=RR_lyr
+cible no 25
+nom= RR lyr
+Project=RR_lyr
+cible no 26
+nom= RR lyr
+Project=RR_lyr
+cible no 27
+nom= RR lyr
+Project=RR_lyr
+cible no 28
+nom= RR lyr
+Project=RR_lyr
+cible no 29
+nom= RR lyr
+Project=RR_lyr
+cible no 30
+nom= RR lyr
+Project=RR_lyr
+cible no 31
+nom= RR lyr
+Project=RR_lyr
+cible no 32
+nom= RR lyr
+Project=RR_lyr
+cible no 33
+nom= RR lyr
+Project=RR_lyr
+cible no 34
+nom= RR lyr
+Project=RR_lyr
+cible no 35
+nom= RR lyr
+Project=RR_lyr
+ligne vide, on est a la fin du fichier
+Chargement d un total de 35 cibles
+Extinction de toutes les lampes.
+Boucle seance lancee.
+On observe sans attendre la meteo
+Nous sommes le 30/3/2017Ã  19:22:40,874( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 390 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 584 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----------------------------------------------------------------
+Initialisation dome et telescope
+Le dome est fermé, donc on l'ouvre
+Orientation des cameras suivant position du telescope
+Télescope côté EAST
+Repertoire de travail general: X:\astro\base\in\2017-3-30_19h23m47_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+    Consigne temp=0 actualTemp=12.61 delta=12.61
+    Consigne temp=0 actualTemp=11.16 delta=11.16
+    Consigne temp=0 actualTemp=7.53 delta=7.53
+    Consigne temp=0 actualTemp=5.19 delta=5.19
+    Consigne temp=0 actualTemp=5.19 delta=5.19
+    Consigne temp=0 actualTemp=3.18 delta=3.18
+Temperature de consigne atteinte
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    1.52019 heures
+     -hauteur      = 43.101695 degre
+Repertoire de travail : X:\astro\base\in\2017-3-30_19h23m47_ESHEL_RACINE\2017-3-30_19h24m48\
+Ecris le fichier JSON avec les details de l objet: HD47129
+Cible suivanteHD47129   Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011  Mag=   6.06000
+Project=plasket
+Télescope côté EAST
+Objet pointé vers EAST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 06h37m24.040s  +06°08'07.30''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°23'39.96'' DEC=+00°09'10.97''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -echec reconnaissance ALLSKY
+Echec de la fonction de centrage....
+Cible suivante
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    1.55106 heures
+     -hauteur      = 42.939613 degre
+Repertoire de travail : X:\astro\base\in\2017-3-30_19h23m47_ESHEL_RACINE\2017-3-30_19h26m39\
+Ecris le fichier JSON avec les details de l objet: HD47129
+Cible suivanteHD47129   Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011  Mag=   6.06000
+Project=plasket
+Télescope côté EAST
+Objet pointé vers EAST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 06h37m24.040s  +06°08'07.30''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'28.55'' DEC=+00°01'18.19''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=341,274
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=642 Y1=508 X2=722 Y2=588
+   pose de 0.01 secondes  donne une etoile a 651 ADU
+   pose de 0.03 secondes  donne une etoile a 1872 ADU
+   pose de 0.09 secondes  donne une etoile a 8240 ADU
+   pose de 0.27 secondes  donne une etoile a 19833 ADU
+   On choisit un temps de pose de guidage de =0.19 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: HD47129
+commence l aquisition de l objet=HD47129
+Extinction de toutes les lampes.
+actualSide=EAST AHor=0.41289758
+spectre de HD47129 ,debut de la pose 1/12 duree 600 secondes
+il faut mauvais temps on arrete les acquisitions au milieu
+fermeture du dome
+
+Arrêt de l'autoguidage sur Consigne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de HD47129 ,debut de la pose 1/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 2/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 3/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 4/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 5/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 6/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 7/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de HD47129 ,debut de la pose 1/3 duree 10 secondes
+LED de HD47129 ,debut de la pose 2/3 duree 10 secondes
+LED de HD47129 ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de HD47129 ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+30/03/2017 19:42:57: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 08h 22m 50.402s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 17.183s
+    Declinaison   = -38d 48m29.82s
+    Hauteur       = +02d 18m22.68s
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 1 sur un total de 35
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+Nous sommes le 30/3/2017Ã  20:6:16,274( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 383 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 694 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----------------------------------------------------------------
+Initialisation dome et telescope
+Le dome est fermé, donc on l'ouvre
+Orientation des cameras suivant position du telescope
+Télescope côté EAST
+Repertoire de travail general: X:\astro\base\in\2017-3-30_20h7m24_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+    Consigne temp=0 actualTemp=15.03 delta=15.03
+    Consigne temp=0 actualTemp=11.4 delta=11.4
+    Consigne temp=0 actualTemp=10.19 delta=10.19
+    Consigne temp=0 actualTemp=10.19 delta=10.19
+    Consigne temp=0 actualTemp=7.37 delta=7.37
+    Consigne temp=0 actualTemp=5.11 delta=5.11
+    Consigne temp=0 actualTemp=3.5 delta=3.5
+Temperature de consigne atteinte
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    2.25198 heures
+     -hauteur      = 38.609807 degre
+Repertoire de travail : X:\astro\base\in\2017-3-30_20h7m24_ESHEL_RACINE\2017-3-30_20h8m35\
+Ecris le fichier JSON avec les details de l objet: HD47129
+Cible suivanteHD47129   Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011  Mag=   6.06000
+Project=plasket
+Télescope côté EAST
+Objet pointé vers EAST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 06h37m24.040s  +06°08'07.30''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'09.50'' DEC=+00°02'01.27''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'33.87'' DEC=+00°01'20.09''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=341,274
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=642 Y1=508 X2=722 Y2=588
+   pose de 0.01 secondes  donne une etoile a 786 ADU
+   pose de 0.03 secondes  donne une etoile a 3146 ADU
+   pose de 0.09 secondes  donne une etoile a 6837 ADU
+   pose de 0.27 secondes  donne une etoile a 22912 ADU
+   On choisit un temps de pose de guidage de =0.164 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: HD47129
+commence l aquisition de l objet=HD47129
+Extinction de toutes les lampes.
+actualSide=EAST AHor=0.59959912
+spectre de HD47129 ,debut de la pose 1/12 duree 600 secondes
+actualSide=EAST AHor=0.64373245
+spectre de HD47129 ,debut de la pose 2/12 duree 600 secondes
+actualSide=EAST AHor=0.68782921
+spectre de HD47129 ,debut de la pose 3/12 duree 600 secondes
+actualSide=EAST AHor=0.73184392
+spectre de HD47129 ,debut de la pose 4/12 duree 600 secondes
+actualSide=EAST AHor=0.77595185
+spectre de HD47129 ,debut de la pose 5/12 duree 600 secondes
+actualSide=EAST AHor=0.82003514
+spectre de HD47129 ,debut de la pose 6/12 duree 600 secondes
+actualSide=EAST AHor=0.86413606
+spectre de HD47129 ,debut de la pose 7/12 duree 600 secondes
+actualSide=EAST AHor=0.90816353
+spectre de HD47129 ,debut de la pose 8/12 duree 600 secondes
+actualSide=EAST AHor=0.95219578
+spectre de HD47129 ,debut de la pose 9/12 duree 600 secondes
+actualSide=EAST AHor=0.99622304
+spectre de HD47129 ,debut de la pose 10/12 duree 600 secondes
+actualSide=EAST AHor=1.0402375
+spectre de HD47129 ,debut de la pose 11/12 duree 600 secondes
+actualSide=EAST AHor=1.0843322
+spectre de HD47129 ,debut de la pose 12/12 duree 600 secondes
+
+Arrêt de l'autoguidage sur Consigne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de HD47129 ,debut de la pose 1/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 2/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 3/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 4/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 5/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 6/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 7/8 duree 10 secondes
+Tungsten de HD47129 ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de HD47129 ,debut de la pose 1/3 duree 10 secondes
+LED de HD47129 ,debut de la pose 2/3 duree 10 secondes
+LED de HD47129 ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de HD47129 ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de HD47129 ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.36858 heures
+     -hauteur      = 20.571807 degre
+Repertoire de travail : X:\astro\base\in\2017-3-30_20h7m24_ESHEL_RACINE\2017-3-30_22h15m14\
+Ecris le fichier JSON avec les details de l objet: HD47129
+Cible suivanteHD47129   Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011  Mag=   6.06000
+Project=plasket
+Télescope côté EAST
+Objet pointé vers EAST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 06h37m24.040s  +06°08'07.30''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -echec reconnaissance ALLSKY
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -echec reconnaissance ALLSKY
+Cible suivante
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.40726 heures
+     -hauteur      = 20.202646 degre
+Repertoire de travail : X:\astro\base\in\2017-3-30_20h7m24_ESHEL_RACINE\2017-3-30_22h17m33\
+Ecris le fichier JSON avec les details de l objet: HD47129
+Cible suivanteHD47129   Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011  Mag=   6.06000
+Project=plasket
+Télescope côté EAST
+Objet pointé vers EAST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 06h37m24.040s  +06°08'07.30''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -echec reconnaissance ALLSKY
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -echec reconnaissance ALLSKY
+Cible suivante
+Ecris le fichier JSON avec les details de l objet: HD47129
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44275 heures
+     -hauteur      = 19.86311 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44276 heures
+     -hauteur      = 19.863065 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44276 heures
+     -hauteur      = 19.863022 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44277 heures
+     -hauteur      = 19.862982 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44277 heures
+     -hauteur      = 19.862939 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44278 heures
+     -hauteur      = 19.862857 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44278 heures
+     -hauteur      = 19.862814 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44279 heures
+     -hauteur      = 19.862774 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44279 heures
+     -hauteur      = 19.862732 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44280 heures
+     -hauteur      = 19.862689 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44280 heures
+     -hauteur      = 19.862649 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44283 heures
+     -hauteur      = 19.862398 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44284 heures
+     -hauteur      = 19.862315 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44285 heures
+     -hauteur      = 19.86219 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44286 heures
+     -hauteur      = 19.862107 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44286 heures
+     -hauteur      = 19.862065 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44287 heures
+     -hauteur      = 19.862025 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44288 heures
+     -hauteur      = 19.861942 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35817 heures
+     -hauteur      = 13.432576 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35816 heures
+     -hauteur      = 13.432655 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35815 heures
+     -hauteur      = 13.432708 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35814 heures
+     -hauteur      = 13.432735 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35814 heures
+     -hauteur      = 13.43276 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35814 heures
+     -hauteur      = 13.432787 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35813 heures
+     -hauteur      = 13.432813 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35813 heures
+     -hauteur      = 13.43284 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35812 heures
+     -hauteur      = 13.432892 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35811 heures
+     -hauteur      = 13.432919 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35811 heures
+     -hauteur      = 13.432971 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35809 heures
+     -hauteur      = 13.433051 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35809 heures
+     -hauteur      = 13.433076 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+rebouclage
+------------------------------------------------------------
+passe a la cible suivante
+------------------------------------------------------------
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44300 heures
+     -hauteur      = 19.860729 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44301 heures
+     -hauteur      = 19.860689 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44301 heures
+     -hauteur      = 19.860646 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44302 heures
+     -hauteur      = 19.860603 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44302 heures
+     -hauteur      = 19.860558 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44302 heures
+     -hauteur      = 19.860515 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44303 heures
+     -hauteur      = 19.860475 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44303 heures
+     -hauteur      = 19.860433 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44304 heures
+     -hauteur      = 19.86035 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44305 heures
+     -hauteur      = 19.860307 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44305 heures
+     -hauteur      = 19.860267 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44306 heures
+     -hauteur      = 19.860225 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44306 heures
+     -hauteur      = 19.860182 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44306 heures
+     -hauteur      = 19.860142 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44307 heures
+     -hauteur      = 19.860059 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44308 heures
+     -hauteur      = 19.860017 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44308 heures
+     -hauteur      = 19.859974 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44309 heures
+     -hauteur      = 19.859934 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44311 heures
+     -hauteur      = 19.859683 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    4.44312 heures
+     -hauteur      = 19.859643 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35795 heures
+     -hauteur      = 13.433928 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35794 heures
+     -hauteur      = 13.433954 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35794 heures
+     -hauteur      = 13.433981 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35793 heures
+     -hauteur      = 13.434006 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35793 heures
+     -hauteur      = 13.434033 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35793 heures
+     -hauteur      = 13.43406 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35792 heures
+     -hauteur      = 13.434086 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35792 heures
+     -hauteur      = 13.434113 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35791 heures
+     -hauteur      = 13.434138 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35791 heures
+     -hauteur      = 13.434165 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35789 heures
+     -hauteur      = 13.434297 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35788 heures
+     -hauteur      = 13.434349 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -8.35788 heures
+     -hauteur      = 13.434349 degre
+     *** La cible RR lyr Project=RR_lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+Aucun success dans la boucle precedante, attente que ca passe
+stop entrainment horaire
+    1/30
+    2/30
+    3/30
+    4/30
+    5/30
+    6/30
+Mauvais temps pendant l attente
+rebouclage
+------------------------------------------------------------
+30/03/2017 22:25:42: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 11h 06m 42.717s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 21.656s
+    Declinaison   = -38d 48m29.28s
+    Hauteur       = +02d 18m22.57s
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 2 sur un total de 35
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+Nous sommes le 31/3/2017Ã  1:14:47,452( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 339 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 618 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----------------------------------------------------------------
+Initialisation dome et telescope
+Le dome est fermé, donc on l'ouvre
+Orientation des cameras suivant position du telescope
+Télescope côté EAST
+Repertoire de travail general: X:\astro\base\in\2017-3-31_1h15m50_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+    Consigne temp=0 actualTemp=11.88 delta=11.88
+    Consigne temp=0 actualTemp=9.14 delta=9.14
+    Consigne temp=0 actualTemp=7.29 delta=7.29
+    Consigne temp=0 actualTemp=7.29 delta=7.29
+    Consigne temp=0 actualTemp=4.47 delta=4.47
+Temperature de consigne atteinte
+------------------------------------------------------------
+passe a la cible suivante
+------------------------------------------------------------
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40088 heures
+     -hauteur      = -8.8562008 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40089 heures
+     -hauteur      = -8.8562809 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40089 heures
+     -hauteur      = -8.8563221 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40090 heures
+     -hauteur      = -8.8563634 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40090 heures
+     -hauteur      = -8.8564022 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40090 heures
+     -hauteur      = -8.8564434 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40091 heures
+     -hauteur      = -8.8564821 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40091 heures
+     -hauteur      = -8.8565234 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40092 heures
+     -hauteur      = -8.8566035 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40093 heures
+     -hauteur      = -8.8566447 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40093 heures
+     -hauteur      = -8.8567248 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40094 heures
+     -hauteur      = -8.856766 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40094 heures
+     -hauteur      = -8.8568048 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40095 heures
+     -hauteur      = -8.8568848 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40096 heures
+     -hauteur      = -8.8569261 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40096 heures
+     -hauteur      = -8.8569674 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40096 heures
+     -hauteur      = -8.8570061 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40097 heures
+     -hauteur      = -8.8570474 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40097 heures
+     -hauteur      = -8.8570861 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de HD47129  Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011
+     -angle horaire=    7.40098 heures
+     -hauteur      = -8.8571274 degre
+     *** La cible HD47129 Project=plasket&ExposureTime=600&NbExposure=12&dateStart=2016-11-29T21:57:40.011 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -5.40009 heures
+     -hauteur      = 35.958729 degre
+Repertoire de travail : X:\astro\base\in\2017-3-31_1h15m50_ESHEL_RACINE\2017-3-31_1h16m41\
+Ecris le fichier JSON avec les details de l objet: RR lyr
+Cible suivanteRR lyr   Project=RR_lyr&ExposureTime=600&NbExposure=12  Mag=   7.50000
+Project=RR_lyr
+Télescope côté EAST
+Objet pointé vers WEST
+Retournement de monture nécessaire
+pointe le telescope sur 17h01m27.733s  +45°00'00.00''
+   Pointage termine
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+Orientation des cameras suivant position du telescope
+Télescope côté WEST
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°23'49.47'' DEC=+00°08'10.40''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'42.64'' DEC=+00°00'56.67''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=341,274
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=642 Y1=508 X2=722 Y2=588
+   pose de 0.01 secondes  donne une etoile a 15 ADU
+   pose de 0.03 secondes  donne une etoile a 84 ADU
+   pose de 0.09 secondes  donne une etoile a 389 ADU
+   pose de 0.27 secondes  donne une etoile a 1013 ADU
+   pose de 0.81 secondes  donne une etoile a 3021 ADU
+   pose de 2.43 secondes  donne une etoile a 7750 ADU
+   pose de 7.29 secondes  donne une etoile a 17201 ADU
+   On choisit un temps de pose de guidage de =5.933 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: RR lyr
+commence l aquisition de l objet=RR lyr
+Extinction de toutes les lampes.
+actualSide=WEST AHor=-1.3937207
+spectre de RR lyr ,debut de la pose 1/12 duree 600 secondes
+actualSide=WEST AHor=-1.3495968
+spectre de RR lyr ,debut de la pose 2/12 duree 600 secondes
+actualSide=WEST AHor=-1.3055005
+spectre de RR lyr ,debut de la pose 3/12 duree 600 secondes
+actualSide=WEST AHor=-1.2614111
+spectre de RR lyr ,debut de la pose 4/12 duree 600 secondes
+actualSide=WEST AHor=-1.2173278
+spectre de RR lyr ,debut de la pose 5/12 duree 600 secondes
+actualSide=WEST AHor=-1.1732428
+spectre de RR lyr ,debut de la pose 6/12 duree 600 secondes
+actualSide=WEST AHor=-1.1291851
+spectre de RR lyr ,debut de la pose 7/12 duree 600 secondes
+actualSide=WEST AHor=-1.0850302
+spectre de RR lyr ,debut de la pose 8/12 duree 600 secondes
+actualSide=WEST AHor=-1.0410114
+spectre de RR lyr ,debut de la pose 9/12 duree 600 secondes
+actualSide=WEST AHor=-0.99685253
+spectre de RR lyr ,debut de la pose 10/12 duree 600 secondes
+actualSide=WEST AHor=-0.95281716
+spectre de RR lyr ,debut de la pose 11/12 duree 600 secondes
+actualSide=WEST AHor=-0.90864503
+spectre de RR lyr ,debut de la pose 12/12 duree 600 secondes
+
+Arrêt de l'autoguidage sur Consigne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de RR lyr ,debut de la pose 1/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 2/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 3/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 4/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 5/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 6/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 7/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de RR lyr ,debut de la pose 1/3 duree 10 secondes
+LED de RR lyr ,debut de la pose 2/3 duree 10 secondes
+LED de RR lyr ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de RR lyr ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de RR lyr ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de RR lyr ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: RR lyr
+passe a la cible suivante
+------------------------------------------------------------
+Test de visibilitee de RR lyr  Project=RR_lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -3.24572 heures
+     -hauteur      = 56.13483 degre
+Repertoire de travail : X:\astro\base\in\2017-3-31_1h15m50_ESHEL_RACINE\2017-3-31_3h25m35\
+Ecris le fichier JSON avec les details de l objet: RR lyr
+Cible suivanteRR lyr   Project=RR_lyr&ExposureTime=600&NbExposure=12  Mag=   7.50000
+Project=RR_lyr
+Télescope côté WEST
+Objet pointé vers WEST
+Pas de retournement de monture nécessaire
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'16.02'' DEC=+00°02'24.81''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=341,274
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=642 Y1=508 X2=722 Y2=588
+   pose de 0.01 secondes  donne une etoile a 176 ADU
+   pose de 0.03 secondes  donne une etoile a 563 ADU
+   pose de 0.09 secondes  donne une etoile a 2146 ADU
+   pose de 0.27 secondes  donne une etoile a 5691 ADU
+   pose de 0.81 secondes  donne une etoile a 15037 ADU
+   On choisit un temps de pose de guidage de =0.754 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: RR lyr
+commence l aquisition de l objet=RR lyr
+Extinction de toutes les lampes.
+actualSide=WEST AHor=-0.84171725
+spectre de RR lyr ,debut de la pose 1/12 duree 600 secondes
+actualSide=WEST AHor=-0.79758802
+spectre de RR lyr ,debut de la pose 2/12 duree 600 secondes
+il faut mauvais temps on arrete les acquisitions au milieu
+fermeture du dome
+
+Arrêt de l'autoguidage sur Consigne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de RR lyr ,debut de la pose 1/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 2/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 3/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 4/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 5/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 6/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 7/8 duree 10 secondes
+Tungsten de RR lyr ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de RR lyr ,debut de la pose 1/3 duree 10 secondes
+LED de RR lyr ,debut de la pose 2/3 duree 10 secondes
+LED de RR lyr ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de RR lyr ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de RR lyr ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de RR lyr ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: RR lyr
+passe a la cible suivante
+------------------------------------------------------------
+31/03/2017 03:51:43: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 16h 32m 56.699s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 43.042s
+    Declinaison   = -38d 48m29.03s
+    Hauteur       = +02d 18m19.56s
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 4 sur un total de 35
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+Nous sommes le 31/3/2017Ã  4:30:27,399( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 328 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 612 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----------------------------------------------------------------
+Initialisation dome et telescope
+Le dome est fermé, donc on l'ouvre
+Orientation des cameras suivant position du telescope
+Télescope côté EAST
+Repertoire de travail general: X:\astro\base\in\2017-3-31_4h31m30_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+    Consigne temp=0 actualTemp=13.41 delta=13.41
+    Consigne temp=0 actualTemp=9.71 delta=9.71
+    Consigne temp=0 actualTemp=8.26 delta=8.26
+    Consigne temp=0 actualTemp=5.03 delta=5.03
+Temperature de consigne atteinte
+------------------------------------------------------------
+31/03/2017 04:32:11: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+parking du telescope
+    Angle horaire = 00h 03m 59.267s
+    Declinaison   = -38d 48m29.34s
+    Alpha calcule = 17h 14m 12.659s
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+  recupere position telescope
+Etat du telescope fin de seance:
+    Angle horaire = 00h 04m 05.400s
+    Declinaison   = -38d 48m29.42s
+    Hauteur       = +02d 18m24.74s
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 4 sur un total de 35
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+******************************************************
+Le soleil est quasiment levee, elevation=-7.9766804
+On arrete la seance ici
+Attente rechauffement camera avant coupure alimentation en millisec=60000
+Fermeture des panneaux cameras
+Attente avant coupure alim camera
+Coupure alimentation camera guidage
+Coupure alimentation camera eShel
+Attente apres coupure alim camera
+arret du script ici, il fait jours
+Script terminé ...

@@ -15,6 +15,31 @@
 include 'lib/connectDb.php';
 
 echo "<H2>Objects table</H2>\n";
+if(!empty($_POST['searchStar']))
+{ $searchStar=$_POST['searchStar'];	}
+else 
+{ $searchStar=""; }
+
+if(!empty($_POST['projectName']))
+{ $projectName=$_POST['projectName']; }
+else 
+{ $projectName=""; }
+
+if(!empty($_POST['statusValue']))
+{ $statusValue=$_POST['statusValue']; }
+else 
+{ $statusValue=""; }
+
+echo '<form action="objectTable.php" method="post">';
+echo '<p>object name ';
+echo '    <input type="text" name="searchStar" value="'.$searchStar .'"/>';
+echo ' project ';
+echo '    <input type="text" name="projectName" value="'.$projectName .'"/>';
+echo ' status';
+echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/>';
+echo '';
+echo '    <input type="submit"  value="apply filter" />';
+echo '</form>';
 
 $link=connectDb();
 
@@ -27,6 +52,9 @@ object.name as name,bayerName,noHD,OTYPE_V,alpha,delta,FLUX_V,FLUX_B,FLUX_R,FLUX
 from object
 LEFT join observation on object.objectId=observation.objId
 LEFT join project on observation.projectId=project.projectId
+where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
+AND project.name like '".$projectName. "%'
+AND observation.status like '".$statusValue."%'
 ORDER BY project.name,SP_TYPE;";
 
 

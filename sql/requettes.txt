@@ -9,3 +9,41 @@ Comptage global
 -------------------
 select count(*),sum(fileSpectrum.expTime)/3600 from fileSpectrum 
 where fileSpectrum.orderNo like '34' or fileSpectrum.orderNo like '1'
+
+
+
+Statistiques
+--------------
+select substring(dateObs,1,7)  as mo, count(DISTINCT observation.obsId) as obs,
+count(DISTINCT substring(observation.dateObs,1,11)) as night, 
+ sum(expTime)/3600 as hours
+from observation
+left join fileName on fileName.obsId=observation.obsId
+left join object on object.objectId=observation.objId
+left join project on project.projectId =observation.projectId
+where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
+AND fileName.phase='RAW' and project.name like '".$projectName. "%'
+AND observation.status like '".$statusValue."%'
+group by mo
+order by mo desc
+limit 1000
+
+
+Etoiles du survey New be
+-------------------------------------
+select object.objectId as Id,object.name,object.FLUX_V,object.SP_TYPE  from object 
+left join observation on object.objectId=observation.objId
+where observation.projectId=4
+and observation.ref=''
+group by Id
+
+
+Diagramme par type spectro
+-----------------------------
+select substring(object.SP_TYPE,1,2) as SPS,
+count(DISTINCT object.objectId)
+ from object 
+left join observation on object.objectId=observation.objId
+where observation.projectId=4
+and observation.ref=''
+group by SPS

@@ -13,12 +13,14 @@ $link=connectDb();
 
 // Attempt select query execution
 $sql = "SELECT RequestToObserveList.uid,RequestToObserveList.priority,project.name as project,object.name as object,object.FLUX_V,
+object.alpha as alpha, object.delta as delta,
 RequestToObserveList.ExposureTime,RequestToObserveList.NbExposure,RequestToObserveList.TotExposure,
 RequestToObserveList.intTime,RequestToObserveList.period,RequestToObserveList.lastObs,
 RequestToObserveList.config,RequestToObserveList.calib
 FROM RequestToObserveList 
 LEFT JOIN object ON RequestToObserveList.objectId=object.objectId 
 LEFT JOIN project ON RequestToObserveList.projectId=project.projectId
+order by alpha,delta
 ";
 
 
@@ -36,6 +38,8 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>Priority</th>";
                 echo "<th>Project</th>";
                 echo "<th>object</th>";
+                echo "<th>alpha</th>";
+                echo "<th>delta</th>";
                 echo "<th>Mag V</th>";         
                 echo "<th>ExposureTime</th>";
                 echo "<th>NbExposure</th>";
@@ -53,6 +57,8 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['priority'] . "</td>";
                 echo "<td>" . $row['project'] . "</td>";
                 echo "<td>" . $row['object']. "</td>";
+                echo "<td>" . $row['alpha']. "</td>";
+                echo "<td>" . $row['delta']. "</td>";
                 echo "<td>" . $row['FLUX_V'] . "</td>";
                 echo "<td>" . $row['ExposureTime'] . "</td>";
                 echo "<td>" . $row['NbExposure'] . "</td>";

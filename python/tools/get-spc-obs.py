@@ -21,17 +21,23 @@ if len(sys.argv) < 3:
     exit(1)
 
 db = dbSpectro.init_connection()
-
+print "len(sys.argv)=" , len(sys.argv)
 if len(sys.argv)>5 and sys.argv[3] == 'orderNo':
 	orderNo=sys.argv[4]
 	destPath = sys.argv[5]
 else:
-	orderNo= '*'
+	orderNo= '%'
 	destPath = sys.argv[3]
 
+
+print "sys.argv[1]=",sys.argv[1]
+print "orderNo=",orderNo
+
 if sys.argv[1] == 'obsId':
+    print "obsId=",int(sys.argv[2])
     fileList = dbSpectro.getFilesSpcPerObsId(db, int(sys.argv[2]),orderNo)
 elif sys.argv[1] == 'objectId':
+    print "objectId=",int(sys.argv[2])
     fileList = dbSpectro.getFilesSpcPerObjId(db, int(sys.argv[2]),orderNo)
 else:
     print "argument " + sys.argv[1] + " incorrect utiliser ObsId ou objectId"

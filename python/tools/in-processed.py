@@ -376,7 +376,7 @@ def defineTargetNameSpectrumFile(meta):
 
 	if 'BSS_ORD' in meta.keys():
 		addOrder='_'+meta['order']
-		meta['destinationBSS_ORD']=newBaseName
+		meta['destinationBSS_ORD']=newBaseName+'_'
 	else:
 		addOrder=''
 	meta['destinationFilename']=newBaseName+addOrder+'.'+extensionFit
@@ -435,6 +435,42 @@ def archiveFiles(metas,pathArchive,enableDelete):
 def logException(msg,reason):
 	globalExceptFile.write(str(datetime.datetime.today()).replace(' ','T').replace(':','-')+';'+reason+";"+msg+"\n")
 
+def conformBess(metas,tmpPath):
+	for f in metas:
+		meta=metas[f]
+
+		if meta['fileType']=='1DSPECTRUM':
+			# on ouvre le spectre
+			fullSourcePath=meta['sourcePath']+'/'+meta['sourceFilename']
+			hdulist = pyfits.open(fullSourcePath)
+			prihdr = hdulist[0].header
+
+			# pas de vitesse Helio
+			prihdr['BSS_VHEL']=0
+
+			# arondis de EXPTIME
+			prihdr['EXPTIME']=int(round(float(meta['expTime'])))
+
+			# on ne veut pas de DATE-END, pour eviter les conflis de valeur avec EXPTIME
+			try:
+				del prihdr['DATE-END']
+			except KeyError:
+				pass
+
+			# on corrige BSS_ORD
+			if 'BSS_ORD' in meta.keys():
+				prihdr['BSS_ORD']=meta['destinationBSS_ORD']
+
+			# on ecris le fichier corrige
+			conformFileName='BessConform_'+metas[f]['sourceFilename']
+			hdulist.writeto(tmpPath+'/'+conformFileName)
+
+			# le spectre change de nom et chemin pour apres
+			metas[f]['sourceFilename']=conformFileName
+			metas[f]['sourcePath']=tmpPath
+
+	return metas
+
 #########
 # main  #
 #########
@@ -472,8 +508,13 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 		metas=setDstPath(metas,db)
 		print json.dumps(metas,sort_keys=True, indent=4)
 
+		# redefinis les nom des spectres
 		for f in metas: 
-			if metas[f]['fileType']=='1DSPECTRUM': defineTargetNameSpectrumFile(metas[f])
+			if metas[f]['fileType']=='1DSPECTRUM': 
+				defineTargetNameSpectrumFile(metas[f])
+
+		# rend conforme au Format Bess
+		metas=conformBess(metas,tmpPath)
 
 		archiveFiles(metas,pathArchive,enableDelete)
 	except:
@@ -482,5 +523,3 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 
 	print "remove temporary Path=",tmpPath
 	shutil.rmtree(tmpPath)
-
-globalExceptFile.close()

@@ -6,10 +6,6 @@
 
 <body>
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
-
-
-
 <?php
 
 include 'lib/connectDb.php';
@@ -41,7 +37,77 @@ echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/>';
 echo '';
 echo '    <input type="submit"  value="apply filter" />';
 echo '</form>';
+
+$link=connectDb();
+
+
+// Attempt select query execution
+//$sql = "select * from object order by alpha";
+
+$sql = "select substring(dateObs,1,7)  as mo, count(DISTINCT observation.obsId) as obs,
+count(DISTINCT substring(observation.dateObs,1,11)) as night, 
+ sum(expTime)/3600 as hours
+from observation
+left join fileName on fileName.obsId=observation.obsId
+left join object on object.objectId=observation.objId
+left join project on project.projectId =observation.projectId
+where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
+AND fileName.phase='RAW' and project.name like '".$projectName. "%'
+AND observation.status like '".$statusValue."%'
+group by mo
+order by mo asc
+limit 1000
+;";
+
+
+if($result = mysqli_query($link, $sql)){
+	
+	$rowcount=mysqli_num_rows($result);
+		
+    if($rowcount > 0){
+        $outDataSt="var theDataSt=[\n";
+
+        $outTable="<table border=2>\n";
+        $outTable.="<tr>";
+                $outTable.="<th>month</th>";
+				$outTable.="<th>observations QTY</th>";                
+                $outTable.="<th>days QTY</th>";    
+                $outTable.="<th>total exposure duration(hours)</th>";                
+                $outTable.="<th>average observation duration(hours)</th>";                
+            $outTable.="</tr>\n";
+        while($row = mysqli_fetch_array($result)){
+            
+            $outDataSt.="{ 'date':'". $row['mo'] . "', 'hours':" . round($row['hours'],2) . "},";
+
+            $outTable.="<tr>";
+                $outTable.="<td>" . $row['mo'] . "</td>";
+                $outTable.="<td>" . $row['obs'] . "</td>";
+                $outTable.="<td>" . $row['night'] . "</td>";
+                $outTable.="<td>" . round($row['hours'],0) . "</td>";
+                $outTable.="<td>" . round($row['hours']/$row['obs'],1) . "</td>";
+
+            $outTable.="</tr>\n";
+        }
+        
+        $outDataSt=rtrim($outDataSt,","). "]\n";
+
+        $outTable.="</table>";
+        // Close result set
+        mysqli_free_result($result);
+    } else{
+        $outTable="No records matching your query were found.";
+    }
+} else{
+    $outTable="ERROR: Could not able to execute $sql. " . mysqli_error($link);
+}
+
+// Close connection
+mysqli_close($link);
+
 ?>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
 
 <style>
 
@@ -62,6 +128,10 @@ echo '</form>';
 
 <script>
 
+<?php
+echo $outDataSt;
+?>
+
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
@@ -73,14 +143,8 @@ var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv("stats-tsv.php", function(d) {
-  d.frequency = +d.frequency;
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-
-  x.domain(data.map(function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+  x.domain(theDataSt.map(function (d) { return d.date;}));
+  y.domain([0, d3.max(theDataSt, function (d) { return d.hours;})]);
 
   g.append("g")
       .attr("class", "axis axis--x")
@@ -98,78 +162,18 @@ d3.tsv("stats-tsv.php", function(d) {
       .text("Frequency");
 
   g.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
+      .data(theDataSt)
+      .enter().append("rect")
       .attr("class", "bar")
-      .attr("x", function(d) { return x(d.date); })
-      .attr("y", function(d) { return y(d.frequency); })
+      .attr("x", function(d) { return x(d.date);})
+      .attr("y", function(d) { return y(d.hours);})
       .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.frequency); });
-});
+      .attr("height", function(d) { return height - y(d.hours);} );
+
 
 </script>
 
-
-
 <?php
-$link=connectDb();
-
-
-// Attempt select query execution
-//$sql = "select * from object order by alpha";
-
-$sql = "select substring(dateObs,1,7)  as mo, count(DISTINCT observation.obsId) as obs,
-count(DISTINCT substring(observation.dateObs,1,11)) as night, 
- sum(expTime)/3600 as hours
-from observation
-left join fileName on fileName.obsId=observation.obsId
-left join object on object.objectId=observation.objId
-left join project on project.projectId =observation.projectId
-where (object.name like '". $searchStar. "%' or object.bayerName like '". $searchStar. "%' ) 
-AND fileName.phase='RAW' and project.name like '".$projectName. "%'
-AND observation.status like '".$statusValue."%'
-group by mo
-order by mo desc
-limit 1000
-;";
-
-
-if($result = mysqli_query($link, $sql)){
-	
-	$rowcount=mysqli_num_rows($result);
-		
-    if($rowcount > 0){
-        echo "<table border=2>\n";
-            echo "<tr>";
-                echo "<th>month</th>";
-				echo "<th>observations QTY</th>";                
-                echo "<th>days QTY</th>";    
-                echo "<th>total exposure duration(hours)</th>";                
-                echo "<th>average observation duration(hours)</th>";                
-            echo "</tr>\n";
-        while($row = mysqli_fetch_array($result)){
-            echo "<tr>";
-                echo "<td>" . $row['mo'] . "</td>";
-                echo "<td>" . $row['obs'] . "</td>";
-                echo "<td>" . $row['night'] . "</td>";
-                echo "<td>" . round($row['hours'],0) . "</td>";
-                echo "<td>" . round($row['hours']/$row['obs'],2) . "</td>";
-
-            echo "</tr>\n";
-        }
-        echo "</table>";
-        // Close result set
-        mysqli_free_result($result);
-    } else{
-        echo "No records matching your query were found.";
-    }
-} else{
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-}
-
-
-// Close connection
-mysqli_close($link);
-
+echo $outTable;
 ?>
 

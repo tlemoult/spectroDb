@@ -10,7 +10,8 @@
 
 include 'lib/connectDb.php';
 
-echo "<H2>stats</H2>\n";
+echo "<H1>statistics</H1>\n";
+
 
 if(!empty($_POST['searchStar']))
 { $searchStar=$_POST['searchStar'];	}
@@ -63,7 +64,7 @@ limit 1000
 if($result = mysqli_query($link, $sql)){
 	
 	$rowcount=mysqli_num_rows($result);
-		
+	$sumHours=0;	
     if($rowcount > 0){
         $outDataSt="var theDataSt=[\n";
 
@@ -78,6 +79,7 @@ if($result = mysqli_query($link, $sql)){
         while($row = mysqli_fetch_array($result)){
             
             $outDataSt.="{ 'date':'". $row['mo'] . "', 'hours':" . round($row['hours'],2) . "},";
+            $sumHours+=$row['hours'];
 
             $outTable.="<tr>";
                 $outTable.="<td>" . $row['mo'] . "</td>";
@@ -103,6 +105,8 @@ if($result = mysqli_query($link, $sql)){
 
 // Close connection
 mysqli_close($link);
+
+echo "Total " . round($sumHours,1) ." Hours of exposure time. <p>";
 
 ?>
 
@@ -153,13 +157,14 @@ var g = svg.append("g")
 
   g.append("g")
       .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y).ticks(10, ""))
-    .append("text")
+      .call(d3.axisLeft(y).ticks(10));
+
+    g.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end")
-      .text("Frequency");
+      .text("hours");
 
   g.selectAll(".bar")
       .data(theDataSt)

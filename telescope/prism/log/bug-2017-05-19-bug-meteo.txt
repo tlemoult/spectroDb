@@ -1,0 +1,3 @@
+Le script s'est arrêté à cause d'une erreur fatale : 
+Ligne :  @ 2164 -> "Open_FileTxt_For_Read fichier pathSentinel$  ERREUR : Erreur dans Append : C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt -> FICHIER
+Script terminé ...

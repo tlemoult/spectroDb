@@ -11,8 +11,7 @@ ConfigCamera:
     //////////  Champ	  ///////////
 	Print "Initialise camera Champ"	
 	print "   Mise sous tension"
-	parm$=PythonScriptControlBox$+" 1=1"
-	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOn$
 	delay 5000
 	WAITFORENDDELAY
 	

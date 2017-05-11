@@ -9,6 +9,10 @@ finSeance:
 		CLOSE_DOME
 	ENDIF
 
+	print "fermeture petale telescope"
+	params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+
 	IF (ActiveFlatLISALHIRESFinSession=1) then
 		GOSUB acquisition-FLAT-LISA_LHIRES:
 		REM on ne fait les flat que une fois par lancement du script..
@@ -79,8 +83,7 @@ shutDownCameraFinal:
 			WAITFORENDDELAY
 			
 			print "Coupure alimentation camera guidage"
-			parm$=PythonScriptControlBox$+" 1=0"
-			EXECEXTERNAL   pathPythonInterpreter$ parm$
+			EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOff$
 			
 			print "Coupure alimentation camera eShel"
 			parm$=PythonScriptControlIPX800$+"  5=0"

@@ -352,21 +352,29 @@ DirectorySignals$="X:\astro\base\signals\fromPRISM"
 REM Chemin racines des catalogues pour l astrometrie
 sDirCatalogue$="C:\catalogues\"
 
-REM Chemin des scripts python qui declenchent les lampes de calibration via le port serie
+pathRepoGit$="C:\Users\DELL\worspace\prod\spectroDb\"
+
+REM Chemin des scripts python
 pathPythonInterpreter$="C:\Python27\python.exe"
-pathPythonScript$="C:\Users\thierry\Dropbox\python\powercontrol\"
+pathPythonScript$=pathRepoGit$+"telescope\python\"
+
+REM pour LISA LIRES
 PythonScriptNeonLISALHIRESOn$=pathPythonScript$+"neon-on.py"
 PythonScriptNeonLISALHIRESOff$=pathPythonScript$+"neon-off.py"
-PythonScriptFinDeSeance$=pathPythonScript$+"alim-off-fin-seance.py"
 PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
-PythonScriptControlIPX800$="C:\Users\DELL\Dropbox\python\powercontrol\IPX800set.py"
-PythonScriptControlBox$="C:\Users\DELL\Dropbox\python\powercontrol\PowerBoxSet.py"
+PythonScriptControlIPX800$=pathPythonScript$+"IPX800set.py"
+PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py"
+PythonScriptAstrosibCmd$=pathPythonScript$+"astrosib-cmd.py COM9"
+delayOpenPetale=5000
 
-PathBatBaseIn$="C:\Program Files\putty\plink.exe"
-PathBatBaseInArgs$="-load Linux-bureau -l tlemoult /home/tlemoult/Dropbox/python/spectroAutoPubli/robot-1-in-db/run.sh"
-		
+PythonScriptCameraGuidageOn$=PythonScriptControlBox$+" 0=1"
+PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
+
+PythonScriptMirroirCalibOn$=PythonScriptControlBox$+" 1=1"
+PythonScriptMirroirCalibOff$=PythonScriptControlBox$+" 1=0"
+
 // type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
 SPECTROGRAPHE$="ESHEL"
 
@@ -393,8 +401,8 @@ MiroirXCameraChamp=0
 MiroirYCameraChamp=0
 TempCameraChamp=0
 DirRepChamp=0
-AngleCCDChampWEST=174
-FocaleCameraChamp=2111
+AngleCCDChampWEST=0
+FocaleCameraChamp=2416
 
 CameraSpectre=2
 binCameraSpectre=2
@@ -411,11 +419,11 @@ if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
 	MiroirXCameraChercheur=0
 	MiroirYCameraChercheur=0
-	FocaleCameraChercheur=133.5
+	FocaleCameraChercheur=135
 	binCameraChercheur=2
-	AngleCCDChercheurWEST=179
-	ChercheurPosXBin=344.8
-	ChercheurPosYBin=256.7
+	AngleCCDChercheurWEST=272
+	ChercheurPosXBin=252
+	ChercheurPosYBin=136
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0
@@ -437,10 +445,10 @@ HautDegMiniTelescope=20
 HautDegMaxTelecope=83
 // gestion du passage du meridien  pendant les poses(monture allemande)
 testColisionMeridien=1
-// blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement coté de méridien.
-// 1->Bloque    0-> authorisé
+// blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement cotï¿½ de mï¿½ridien.
+// 1->Bloque    0-> authorisï¿½
 bloqueChangementCoteMeridien=0
-//hauteur limite du soleil sous l'horizon en degré
+//hauteur limite du soleil sous l'horizon en degrï¿½
 ElevationMaxSun=-8
 // attente en minute avant un rebouclage si tout a echoue.. 
 DureeAttenteSiAucunSucces=30
@@ -483,8 +491,8 @@ OrientationFente=OriFentevertical
 // 05-07-2016   344, 274
 // jusqu'au 18/01/2017   X=342 Y=274
 
-fentePosX=341
-fentePosY=274
+fentePosX=354
+fentePosY=256
 
 
 // FLAT LISA LHIRES
@@ -509,7 +517,7 @@ exposureTimeLED=10
 nbExposureThar=3
 exposureTimeThar=3
 
-// Etoile de dégagement si échec reconnaissance du ciel :
+// Etoile de dï¿½gagement si ï¿½chec reconnaissance du ciel :
 Radius=9
 MagMin=3
 MagMax=7
@@ -529,7 +537,7 @@ DATETOSTR  Date_Start Date_Start$
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
 LimitMagnitudeCiel=16.8
-// après cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
+// aprï¿½s cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=18
 CompteurBeauTemp=0
 // valeur par defaut, activation observation immediate au lance du script sans verif meteo
@@ -548,29 +556,29 @@ delayswitch=180
 pauseAfterLightOn=5
 
 // RESSOURCESTRING :
-STR_01$="Télescope côté "
-STR_02$="Objet pointé vers "
-STR_03$="Pas de retournement de monture nécessaire"
-STR_04$="Retournement de monture nécessaire"
+STR_01$="Tï¿½lescope cï¿½tï¿½ "
+STR_02$="Objet pointï¿½ vers "
+STR_03$="Pas de retournement de monture nï¿½cessaire"
+STR_04$="Retournement de monture nï¿½cessaire"
 STR_05$="Pointe vers "
-STR_06$="Pose de reconnaissance de champ sur caméra n°"
-STR_07$="ECHEC - find all sky telescope - sur Camera n°"
-STR_08$="REUSSITE - find all sky telescope - sur Camera n°"
+STR_06$="Pose de reconnaissance de champ sur camï¿½ra nï¿½"
+STR_07$="ECHEC - find all sky telescope - sur Camera nï¿½"
+STR_08$="REUSSITE - find all sky telescope - sur Camera nï¿½"
 STR_09$="Reconnaissance de champ au niveau de l'objet :"
-STR_10$="Comparaison lancée ..."
-STR_11$="Astrométrie sur le champ"
-STR_12$="Reconnaissance astrométrique lancée ..."
-STR_13$="Détermination de la position de l'objet sur l'image reconnue astrométriquement"
-STR_14$="Position de l'objet sur l'image étalonnée astrométriquement : X = "
-STR_15$="Déplacement vers : X = "
-STR_16$="Echec de détermination de X_objet et de Y_objet"
-STR_17$="Début de l'autoguidage sur Consigne"
+STR_10$="Comparaison lancï¿½e ..."
+STR_11$="Astromï¿½trie sur le champ"
+STR_12$="Reconnaissance astromï¿½trique lancï¿½e ..."
+STR_13$="Dï¿½termination de la position de l'objet sur l'image reconnue astromï¿½triquement"
+STR_14$="Position de l'objet sur l'image ï¿½talonnï¿½e astromï¿½triquement : X = "
+STR_15$="Dï¿½placement vers : X = "
+STR_16$="Echec de dï¿½termination de X_objet et de Y_objet"
+STR_17$="Dï¿½but de l'autoguidage sur Consigne"
 STR_18$="Status de guidage : Guidage en cours, Dernier Message=["
 STR_19$="Status de guidage : Guidage INACTIF, Dernier Message=["
-STR_20$="L'étalonnage de l'image est OK"
-STR_21$="Echec de l'étalonnage astrométrique !"
+STR_20$="L'ï¿½talonnage de l'image est OK"
+STR_21$="Echec de l'ï¿½talonnage astromï¿½trique !"
 STR_22$="On ne peut plus rien pour vous !"
-STR_23$="Pas d'étoile de dégagement. Elargir le champ de recherche !"
+STR_23$="Pas d'ï¿½toile de dï¿½gagement. Elargir le champ de recherche !"
 
 GetStdrLongitude Longitude
 
@@ -683,20 +691,26 @@ GeneNextLSTTarget:
 
 init_dome_telescope:
 	Print "----------------------------------------------------------------"
-	Print "Initialisation dome et telescope"
+	Print "Initialisation dome"
 	if coupole=1 THEN
 		// dome asservit sur suivit et pointage
 		DOME_SET_CONTROL 1 1
 
 		GET_DOME_POS  Azimuth  Status Statusb
 		IF Statusb=3
-			print "Le dome est fermé, donc on l'ouvre"
+			print "Le dome est fermï¿½, donc on l'ouvre"
 			OPEN_DOME
 		ELSE
 			print "dome deja ouvert"
 		ENDIF
 	endif
-		
+
+	print "ouverture petale telescope"
+	params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+	delay delayOpenPetale
+	WaitForEndDelay
+
 return
 # 332 "<stdin>" 2
 
@@ -714,8 +728,7 @@ ConfigCamera:
     //////////  Champ	  ///////////
 	Print "Initialise camera Champ"	
 	print "   Mise sous tension"
-	parm$=PythonScriptControlBox$+" 1=1"
-	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOn$
 	delay 5000
 	WAITFORENDDELAY
 	
@@ -1111,6 +1124,10 @@ finSeance:
 		CLOSE_DOME
 	ENDIF
 
+	print "fermeture petale telescope"
+	params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+
 	IF (ActiveFlatLISALHIRESFinSession=1) then
 		GOSUB acquisition-FLAT-LISA_LHIRES:
 		REM on ne fait les flat que une fois par lancement du script..
@@ -1181,8 +1198,7 @@ shutDownCameraFinal:
 			WAITFORENDDELAY
 			
 			print "Coupure alimentation camera guidage"
-			parm$=PythonScriptControlBox$+" 1=0"
-			EXECEXTERNAL   pathPythonInterpreter$ parm$
+			EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOff$
 			
 			print "Coupure alimentation camera eShel"
 			parm$=PythonScriptControlIPX800$+"  5=0"
@@ -1332,7 +1348,10 @@ LampCalibOff:
 			SETSWITCH switchled OFF
 			delay delayswitch
 			WaitForEndDelay
-			SETSWITCH switchmirroir OFF
+
+			// Miroir Calibration au repos
+			EXECEXTERNAL   pathPythonInterpreter$ PythonScriptMirroirCalibOff$
+
 		ELSE
 			IF SPECTROGRAPHE$="LISA" then
 				EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
@@ -1366,10 +1385,13 @@ RETURN
 //######################""
 CalibEshel:
 
-PRINT "allume la lampe tungsten"
-SETSWITCH switchmirroir ON
+// Miroir Calibration au repos
+PRINT "Bascule le miroir de calibration"
+EXECEXTERNAL   pathPythonInterpreter$ PythonScriptMirroirCalibOn$
 delay delayswitch
 WaitForEndDelay
+
+PRINT "allume la lampe tungsten"
 SETSWITCH switchtungsten ON
 intituleCalib$="Tungsten de "+NomObjet$
 exposureCalib=exposureTimeTungsten
@@ -1443,7 +1465,7 @@ RETURN
 
 
 //####################################
-//#  fenetre d'entrée des parametres
+//#  fenetre d'entrï¿½e des parametres
 //####################################
 EntreeParametre:
 REM *****************************
@@ -1463,7 +1485,7 @@ adddlgbox 2 60 0 "hauteur mini telescope en degree" HautDegMiniTelescope
 adddlgbox 5 "Test passage meridien actif ?" 0
 adddlgbox 3 300 0 "Nombre de boucle Globale Spectre/Calib" nbLoopProcessGlobal
 
-REM La boîte de dialogue apparaît à l'écran
+REM La boï¿½te de dialogue apparaï¿½t ï¿½ l'ï¿½cran
 dispdlgbox result
 if (result=1)
  getdlgbox NomObjet$
@@ -1482,7 +1504,7 @@ if (result=1)
  getdlgbox nbLoopProcessGlobal
  
 else
- print "Annulé !"
+ print "Annulï¿½ !"
  exit
 endif
 
@@ -1520,7 +1542,7 @@ testMeridien_Hauteur:
 
 	// on fait ce code que si c'est active dans le general settings.
 	IF testColisionMeridien=1 THEN
-		// De quel côté est le télescope ?
+		// De quel cï¿½tï¿½ est le tï¿½lescope ?
 		PIERSIDE_TEL ActualSide$
 		GET_TELESCOPE_POSITION AD2000 DEC2000 Haut Azi AHor	
 		// Ramene l'angle dans l' intervale [-pi/2...+pi]

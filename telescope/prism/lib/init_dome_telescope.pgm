@@ -2,18 +2,24 @@
 
 init_dome_telescope:
 	Print "----------------------------------------------------------------"
-	Print "Initialisation dome et telescope"
+	Print "Initialisation dome"
 	if coupole=1 THEN
 		// dome asservit sur suivit et pointage
 		DOME_SET_CONTROL 1 1
 
 		GET_DOME_POS  Azimuth  Status Statusb
 		IF Statusb=3
-			print "Le dome est fermé, donc on l'ouvre"
+			print "Le dome est fermï¿½, donc on l'ouvre"
 			OPEN_DOME
 		ELSE
 			print "dome deja ouvert"
 		ENDIF
 	endif
-		
+
+	print "ouverture petale telescope"
+	params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+	delay delayOpenPetale
+	WaitForEndDelay
+
 return

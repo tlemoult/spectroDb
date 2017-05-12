@@ -94,16 +94,8 @@ LampCalibOff:
 		GETYESNO "eteindre toutes les lampes" rep
 	ELSE
 		IF SPECTROGRAPHE$="ESHEL" then	
-			SETSWITCH switchthar OFF
-			delay delayswitch
-			WaitForEndDelay
-			SETSWITCH switchtungsten OFF
-			delay delayswitch
-			WaitForEndDelay
-			SETSWITCH switchled OFF
-			delay delayswitch
-			WaitForEndDelay
-			SETSWITCH switchmirroir OFF
+			params$=PythonScriptCalibeShel$+" off"
+			EXECEXTERNAL   pathPythonInterpreter$ params$
 		ELSE
 			IF SPECTROGRAPHE$="LISA" then
 				EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
@@ -138,10 +130,9 @@ RETURN
 CalibEshel:
 
 PRINT "allume la lampe tungsten"
-SETSWITCH switchmirroir ON
-delay delayswitch
-WaitForEndDelay
-SETSWITCH switchtungsten ON
+params$=PythonScriptCalibeShel$+" flat"
+EXECEXTERNAL   pathPythonInterpreter$ params$
+
 intituleCalib$="Tungsten de "+NomObjet$
 exposureCalib=exposureTimeTungsten
 nbExposureCalib=nbExposureTungsten
@@ -149,7 +140,8 @@ FileNameEndCalib$="TUNGSTEN-"
 GOSUB boucleAcquisitionCalib:
 
 Print "Allume les LED"
-SETSWITCH switchled ON
+params$=PythonScriptCalibeShel$+" led"
+EXECEXTERNAL   pathPythonInterpreter$ params$
 intituleCalib$="LED de "+NomObjet$
 exposureCalib=exposureTimeLED
 nbExposureCalib=nbExposureLED
@@ -157,13 +149,8 @@ FileNameEndCalib$="LED-"
 GOSUB boucleAcquisitionCalib:
 
 Print "Allume la lampe Thorium-Argon"
-SETSWITCH switchled OFF
-delay delayswitch
-WaitForEndDelay
-SETSWITCH switchtungsten OFF
-delay delayswitch
-WaitForEndDelay
-SETSWITCH switchthar ON
+params$=PythonScriptCalibeShel$+" calib"
+EXECEXTERNAL   pathPythonInterpreter$ params$
 intituleCalib$="Thorium Argon de "+NomObjet$
 exposureCalib=exposureTimeThar
 nbExposureCalib=nbExposureThar
@@ -214,7 +201,7 @@ RETURN
 
 
 //####################################
-//#  fenetre d'entrée des parametres
+//#  fenetre d'entrï¿½e des parametres
 //####################################
 EntreeParametre:
 REM *****************************
@@ -234,7 +221,7 @@ adddlgbox 2 60 0 "hauteur mini telescope en degree" HautDegMiniTelescope
 adddlgbox 5 "Test passage meridien actif ?" 0
 adddlgbox 3 300 0 "Nombre de boucle Globale Spectre/Calib" nbLoopProcessGlobal
 
-REM La boîte de dialogue apparaît à l'écran
+REM La boï¿½te de dialogue apparaï¿½t ï¿½ l'ï¿½cran
 dispdlgbox result
 if (result=1)
  getdlgbox NomObjet$
@@ -253,7 +240,7 @@ if (result=1)
  getdlgbox nbLoopProcessGlobal
  
 else
- print "Annulé !"
+ print "Annulï¿½ !"
  exit
 endif
 
@@ -291,7 +278,7 @@ testMeridien_Hauteur:
 
 	// on fait ce code que si c'est active dans le general settings.
 	IF testColisionMeridien=1 THEN
-		// De quel côté est le télescope ?
+		// De quel cï¿½tï¿½ est le tï¿½lescope ?
 		PIERSIDE_TEL ActualSide$
 		GET_TELESCOPE_POSITION AD2000 DEC2000 Haut Azi AHor	
 		// Ramene l'angle dans l' intervale [-pi/2...+pi]

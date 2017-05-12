@@ -1,0 +1,28 @@
+path$="Z:\"
+GETFILENAME  path$
+open img path$
+GETWINDOW  Img  X1  Y2  X2  Y1
+
+
+median img 1 3
+mult img -1
+STAT  Img  Moyenne  MoyenneQuadratique  Ecarttype  Max  Min  Flux  Mediane
+offVal=-Min
+offset img offVal
+
+Dem_Larg=15
+X=(X1+X2)/2
+Y=(Y1+Y2)/2
+INT X X
+INT Y Y
+Window=20
+NbPixel=10
+
+CENTROIDEMOFFAT  Img  X  Y  Dem_Larg  PosX  PosY  SigW  SigH  Angle  Flux  OMC  HOMC  ErrFlux
+CENTROIDBARYCENTRE  Img  X  Y  Window  NbPixel  Xresult  Yresult
+
+Print "Position fibre optique:"
+print ""
+print "fentePosX=" Xresult
+print "fentePosY=" Yresult
+

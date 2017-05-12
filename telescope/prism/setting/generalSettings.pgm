@@ -38,8 +38,7 @@ delayOpenPetale=5000
 PythonScriptCameraGuidageOn$=PythonScriptControlBox$+" 0=1"
 PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
 
-PythonScriptMirroirCalibOn$=PythonScriptControlBox$+" 1=1"
-PythonScriptMirroirCalibOff$=PythonScriptControlBox$+" 1=0"
+PythonScriptCalibeShel$=pathPythonScript$+"PowerBoxSet.py COM7"
 
 // type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
 SPECTROGRAPHE$="ESHEL"
@@ -67,7 +66,7 @@ MiroirXCameraChamp=0
 MiroirYCameraChamp=0
 TempCameraChamp=0
 DirRepChamp=0
-AngleCCDChampWEST=0
+AngleCCDChampWEST=4
 FocaleCameraChamp=2416
 
 CameraSpectre=2
@@ -157,9 +156,8 @@ OrientationFente=OriFentevertical
 // 05-07-2016   344, 274
 // jusqu'au 18/01/2017   X=342 Y=274
 
-fentePosX=354
-fentePosY=256
-
+fentePosX=358.2018
+fentePosY=255.00514
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0

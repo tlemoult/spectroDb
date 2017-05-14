@@ -6,25 +6,31 @@ import serial
 import sys
 import urllib
 
-comNumber=2
-
 if ( len(sys.argv)==1):
 	print "Controle etat des relais de l'interface faite maison"
 	print "Syntaxe:"
-	print "python PowerBoxset.py 4=1"
-	print "pour activer le relais 4"
+	print "python PowerBoxset.py COM2 4=1"
+	print "pour activer le relais 4, avec powerbox sur le port serie COM2"
 	exit()
-	
-print "Power Box Serial Port COM"+str(comNumber)
 
-relNo=sys.argv[1][0]
-relState=sys.argv[1][2]
+# le port serie
+print "ouvre le port serie, ",
+com=sys.argv[1]
+if com[0:3]=='COM':
+	# on tourne sous windows
+	comName=int(com[3:])-1
+	print "  Port COM"+str(comName+1)
+else:
+	#on tourne pas sous windows
+	comName=com
+	print "  Port Dev: "+comName
 
-#pour l usb de l arduino, on utilise dstr=1
-#ser = serial.Serial(2,9600,timeout=1,dsrdtr=1)
+#on recupere la commande
+relNo=sys.argv[2][0]
+relState=sys.argv[2][2]
 
-#vrais port serie, pas de dsr dtr
-ser = serial.Serial(comNumber-1,9600,timeout=1)
+# execute la commande
+ser = serial.Serial(comName,9600,timeout=1)
 chaine="R"+relNo+relState+"\n"
 print "chaine="+chaine
 ser.write(chaine)

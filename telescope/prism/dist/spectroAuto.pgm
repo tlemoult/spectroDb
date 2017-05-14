@@ -365,15 +365,18 @@ PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
 PythonScriptControlIPX800$=pathPythonScript$+"IPX800set.py"
-PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py"
+PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py COM2"
 PythonScriptAstrosibCmd$=pathPythonScript$+"astrosib-cmd.py COM9"
-delayOpenPetale=5000
+delayOpenClosePetale=15000
+delayAstrosibCommand=1000
 
 PythonScriptCameraGuidageOn$=PythonScriptControlBox$+" 0=1"
 PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
 
-PythonScriptMirroirCalibOn$=PythonScriptControlBox$+" 1=1"
-PythonScriptMirroirCalibOff$=PythonScriptControlBox$+" 1=0"
+PythonScriptTelescopeOn$=PythonScriptControlBox$+" 3=1"
+PythonScriptTelescopeOff$=PythonScriptControlBox$+" 3=0"
+
+PythonScriptCalibeShel$=pathPythonScript$+"PowerBoxSet.py COM7"
 
 // type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
 SPECTROGRAPHE$="ESHEL"
@@ -401,7 +404,7 @@ MiroirXCameraChamp=0
 MiroirYCameraChamp=0
 TempCameraChamp=0
 DirRepChamp=0
-AngleCCDChampWEST=0
+AngleCCDChampWEST=4
 FocaleCameraChamp=2416
 
 CameraSpectre=2
@@ -454,10 +457,11 @@ ElevationMaxSun=-8
 DureeAttenteSiAucunSucces=30
 // Flag pour declencher le parking a la fin du script, sinon l entrainment horaire s'arrete simplement.
 ActiveParkingTelescope=1
-// Position pour le parking en radian
-// HA=Hangle horaire   De=Declinaison
-ParkHa=0.0174
-ParkDe=-0.677330
+// Position pour le parking du telescope
+// HA=angle horaire   De=Declinaison
+    ParkHaDeg=178
+    ParkDeDeg=45
+    ParkSide=0
 
 // delas en ms apres un pointage pour reprise de l'entrainement horaire
 DelayRepriseRA=10000
@@ -491,9 +495,8 @@ OrientationFente=OriFentevertical
 // 05-07-2016   344, 274
 // jusqu'au 18/01/2017   X=342 Y=274
 
-fentePosX=354
-fentePosY=256
-
+fentePosX=358.2018
+fentePosY=255.00514
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0
@@ -690,7 +693,41 @@ GeneNextLSTTarget:
 
 
 init_dome_telescope:
-	Print "----------------------------------------------------------------"
+	Print "----init_dome_telescope----------------------------------------------------"
+
+    ///  Telescope ///	
+	IF (ActiveParkingTelescope=1) then
+
+		print "Mise sous tension telescope"
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptTelescopeOn$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		print "ouverture petale telescope"
+		params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayOpenClosePetale
+		WaitForEndDelay
+
+		print "mise en route ventillateur miroir primaire"
+		params$=PythonScriptAstrosibCmd$+" COOLERAUTOON?1"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		print "mise en route chauffage secondaire"
+		params$=PythonScriptAstrosibCmd$+" HEATAUTOON?2"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		GOSUB CALC_RA_DEC_PARK:
+		print "Connexion telescope, dome , focuser"
+        OPEN_TELESCOPE_DEVICES ParkRa ParkDe ParkSide
+
+	ENDIF
+
+
 	Print "Initialisation dome"
 	if coupole=1 THEN
 		// dome asservit sur suivit et pointage
@@ -698,18 +735,13 @@ init_dome_telescope:
 
 		GET_DOME_POS  Azimuth  Status Statusb
 		IF Statusb=3
-			print "Le dome est ferm�, donc on l'ouvre"
+			print "Le dome est ferme, donc on l'ouvre"
 			OPEN_DOME
 		ELSE
 			print "dome deja ouvert"
 		ENDIF
 	endif
 
-	print "ouverture petale telescope"
-	params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
-	EXECEXTERNAL   pathPythonInterpreter$ params$
-	delay delayOpenPetale
-	WaitForEndDelay
 
 return
 # 332 "<stdin>" 2
@@ -1124,9 +1156,7 @@ finSeance:
 		CLOSE_DOME
 	ENDIF
 
-	print "fermeture petale telescope"
-	params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
-	EXECEXTERNAL   pathPythonInterpreter$ params$
+	
 
 	IF (ActiveFlatLISALHIRESFinSession=1) then
 		GOSUB acquisition-FLAT-LISA_LHIRES:
@@ -1136,39 +1166,33 @@ finSeance:
 
     ///  Telescope ///	
 	IF (ActiveParkingTelescope=1) then
-		print "parking du telescope"
-		
-		STR_RAD_TO_RA ParkHa HH$ MM$ SS$
-		STR_RAD_TO_DEC ParkDe DD$ DM$ DS$
-		PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
-   	    PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
-		
-		GetStdrLongitude Longitude
-		NOW date
-		SIDERALTIME Date Longitude TSL
-		ParkRa=TSL-ParkHa
-		STR_RAD_TO_RA ParkRa HH$ MM$ SS$
-		PRINT "    Alpha calcule = " HH$ "h " MM$ "m " SS$ "s"
-
+		GOSUB CALC_RA_DEC_PARK:
+        print "parking du telescope"
 		print "    execution mouvement telescope"
 		MoveTelescope  ParkRa ParkDe
 		print "    attente fin mouvement telescope"
 		WaitForEndMoveTelescope
 		print "    arret entrainement"
 		STOPTELESCOPE
+        print "    attente"
+        delay 2000
+        waitforenddelay
+        print "    deconnexion telescope et dome"
+        CLOSE_TELESCOPE_DEVICES
+
+		print "fermeture petale telescope"
+		params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayOpenClosePetale
+		WaitForEndDelay
+
+		print "Coupure Alimentation telescope"
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptTelescopeOff$
+		delay delayAstrosibCommand
+		WaitForEndDelay
 
 	ENDIF
 	
-	print "  recupere position telescope"
-	GET_TELESCOPE_POSITION  Alpha2000  Delta2000  Hauteur  Azimuth  AngleHor
-	STR_RAD_TO_RA AngleHor HH$ MM$ SS$
-	STR_RAD_TO_DEC Delta2000 DD$ DM$ DS$
-	PRINT "Etat du telescope fin de seance:"
-	PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
-	PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
-	STR_RAD_TO_DEC Hauteur DD$ DM$ DS$
-	print "    Hauteur       = " DD$ "d " DM$ "m" DS$ "s"
-
 	
 	/// Camera ///
 	gosub set_cooling_camera_off:
@@ -1240,6 +1264,26 @@ acquisition-FLAT-LISA_LHIRES:
 	print "    eteind la lampe FLAT"
 	EXECEXTERNAL   pathPythonInterpreter$  PythonScriptFLATLISALHIRESOff$
 RETURN
+
+CALC_RA_DEC_PARK:
+
+        print "calcul RA DEC parking telescope"
+        // Convertion degre vers Radian
+        ParkHa=3.14159265359*ParkHaDeg/180
+        ParkDe=3.14159265359*ParkDeDeg/180
+
+		STR_RAD_TO_RA ParkHa HH$ MM$ SS$
+		STR_RAD_TO_DEC ParkDe DD$ DM$ DS$
+		PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
+   	    PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
+		
+		GetStdrLongitude Longitude
+		NOW date
+		SIDERALTIME Date Longitude TSL
+		ParkRa=TSL-ParkHa
+		STR_RAD_TO_RA ParkRa HH$ MM$ SS$
+		PRINT "    Alpha calcule = " HH$ "h " MM$ "m " SS$ "s"
+        Return
 # 337 "<stdin>" 2
 
 # 1 "./lib/acquisition_Calibration.pgm" 1
@@ -1339,19 +1383,8 @@ LampCalibOff:
 		GETYESNO "eteindre toutes les lampes" rep
 	ELSE
 		IF SPECTROGRAPHE$="ESHEL" then	
-			SETSWITCH switchthar OFF
-			delay delayswitch
-			WaitForEndDelay
-			SETSWITCH switchtungsten OFF
-			delay delayswitch
-			WaitForEndDelay
-			SETSWITCH switchled OFF
-			delay delayswitch
-			WaitForEndDelay
-
-			// Miroir Calibration au repos
-			EXECEXTERNAL   pathPythonInterpreter$ PythonScriptMirroirCalibOff$
-
+			params$=PythonScriptCalibeShel$+" off"
+			EXECEXTERNAL   pathPythonInterpreter$ params$
 		ELSE
 			IF SPECTROGRAPHE$="LISA" then
 				EXECEXTERNAL   pathPythonInterpreter$ PythonScriptNeonLISALHIRESOff$
@@ -1385,14 +1418,10 @@ RETURN
 //######################""
 CalibEshel:
 
-// Miroir Calibration au repos
-PRINT "Bascule le miroir de calibration"
-EXECEXTERNAL   pathPythonInterpreter$ PythonScriptMirroirCalibOn$
-delay delayswitch
-WaitForEndDelay
-
 PRINT "allume la lampe tungsten"
-SETSWITCH switchtungsten ON
+params$=PythonScriptCalibeShel$+" flat"
+EXECEXTERNAL   pathPythonInterpreter$ params$
+
 intituleCalib$="Tungsten de "+NomObjet$
 exposureCalib=exposureTimeTungsten
 nbExposureCalib=nbExposureTungsten
@@ -1400,7 +1429,8 @@ FileNameEndCalib$="TUNGSTEN-"
 GOSUB boucleAcquisitionCalib:
 
 Print "Allume les LED"
-SETSWITCH switchled ON
+params$=PythonScriptCalibeShel$+" led"
+EXECEXTERNAL   pathPythonInterpreter$ params$
 intituleCalib$="LED de "+NomObjet$
 exposureCalib=exposureTimeLED
 nbExposureCalib=nbExposureLED
@@ -1408,13 +1438,8 @@ FileNameEndCalib$="LED-"
 GOSUB boucleAcquisitionCalib:
 
 Print "Allume la lampe Thorium-Argon"
-SETSWITCH switchled OFF
-delay delayswitch
-WaitForEndDelay
-SETSWITCH switchtungsten OFF
-delay delayswitch
-WaitForEndDelay
-SETSWITCH switchthar ON
+params$=PythonScriptCalibeShel$+" calib"
+EXECEXTERNAL   pathPythonInterpreter$ params$
 intituleCalib$="Thorium Argon de "+NomObjet$
 exposureCalib=exposureTimeThar
 nbExposureCalib=nbExposureThar

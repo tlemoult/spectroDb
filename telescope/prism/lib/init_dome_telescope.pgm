@@ -1,7 +1,41 @@
 
 
 init_dome_telescope:
-	Print "----------------------------------------------------------------"
+	Print "----init_dome_telescope----------------------------------------------------"
+
+    ///  Telescope ///	
+	IF (ActiveParkingTelescope=1) then
+
+		print "Mise sous tension telescope"
+		EXECEXTERNAL   pathPythonInterpreter$ PythonScriptTelescopeOn$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		print "ouverture petale telescope"
+		params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayOpenClosePetale
+		WaitForEndDelay
+
+		print "mise en route ventillateur miroir primaire"
+		params$=PythonScriptAstrosibCmd$+" COOLERAUTOON?1"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		print "mise en route chauffage secondaire"
+		params$=PythonScriptAstrosibCmd$+" HEATAUTOON?2"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay delayAstrosibCommand
+		WaitForEndDelay
+
+		GOSUB CALC_RA_DEC_PARK:
+		print "Connexion telescope, dome , focuser"
+        OPEN_TELESCOPE_DEVICES ParkRa ParkDe ParkSide
+
+	ENDIF
+
+
 	Print "Initialisation dome"
 	if coupole=1 THEN
 		// dome asservit sur suivit et pointage
@@ -9,17 +43,12 @@ init_dome_telescope:
 
 		GET_DOME_POS  Azimuth  Status Statusb
 		IF Statusb=3
-			print "Le dome est ferm�, donc on l'ouvre"
+			print "Le dome est ferme, donc on l'ouvre"
 			OPEN_DOME
 		ELSE
 			print "dome deja ouvert"
 		ENDIF
 	endif
 
-	print "ouverture petale telescope"
-	params$=PythonScriptAstrosibCmd$+" SHUTTEROPEN?1,1,1,1,1"
-	EXECEXTERNAL   pathPythonInterpreter$ params$
-	delay delayOpenPetale
-	WaitForEndDelay
 
 return

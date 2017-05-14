@@ -31,12 +31,16 @@ PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
 PythonScriptControlIPX800$=pathPythonScript$+"IPX800set.py"
-PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py"
+PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py COM2"
 PythonScriptAstrosibCmd$=pathPythonScript$+"astrosib-cmd.py COM9"
-delayOpenPetale=5000
+delayOpenClosePetale=15000
+delayAstrosibCommand=1000
 
 PythonScriptCameraGuidageOn$=PythonScriptControlBox$+" 0=1"
 PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
+
+PythonScriptTelescopeOn$=PythonScriptControlBox$+" 3=1"
+PythonScriptTelescopeOff$=PythonScriptControlBox$+" 3=0"
 
 PythonScriptCalibeShel$=pathPythonScript$+"PowerBoxSet.py COM7"
 
@@ -119,10 +123,11 @@ ElevationMaxSun=-8
 DureeAttenteSiAucunSucces=30
 // Flag pour declencher le parking a la fin du script, sinon l entrainment horaire s'arrete simplement.
 ActiveParkingTelescope=1
-// Position pour le parking en radian
-// HA=Hangle horaire   De=Declinaison
-ParkHa=0.0174
-ParkDe=-0.677330
+// Position pour le parking du telescope
+// HA=angle horaire   De=Declinaison
+    ParkHaDeg=178
+    ParkDeDeg=45
+    ParkSide=0
 
 // delas en ms apres un pointage pour reprise de l'entrainement horaire
 DelayRepriseRA=10000

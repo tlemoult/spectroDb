@@ -122,6 +122,10 @@ def insert_Project(db,ProjectName):
 def getProjectId_fromProjectName(db,ProjectName):
 	query='SELECT projectId from project where name="%s"'%(ProjectName)
 	return commit_query_sql(db,query)
+
+def getProjectFollowers_fromProjectName(db,ProjectName):
+	query='SELECT followers from project where name="%s"'%(ProjectName)
+	return commit_query_sql(db,query)
 	
 def insert_request_observation(db,projectId,objId,priority,exposure):
 	sql="""INSERT INTO RequestToObserveList(projectId,objectId,priority,TotExposure)

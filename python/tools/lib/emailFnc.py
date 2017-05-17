@@ -1,4 +1,5 @@
 import smtplib,json
+import dbSpectro
 
 def main():
 	sendEmail(subject      = '[Carl]test', 
@@ -6,15 +7,20 @@ def main():
 		)
 
 
-def sendEmail(subject, message):
+def sendEmail(subject, message,db,projectName):
 
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
+
+	adress=dbSpectro.getProjectFollowers_fromProjectName(db,projectName)
+	to_addr_list=adress.split(',')
+	print to_addr_list
+
 	smtpserver= config['email']['smtp']
 	login= config['email']['login']
 	password= config['email']['password']
-	to_addr_list= [ config['email']['to'], config['email']['cc'] ]
-	cc_addr_list= [ config['email']['cc'] ]
+	
+	cc_addr_list= [ ]
 	from_addr= config['email']['from']
 	header  = 'From: %s\n' % from_addr
 	header += 'To: %s\n' % ','.join(to_addr_list)

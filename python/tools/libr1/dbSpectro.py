@@ -184,6 +184,10 @@ def insert_Project(db,ProjectName):
 	sql="""INSERT INTO project(name) VALUES ('%s')"""%(ProjectName)
 	commit_insert_sql(db,sql)
 
+def getProjectFollowers_fromProjectName(db,ProjectName):
+	query='SELECT followers from project where name="%s"'%(ProjectName)
+	return commit_query_sql(db,query)
+
 def insert_Alias(db,objIdbyCoord,objName):
 	query="""SELECT * from objalias where objId=%d and alias like '%s'"""%(objIdbyCoord,objName)
 	if commit_query_sql(db,query)==0:

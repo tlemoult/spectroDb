@@ -62,7 +62,7 @@ for dirSource in lstDir:
 			try:
 				subject='[Carl]  Obs failed '
 				subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
-				emailFnc.sendEmail(subject,"Your dear Carl.")
+				emailFnc.sendEmail(subject,"Your dear Carl.",db,json['project'])
 			except:
 				print "pb dans l envois de l email"
 			print "Observation status=failed"
@@ -75,7 +75,7 @@ for dirSource in lstDir:
 			try:
 				subject='[Carl] Obs start exposure '
 				subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
-				emailFnc.sendEmail(subject,"Your dear Carl.")
+				emailFnc.sendEmail(subject,"Your dear Carl.",db,json['project'])
 			except:
 				print "pb dans l envois de l email"
 			continue  # on ne traite pas les observations en cours
@@ -101,7 +101,7 @@ for dirSource in lstDir:
 		try:
 			subject='[Carl] Obs finished '
 			subject+=json['target']['objname'][0]+' '+time.strftime("%A %d %B %Y %H:%M:%S")
-			emailFnc.sendEmail(subject,msg+"\nYour dear Carl.")
+			emailFnc.sendEmail(subject,msg+"\nYour dear Carl.",db,json['project'])
 		except:
 			print "pb dans l envois de le mail"
 

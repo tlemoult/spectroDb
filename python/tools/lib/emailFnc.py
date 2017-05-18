@@ -13,7 +13,8 @@ def sendEmail(subject, message,db,projectName):
 	config=json.loads(json_text)
 
 	adress=dbSpectro.getProjectFollowers_fromProjectName(db,projectName)
-	to_addr_list=adress.split(',')
+	to_addr_list=[ config['email']['myAdress'] ]
+	to_addr_list.extend(adress.split(','))
 	print to_addr_list
 
 	smtpserver= config['email']['smtp']

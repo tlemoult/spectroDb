@@ -2,7 +2,7 @@
 import MySQLdb,json
 import datetime,time
 
-
+logLevel=0
 
 def init_connection():
 	global logLevel

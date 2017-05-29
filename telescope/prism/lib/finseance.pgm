@@ -32,7 +32,11 @@ finSeance:
         waitforenddelay
         print "    deconnexion telescope et dome"
         CLOSE_TELESCOPE_DEVICES
-
+		
+		// le telescope n est plus pret, il faudra le reinitialiser
+		ActiveTelescopeAlreadyReady=0
+		
+		
 		print "fermeture petale telescope"
 		params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
 		EXECEXTERNAL   pathPythonInterpreter$ params$

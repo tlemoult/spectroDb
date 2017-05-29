@@ -9,6 +9,8 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 	adddlgbox 2 125000 1 "FLUX max par pose unitaire" maxDyn
 	adddlgbox 6 "repertoire du fichier . LST des cibles" DirCible$
 	adddlgbox 5 "Lancement immediat des observations, sans condition meteo"  ActiveLancementImmediat
+	adddlgbox 5 "Telescope deja pret et connecte au lancement"  ActiveTelescopeAlreadyReady
+	
 	adddlgbox 5 "Parking telescope en fin de session" ActiveParkingTelescope
 	adddlgbox 5 "Coupure alimentation des cameras en fin de session" ActiveCoupureCameraFinSession
 	adddlgbox 5 "acquisition de Flat LISALHIRES en Fin de session" ActiveFlatLISALHIRESFinSession
@@ -27,6 +29,7 @@ Dialog_param_et_Charge_LST_et_defini_cible:
 		getdlgbox maxDyn
 		getdlgbox DirCible$
 		getdlgbox ActiveLancementImmediat
+		getdlgbox ActiveTelescopeAlreadyReady
 		getdlgbox ActiveParkingTelescope
 		getdlgbox ActiveCoupureCameraFinSession
 		getdlgbox ActiveFlatLISALHIRESFinSession

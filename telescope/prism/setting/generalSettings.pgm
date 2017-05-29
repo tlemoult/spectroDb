@@ -42,7 +42,7 @@ PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
 PythonScriptTelescopeOn$=PythonScriptControlBox$+" 3=1"
 PythonScriptTelescopeOff$=PythonScriptControlBox$+" 3=0"
 
-PythonScriptCalibeShel$=pathPythonScript$+"PowerBoxSet.py COM7"
+PythonScriptCalibeShel$=pathPythonScript$+"eShell-calib.py COM7"
 
 // type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
 SPECTROGRAPHE$="ESHEL"
@@ -77,7 +77,7 @@ CameraSpectre=2
 binCameraSpectre=2
 MiroirXCameraSpectre=0
 MiroirYCameraSpectre=0
-TempCameraSpectre=0
+TempCameraSpectre=5
 
 // 1-> camera presente  0->1
 CameraChercheurPresente=1
@@ -91,8 +91,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=252
-	ChercheurPosYBin=136
+	ChercheurPosXBin=263
+	ChercheurPosYBin=142
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0
@@ -152,17 +152,9 @@ OrientationFente=OriFentevertical
 
 // Position cible du guidage
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
-// refocus...
-// 17-02-2016: en bin1:  X=686, Y=548,  en bin 2: 343, 275
-// 12-03-2016. 347, 275
-// 13-03-2016  avant meridien: 343, 274
-//         apres meridien:  344, 275  344, 275
-// 14-03-2016   343, 275
-// 05-07-2016   344, 274
-// jusqu'au 18/01/2017   X=342 Y=274
 
-fentePosX=358.2018
-fentePosY=255.00514
+fentePosX=358.2
+fentePosY=267.0
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0
@@ -212,6 +204,8 @@ CompteurBeauTemp=0
 // valeur par defaut, activation observation immediate au lance du script sans verif meteo
 ActiveLancementImmediat=1
 
+// valeur par default, le telescope n est pas pret et connecte
+ActiveTelescopeAlreadyReady=0
 
 
 // definition interrupteurs commande module calibraion via la carte Vellmann eShell

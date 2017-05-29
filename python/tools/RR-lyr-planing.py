@@ -41,6 +41,10 @@ def disp_date(target,observer,times):
 			print "ObsTime=["+str(time+fuseau-1*u.hour)[11:16]+"TL,",str(time+fuseau+1*u.hour)[11:16]+"TL]",			
 			print "<=> alt=["+str(observer.altaz(time-1*u.hour,target).alt)[:3]+".."+str(observer.altaz(time+1*u.hour,target).alt)[:3]+"]"
 
+def getCurrentJDMod():
+	t=Time.now()
+	return int(t.jd-2455000)
+
 locationChelles = EarthLocation.from_geodetic(2.581944444*u.deg, 48.88027778*u.deg, 50*u.m)
 locationAix= EarthLocation.from_geodetic(5.445555*u.deg, 43.5209984*u.deg, 50*u.m)
 
@@ -59,17 +63,17 @@ print " Coord:",
 print  "ra.hms=",target.ra.hms," dec=",target.dec 
 
 # l'heure
-
+scanRange=range(getCurrentJDMod()-15,getCurrentJDMod()+15)
 print "*********Phase 0.91 ********************"
 t=[]
-for j in range(2740,2780):
+for j in scanRange:
 	t.append(jd_RR_phi(j+0.91))
 T=Time(t,format='jd', scale='utc')
 disp_date(target,observer,T)
 
 print "**********Phase 0.3 *************"
 t=[]
-for j in range(2740,2780):
+for j in scanRange:
 	t.append(jd_RR_phi(j+0.3))
 T=Time(t,format='jd', scale='utc')
 disp_date(target,observer,T)

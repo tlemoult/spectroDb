@@ -221,15 +221,15 @@ for dirSource in lstDir:
 				print "File: "+f['filename']+" @ "+str(f['date'])+' already in filename database'
 				
 		
-		#redefine serieId si "time serie"
-		timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
-		if timeSerie=='YES':
-			print "Redefine time Serie individual"
-			defineTimeSerie.redefineTimeSerieObject([obsId],1)
-			
-		#copie les fichiers vers le pipeline de traitement
-		archive.getFileRaw(returnedFileLST,destDir,obsId)
-
+		if isObservation:
+			#redefine serieId si "time serie"
+			timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
+			if timeSerie=='YES':
+				print "Redefine time Serie individual"
+				defineTimeSerie.redefineTimeSerieObject([obsId],1)
+				
+			#copie les fichiers vers le pipeline de traitement
+			archive.getFileRaw(returnedFileLST,destDir,obsId)
 		
 	else:
 		print "No fits files here:"

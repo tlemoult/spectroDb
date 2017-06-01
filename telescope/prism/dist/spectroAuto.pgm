@@ -425,8 +425,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=263
-	ChercheurPosYBin=142
+	ChercheurPosXBin=268
+	ChercheurPosYBin=100
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0

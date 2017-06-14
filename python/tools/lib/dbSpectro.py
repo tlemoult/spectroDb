@@ -106,6 +106,12 @@ def update_Obj_info(db,cdsInfo,objID):
 	sql+=""" WHERE objectId=%d"""%(objID)
 	commit_insert_sql(db,sql)
 
+def update_comment_obsId(db,obsId,comment):
+	sql="""UPDATE observation SET """
+	sql+="""comment='"""+comment+"""'"""
+	sql+=""" WHERE obsId=%d"""%(obsId)
+	return commit_insert_sql(db,sql)
+
 def insert_Alias(db,objIdbyCoord,objName):
 	query="""SELECT * from objalias where objId=%d and alias like '%s'"""%(objIdbyCoord,objName)
 	if commit_query_sql(db,query)==0:
@@ -179,6 +185,14 @@ def insert_request_observation_with_name(db,ProjectName,objName,alpha,delta,prio
 	# insertion de l observation
 	insert_request_observation(db,projectId,objId,priority,exposure)
 	return (objId,isNewObject)
+
+def getObsIdFromObjId(db,objId):
+	query="select observation.obsId from observation where objId=%d"%objId
+	return commit_query_sql_All_table(db,query)
+
+def getObsDateLstFromObsId(db,obsId):
+	query="""select fileName.date from fileName where obsId=%d and fileName.filetype='OBJECT'  """%obsId
+	return commit_query_sql_All_table(db,query)
 
 def getFilesPerObsId(db,obsId,fileTypeLst): # 'OBJECT','CALIB','TUNGSTEN','LED'
 	query="select fileName.destDir,fileId,fileName.filename,fileName.date,fileName.serieId from fileName "

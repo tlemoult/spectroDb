@@ -9,6 +9,9 @@ from astroplan import Observer,is_observable
 from astroplan.constraints import AtNightConstraint, AirmassConstraint, TimeConstraint
 from astroplan import ObservingBlock
 
+def downloadPrecise():
+	from astroplan import download_IERS_A
+	download_IERS_A()
 
 def jd_RR_phi(phase):
 	return 2456263.311806+phase*0.566782

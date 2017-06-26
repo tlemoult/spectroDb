@@ -21,3 +21,23 @@ cmake -D PYTHON_LIBRARY=/usr/lib/python2.7/config-x86_64-linux-gnu/libpython2.7.
 # build and install
 make
 sudo make install
+
+####################################
+#
+###########################################
+
+#autre solution
+sudo apt-get install subversion libindi-dev python-dev swig cmake
+# download SVN repo
+svn co svn://svn.code.sf.net/p/pyindi-client/code/trunk/swig-indi/swig-indi-python/
+
+pip install -i https://testpypi.python.org/pypi pyindi-client
+
+# run indi server
+indiserver -v indi_simulator_ccd
+
+
+# run test
+cd swig-indi-python
+python test-indiclient.py
+

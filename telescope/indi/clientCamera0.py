@@ -23,6 +23,7 @@ class IndiClient(PyIndi.BaseClient):
     def __init__(self):
         super(IndiClient, self).__init__()
         self.logger = logging.getLogger('PyQtIndi.IndiClient')
+        
         self.logger.info('creating an instance of PyQtIndi.IndiClient')
     def newDevice(self, d):
         self.logger.info("new device " + d.getDeviceName())
@@ -83,6 +84,7 @@ class IndiClient(PyIndi.BaseClient):
     def serverDisconnected(self, code):
         self.logger.info("Server disconnected (exit code = "+str(code)+","+str(self.getHost())+":"+str(self.getPort())+")")
 
+logging.basicConfig(filename='ClientCamera0.log',level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 # instantiate the client
 indiclient=IndiClient()

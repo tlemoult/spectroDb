@@ -1,6 +1,6 @@
-
-
-
+#Note
+# teste avec INDI Library 1.1.0
+# ne fonctionne pas avec INDI Library 1.4.1
 
 
 sudo apt-get install subversion libindi-dev python-dev swig cmake

@@ -14,22 +14,23 @@ class GuiderPHP2():
 
         try:
             # Connect to server and send data
-            self.sock.connect((HOST, PORT))
-            return True
+            self.sock.connect((str(server), port))
         except:
             self.logger.error("connection failed server PHD2 server=%s  port=%d"%(server,port))
-            return False
+            return "error"
+
+        received = self.sock.recv(1024)
+        return received
 
     def sendJson(self,jsonTxt):
-        jsonObj=json.loads(jsonTxt)
         try:
-            self.sock.sendall(jsonObj)
+            self.sock.sendall(jsonTxt)
         except:
             self.logger.error("sendJSON failed")
             return ""
 
         # Receive data from the server
-        received = sock.recv(1024)
+        received = self.sock.recv(1024)
         self.logger.info("Receive %s"%(received))
         return received
 
@@ -47,6 +48,9 @@ logging.basicConfig(filename=config['PHD2']['logFile'],level=logging.DEBUG,forma
 
 guiderPHD2=GuiderPHP2()
 server=config['PHD2']['server']
-guiderPHD2.connectServer(str(server['host']),server['port'])
-guiderPHD2.sendJson('{"test":3}')
+
+received=guiderPHD2.connectServer(str(server['host']),server['port'])
+print "received",received
+
+#guiderPHD2.sendJson('{"test":3}')
 guiderPHD2.closeServer()

@@ -1,21 +1,6 @@
 import sys,time, logging
 import PyIndi
 
-def strISState(s):
-    if (s == PyIndi.ISS_OFF):
-        return "Off"
-    else:
-        return "On"
-
-def strIPState(s):
-    if (s == PyIndi.IPS_IDLE):
-        return "Idle"
-    elif (s == PyIndi.IPS_OK):
-        return "Ok"
-    elif (s == PyIndi.IPS_BUSY):
-        return "Busy"
-    elif (s == PyIndi.IPS_ALERT):
-        return "Alert"
 
 class IndiClient(PyIndi.BaseClient):
     device = None
@@ -70,9 +55,9 @@ class IndiClient(PyIndi.BaseClient):
         self.takeExposure()
         
     def newSwitch(self, svp):
-        self.logger.info ("new Switch "+ svp.name.decode() + " for device "+ svp.device.decode())
+        self.logger.info ("new Switch "+ svp.name.decode()  +" for device "+ svp.device.decode())
     def newNumber(self, nvp):
-        self.logger.info("new Number "+ nvp.name.decode() + " for device "+ nvp.device.decode())
+        self.logger.info("new Number "+ nvp.name.decode() + " value= %.2f"%(nvp[0].value)+ " for device "+ nvp.device.decode())
     def newText(self, tvp):
         self.logger.info("new Text "+ tvp.name.decode() + " for device "+ tvp.device.decode())
     def newLight(self, lvp):

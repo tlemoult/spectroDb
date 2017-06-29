@@ -5,9 +5,12 @@ class GuiderPHP2():
     def __init__(self,host,port):
         self.logger = logging.getLogger('clientPHD2')        
         self.logger.info('creating an instance of GuiderPHP2')
+
         self.host=str(host)
         self.port=port
         self.id=1
+        self.recvBuf=""
+        self.appState=""
 
     def connect(self):
         self.logger.info("<<<<<<< connect to server PHD2 server=%s  port=%d"%(self.host,self.port))
@@ -29,16 +32,13 @@ class GuiderPHP2():
         return received
 
     def sendJson(self,jsonTxt):
+        self.logger.info("send msg %s"%(jsonTxt[:-2]))
         try:
             self.sock.sendall(jsonTxt)
         except:
             self.logger.error("sendJSON failed")
             return ""
-
-        # Receive data from the server
-        received = self.sock.recv(1024)
-        self.logger.info("Receive %s"%(received))
-        return received
+        self.getResponse()
 
     def closeServer(self):
         self.logger.info("<<<<<<< connection close with server PHD2")
@@ -47,33 +47,28 @@ class GuiderPHP2():
     def setConsigne(self,posX,posY):
         jsonTxt='{"jsonrpc":"2.0", "method": "set_lock_position", "params": {"x":%.1f , "y":%.1f }, "id":%d } \r\n'%(posX,posY,self.id)
         self.id+=1
-        self.logger.info("send msg %s"%jsonTxt)
-        return self.sendJson(jsonTxt)
+        self.sendJson(jsonTxt)
 
     def setExposure(self,exposure):
         exposureMilli=int(exposure*1000)
         jsonTxt='{"jsonrpc":"2.0", "method": "set_exposure", "params": [%d], "id": %d} \r\n'%(exposureMilli,self.id)
         self.id+=1
-        self.logger.info("send msg %s"%jsonTxt)
-        return self.sendJson(jsonTxt)
+        self.sendJson(jsonTxt)
 
     def loop(self):
         jsonTxt='{"jsonrpc":"2.0", "method": "loop", "params": [], "id":%d } \r\n'%(self.id)
         self.id+=1
-        self.logger.info("send msg %s"%jsonTxt)
-        return self.sendJson(jsonTxt)
+        self.sendJson(jsonTxt)
 
     def stop(self):
         jsonTxt='{"jsonrpc":"2.0", "method": "stop_capture", "params": [], "id":%d } \r\n'%(self.id)
         self.id+=1
-        self.logger.info("send msg %s"%jsonTxt)
-        return self.sendJson(jsonTxt)
+        self.sendJson(jsonTxt)
 
     def guide(self):
         jsonTxt='{"jsonrpc":"2.0", "method": "guide", "params": [{"pixels": 1.5, "time": 8, "timeout": 40}, false], "id":%d } \r\n'%(self.id)
         self.id+=1
-        self.logger.info("send msg %s"%jsonTxt)
-        return self.sendJson(jsonTxt)
+        self.sendJson(jsonTxt)
 
     def receive(self):
         # Receive data from the server
@@ -83,7 +78,39 @@ class GuiderPHP2():
             self.logger.info("No response from server")
             return ""
         return received
+
+    def getResponse(self):
+        try:
+            self.recvBuf += self.sock.recv(1024)
+        except socket.timeout:
+            pass
         
+        msgs=self.recvBuf.split('\r\n')
+        if len(msgs)==1:
+            #msg not complete
+            pass
+        else:
+            for msg in msgs[:-1]:
+                try:
+                    self.logger.info("-> received msg "+str(msg))
+                    data=json.loads(msg)
+                except:
+                    self.logger.info("invalid json in response from Guider")
+                    continue
+                ks=data.keys()
+                if "Event" in ks:
+                    event=data['Event']
+                    print("Event %s"%event)
+                    if event=="AppState":
+                        print data
+                        self.appState=data['State']
+                    if event=="SettleDone":
+                        self.settleStatus=data["Status"]
+                        if "Error" in ks:
+                            self.settleError=data["Error"] 
+            self.recvBuf=msgs[-1]
+
+
 #https://dzone.com/articles/understanding
 
 jsonTxt=open('./configAcquire.json').read()
@@ -98,54 +125,35 @@ server=config['PHD2']['server']
 guiderPHD2=GuiderPHP2(server['host'],server['port'])
 
 #connect
-received=guiderPHD2.connect()
-print "received",received
-
-received=guiderPHD2.receive()
-print "received",received
+guiderPHD2.connect()
 
 #set consigne
-received=guiderPHD2.setConsigne(76.1,145.2)
-print "received",received
-
-received=guiderPHD2.receive()
-print "received",received
-
+guiderPHD2.setConsigne(76.1,145.2)
 
 #set exposure
-received=guiderPHD2.setExposure(1.0)
-print "received",received
+guiderPHD2.setExposure(1.0)
 
-received=guiderPHD2.receive()
-print "received",received
+guiderPHD2.getResponse()
+print "app state=%s"%guiderPHD2.appState
 
 #start loop
-received=guiderPHD2.loop()
-print "received",received
-
+guiderPHD2.loop()
 
 #start guide
-received=guiderPHD2.guide()
-print "received",received
-
-
-
-received=guiderPHD2.receive()
-print "received",received
-
-
-
+guiderPHD2.guide()
+guiderPHD2.getResponse()
 
 # attente
-st=5
+st=15
 print "wait %d sec"%st
-time.sleep(st)
 
-received=guiderPHD2.stop()
-print "received",received
+for i in range(st):
+    time.sleep(1)
+    guiderPHD2.getResponse()
 
-received=guiderPHD2.receive()
-print "received",received
+guiderPHD2.stop()
+guiderPHD2.getResponse()
+
 
 #close connection
 guiderPHD2.closeServer()

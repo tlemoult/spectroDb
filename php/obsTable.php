@@ -62,7 +62,8 @@ object.SP_TYPE as objsptype,
 object.FLUX_V as magV,
 instrum.name as instr,observation.status,
 project.name as projName,
-observation.ref as isRef
+observation.ref as isRef,
+comment as comment
 from observation
 left join object on object.objectId=observation.objId
 left join instrum on instrum.instruId=observation.instruId
@@ -104,6 +105,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<th>SpType</th>";            
                 echo "<th>MagV</th>";            
                 echo "<th>instrument</th>";
+                echo "<th>comment</th>";
                 echo "<th>status</th>";
             echo "</tr>\n";
         while($row = mysqli_fetch_array($result)){
@@ -121,6 +123,7 @@ if($result = mysqli_query($link, $sql)){
                 echo "<td>" . $row['objsptype'] . "</td>";
                 echo "<td>" . $row['magV'] . "</td>";
                 echo "<td>" . $row['instr'] . "</td>";
+                echo "<td>" . $row['comment']. "</td>";                
                 echo "<td>" . $row['status']. "</td>";                
             echo "</tr>\n";
         }

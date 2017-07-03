@@ -125,9 +125,21 @@ DureeAttenteSiAucunSucces=30
 ActiveParkingTelescope=1
 // Position pour le parking du telescope
 // HA=angle horaire   De=Declinaison
+parkPos=2
+
+// vers le nord
+if parkPos=1 then
     ParkHaDeg=178
     ParkDeDeg=45
     ParkSide=0
+endif
+
+// vers le levant
+if parkPos=2
+    ParkHaDeg=-89
+    ParkDeDeg=0
+    ParkSide=1
+endif
 
 // delas en ms apres un pointage pour reprise de l'entrainement horaire
 DelayRepriseRA=10000
@@ -199,7 +211,7 @@ LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
 LimitMagnitudeCiel=16.8
 // apr�s cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
-ValMinBelleMeteo=18
+ValMinBelleMeteo=9
 CompteurBeauTemp=0
 // valeur par defaut, activation observation immediate au lance du script sans verif meteo
 ActiveLancementImmediat=1

@@ -3,7 +3,15 @@ ReadMeteo:
 
 rem Print "Donnees de la station meteo Sentinel:"
 pathSentinel$="C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt"
-Open_FileTxt_For_Read fichier pathSentinel$
+
+REM on duplique le fichier pour eviter le bug d ouverture de fichier..
+copyPathSentinel$=pathSentinel$+"2"
+copyMeteo$="/C copy "+pathSentinel$+" "+copyPathSentinel$
+print copyMeteo$
+ExecExternal "c:\Windows\system32\cmd.exe" copyMeteo$ 
+
+
+Open_FileTxt_For_Read fichier copyPathSentinel$
 
 for i=1 7
 	ReadFileTXT fichier ligneDummy$
@@ -82,17 +90,17 @@ ELSE
 	CompteurBeauTemp=0
 ENDIF
 
-// MeteoOK donne un résultat filtree..
+// MeteoOK donne un rï¿½sultat filtree..
 if CompteurBeauTemp>ValMinBelleMeteo then
 	rem NOW Annee Mois Jour Heure Minutes Secondes MS
-	rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+	rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "ï¿½ " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
 	rem Print "Il fait beau depuis un moment.. On va pouvoir observer"
 	MeteoOK=1
 else
 	MeteoOK=0
 	IF (BeauTemp=1) then
 		rem NOW Annee Mois Jour Heure Minutes Secondes MS
-		rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+		rem PRINT "Nous sommes le " Jour "/" Mois "/" Annee "ï¿½ " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
 		rem Print "Si le beau temps se maintien, on pourra observer"
 	ELSE
 		rem Print "Il ne fait pas assez beau pour observer"
@@ -113,7 +121,7 @@ BoucleAttendBeauTemp:
 	ENDIF
 
 	NOW Annee Mois Jour Heure Minutes Secondes MS
-	PRINT "Nous sommes le " Jour "/" Mois "/" Annee "à " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
+	PRINT "Nous sommes le " Jour "/" Mois "/" Annee "ï¿½ " Heure ":" Minutes ":" Secondes "," MS "( en UT ! )"
 	print "Il faut beau"
 	
 return

@@ -1,0 +1,6 @@
+erreur
+
+
+Le script s'est arrêté à cause d'une erreur fatale : ERREUR : Ligne :  @ 1581 -> "		PIERSIDE_TEL ActualSide$"  , Erreur lors de l'accès aux codeurs !
+Script terminé ...
+

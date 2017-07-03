@@ -1,0 +1,21 @@
+
+ParkHaDeg=-87
+ParkDeDeg=0
+ParkSide=0
+
+        print "calcul RA DEC parking telescope"
+        // Convertion degre vers Radian
+        ParkHa=3.14159265359*ParkHaDeg/180
+        ParkDe=3.14159265359*ParkDeDeg/180
+
+		STR_RAD_TO_RA ParkHa HH$ MM$ SS$
+		STR_RAD_TO_DEC ParkDe DD$ DM$ DS$
+		PRINT "    Angle horaire = " HH$ "h " MM$ "m " SS$ "s"
+   	    PRINT "    Declinaison   = " DD$ "d " DM$ "m" DS$ "s"
+		
+		GetStdrLongitude Longitude
+		NOW date
+		SIDERALTIME Date Longitude TSL
+		ParkRa=TSL-ParkHa
+		STR_RAD_TO_RA ParkRa HH$ MM$ SS$
+		PRINT "    Alpha calcule = " HH$ "h " MM$ "m " SS$ "s"

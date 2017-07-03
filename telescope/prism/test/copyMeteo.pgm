@@ -1,0 +1,6 @@
+
+pathSentinel$="C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt"
+copyPathSentinel$=pathSentinel$+"2"
+copyMeteo$="/C copy "+pathSentinel$+" "+copyPathSentinel$
+print copyMeteo$
+ExecExternal "c:\Windows\system32\cmd.exe" copyMeteo$ 

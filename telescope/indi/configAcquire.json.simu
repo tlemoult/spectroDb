@@ -7,11 +7,11 @@
 
     "ccdSpectro": {
         "server": {
-            "host": "192.168.0.45",
+            "host": "localhost",
             "port": 7624
         },
-        "name":"Atik 460ex CCD",
-        "tempSetPoint":15,
+        "name":"CCD Simulator",
+        "tempSetPoint":-10,
         "binning": { "X":2,  "Y":2}
     },
 

@@ -116,7 +116,7 @@ class IndiClient(PyIndi.BaseClient):
     def isCCDTemperatureOK(self):
         e=self.ccdTemperature-self.setPointTemperature
         self.logger.info("ccdTemp=%.1f  setPoint=%.1f  err=%.1f"%(self.ccdTemperature,self.setPointTemperature,e))
-        return abs(e)<5.0
+        return abs(e)<2.0
 
     def setBinning(self,binning):
         self.binning=binning

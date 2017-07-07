@@ -111,11 +111,14 @@ class GuiderPHP2():
             self.recvBuf=msgs[-1]
 
 
-#https://dzone.com/articles/understanding
+#exemple of asyncronus socket: https://dzone.com/articles/understanding
+# see here PHD2 protocol:  https://github.com/OpenPHDGuiding/phd2/wiki/EventMonitoring
 
+#load configuration file
 jsonTxt=open('./configAcquire.json').read()
 config=json.loads(jsonTxt)
-print config
+print (config)
+print ("--------------")
 
 # setup log file
 logging.basicConfig(filename=config['PHD2']['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
@@ -130,11 +133,11 @@ guiderPHD2.connect()
 #set consigne
 guiderPHD2.setConsigne(76.1,145.2)
 
-#set exposure
+#set exposure time
 guiderPHD2.setExposure(1.0)
 
 guiderPHD2.getResponse()
-print "app state=%s"%guiderPHD2.appState
+print("app state=%s"%guiderPHD2.appState)
 
 #start loop
 guiderPHD2.loop()
@@ -145,15 +148,14 @@ guiderPHD2.getResponse()
 
 # attente
 st=15
-print "wait %d sec"%st
-
+print("wait %d sec"%st)
 for i in range(st):
     time.sleep(1)
     guiderPHD2.getResponse()
 
+#stop guiding
 guiderPHD2.stop()
 guiderPHD2.getResponse()
-
 
 #close connection
 guiderPHD2.closeServer()

@@ -7,7 +7,7 @@
 
     "ccdSpectro": {
         "server": {
-            "host": "192.168.0.45",
+            "host": "192.168.26.1",
             "port": 7624
         },
         "name":"Atik 460ex CCD",
@@ -22,8 +22,8 @@
         },
 
         "logFile":"guider.log",
-        "posX":240,
-        "posY":120
+        "posX":300,
+        "posY":300
 
     }
 }

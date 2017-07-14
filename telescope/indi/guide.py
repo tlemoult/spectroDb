@@ -131,7 +131,9 @@ guiderPHD2=GuiderPHP2(server['host'],server['port'])
 guiderPHD2.connect()
 
 #set consigne
-guiderPHD2.setConsigne(76.1,145.2)
+posX=float(config['PHD2']['posX'])
+posY=float(config['PHD2']['posY'])
+guiderPHD2.setConsigne(posX,posY)
 
 #set exposure time
 guiderPHD2.setExposure(1.0)

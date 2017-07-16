@@ -1,29 +1,72 @@
 {
     "path": {
-        "acquire":"."
+        "acquire": "/home/tlemoult/ccd"
     },
-
-    "logFile":"acquire.log",
-
+    "logFile": "acquire.log",
     "ccdSpectro": {
         "server": {
             "host": "192.168.26.1",
             "port": 7624
         },
-        "name":"Atik 460ex CCD",
-        "tempSetPoint":15,
-        "binning": { "X":2,  "Y":2}
+        "name": "Atik 460ex CCD",
+        "tempSetPoint": 15,
+        "binning": {
+            "X": 2,
+            "Y": 2
+        }
     },
-
     "PHD2": {
-        "server":{
+        "server": {
             "host": "localhost",
             "port": 4400
         },
+        "logFile": "guider.log",
+        "posX": 300,
+        "posY": 300
+    },
 
-        "logFile":"guider.log",
-        "posX":300,
-        "posY":300
-
+    "templateObservation": {
+        "Comment": "created at acquisition with python and INDI server",
+        "jsonType": "acquisitionFile",
+        "formatVersion": "0.0.1",
+        "target": {
+            "objname": [
+                "HD220575"
+            ],
+            "isRef": false,
+            "coord": {
+                "ra": "23 24 34.9085",
+                "dec": "+41 06 46.457",
+                "equinox": "J2000"
+            }
+        },
+        "project": "none",
+        "instrument": {
+            "telescop": "AP130EDFGT",
+            "configName": "AP130EDFGT ALPY ATIK460N2",
+            "spectro": "ALPY",
+            "detname": "ATIK460N2",
+            "guideDetname": "ATIK314",
+            "resol": 600
+        },
+        "site": {
+            "name": "OHP",
+            "country": "FRANCE",
+            "lat": "42 52 49",
+            "lon": "03 34 55",
+            "alt": "120",
+            "UAIcode": "23"
+        },
+        "observer": {
+            "firstName": "Thierry",
+            "lastName": "Lemoult",
+            "email": "thierry.lemoult@gmail.com",
+            "alias": "Thierry Lemoult"
+        },
+        "obsConfig": {
+            "NbExposure": 3,
+            "ExposureTime": 900,
+            "TotalExposure": 2700
+        }
     }
 }

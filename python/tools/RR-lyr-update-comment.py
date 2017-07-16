@@ -48,7 +48,7 @@ for obsIdt in obsLst:
     phiBlasko=phase_RR_blasko_jd(jdmoy)
     phiBlasko=phiBlasko-int(phiBlasko)
 
-    comment="PHI=%.2f phi:[%.2f,%.2f] "%(phiBlasko,minphi,maxphi)
+    comment="psi=%.2f phi=%.2f,%.2f "%(phiBlasko,minphi,maxphi)
     
     print comment
 

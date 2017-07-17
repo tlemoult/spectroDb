@@ -132,5 +132,8 @@ class IndiClient(PyIndi.BaseClient):
 
     def waitEndAcqSerie(self):
         while self.serieRun==True:
-            print """Exposure: %d/%d "%s" %.1f/%.1f seconds."""%( self.currentIndex, self.nbExposure  ,self.fileNameRoot,self.expTime-self.ccdExposure,self.expTime)
+            out="""Exposure: %d/%d "%s" %.1f/%.1f seconds.  """%( self.currentIndex, self.nbExposure  ,self.fileNameRoot,self.expTime-self.ccdExposure,self.expTime)
+            sys.stdout.write('\r'+out)
+            sys.stdout.flush()
             time.sleep(1)
+        print " "

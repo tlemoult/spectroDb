@@ -19,6 +19,7 @@
 		"login":"thierry.lemoult@gmail.com", 
         "password":"xxxx",
         "from":"thierry.lemoult@gmail.com",
-		"myAdress":"thierry.lemoult@gmail.com"
+        "to":"thierry.lemoult@gmail.com",
+        "cc":" "
 	}
 }

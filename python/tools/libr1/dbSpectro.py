@@ -36,6 +36,15 @@ def commit_query_sql_table(db,query):
 #	query='SELECT * FROM instrum where instruId=%d'%(Id)
 #	return commit_query_sql(db,query)
 
+def getRaDecfromObjName(db,name):
+	query='SELECT alpha,delta,objectId from object where name="'+name+'"'
+	res=commit_query_sql_table(db,query)
+	print "res=",res
+	if res<>None:
+		return {'alpha':res[0], 'delta': res[1], 'objId': res[2] }
+	else:
+		return {}
+
 def getObjId_fromObjName(db,name):
 	query='SELECT objectId from object where name="'+name+'"'
 	return commit_query_sql(db,query)

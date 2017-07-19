@@ -165,16 +165,14 @@ for dirSource in lstDir:
 		print 'interroge le CDS obj="'+objname+'" ',
 		try:
 			cdsInfo=cds.getsimbadMesurement(objname)
-		except:
-			print("Unexpected error:", sys.exc_info()[0])
-			cdsInfo={}
-			
-		if 'alpha' in cdsInfo.keys():  # objet connus du CDS ?
-			print " OK"
+			# retourne {} si le cds a repondu, mais objet inconnus.
 			ra=cdsInfo['alpha']
 			dec=cdsInfo['delta']
-		else:
-			print "    Inconnus du CDS... "
+			print " OK"
+		except:
+			print("Le cds ne repond pas ou objet inconnus")
+			print("Unexpected error:", sys.exc_info()[0])
+			cdsInfo={}
 			print "    On regarde si il est connus de notre base"
 			baseInfo=dbSpectro.getRaDecfromObjName(db,objname)
 			if 'alpha' in baseInfo.keys():

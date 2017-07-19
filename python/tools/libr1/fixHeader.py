@@ -251,6 +251,9 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 
 				prihdr['ITRP']=(confInstru['resol'],'typical spectral resol')
 
+				if 'XBINNING' in prihdr.keys():   # image INDI
+					prihdr['BINX']=prihdr['XBINNING']
+					prihdr['BINY']=prihdr['YBINNING']
 				if 'BINX' in prihdr.keys():
 					prihdr['BIN1']=(prihdr['BINX'],'X binning')
 					prihdr['BIN2']=(prihdr['BINY'],'Y binning')
@@ -266,7 +269,10 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 					prihdr['EXPOSURE']=(0,'Exposure time seconds')
 
 				if 'EXPOSURE' not in prihdr.keys():
-					prihdr['EXPOSURE']=(0,'Exposure time seconds')
+					if 'EXPTIME' in prihdr.keys():
+						prihdr['EXPOSURE']=prihdr['EXPTIME']
+					else:
+						prihdr['EXPOSURE']=(0,'Exposure time seconds')
 
 				hdulist.writeto(path+'tmp')
 				hdulist.close(path)

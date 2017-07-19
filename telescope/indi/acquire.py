@@ -7,20 +7,23 @@ from lib.CamSpectro import IndiClient as CamSpectro
 n=len(sys.argv)
 print "n=",n
 print sys.argv
-if n!=5:
+if n!=6:
     print "syntaxe:"
-    print '    python acquire.py "Project" "OBJ NAME" nbExposure expTime'
+    print '    python acquire.py "Project" target "OBJ NAME" nbExposure expTime'
     print 'exemple:'
-    print '    python acquire.py "none"    "HD2203"   3           600'
+    print '    python acquire.py "none"   obj "HD2203"   3           600'
+    print '    python acquire.py "none"   ref "HD103"   3           600'
     exit()
 else:
     projectName=sys.argv[1].split('"')[0]
     print "projectName=",projectName
-    objName=sys.argv[2].split('"')[0]
+    objTypeArg=sys.argv[2]
+    print "objType=",objTypeArg
+    objName=sys.argv[3].split('"')[0]
     print "objName=",objName
-    nbExposure=int(sys.argv[3])
+    nbExposure=int(sys.argv[4])
     print "nbExposure=",nbExposure
-    expTime=float(sys.argv[4])
+    expTime=float(sys.argv[5])
     print "expTime=",expTime
 
 #load configuration
@@ -30,13 +33,15 @@ config=json.loads(json_text)
 logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 #create directory
-basePath=config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_')
+basePath=config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').split('.')[0]
+basePath+='-'+objName.replace(' ','_').replace('+','p').replace('*','s')
 print "basePath=",basePath
 os.mkdir(basePath)
 
 #create observation.json
 observationJson=config['templateObservation']
 observationJson['target']['objname']=[objName]
+observationJson['target']['isRef']=(objTypeArg=='ref')
 observationJson['project']=projectName
 observationJson['target']['coord']['ra']=""
 observationJson['target']['coord']['dec']=""

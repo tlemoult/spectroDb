@@ -82,11 +82,10 @@ ConfigCamera:
 		Print "Initialise camera Chercheur"
 		//print "   Connexion"
 
-		// commente car fonction buggue pour le chercheur (cam 3)  fonctionne bien pour les deux premiere cameras
-		//INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
-		//if Valid<>2 THEN
-		//	print "erreur" Cause$
-		//endif
+		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		if Valid<>2 THEN
+			print "erreur" Cause$
+		endif
 
 		print "   Configuration"		
 		SETBINNINGX_EX CameraChercheur binCameraChercheur

@@ -837,11 +837,10 @@ ConfigCamera:
 		Print "Initialise camera Chercheur"
 		//print "   Connexion"
 
-		// commente car fonction buggue pour le chercheur (cam 3)  fonctionne bien pour les deux premiere cameras
-		//INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
-		//if Valid<>2 THEN
-		//	print "erreur" Cause$
-		//endif
+		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		if Valid<>2 THEN
+			print "erreur" Cause$
+		endif
 
 		print "   Configuration"		
 		SETBINNINGX_EX CameraChercheur binCameraChercheur
@@ -1189,7 +1188,9 @@ finSeance:
 		// le telescope n est plus pret, il faudra le reinitialiser
 		ActiveTelescopeAlreadyReady=0
 		
-		
+		print "attend 1 seconde liberation port serie telescope"
+		delay 1000
+		WaitForEndDelay
 		print "fermeture petale telescope"
 		params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
 		EXECEXTERNAL   pathPythonInterpreter$ params$
@@ -1223,8 +1224,7 @@ shutDownCameraFinal:
 			CLOSE_CCD_CAMERA_EX CameraChamp
 			CLOSE_CCD_CAMERA_EX CameraSpectre
 			if (CameraChercheurPresente=1) then
-				// commente car l init camera chercheur est bugue dans PRISM V10
-				//CLOSE_CCD_CAMERA_EX CameraChercheur
+				CLOSE_CCD_CAMERA_EX CameraChercheur
 			ENDIF
 
 			Print "Attente avant coupure alim camera"
@@ -2222,9 +2222,10 @@ pathSentinel$="C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt"
 REM on duplique le fichier pour eviter le bug d ouverture de fichier..
 copyPathSentinel$=pathSentinel$+"2"
 copyMeteo$="/C copy "+pathSentinel$+" "+copyPathSentinel$
-print copyMeteo$
+REM print copyMeteo$
 ExecExternal "c:\Windows\system32\cmd.exe" copyMeteo$ 
-
+DELAY 1000
+WAITFORENDDELAY
 
 Open_FileTxt_For_Read fichier copyPathSentinel$
 
@@ -2277,7 +2278,8 @@ ReadFileTXT fichier ligneDummy$
 ReadFileTXT fichier ligneLightLevel$
 CUTSTR ligneLightLevel$ "=" 2 out$
 val out$ LightLevel
-rem print "LightLevel=" out$
+NOW Annee Mois Jour Heure Minutes Secondes MS
+PRINT Heure ":" Minutes ":" Secondes "UTC   LightLevel=" out$ 
 
 tempCiel=TempSkyIR-TempExt
 STR tempCiel tempCiel$
@@ -2328,8 +2330,11 @@ return
 BoucleAttendBeauTemp:
 
 	GOSUB ReadMeteo:
-	DELAY 60000
-	WAITFORENDDELAY
+	REM attente une minute, interruptible
+	for i=1 60
+		DELAY 1000
+		WAITFORENDDELAY
+	next i
 	
 	if MeteoOK=0 THEN
 		GOTO BoucleAttendBeauTemp:

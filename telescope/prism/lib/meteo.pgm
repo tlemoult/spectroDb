@@ -7,9 +7,10 @@ pathSentinel$="C:\Users\DELL\Documents\Sentinel\Datas\infodata.txt"
 REM on duplique le fichier pour eviter le bug d ouverture de fichier..
 copyPathSentinel$=pathSentinel$+"2"
 copyMeteo$="/C copy "+pathSentinel$+" "+copyPathSentinel$
-print copyMeteo$
+REM print copyMeteo$
 ExecExternal "c:\Windows\system32\cmd.exe" copyMeteo$ 
-
+DELAY 1000
+WAITFORENDDELAY
 
 Open_FileTxt_For_Read fichier copyPathSentinel$
 
@@ -62,7 +63,8 @@ ReadFileTXT fichier ligneDummy$
 ReadFileTXT fichier ligneLightLevel$
 CUTSTR ligneLightLevel$ "=" 2 out$
 val out$ LightLevel
-rem print "LightLevel=" out$
+NOW Annee Mois Jour Heure Minutes Secondes MS
+PRINT Heure ":" Minutes ":" Secondes "UTC   LightLevel=" out$ 
 
 tempCiel=TempSkyIR-TempExt
 STR tempCiel tempCiel$
@@ -113,8 +115,11 @@ return
 BoucleAttendBeauTemp:
 
 	GOSUB ReadMeteo:
-	DELAY 60000
-	WAITFORENDDELAY
+	REM attente une minute, interruptible
+	for i=1 60
+		DELAY 1000
+		WAITFORENDDELAY
+	next i
 	
 	if MeteoOK=0 THEN
 		GOTO BoucleAttendBeauTemp:

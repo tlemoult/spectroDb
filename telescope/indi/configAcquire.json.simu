@@ -1,0 +1,29 @@
+{
+    "path": {
+        "acquire":"."
+    },
+
+    "logFile":"acquire.log",
+
+    "ccdSpectro": {
+        "server": {
+            "host": "localhost",
+            "port": 7624
+        },
+        "name":"CCD Simulator",
+        "tempSetPoint":-10,
+        "binning": { "X":2,  "Y":2}
+    },
+
+    "PHD2": {
+        "server":{
+            "host": "localhost",
+            "port": 4400
+        },
+
+        "logFile":"guider.log",
+        "posX":240,
+        "posY":120
+
+    }
+}

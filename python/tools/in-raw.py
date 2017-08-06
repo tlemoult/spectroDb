@@ -161,21 +161,28 @@ for dirSource in lstDir:
 	print "*****************"
 	
 	if objname!='':   # arrive si on a que des darks , flat dans le dossier
+		# identification de l object, pour ne pas inserer n importe quoi....
 		print 'interroge le CDS obj="'+objname+'" ',
 		try:
 			cdsInfo=cds.getsimbadMesurement(objname)
-		except:
-			print("Unexpected error:", sys.exc_info()[0])
-			raise
-			
-		if 'alpha' in cdsInfo.keys():  # objet connus du CDS ?
-			print " OK"
+			# retourne {} si le cds a repondu, mais objet inconnus.
 			ra=cdsInfo['alpha']
 			dec=cdsInfo['delta']
-		else:
-			print " Inconnus du CDS... On ne le prend pas dans la base"
-			archive.storeDir_Excep(dirSource,"Excep_UnknowObjectName") # exception...
-			continue
+			print " OK"
+		except:
+			print("Le cds ne repond pas ou objet inconnus")
+			print("Unexpected error:", sys.exc_info()[0])
+			cdsInfo={}
+			print "    On regarde si il est connus de notre base"
+			baseInfo=dbSpectro.getRaDecfromObjName(db,objname)
+			if 'alpha' in baseInfo.keys():
+				print "    OK, object connus de notre base"
+				ra=baseInfo['alpha']
+				dec=baseInfo['delta']
+			else:
+				print "    Inconnus egalement de notre base, On ne le prend pas dans la base"
+				archive.storeDir_Excep(dirSource,"Excep_UnknowObjectName") # exception...
+				continue
 		if json==0: myJson.write(dirSource,objname,isRef,ra,dec,project,confInstru,site,observer)
 	else:
 		print "Pas de cible, mais il peux y avoir d autres fichiers.."
@@ -221,15 +228,15 @@ for dirSource in lstDir:
 				print "File: "+f['filename']+" @ "+str(f['date'])+' already in filename database'
 				
 		
-		#redefine serieId si "time serie"
-		timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
-		if timeSerie=='YES':
-			print "Redefine time Serie individual"
-			defineTimeSerie.redefineTimeSerieObject([obsId],1)
-			
-		#copie les fichiers vers le pipeline de traitement
-		archive.getFileRaw(returnedFileLST,destDir,obsId)
-
+		if isObservation:
+			#redefine serieId si "time serie"
+			timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
+			if timeSerie=='YES':
+				print "Redefine time Serie individual"
+				defineTimeSerie.redefineTimeSerieObject([obsId],1)
+				
+			#copie les fichiers vers le pipeline de traitement
+			archive.getFileRaw(returnedFileLST,destDir,obsId)
 		
 	else:
 		print "No fits files here:"

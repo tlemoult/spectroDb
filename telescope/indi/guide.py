@@ -20,27 +20,38 @@ guiderPHD2=GuiderPHP2(server['host'],server['port'])
 
 #connect
 guiderPHD2.connect()
+guiderPHD2.getResponse()
 
 #set consigne
 posX=float(config['PHD2']['posX'])
 posY=float(config['PHD2']['posY'])
-guiderPHD2.setConsigne(posX,posY)
+
 
 #set exposure time
-guiderPHD2.setExposure(1.0)
+guiderPHD2.setExposure(0.1)
 
 guiderPHD2.getResponse()
 print("app state=%s"%guiderPHD2.appState)
 
 #start loop
+print "start Loop"
 guiderPHD2.loop()
+time.sleep(3)
+
 
 #start guide
+print "Start guide"
 guiderPHD2.guide()
 guiderPHD2.getResponse()
 
+time.sleep(2)
+
+print "Set consigne"
+guiderPHD2.setConsigne(posX,posY)
+time.sleep(3)
+
 # attente
-st=15
+st=30
 print("wait %d sec"%st)
 for i in range(st):
     time.sleep(1)

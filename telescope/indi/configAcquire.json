@@ -9,20 +9,33 @@
             "port": 7624
         },
         "name": "Atik 460ex CCD",
-        "tempSetPoint": 15,
+        "tempSetPoint": 5,
         "binning": {
-            "X": 2,
-            "Y": 2
+            "X": 1,
+            "Y": 1
         }
     },
+    "ccdFinder": {
+        "server": {
+            "host": "192.168.13.100",
+            "port": 7624
+        },
+        "name": "SX CCD LodeStar",
+        "tempSetPoint": 5,
+        "binning": {
+            "X": 1,
+            "Y": 1
+        }
+    },
+    
     "PHD2": {
         "server": {
-            "host": "localhost",
-            "port": 4400
+            "host": "127.0.0.1",
+            "port": 4401
         },
         "logFile": "guider.log",
-        "posX": 300,
-        "posY": 300
+        "posX": 235.65,
+        "posY": 66.18
     },
 
     "templateObservation": {

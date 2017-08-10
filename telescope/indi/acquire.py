@@ -72,7 +72,8 @@ camSpectro.newAcquSerie(basePath,"OBJECT-",nbExposure,expTime)
 camSpectro.waitEndAcqSerie()
 
 raw_input('Switch on Neon, Press enter to continue: ')
-camSpectro.newAcquSerie(basePath,"NEON-",1,5)
+expoNeon=10
+camSpectro.newAcquSerie(basePath,"NEON-",1,expoNeon)
 camSpectro.waitEndAcqSerie()
 
 #update json file

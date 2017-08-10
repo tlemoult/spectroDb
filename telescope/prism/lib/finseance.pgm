@@ -36,7 +36,9 @@ finSeance:
 		// le telescope n est plus pret, il faudra le reinitialiser
 		ActiveTelescopeAlreadyReady=0
 		
-		
+		print "attend 1 seconde liberation port serie telescope"
+		delay 1000
+		WaitForEndDelay
 		print "fermeture petale telescope"
 		params$=PythonScriptAstrosibCmd$+" SHUTTERCLOSE?1,1,1,1,1"
 		EXECEXTERNAL   pathPythonInterpreter$ params$
@@ -70,8 +72,7 @@ shutDownCameraFinal:
 			CLOSE_CCD_CAMERA_EX CameraChamp
 			CLOSE_CCD_CAMERA_EX CameraSpectre
 			if (CameraChercheurPresente=1) then
-				// commente car l init camera chercheur est bugue dans PRISM V10
-				//CLOSE_CCD_CAMERA_EX CameraChercheur
+				CLOSE_CCD_CAMERA_EX CameraChercheur
 			ENDIF
 
 			Print "Attente avant coupure alim camera"

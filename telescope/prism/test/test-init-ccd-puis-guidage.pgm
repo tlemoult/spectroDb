@@ -1,0 +1,58 @@
+
+	CameraChamp=1
+	durationOffsetInit=200
+
+	GOSUB INITCameraChamp:
+	GOSUB TestGuideConsigne:
+	END
+
+INITCameraChamp:
+	
+	Print "Initialise camera Champ"	
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraChamp Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+	return
+
+
+TestGuideConsigne:
+	fentePosX=341
+	fentePosY=274
+	consigneX=fentePosX
+	consigneY=fentePosY
+	WindowAllFrame=100
+	ExpTime=1000
+	AgressRA=1
+	AgressDEC=1
+	
+	NumCam=1
+	CCDNum=1
+	DelayACQSec=1
+	WindowSize=100
+	CentroSize=10
+	StarThresADU=20
+	RaMin=0
+	RaMax=500
+	DecMin=0
+	DecMax=500
+	Backlash=0
+	CurrentDEC=0
+	AlarmEnabled=0
+	GuidePosX=consigneX
+	GuidePosY=consigneY
+	DeltaMoveFashion=0
+	SaveImagettes=0
+	DirSaveImg$="c:\ccd"
+	AllFrame=1
+	MinADUguidage=3500
+
+	print "lance guidage normale"
+	STARTGUIDE  CCDNum  ExpTime/1000  WindowSize  CentroSize  StarThresADU  AgressRA  AgressDEC  RaMin  RaMax  DecMin  DecMax  CurrentDEC  AlarmEnabled  DeltaMoveFashion  Valid message$
+	PRINT "   arret guidage"
+	STOPGUIDE_EX NumCam CCDNum
+	
+	Return
+

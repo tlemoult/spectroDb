@@ -1,0 +1,11 @@
+	CameraNo=3
+	durationExposure=1
+
+	StartExposure_EX CameraNo durationExposure
+	WaitForEndExposure_EX CameraNo
+	GetLastImageExposure_EX CameraNo img
+
+	GETBACKGROUND  img  OffsetValue  Sigma
+	Print "   Offset Camera: " OffsetValue " ADU"
+	close img
+	

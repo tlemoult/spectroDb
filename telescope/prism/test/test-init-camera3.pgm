@@ -1,0 +1,20 @@
+	CameraNo=3
+	durationExposure=1
+
+	Print "Initialise camera"	
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraNo Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	
+	StartExposure_EX CameraNo durationExposure
+	WaitForEndExposure_EX CameraNo
+	GetLastImageExposure_EX CameraNo img
+
+	GETBACKGROUND  img  OffsetValue  Sigma
+	Print "   Offset Camera: " OffsetValue " ADU"
+	close img
+	

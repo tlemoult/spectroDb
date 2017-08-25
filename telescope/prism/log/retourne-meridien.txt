@@ -1,0 +1,35 @@
+28:24UTC   LightLevel=17.48
+actualSide=WEST AHor=0.06922493
+Ahor MiniChgMeridien
+Ahor+angleExposure > MaxiChgMeridien
+On a passe le meridien, on repointe
+Arrêt de l'autoguidage sur Consigne
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°15'25.81'' DEC=+00°04'23.51''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=634 Y1=490 X2=714 Y2=570
+   pose de 0.01 secondes  donne une etoile a 549 ADU
+   pose de 0.03 secondes  donne une etoile a 1752 ADU
+   pose de 0.09 secondes  donne une etoile a 5746 ADU
+   pose de 0.27 secondes  donne une etoile a 15600 ADU
+   On choisit un temps de pose de guidage de =0.242 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK

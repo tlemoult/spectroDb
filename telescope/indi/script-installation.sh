@@ -61,3 +61,10 @@ solve-field  --scale-units arcsecperpix -L 1.7 -H 1.90 L130-LISA-ATIK314.fits
 solve-field  --scale-units arcsecperpix -L 1.2 -H 1.3 RC360eshel.fits
 #resolution C14 + LISA
 solve-field  --scale-units arcsecperpix -L 1.2 -H 1.3 C14-LISA.fits
+
+
+############
+# avec les image de INDI #
+###########################
+solve-field --no-verify --no-plots --no-fits2fits --downsample 2 --overwrite ./img/Light_001.fits
+

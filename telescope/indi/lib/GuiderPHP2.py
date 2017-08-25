@@ -100,7 +100,7 @@ class GuiderPHP2():
                 ks=data.keys()
                 if "Event" in ks:
                     event=data['Event']
-                    print("Event %s"%event)
+                    #print("Event %s"%event)
                     if event=="AppState":
                         print data
                         self.appState=data['State']
@@ -108,6 +108,15 @@ class GuiderPHP2():
                         self.settleStatus=data["Status"]
                         if "Error" in ks:
                             self.settleError=data["Error"] 
+                    if event=="StarSelected":
+                        print "Star selected"
+                        self.starSelectX=data["X"]
+                        self.starSelectY=data["Y"]
+                        print("X=",self.starSelectX," Y=",self.starSelectY)
+                    if event=="StarLost":
+                        print "StarLost"
+                        pass
+
             self.recvBuf=msgs[-1]
 
 

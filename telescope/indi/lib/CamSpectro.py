@@ -54,34 +54,47 @@ class IndiClient(PyIndi.BaseClient):
         self.logger.info("remove property "+ p.getName() + " for device "+ p.getDeviceName())
 
     def newBLOB(self, bp):
-        self.logger.info("new BLOB "+ bp.name.decode())
-        # get image data
-        img = bp.getblobdata()
-        import cStringIO
-        # write image data to StringIO buffer
-        blobfile = cStringIO.StringIO(img)
-        # open a file and save buffer to disk
-        fullPath=self.filePath+'/'+self.fileNameRoot+str(self.currentIndex)+".fits"
-        self.logger.info("save file to "+fullPath)
-        with open(fullPath, "wb") as f:
-            f.write(blobfile.getvalue())
-        # start new exposure for acqusition serie 
-        self.currentIndex+=1
-        if (self.currentIndex<=self.nbExposure):
-            self.takeExposure(self.expTime)
-            self.serieRun=True
-        else:
-            self.serieRun=False
+
+        self.logger.info("new BLOB name="+ bp.name.decode()+' device='+bp.bvp.device.decode())
+        
+        if self.device==None:
+            return
+
+        if bp.bvp.device.decode()==self.device.getDeviceName():
+            # get image data
+        
+            self.logger.info(" OK my BLOB")
+            img = bp.getblobdata()
+            import cStringIO
+            # write image data to StringIO buffer
+            blobfile = cStringIO.StringIO(img)
+            # open a file and save buffer to disk
+            fullPath=self.filePath+'/'+self.fileNameRoot+str(self.currentIndex)+".fits"
+            self.logger.info("save file to "+fullPath)
+            with open(fullPath, "wb") as f:
+                f.write(blobfile.getvalue())
+            # start new exposure for acqusition serie 
+            self.currentIndex+=1
+            if (self.currentIndex<=self.nbExposure):
+                self.takeExposure(self.expTime)
+                self.serieRun=True
+            else:
+                self.serieRun=False
         
     def newSwitch(self, svp):
         self.logger.info ("new Switch "+ svp.name.decode()  +" for device "+ svp.device.decode())
     def newNumber(self, nvp):
         self.logger.info("new Number "+ nvp.name.decode() + " value= %.2f"%(nvp[0].value)+ " for device "+ nvp.device.decode())
-        if nvp.name.decode()=="CCD_TEMPERATURE":
-            self.ccdTemperature=nvp[0].value
 
-        if nvp.name.decode()=="CCD_EXPOSURE":
-            self.ccdExposure=nvp[0].value
+        if self.device==None:
+            return
+
+        if nvp.device.decode()==self.device.getDeviceName():
+            if nvp.name.decode()=="CCD_TEMPERATURE":
+                self.ccdTemperature=nvp[0].value
+
+            if nvp.name.decode()=="CCD_EXPOSURE":
+                self.ccdExposure=nvp[0].value
 
     def newText(self, tvp):
         self.logger.info("new Text "+ tvp.name.decode() + " for device "+ tvp.device.decode())

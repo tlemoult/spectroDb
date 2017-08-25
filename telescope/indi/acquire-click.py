@@ -5,8 +5,8 @@ from lib.CamSpectro import IndiClient as CamSpectro
 
 @click.command()
 @click.option('--proj', default='none', help='Project Name, like Bess, NewBe')
-@click.option('--typ', default='obj', type=click.Choice(['obj', 'ref']), help='Define target is science or a reference')
-@click.option('--name', help='name , must be readable by CDS')
+@click.option('--typ', default='obj', type=click.Choice(['obj', 'ref','flat']), help='Define target is science or a reference')
+@click.option('--name', default='FLAT', help='name , must be readable by CDS')
 @click.option('--qty', default=1,  help='exposure frame quantities')
 @click.option('--duration', default=1,type=float, help='exposure time for each frame')
 
@@ -45,8 +45,9 @@ def acquire(proj,typ,name,qty,duration):
     observationJson['obsConfig']['ExposureTime']=duration
     observationJson['obsConfig']['TotalExposure']=qty*duration
 
-    with open(basePath+'/observation.json', 'w') as outfile:
-        json.dump(observationJson, outfile)
+    if typ<>'flat':
+        with open(basePath+'/observation.json', 'w') as outfile:
+            json.dump(observationJson, outfile)
 
     # instantiate the client, for camera
     camSpectro=CamSpectro(config['ccdSpectro']['name'])
@@ -62,25 +63,33 @@ def acquire(proj,typ,name,qty,duration):
     time.sleep(2)
 
     #acquisition
-    print "run acquisition" 
-    camSpectro.newAcquSerie(basePath,"OBJECT-",nbExposure,expTime)
-    camSpectro.waitEndAcqSerie()
+    if typ=='flat':
+        print "acquire FLAT"
+        camSpectro.newAcquSerie(basePath,"FLAT-",qty,duration)
+        camSpectro.waitEndAcqSerie()
 
-    raw_input('Switch on Neon, Press enter to continue: ')
-    camSpectro.newAcquSerie(basePath,"NEON-",1,5)
-    camSpectro.waitEndAcqSerie()
 
+    else:
+        print "run acquisition" 
+        camSpectro.newAcquSerie(basePath,"OBJECT-",qty,duration)
+        camSpectro.waitEndAcqSerie()
+
+        raw_input('Switch on Neon, Press enter to continue: ')
+        camSpectro.newAcquSerie(basePath,"NEON-",1,10)
+        camSpectro.waitEndAcqSerie()
+
+    if typ<>'flat':
     #update json file
-    observationJson['obsConfig']['NbExposure']=nbExposure
-    observationJson['obsConfig']['ExposureTime']=expTime
-    observationJson['obsConfig']['TotalExposure']=nbExposure*expTime
-    observationJson['statusObs']="finished"
-    with open(basePath+'/observation.json', 'w') as outfile:
-        json.dump(observationJson, outfile)
+        observationJson['obsConfig']['NbExposure']=qty
+        observationJson['obsConfig']['ExposureTime']=duration
+        observationJson['obsConfig']['TotalExposure']=qty*duration
+        observationJson['statusObs']="finished"
+        with open(basePath+'/observation.json', 'w') as outfile:
+            json.dump(observationJson, outfile)
 
-    print("acquisition finished")
+        print("acquisition finished")
 
-    raw_input('Switch off Neon, Press enter to continue: ')
+        raw_input('Switch off Neon, Press enter to continue: ')
 
 
 if __name__ == '__main__':

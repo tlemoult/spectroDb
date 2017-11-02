@@ -10,6 +10,8 @@ RecaleAllSkyAstrometrieChercheur:
 	Print "Chercheur: Procedure Astrometrie allsky"
 	AstrometrieName$="Chercheur"
 	CameraAllSky=CameraChercheur
+	Dir=DirRepChercheur
+	FOCALE=FocaleCameraChercheur
 	exposureAllSky=10
 	MaxStarImg=30
 	MaxStarCat=30
@@ -26,6 +28,8 @@ RecaleAllSkyAstrometrieChamp:
 	Print "Champ: Procedure Astrometrie alsky"
 	AstrometrieName$="FIELD-1"
 	CameraAllSky=CameraChamp
+	Dir=DirRepChamp
+	FOCALE=FocaleCameraChamp
 	exposureAllSky=18
 	MaxStarImg=30
 	MaxStarCat=30
@@ -67,10 +71,12 @@ RecaleAllSkyAstrometrie:
 	GETBINY  ImgAstrometrie  BinY
 	TAILLEX=PIXX*BinX
 	TAILLEY=PIXY*BinY
-	GETFOCUS  ImgAstrometrie  FOCALE
+	
 	getalpha ImgAstrometrie alpha
 	getDelta ImgAstrometrie delta
-	GETREPDIRHEADER  ImgAstrometrie  Dir
+	PRINT "      Dir=" Dir
+	Print "      Focale=" Focale "mm"
+
 	EtalonAstrometrieAuto ImgAstrometrie Cat$ FOCALE TailleX TailleY alpha delta MaxStarCat MaxStarImg Dir PolyDegAstroPrecis Chem$ resultat_astrometrie_absolue
 
 	// si la reconnaissance a reussit, on repointe,  sinon rien a faire

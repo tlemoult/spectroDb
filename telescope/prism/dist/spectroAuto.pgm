@@ -2569,26 +2569,41 @@ boucle_eval_exposure_spectre:
 	
 exit_boucle_eval_exposure:
 
-	
-	Expo=poseEval*maxDyn/flux
-	int flux flux
-	print "   La pose d evaluation de " poseEval " secondes donne un max ADU=" flux
+	REM evalue temp de pose unitaire Maximum:  expoMax
+		expoMax=poseEval*maxDyn/flux
+		int flux flux
+		print "   La pose d evaluation de " poseEval " secondes donne un max ADU=" flux
 
-	GOSUB trunc_single_exposure:
-	Print "   La pose unitaire choisie est de " expo " secondes"
-	
+		REM enleve la virgule quand c est possible
+		if expoMax>5 THEN
+			INT expoMax expoMax
+		endif
+		
+		REM limite le temp de pose unitaire
+		if expoMax>1200 THEN
+			expoMax=1200
+		ENDIF
+
+		Print "   La pose unitaire maximum est de " expoMax " secondes"
+
+    REM ***** Mode temps de pose max fixe ****
 	if (ExposureMode$="totExposure") THEN
 		Print "    Temps exposition total fixe TotExposure=" TotExposure " secondes" 
-		NbPose=TotExposure/Expo+1
+		NbPose=TotExposure/ExpoMax
 		Int NbPose NbPose
 
 		if NbPose<NbPoseMin THEN
 			NbPose=NbPoseMin
 		ENDIF
 		
-		Expo=TotExposure/NbPose
+		expo=TotExposure/NbPose
+		
+		if expo>5 THEN
+			INT expo expo
+		endif
+		
 	ELSE
-	
+	REM ******** Mode SNR/ADU fixe **********
 		TotalExpNecessaire=poseEval*TargetFlux/flux
 		// additionne 1,  pour eviter de raccourcir trop les temps genre 1.6s, lors de la conversion entiere.
 		TotalExpNecessaire=TotalExpNecessaire+1
@@ -2599,8 +2614,9 @@ exit_boucle_eval_exposure:
 			TotalExpNecessaire=DureeMax
 		ENDIF
 		print "logf TotalExpNecessaire=" TotalExpNecessaire
-		
-		NbPose=TotalExpNecessaire/Expo
+
+		expo=expoMax	
+		NbPose=TotalExpNecessaire/expo
 		
 		Int NbPose NbPose
 		NbPose=NbPose+1
@@ -2631,11 +2647,7 @@ exit_boucle_eval_exposure:
 	
 return
 
-trunc_single_exposure:
-	if Expo>600 THEN
-		Expo=600
-	ENDIF
-return
+
 
 Calcul_flux_spectre:
 	HEIGHT img h 

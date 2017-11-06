@@ -1,0 +1,194 @@
+
+On a lance sans test meteo initial
+La meteo c'est couverte:
+
+Le telescope n est pas parke...
+Le refroidissement camera n est pas etteind...
+
+Il continue les pointage avec le dome ferme !
+-----****-------
+checkDstDir X:\astro\base\in
+testfilename=X:\astro\base\in\testFilePRISM.txt
+Chargement du fichier de cible et verification syntaxe
+Fichier de cible=C:\USERS\DELL\DROPBOX\ASTRO\CIBLES\JOURNALIER\2017-11-01-BE-NEWBE-B.LST
+cible no 1
+nom= BD+57 2581
+Project=NewBe
+cible no 2
+nom= BD+60 2645
+Project=NewBe
+cible no 3
+nom= BD+60 133
+Project=NewBe
+cible no 4
+nom= BD+58 310
+Project=NewBe
+cible no 5
+nom= HR 2300
+Project=NewBe
+ligne vide, on est a la fin du fichier
+Chargement d un total de 5 cibles
+Extinction de toutes les lampes.
+Boucle seance lancee.
+On observe sans attendre la meteo
+Nous sommes le 5/11/2017Ã  22:22:38,482( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 290 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 334 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----init_dome_telescope----------------------------------------------------
+Initialisation dome
+dome deja ouvert
+Orientation des cameras suivant position du telescope
+Tï¿½lescope cï¿½tï¿½ EAST
+Repertoire de travail general: X:\astro\base\in\2017-11-5_22h22m58_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+Temperature de consigne atteinte
+------------------------------------------------------------
+22:22:59UTC   LightLevel=16.19
+Test de visibilitee de BD+57 2581  Project=NewBe&uid=72&calib=true&uid=72&TotExposure=3600&dateStart=2017-11-01T21:45:21.164
+     -angle horaire=    2.90968 heures
+     -hauteur      = 62.999522 degre
+Repertoire de travail : X:\astro\base\in\2017-11-5_22h22m58_ESHEL_RACINE\2017-11-5_22h22m59\
+Ecris le fichier JSON avec les details de l objet: BD+57 2581
+Cible suivanteBD+57 2581   Project=NewBe&uid=72&calib=true&uid=72&TotExposure=3600&dateStart=2017-11-01T21:45:21.164  Mag=  10.08000
+Project=NewBe
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers EAST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 22h40m04.100s  +58°25'44.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=135mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'35.62'' DEC=+00°00'12.06''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2421mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°04'40.73'' DEC=+00°00'32.88''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=339,263
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=638 Y1=486 X2=718 Y2=566
+   pose de 0.01 secondes  donne une etoile a 60 ADU
+   pose de 0.03 secondes  donne une etoile a 114 ADU
+   pose de 0.09 secondes  donne une etoile a 519 ADU
+   pose de 0.27 secondes  donne une etoile a 1299 ADU
+   pose de 0.81 secondes  donne une etoile a 4490 ADU
+   pose de 2.43 secondes  donne une etoile a 12205 ADU
+   pose de 7.29 secondes  donne une etoile a 36050 ADU
+   On choisit un temps de pose de guidage de =2.831 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+determination du temps de pose et nb de pose optimum
+dureMax= 3600
+   pose evaluation spectre dure:1 secondes
+      Flux= 53
+   pose evaluation spectre dure:10 secondes
+      Flux= 51
+   La pose d evaluation de 10 secondes donne un max ADU=51
+   La pose unitaire maximum est de 1200 secondes
+    Temps exposition total fixe TotExposure=3600 secondes
+   On choisit de realiser 3 poses unitaires exposees pendant 1200 secondes
+   Soit un total de 3600 secondes
+Ecris le fichier JSON avec les details de l objet: BD+57 2581
+commence l aquisition de l objet=BD+57 2581
+Extinction de toutes les lampes.
+actualSide=EAST AHor=0.78121394
+spectre de BD+57 2581 ,debut de la pose 1/3 duree 1200 secondes
+22:47:32UTC   LightLevel=16.09
+il faut mauvais temps on arrete les acquisitions au milieu
+fermeture du dome
+
+Arrêt de l'autoguidage sur Consigne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de BD+57 2581 ,debut de la pose 1/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 2/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 3/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 4/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 5/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 6/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 7/8 duree 10 secondes
+Tungsten de BD+57 2581 ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de BD+57 2581 ,debut de la pose 1/3 duree 10 secondes
+LED de BD+57 2581 ,debut de la pose 2/3 duree 10 secondes
+LED de BD+57 2581 ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de BD+57 2581 ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de BD+57 2581 ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de BD+57 2581 ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: BD+57 2581
+passe a la cible suivante
+------------------------------------------------------------
+22:51:45UTC   LightLevel=16.50
+Test de visibilitee de BD+60 2645  Project=NewBe&uid=76&calib=true&uid=76&TotExposure=3600&dateStart=2017-11-02T00:28:41.167
+     -angle horaire=    2.11101 heures
+     -hauteur      = 68.246673 degre
+Repertoire de travail : X:\astro\base\in\2017-11-5_22h22m58_ESHEL_RACINE\2017-11-5_22h51m45\
+Ecris le fichier JSON avec les details de l objet: BD+60 2645
+Cible suivanteBD+60 2645   Project=NewBe&uid=76&calib=true&uid=76&TotExposure=3600&dateStart=2017-11-02T00:28:41.167  Mag=   9.42000
+Project=NewBe
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers EAST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 23h56m50.300s  +61°39'03.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+Le script doit être stoppé, attendez SVP....
+Script terminé ...

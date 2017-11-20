@@ -129,6 +129,8 @@ RETURN
 //######################""
 CalibEshel:
 
+GOSUB unlockMirorEshel:
+
 PRINT "allume la lampe tungsten"
 params$=PythonScriptCalibeShel$+" flat"
 EXECEXTERNAL   pathPythonInterpreter$ params$

@@ -1,0 +1,42 @@
+
+testunlockMirorEshel:
+  pathRepoGit$="C:\Users\DELL\worspace\prod\spectroDb\"
+  pathPythonInterpreter$="C:\Python27\python.exe"
+  pathPythonScript$=pathRepoGit$+"telescope\python\"
+  PythonScriptCalibeShel$=pathPythonScript$+"eShell-calib.py COM7"
+
+  GOSUB unlockMirorEshel:
+
+  
+  
+  END
+
+unlockMirorEshel:
+
+	print "debloque mirroir calibration"
+
+	PRINT "allume la lampe tungsten"
+	params$=PythonScriptCalibeShel$+" flat"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+
+	print "  Attend 30 secondes"
+	delay 30000
+	WaitForEndDelay
+	params$=PythonScriptCalibeShel$+" off"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+
+	print "  10 impulsions"
+	for jUnlEsh=1 10
+		delay 700
+		WaitForEndDelay
+		params$=PythonScriptCalibeShel$+" flat"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		delay 700
+		WaitForEndDelay
+		params$=PythonScriptCalibeShel$+" off"
+		EXECEXTERNAL   pathPythonInterpreter$ params$
+		
+	next jUnlEsh
+	
+	return
+		

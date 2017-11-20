@@ -3207,39 +3207,56 @@ testunlockMirorEshel:
   pathPythonScript$=pathRepoGit$+"telescope\python\"
   PythonScriptCalibeShel$=pathPythonScript$+"eShell-calib.py COM7"
 
-  GOSUB unlockMirorEshel:
-
+  CameraSpectre=1
+  OffsetValueCameraSpectre=468
   
+  GOSUB unlockMirorEshel:
   
   END
 
+  
 unlockMirorEshel:
 
-	print "debloque mirroir calibration"
-
-	PRINT "allume la lampe tungsten"
-	params$=PythonScriptCalibeShel$+" flat"
-	EXECEXTERNAL   pathPythonInterpreter$ params$
-
-	print "  Attend 30 secondes"
-	delay 30000
-	WaitForEndDelay
-	params$=PythonScriptCalibeShel$+" off"
-	EXECEXTERNAL   pathPythonInterpreter$ params$
-
-	print "  10 impulsions"
-	for jUnlEsh=1 10
-		delay 700
-		WaitForEndDelay
+    print "test calibration"
+	
+		PRINT "allume la lampe tungsten"
 		params$=PythonScriptCalibeShel$+" flat"
 		EXECEXTERNAL   pathPythonInterpreter$ params$
-		delay 700
+		print "  Attend 5 secondes"
+		delay 5000
+		WaitForEndDelay
+		
+		StartExposure_EX CameraSpectre 1000
+		WaitForEndExposure_EX CameraSpectre
+		GetLastImageExposure_EX CameraSpectre img
+		GOSUB Calcul_flux_spectre:
+		Close Img
+
+		if flux>500 then
+			print "on a du flux , ca fonctionne"
+			return
+		endif
+
+	print "Pas de assez de flux, Procedure debloquage mirroir calibration"
+
+		print "  Attend 25 secondes"
+		delay 25000
 		WaitForEndDelay
 		params$=PythonScriptCalibeShel$+" off"
 		EXECEXTERNAL   pathPythonInterpreter$ params$
+
+		print "  10 impulsions"
+		for jUnlEsh=1 10
+			delay 700
+			WaitForEndDelay
+			params$=PythonScriptCalibeShel$+" flat"
+			EXECEXTERNAL   pathPythonInterpreter$ params$
+			delay 700
+			WaitForEndDelay
+			params$=PythonScriptCalibeShel$+" off"
+			EXECEXTERNAL   pathPythonInterpreter$ params$
+		next jUnlEsh
 		
-	next jUnlEsh
-	
 	return
 		
 # 356 "<stdin>" 2

@@ -5,10 +5,20 @@ import numpy
 
 
 def phase_RR_jd(jd):
-    	return (jd-2456263.311806)/0.566782
+        if jd<2456657:   # avant 31 dec 2013
+            return (jd-2456539.34275)/0.5667975  # ephem 2013
+        elif jd<2457022.5:  # avant 31 dec 2014
+            return (jd-2456914.5507)/0.56684  # ephem 2014
+        else:
+        	return (jd-2456263.3118055556)/0.566782
 
 def phase_RR_blasko_jd(jd):
-    	return (jd-2457354.322)/39.0
+        if jd<2456657:   # avant 31 dec 2013
+            return (jd-2456464.481)/39.0
+        elif jd<2457022.5:  # avant 31 dec 2014
+            return (jd-2456881.627)/39.0   # ephem 2014
+        else:
+            return (jd-2457354.322)/39.0   # ephem 2015
 
 print "update observation comment field for RR lyr project.py"
 
@@ -36,7 +46,9 @@ for obsIdt in obsLst:
         dateUTC+=[date]
 
     # convert in jd
+    #print "dateUTC=",dateUTC
     jds=Time(dateUTC, scale='utc').jd
+    #print "jds=",jds
     jdmoy=numpy.mean(jds)
 
     # max min of phase

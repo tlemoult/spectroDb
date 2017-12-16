@@ -68,3 +68,9 @@ solve-field  --scale-units arcsecperpix -L 1.2 -H 1.3 C14-LISA.fits
 ###########################
 solve-field --no-verify --no-plots --no-fits2fits --downsample 2 --overwrite ./img/Light_001.fits
 
+#champ L130 + ALPY + ATK314 bin1
+solve-field --no-verify --no-plots --no-fits2fits --overwrite -L 0.9 -H 1.1 -u arcsecperpix FIELD-1.fits
+
+#chercheur OHP, lodestar + TeleF135mm
+solve-field --overwrite -L 2 -H 3  --downsample 3  ./finder/fix.FINDER-4.fits
+

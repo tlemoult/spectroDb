@@ -51,25 +51,25 @@ write_JSON_Observation:
     WriteFileTxt fileJSON ""
 	WriteFileTxt fileJSON "  ""instrument"": {"
 
-	WriteFileTxt fileJSON "     ""telescop"": ""Celestron C14"", "
-	WriteFileTxt fileJSON "     ""diameter"": 0.356, "
+	WriteFileTxt fileJSON "     ""telescop"": ""RC360 Astrosib"", "
+	WriteFileTxt fileJSON "     ""diameter"": 0.360, "
 	WriteFileTxt fileJSON "     ""detname"": ""ATIK460"","
 	WriteFileTxt fileJSON "     ""guideDetname"": ""ATIK314"","
 	
 	if SPECTROGRAPHE$="ESHEL" then
-	WriteFileTxt fileJSON "     ""configName"": ""C14 eShel ATIK460"", "
-	WriteFileTxt fileJSON "     ""spectro"": ""eShel"", "
+	WriteFileTxt fileJSON "     ""configName"": ""RC360 Astrosib-eShel II-ATIK460"", "
+	WriteFileTxt fileJSON "     ""spectro"": ""eShel II"", "
 	WriteFileTxt fileJSON "     ""resol"": 11000, "
 	ENDIF
 
 	if SPECTROGRAPHE$="LISA" then
-	WriteFileTxt fileJSON "     ""configname"": ""C14 red063 LISA#127 Slit35 ATIK314L+"", "
+	WriteFileTxt fileJSON "     ""configname"": ""RC360 Astrosib LISA#127 Slit35 ATIK314L+"", "
 	WriteFileTxt fileJSON "     ""spectro"": ""LISA"", "
 	WriteFileTxt fileJSON "     ""resol"": 800, "
 	ENDIF
 
 	if SPECTROGRAPHE$="ALPY" then
-	WriteFileTxt fileJSON "     ""configname"": ""C14 F5 ALPY ATIK314L+"", "
+	WriteFileTxt fileJSON "     ""configname"": ""RC360 Astrosib ALPY ATIK314L+"", "
 	WriteFileTxt fileJSON "     ""spectro"": ""ALPY"", "
 	WriteFileTxt fileJSON "     ""resol"": 600, "
 	ENDIF

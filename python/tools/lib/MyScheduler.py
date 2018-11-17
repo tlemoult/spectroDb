@@ -1,5 +1,6 @@
 # first import everything we will need for the scheduling
 import astropy.units as u
+import datetime
 from astropy.coordinates import EarthLocation,SkyCoord
 from astropy.time import Time
 from astroplan import (Observer, FixedTarget, ObservingBlock, Transitioner, PriorityScheduler, Schedule)
@@ -21,14 +22,17 @@ class MySchedule(object):
 		# Initialize the scheduler
 		self.prior_scheduler = PriorityScheduler(constraints = self.global_constraints, observer = self.observer, transitioner = self.transitioner)
 
-		
-		#beg=Time(date)+17*u.hour
-		#end=Time(date)+31*u.hour
-		
-		
-		beg=Time.now()
-		beg.format = 'isot'
-		end=self.observer.sun_rise_time(beg,which="next")
+		var=1
+		if var==1:
+			date=str(datetime.date.today())
+			beg=Time(date)+17*u.hour
+			end=Time(date)+(24+7)*u.hour
+		else:		
+			beg=Time.now()
+			beg.format = 'isot'
+			#end=self.observer.sun_rise_time(beg,which="next")
+			end=beg+17*u.hour
+
 		end.format = 'isot'
 		# Create a schedule
 		self.priority_schedule = Schedule(beg, end)
@@ -74,6 +78,7 @@ class MySchedule(object):
 			if name!='TransitionBlock':
 				coord=block.target.coord.to_string('hmsdms')
 				(ra,dec)=coord.split(' ')
+				print "name=%s  ra=%s  dec=%s"%(name,ra,dec)
 				line='"'+name+'"  '+ra[:-3]+'s  '+dec[:-3]+'s  '+str(FLUX_V)+'  FALSE  "Project='+str(project)
 				line+="&uid="+str(uid)
 				line+="&calib="+str(calib)

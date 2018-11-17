@@ -214,6 +214,13 @@ def getAllFileIdFileName(db,fileTypeList):
 	query+=""" where filetype in (%s)"""%fileTypeList
 	return commit_query_sql_All_table(db,query)
 
+def getFile_from_type_obsId(db,objId,fileTypeList):
+	query="select fileName.obsId,fileName.serieId,fileName.destDir,fileName.filename from fileName"
+	query+=" left join observation on fileName.obsId=observation.obsId"
+	query+=""" where observation.objId=%d and fileName.filetype in (%s)"""%(objId,fileTypeList)
+	print query
+	return commit_query_sql_All_table(db,query)
+
 def getFilesSpcPerObsId(db,obsId,orderNo):
 	query="select path,filename from fileSpectrum where obsId=%d"%obsId
 	query+=""" and fileSpectrum.orderNo like '%s' """%orderNo

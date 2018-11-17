@@ -14,6 +14,8 @@ testunlockMirorEshel:
 
   
 unlockMirorEshel:
+   cptUnlEshLoop=0
+unlockMirorEshelLoop:
 
     print "test calibration"
 	
@@ -54,6 +56,12 @@ unlockMirorEshel:
 			params$=PythonScriptCalibeShel$+" off"
 			EXECEXTERNAL   pathPythonInterpreter$ params$
 		next jUnlEsh
-		
+	   
+	    cptUnlEshLoop=cptUnlEshLoop+1
+	
+	if cptUnlEshLoop<5 then
+		goto unlockMirorEshelLoop:
+	endif
+
 	return
 		

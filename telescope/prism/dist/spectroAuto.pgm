@@ -501,7 +501,7 @@ OrientationFente=OriFentevertical
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
 
 fentePosX=339
-fentePosY=263
+fentePosY=261
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0
@@ -3216,6 +3216,8 @@ testunlockMirorEshel:
 
   
 unlockMirorEshel:
+   cptUnlEshLoop=0
+unlockMirorEshelLoop:
 
     print "test calibration"
 	
@@ -3256,7 +3258,13 @@ unlockMirorEshel:
 			params$=PythonScriptCalibeShel$+" off"
 			EXECEXTERNAL   pathPythonInterpreter$ params$
 		next jUnlEsh
-		
+	   
+	    cptUnlEshLoop=cptUnlEshLoop+1
+	
+	if cptUnlEshLoop<5 then
+		goto unlockMirorEshelLoop:
+	endif
+
 	return
 		
 # 356 "<stdin>" 2

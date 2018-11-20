@@ -70,8 +70,8 @@ MiroirXCameraChamp=0
 MiroirYCameraChamp=0
 TempCameraChamp=0
 DirRepChamp=0
-AngleCCDChampWEST=3
-FocaleCameraChamp=2421
+AngleCCDChampWEST=179
+FocaleCameraChamp=2361
 
 CameraSpectre=2
 binCameraSpectre=2
@@ -91,8 +91,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=264
-	ChercheurPosYBin=105
+	ChercheurPosXBin=173
+	ChercheurPosYBin=68
 	
 else
     // Lodestar (config de backup)
@@ -166,8 +166,8 @@ OrientationFente=OriFentevertical
 // Position cible du guidage
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
 
-fentePosX=339
-fentePosY=263
+fentePosX=387
+fentePosY=250
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0

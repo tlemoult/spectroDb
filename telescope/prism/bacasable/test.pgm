@@ -1,0 +1,92 @@
+
+
+    REM -- parametre du test ----
+    expo=0.5
+	flux=5799
+	maxDyn=25000
+	poseEval=0.3
+    nbPoseMin=3
+	
+	ExposureMode$="totExposures"
+	DureeMax=3600
+	NbPoseMax=80
+	TargetFlux=120000
+	TotExposure=1200
+	
+    REM -----------------------
+	
+	REM evalue temp de pose unitaire Maximum:  expoMax
+		expoMax=poseEval*maxDyn/flux
+		int flux flux
+		print "   La pose d evaluation de " poseEval " secondes donne un max ADU=" flux
+
+		REM enleve la virgule quand c est possible
+		if expoMax>5 THEN
+			INT expoMax expoMax
+		endif
+		
+		REM limite le temp de pose unitaire
+		if expoMax>1200 THEN
+			expoMax=1200
+		ENDIF
+
+		Print "   La pose unitaire maximum est de " expoMax " secondes"
+
+    REM ***** Mode temps de pose max fixe ****
+	if (ExposureMode$="totExposure") THEN
+		Print "    Temps exposition total fixe TotExposure=" TotExposure " secondes" 
+		NbPose=TotExposure/ExpoMax
+		Int NbPose NbPose
+
+		if NbPose<NbPoseMin THEN
+			NbPose=NbPoseMin
+		ENDIF
+		
+		expo=TotExposure/NbPose
+		
+		if expo>5 THEN
+			INT expo expo
+		endif
+		
+	ELSE
+	REM ******** Mode SNR/ADU fixe **********
+		TotalExpNecessaire=poseEval*TargetFlux/flux
+		// additionne 1,  pour eviter de raccourcir trop les temps genre 1.6s, lors de la conversion entiere.
+		TotalExpNecessaire=TotalExpNecessaire+1
+		print "log TotalExpNecessaire=" TotalExpNecessaire
+		int TotalExpNecessaire TotalExpNecessaire
+		print "   Temps total exposition necessaire " TotalExpNecessaire " secondes, pour obtenir un flux total minimum de " TargetFlux
+		If TotalExpNecessaire>DureeMax THEN
+			TotalExpNecessaire=DureeMax
+		ENDIF
+		print "logf TotalExpNecessaire=" TotalExpNecessaire
+
+		expo=expoMax	
+		NbPose=TotalExpNecessaire/expo
+		
+		Int NbPose NbPose
+		NbPose=NbPose+1
+		print "Loga NbPose=" NbPose
+		if NbPose<NbPoseMin THEN
+			NbPose=NbPoseMin
+			expo=TotalExpNecessaire/NbPoseMin
+			print "logb expo=" expo
+		ENDIF
+		
+		if (Expo>DureeMax) then
+				Expo=DureeMax
+		endif
+		
+		if NbPose>NbPoseMax THEN
+			NbPose=NbPoseMax
+		ENDIF
+
+
+	ENDIF
+
+	print "   On choisit de realiser " NbPose " poses unitaires exposees pendant " Expo " secondes"
+	print "   Soit un total de " NbPose*Expo " secondes"
+	
+	// recupere les valeurs pour la suite du programme.
+	nbExposureObjet=NbPose
+	exposureTimeObjet=Expo

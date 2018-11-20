@@ -29,6 +29,8 @@ for spcFull in spcFullLst:
                 if l[0]==34:
                     rms=l[20]
                     if rms>0.028:
+                        print "WARNING %s  rms=%f"%(filename,rms)
+                    else:
                         print "%s  rms=%f"%(filename,rms)
 
 exit()

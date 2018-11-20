@@ -1,0 +1,383 @@
+checkDstDir X:\astro\base\in
+testfilename=X:\astro\base\in\testFilePRISM.txt
+Chargement du fichier de cible et verification syntaxe
+Fichier de cible=C:\USERS\DELL\DROPBOX\ASTRO\CIBLES\JOURNALIER\2018-11-17-DENEB.LST
+cible no 1
+nom= alf Cyg
+Project=Bess
+ligne vide, on est a la fin du fichier
+Chargement d un total de 1 cibles
+Extinction de toutes les lampes.
+Boucle seance lancee.
+On observe sans attendre la meteo
+Nous sommes le 17/11/2018Ã  22:1:8,440( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 290 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 330 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----init_dome_telescope----------------------------------------------------
+Initialisation dome
+dome deja ouvert
+Orientation des cameras suivant position du telescope
+Tï¿½lescope cï¿½tï¿½ EAST
+Repertoire de travail general: X:\astro\base\in\2018-11-17_22h1m29_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+Temperature de consigne atteinte
+------------------------------------------------------------
+22:1:30UTC   LightLevel=17.63
+Test de visibilitee de alf Cyg  Project=Bess&TotExposure=600
+     -angle horaire=    5.30057 heures
+     -hauteur      = 38.284313 degre
+Repertoire de travail : X:\astro\base\in\2018-11-17_22h1m29_ESHEL_RACINE\2018-11-17_22h1m30\
+Ecris le fichier JSON avec les details de l objet: alf Cyg
+Cible suivantealf Cyg   Project=Bess&TotExposure=600  Mag=   1.20000
+Project=Bess
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers EAST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 20h41m25.910s  +45°16'49.20''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=135mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°01'12.46'' DEC=+00°00'02.58''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2360mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'04.37'' DEC=+00°00'02.86''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=365,270
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=690 Y1=500 X2=770 Y2=580
+   pose de 0.01 secondes  donne une etoile a 65245 ADU
+   On choisit un temps de pose de guidage de =0.002 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+determination du temps de pose et nb de pose optimum
+dureMax= 3600
+   pose evaluation spectre dure:1 secondes
+      Flux= 2943
+   La pose d evaluation de 1 secondes donne un max ADU=2943
+   La pose unitaire maximum est de 8 secondes
+    Temps exposition total fixe TotExposure=600 secondes
+   On choisit de realiser 75 poses unitaires exposees pendant 8 secondes
+   Soit un total de 600 secondes
+Ecris le fichier JSON avec les details de l objet: alf Cyg
+commence l aquisition de l objet=alf Cyg
+Extinction de toutes les lampes.
+actualSide=EAST AHor=1.3966018
+spectre de alf Cyg ,debut de la pose 1/75 duree 8 secondes
+22:3:47UTC   LightLevel=17.64
+actualSide=EAST AHor=1.3977364
+spectre de alf Cyg ,debut de la pose 2/75 duree 8 secondes
+22:4:2UTC   LightLevel=17.64
+actualSide=EAST AHor=1.3988536
+spectre de alf Cyg ,debut de la pose 3/75 duree 8 secondes
+22:4:17UTC   LightLevel=17.64
+actualSide=EAST AHor=1.3999536
+spectre de alf Cyg ,debut de la pose 4/75 duree 8 secondes
+22:4:33UTC   LightLevel=17.63
+actualSide=EAST AHor=1.4010758
+spectre de alf Cyg ,debut de la pose 5/75 duree 8 secondes
+22:4:48UTC   LightLevel=17.63
+actualSide=EAST AHor=1.4021812
+spectre de alf Cyg ,debut de la pose 6/75 duree 8 secondes
+22:5:3UTC   LightLevel=17.63
+actualSide=EAST AHor=1.4032823
+spectre de alf Cyg ,debut de la pose 7/75 duree 8 secondes
+22:5:18UTC   LightLevel=17.63
+actualSide=EAST AHor=1.4043902
+spectre de alf Cyg ,debut de la pose 8/75 duree 8 secondes
+22:5:33UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4054925
+spectre de alf Cyg ,debut de la pose 9/75 duree 8 secondes
+22:5:48UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4065887
+spectre de alf Cyg ,debut de la pose 10/75 duree 8 secondes
+22:6:3UTC   LightLevel=17.62
+actualSide=EAST AHor=1.407694
+spectre de alf Cyg ,debut de la pose 11/75 duree 8 secondes
+22:6:19UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4088009
+spectre de alf Cyg ,debut de la pose 12/75 duree 8 secondes
+22:6:34UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4099004
+spectre de alf Cyg ,debut de la pose 13/75 duree 8 secondes
+22:6:49UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4110091
+spectre de alf Cyg ,debut de la pose 14/75 duree 8 secondes
+22:7:4UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4121109
+spectre de alf Cyg ,debut de la pose 15/75 duree 8 secondes
+22:7:19UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4132072
+spectre de alf Cyg ,debut de la pose 16/75 duree 8 secondes
+22:7:34UTC   LightLevel=17.64
+actualSide=EAST AHor=1.414308
+spectre de alf Cyg ,debut de la pose 17/75 duree 8 secondes
+22:7:49UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4154075
+spectre de alf Cyg ,debut de la pose 18/75 duree 8 secondes
+22:8:4UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4164999
+spectre de alf Cyg ,debut de la pose 19/75 duree 8 secondes
+22:8:19UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4176042
+spectre de alf Cyg ,debut de la pose 20/75 duree 8 secondes
+22:8:35UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4187591
+spectre de alf Cyg ,debut de la pose 21/75 duree 8 secondes
+22:8:51UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4198831
+spectre de alf Cyg ,debut de la pose 22/75 duree 8 secondes
+22:9:6UTC   LightLevel=17.62
+actualSide=EAST AHor=1.421018
+spectre de alf Cyg ,debut de la pose 23/75 duree 8 secondes
+22:9:22UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4221687
+spectre de alf Cyg ,debut de la pose 24/75 duree 8 secondes
+22:9:38UTC   LightLevel=17.61
+actualSide=EAST AHor=1.4233292
+spectre de alf Cyg ,debut de la pose 25/75 duree 8 secondes
+22:9:53UTC   LightLevel=17.61
+actualSide=EAST AHor=1.424441
+spectre de alf Cyg ,debut de la pose 26/75 duree 8 secondes
+22:10:8UTC   LightLevel=17.61
+actualSide=EAST AHor=1.425548
+spectre de alf Cyg ,debut de la pose 27/75 duree 8 secondes
+22:10:24UTC   LightLevel=17.61
+actualSide=EAST AHor=1.4266646
+spectre de alf Cyg ,debut de la pose 28/75 duree 8 secondes
+22:10:39UTC   LightLevel=17.61
+actualSide=EAST AHor=1.4277002
+spectre de alf Cyg ,debut de la pose 29/75 duree 8 secondes
+22:10:55UTC   LightLevel=17.64
+actualSide=EAST AHor=1.428868
+spectre de alf Cyg ,debut de la pose 30/75 duree 8 secondes
+22:11:10UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4299774
+spectre de alf Cyg ,debut de la pose 31/75 duree 8 secondes
+22:11:25UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4310713
+spectre de alf Cyg ,debut de la pose 32/75 duree 8 secondes
+22:11:40UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4321686
+spectre de alf Cyg ,debut de la pose 33/75 duree 8 secondes
+22:11:55UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4332917
+spectre de alf Cyg ,debut de la pose 34/75 duree 8 secondes
+22:12:11UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4343943
+spectre de alf Cyg ,debut de la pose 35/75 duree 8 secondes
+22:12:26UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4355224
+spectre de alf Cyg ,debut de la pose 36/75 duree 8 secondes
+22:12:41UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4366446
+spectre de alf Cyg ,debut de la pose 37/75 duree 8 secondes
+22:12:57UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4377685
+spectre de alf Cyg ,debut de la pose 38/75 duree 8 secondes
+22:13:12UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4388675
+spectre de alf Cyg ,debut de la pose 39/75 duree 8 secondes
+22:13:27UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4400451
+spectre de alf Cyg ,debut de la pose 40/75 duree 8 secondes
+22:13:42UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4410673
+spectre de alf Cyg ,debut de la pose 41/75 duree 8 secondes
+22:13:57UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4421765
+spectre de alf Cyg ,debut de la pose 42/75 duree 8 secondes
+22:14:12UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4432729
+spectre de alf Cyg ,debut de la pose 43/75 duree 8 secondes
+22:14:28UTC   LightLevel=17.62
+actualSide=EAST AHor=1.444382
+spectre de alf Cyg ,debut de la pose 44/75 duree 8 secondes
+22:14:43UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4454798
+spectre de alf Cyg ,debut de la pose 45/75 duree 8 secondes
+22:14:58UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4465851
+spectre de alf Cyg ,debut de la pose 46/75 duree 8 secondes
+22:15:13UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4477027
+spectre de alf Cyg ,debut de la pose 47/75 duree 8 secondes
+22:15:28UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4488011
+spectre de alf Cyg ,debut de la pose 48/75 duree 8 secondes
+22:15:43UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4499199
+spectre de alf Cyg ,debut de la pose 49/75 duree 8 secondes
+22:15:59UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4510271
+spectre de alf Cyg ,debut de la pose 50/75 duree 8 secondes
+22:16:14UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4521619
+spectre de alf Cyg ,debut de la pose 51/75 duree 8 secondes
+22:16:29UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4532682
+spectre de alf Cyg ,debut de la pose 52/75 duree 8 secondes
+22:16:44UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4543589
+spectre de alf Cyg ,debut de la pose 53/75 duree 8 secondes
+22:16:59UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4554642
+spectre de alf Cyg ,debut de la pose 54/75 duree 8 secondes
+22:17:15UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4566101
+spectre de alf Cyg ,debut de la pose 55/75 duree 8 secondes
+22:17:32UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4578145
+spectre de alf Cyg ,debut de la pose 56/75 duree 8 secondes
+22:17:47UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4589227
+spectre de alf Cyg ,debut de la pose 57/75 duree 8 secondes
+22:18:2UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4600159
+spectre de alf Cyg ,debut de la pose 58/75 duree 8 secondes
+22:18:17UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4611458
+spectre de alf Cyg ,debut de la pose 59/75 duree 8 secondes
+22:18:33UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4622588
+spectre de alf Cyg ,debut de la pose 60/75 duree 8 secondes
+22:18:48UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4633602
+spectre de alf Cyg ,debut de la pose 61/75 duree 8 secondes
+22:19:3UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4644658
+spectre de alf Cyg ,debut de la pose 62/75 duree 8 secondes
+22:19:18UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4655777
+spectre de alf Cyg ,debut de la pose 63/75 duree 8 secondes
+22:19:33UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4666628
+spectre de alf Cyg ,debut de la pose 64/75 duree 8 secondes
+22:19:48UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4677537
+spectre de alf Cyg ,debut de la pose 65/75 duree 8 secondes
+22:20:4UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4689001
+spectre de alf Cyg ,debut de la pose 66/75 duree 8 secondes
+22:20:19UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4700177
+spectre de alf Cyg ,debut de la pose 67/75 duree 8 secondes
+22:20:34UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4711088
+spectre de alf Cyg ,debut de la pose 68/75 duree 8 secondes
+22:20:49UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4722109
+spectre de alf Cyg ,debut de la pose 69/75 duree 8 secondes
+22:21:4UTC   LightLevel=17.64
+actualSide=EAST AHor=1.47331
+spectre de alf Cyg ,debut de la pose 70/75 duree 8 secondes
+22:21:20UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4744258
+spectre de alf Cyg ,debut de la pose 71/75 duree 8 secondes
+22:21:34UTC   LightLevel=17.64
+actualSide=EAST AHor=1.4755097
+spectre de alf Cyg ,debut de la pose 72/75 duree 8 secondes
+22:21:49UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4766059
+spectre de alf Cyg ,debut de la pose 73/75 duree 8 secondes
+22:22:5UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4777139
+spectre de alf Cyg ,debut de la pose 74/75 duree 8 secondes
+22:22:20UTC   LightLevel=17.62
+actualSide=EAST AHor=1.4788066
+spectre de alf Cyg ,debut de la pose 75/75 duree 8 secondes
+22:22:35UTC   LightLevel=17.62
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 4990
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de alf Cyg ,debut de la pose 1/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 2/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 3/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 4/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 5/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 6/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 7/8 duree 10 secondes
+Tungsten de alf Cyg ,debut de la pose 8/8 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de alf Cyg ,debut de la pose 1/3 duree 10 secondes
+LED de alf Cyg ,debut de la pose 2/3 duree 10 secondes
+LED de alf Cyg ,debut de la pose 3/3 duree 10 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de alf Cyg ,debut de la pose 1/3 duree 3 secondes
+Thorium Argon de alf Cyg ,debut de la pose 2/3 duree 3 secondes
+Thorium Argon de alf Cyg ,debut de la pose 3/3 duree 3 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: alf Cyg
+passe a la cible suivante
+Tous les objets de la liste ont ete observe avec succes.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 1 sur un total de 1
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+Attente rechauffement camera avant coupure alimentation en millisec=60000
+Le script doit être stoppé, attendez SVP....
+Script terminé ...

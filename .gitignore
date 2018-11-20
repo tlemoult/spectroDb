@@ -3,3 +3,7 @@ python/tools/schedule.lst
 telescope/prism/dist/spectroAuto.pgm
 *.lst
 *.err
+
+telescope/indi/FIELD/
+
+telescope/indi/finder/

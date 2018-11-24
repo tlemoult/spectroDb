@@ -44,16 +44,19 @@ if(!empty($_POST['choix']))
 
 
 // select request
-$sql= "select fileName.serieId as serieId,
+$sql= "select 
+fileName.serieId as serieId,
+MAX(fileName.destDir) as path,
 MAX(fileName.detector) as detector, 
 MAX(fileName.filetype) as fileType,
 MAX(fileName.binning) as binning,
 format(AVG(fileName.tempCCD),'N1') as temperature,
 AVG(fileName.expTime) as expTime, 
- count(*) as nbExposure
+count(*) as nbExposure
 
-from fileName
-where 
+FROM fileName
+
+WHERE 
 detector like '". $searchCCD. "%' 
 and filetype in ('DARK','BIAS')
 and filetype like '".$searchImageType."%'
@@ -77,6 +80,7 @@ if($result = mysqli_query($link, $sql)){
         echo "<table>";
             echo "<tr>";
                 echo "<th>serieId</th>";
+                echo "<th>path</th>";
                 echo "<th>detector</th>";
                 echo "<th>fileType</th>";
                 echo "<th>binning</th>";
@@ -87,6 +91,7 @@ if($result = mysqli_query($link, $sql)){
         while($row = mysqli_fetch_array($result)){
             echo "<tr>";
                 echo "<td>" . $row['serieId'] . "</td>";
+                echo "<td>" . $row['path'] . "</td>";
                 echo "<td>" . $row['detector'] . "</td>";
                 echo "<td>" . $row['fileType'] . "</td>";
                 echo "<td>" . $row['binning'] . "</td>";

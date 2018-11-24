@@ -17,9 +17,15 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 	headerOrg=hdulistOrg[0].header
 	print "OBJ=",headerOrg['OBJNAME']," Date Obs=",headerOrg['DATE-OBS']
 	print "order: ",
+	# determine if level is P_1C_ or P_1B
+	if 'P_1C_' in ';'.join([ hdu.name for hdu in hdulistOrg]):
+		level='P_1C_'
+	else:
+		level='P_1B_'
+	
 	for hdu in hdulistOrg:
-		if hdu.name.startswith('P_1C_'):
-			order=hdu.name.split('P_1C_')[1]
+		if hdu.name.startswith(level):
+			order=hdu.name.split(level)[1]
 
 			# create PRIMARY plan of new fits with data
 			myHdu=pyfits.PrimaryHDU(hdu.data)

@@ -202,7 +202,7 @@ def getFilesPerObsId(db,obsId,fileTypeLst): # 'OBJECT','CALIB','TUNGSTEN','LED'
 	return commit_query_sql_All_table(db,query)
 
 def getFilesSpcPerObjId(db,objId,orderNo):
-	query="select fileSpectrum.path,fileSpectrum.filename from fileSpectrum"
+	query="select fileSpectrum.path,fileSpectrum.filename,fileSpectrum.dateObs from fileSpectrum"
 	query+=" left join observation on fileSpectrum.obsId=observation.obsId "
 	query+=" left join object on observation.objId=object.objectId"
 	query+=" where object.objectId=%d"%objId

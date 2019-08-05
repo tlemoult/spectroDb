@@ -4,6 +4,7 @@ import numpy as np
 import scipy.interpolate
 import scipy.ndimage.filters as scipy_filter
 import scipy.signal
+import sys,json
 
 def load_spc(file):
     """
@@ -97,8 +98,9 @@ def save_spc_multi(file,ldat):
         hdu_list.append(hdu)
         del ldat[key_merged_spectrum]   # exclude these data from next
 
+    print(f'write Response in: {file}')
     for name in ldat:
-        print(f'write hdu name={name}')
+#        print(f'{name},',end='')
         lam,flux = ldat[name]
         hdu=fits.PrimaryHDU(flux)
         hdu.name=name.replace('1B','RESPONSE')
@@ -175,7 +177,7 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
         return lam[beg:end],flux[beg:end]
 
 
-    print(f'Calc Ri name={name}')
+    print(f'{name},',end='',flush=True)
 
     reso_element_low, reso_element_high, reso_final = 6., 0.05, 28
     lam_excluded=[(4318,4370),(4820,4900),(5266,5273),(5271,5278),(6345,6350),
@@ -242,22 +244,33 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
     return { name: [lam_obs2,coef_reponse_filt] }
 
 # main code here 
+if len(sys.argv)!=2:
+    print("syntax:\n    python3 calc_reponse.py resp.json")
+    exit()
+config = json.loads(open(sys.argv[1]).read())
+print(config)
+
 #describe_spc_multiplan(r'./org/reponse.fit')
 
-lam_std,flux_std = load_spc(r'./org/pickles/a2i.fits')
+lam_std,flux_std = load_spc(config['refFileName'])
 #lam_std,flux_std = load_spc(r'./org/HD39283.fits')
 
+obsFilename=config['obsFilename']
+print(f"Load observation {obsFilename}")
+observationLst=load_spc_multi(obsFilename)
+
+print("\nCalc Response")
 ri=dict([])
-for lam_obs,flux_obs,name in load_spc_multi(r'./org/chelles/alfCyg.fits'):
+for lam_obs,flux_obs,name in observationLst:
     ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save_plot=True))
 
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
-print("reduce value")
+print("\nRescale value")
 mean_ri_order=np.array([ ri[name][1].mean() for name in ri if not name.endswith('_FULL') ]).mean()
 print(f'moys={mean_ri_order}')
 for name in ri:
     if not name.endswith('_FULL'):
         ri[name][1]=10.*ri[name][1]/mean_ri_order
 
-save_spc_multi('resp/newReponse.fit',ri)
+save_spc_multi(config['responseOutFileName'],ri)
 #describe_spc_multiplan('Newreponse.fits')

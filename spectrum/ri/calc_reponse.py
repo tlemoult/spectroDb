@@ -163,6 +163,24 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
             flux=flux1
         return lam,flux   
 
+    def polyfit_spectrum(lamOrg,fluxOrg,lam_ex):
+
+        lam=lamOrg
+        flux=fluxOrg
+        # remove data excluded
+        for inf,sup in lam_ex:            
+            flux1 = flux[(lam<=inf)|(lam>=sup)]
+            lam1 = lam[(lam<=inf)|(lam>=sup)]
+            lam=lam1
+            flux=flux1
+
+        z = np.polyfit(lam1, flux1, 2)
+        f = np.poly1d(z)
+
+        fluxNew=f(lamOrg)
+
+        return lamOrg,fluxNew   
+
     def fix_zero(flux):
         last_i=flux.nonzero()[0].max()
         first_i=flux.nonzero()[0].min()
@@ -179,7 +197,7 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     print(f'{name},',end='',flush=True)
 
-    reso_element_low, reso_element_high, reso_final = 6., 0.05, 28
+    reso_element_low, reso_element_high, reso_final = 6., 0.05, 18
     lam_excluded=[(4318,4370),(4820,4900),(5266,5273),(5271,5278),(6345,6350),
                    (6368,6374),(6525,6600),(6864,6925.5)]
     #lam_excluded=[]
@@ -196,7 +214,7 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     #cut line in spectrum
     lam_std_cut,flux_std_cut = cut_spectrum(lam_std,flux_std,lam_excluded)
-    lam_obs_cut,flux_obs_cut = cut_spectrum(lam_obs,flux_obs,lam_excluded)
+    lam_obs_cut,flux_obs_cut = polyfit_spectrum(lam_obs,flux_obs,lam_excluded)
     if debug:
         display_value_spc(lam_obs_cut,flux_obs_cut)
 

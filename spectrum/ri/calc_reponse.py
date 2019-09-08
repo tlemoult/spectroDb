@@ -163,10 +163,12 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
             flux=flux1
         return lam,flux   
 
-    def polyfit_spectrum(lamOrg,fluxOrg,lam_ex):
+    def polyfit_spectrum(lamOrg,fluxOrg,lam_ex,polyOrder):
 
         lam=lamOrg
+        lam1=lam
         flux=fluxOrg
+        flux1=flux
         # remove data excluded
         for inf,sup in lam_ex:            
             flux1 = flux[(lam<=inf)|(lam>=sup)]
@@ -174,7 +176,7 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
             lam=lam1
             flux=flux1
 
-        z = np.polyfit(lam1, flux1, 2)
+        z = np.polyfit(lam1, flux1, polyOrder)
         f = np.poly1d(z)
 
         fluxNew=f(lamOrg)
@@ -214,7 +216,8 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     #cut line in spectrum
     lam_std_cut,flux_std_cut = cut_spectrum(lam_std,flux_std,lam_excluded)
-    lam_obs_cut,flux_obs_cut = polyfit_spectrum(lam_obs,flux_obs,lam_excluded)
+    lam_obs_cut,flux_obs_cut = cut_spectrum(lam_obs,flux_obs,lam_excluded)
+    #lam_obs_cut,flux_obs_cut = polyfit_spectrum(lam_obs,flux_obs,lam_excluded,4)
     if debug:
         display_value_spc(lam_obs_cut,flux_obs_cut)
 
@@ -229,7 +232,11 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     #calculating the sensitivity curve
     coef_response=flux_obs2/flux_std2
-    lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
+    #filter RI
+    if name=="P_1B_FULL":
+        lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
+    else:
+        lam_filter,coef_reponse_filt= polyfit_spectrum(lam_obs2,coef_response,[],4)
 
     flux_restore = flux_obs_lin/coef_reponse_filt
 
@@ -280,7 +287,7 @@ observationLst=load_spc_multi(obsFilename)
 print("\nCalc Response")
 ri=dict([])
 for lam_obs,flux_obs,name in observationLst:
-    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save_plot=True))
+    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=True,enable_save_plot=False))
 
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
 print("\nRescale value")

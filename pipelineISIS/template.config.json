@@ -1,0 +1,11 @@
+{
+
+	"_comments":"setup your own settings, and save as config.json",
+
+	"path": {
+		"archive":"U:/astro/base",
+		"signalPrism":"/signals/fromPRISM",
+		"signalsPipe":"/signals/pipeline",
+		"pipeline":"/pipeline/raw"
+	}
+}

@@ -1,4 +1,4 @@
-import os,time,json,shutil
+import os,time,json,shutil,datetime
 
 def renameCalib(path,prefix,newprefix,gen):
     for filename in os.listdir(path):
@@ -23,8 +23,13 @@ def archiveProcessedFiles(src,dst):
 
         if f.startswith("@pro") :
             interrestingFileList.append(f)
+            continue
         
         if f.startswith('_'):
+            interrestingFileList.append(f)
+            continue
+
+        if f.startswith('observation.json'):
             interrestingFileList.append(f)
             continue
 
@@ -40,13 +45,22 @@ config=json.loads(json_text)
 path=config['path']
 racineArchive=path['archive']
 
-PathPipeline=path['eShelPipe']
+
+#signal path
 signalPipeline=racineArchive+path['signalProcessPipe']
 PathSignalStartPipeline=signalPipeline+"/askStart"
 PathSignalEndedPipeline=signalPipeline+"/ended"
 
-PathObservationJson=PathPipeline+'/observation.json'
-PathObjectFileName=PathPipeline+"/objname.txt"
+#source raw path
+PathPipelineSrcRaw=path['eShelPipe']+'/raw'
+PathPipelineSrcCalib=path['eShelPipe']+'/calib'
+
+#work path
+eShelPipeFastWork=path['eShelPipeFastWork']+'/work'
+PathObservationJson=eShelPipeFastWork+'/observation.json'
+PathObjectFileName=eShelPipeFastWork+"/objname.txt"
+
+
 cmdStartPipeline="go-process.bat"
 loopSleepTime=1
 
@@ -57,7 +71,32 @@ while True:
         time.sleep(loopSleepTime)
 
     print("Received start signal",PathSignalStartPipeline)
-#    os.remove(PathSignalStartPipeline)
+    os.remove(PathSignalStartPipeline)
+
+    #dst path
+    eShelPipeProcessed=path['eShelPipe']+"/processed/"+datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    print("create traget processed directory",eShelPipeProcessed)
+    os.mkdir(eShelPipeProcessed)
+
+    print("clean directory eShelPipeFastWork=",eShelPipeFastWork)
+    for f in os.listdir(eShelPipeFastWork):
+        path=eShelPipeFastWork+'/'+f
+        if os.path.isfile(path):
+            #print("file", f)
+            os.remove(path)
+        if os.path.isdir(path):
+            #print("dir",f)
+            shutil.rmtree(path)
+
+    print("copy calibration files directory from",PathPipelineSrcCalib,"to",eShelPipeFastWork)
+    shutil.copytree(PathPipelineSrcCalib,eShelPipeFastWork+'/calib')
+
+    print("move raw files from",PathPipelineSrcRaw,"to",eShelPipeFastWork)
+    for f in os.listdir(PathPipelineSrcRaw):
+        src=PathPipelineSrcRaw+'/'+f
+        dst=eShelPipeFastWork+'/'+f
+        print("     move file",src,"-to->",dst)
+        shutil.move(src,dst)
 
     print("load Json ",PathObservationJson)
     if not os.path.isfile(PathObservationJson):
@@ -73,12 +112,14 @@ while True:
     f.close()
 
     print("rename calibration files")
-    renameCalib(PathPipelineWork,"TUNGSTEN","tung","calib")
-    renameCalib(PathPipelineWork,"CALIB","thor","calib")
-    renameCalib(PathPipelineWork,"LED","led","calib")
+    renameCalib(eShelPipeFastWork,"TUNGSTEN","tung","calib")
+    renameCalib(eShelPipeFastWork,"CALIB","thor","calib")
+    renameCalib(eShelPipeFastWork,"LED","led","calib")
 
     print("Start ISIS pipeline")
     os.system(cmdStartPipeline)
+
+    archiveProcessedFiles(eShelPipeFastWork,eShelPipeProcessed)
 
     print("END of ISIS pipeline")
     f = open(PathSignalEndedPipeline,"w")

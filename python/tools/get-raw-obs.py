@@ -42,7 +42,7 @@ print "************"
 for obsId in obsIds:
 	print "observationID=",obsId
 
-	fileList=dbSpectro.getFilesPerObsId(db,obsId,"""'OBJECT','CALIB','TUNGSTEN','LED','NEON','FLAT'""")
+	fileList=dbSpectro.getFilesPerObsId(db,obsId,"""'OBJECT','CALIB','TUNGSTEN','LED','NEON','FLAT','JSON'""")
 	print "-----------------------"
 	print fileList
 
@@ -50,7 +50,8 @@ for obsId in obsIds:
 		print row
 		fileSource=PathBaseSpectro+row[0]+'/'+row[2]
 		
-		fileDest=destPath+"/obsId"+str(obsId)+'_'+row[2]
+#		fileDest=destPath+"/obsId"+str(obsId)+'_'+row[2]
+		fileDest=destPath+"/"+row[2]
 		print "fileSource",fileSource
 		print "fileDest",fileDest
 		print "-"

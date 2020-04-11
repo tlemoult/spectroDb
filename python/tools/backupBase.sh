@@ -22,5 +22,5 @@ _sql_file="$_sql_dumps/$now.sql"
 #mysqldump --user robot --password=xxxxx spectro > $_sql_file
 echo DumpSQL vers $_sql_file
 mysqldump --user $_user   --password=$_pass $_dataBase > $_sql_file
-drive push -no-prompt -verbose $_sql_dumps
-drive push -no-prompt -verbose -ignore-conflict -ignore-name-clashes $_base/archive
+#drive push -no-prompt -verbose $_sql_dumps
+#drive push -no-prompt -verbose -ignore-conflict -ignore-name-clashes $_base/archive

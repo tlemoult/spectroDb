@@ -1,4 +1,5 @@
-import os,time,json,shutil,datetime
+import os,time,json,shutil
+from datetime import datetime
 
 def renameCalib(path,prefix,newprefix,gen):
     for filename in os.listdir(path):
@@ -74,7 +75,9 @@ while True:
     os.remove(PathSignalStartPipeline)
 
     #dst path
-    eShelPipeProcessed=path['eShelPipe']+"/processed/"+datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    now = datetime.now()
+    strDate= now.strftime("%Y-%m-%d-%H-%M-%S")
+    eShelPipeProcessed=path['eShelPipe']+"/processed/"+strDate
     print("create traget processed directory",eShelPipeProcessed)
     os.mkdir(eShelPipeProcessed)
 

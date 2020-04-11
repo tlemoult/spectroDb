@@ -12,7 +12,8 @@
 		"archive":"/media/tlemoult/extdata/base",
 		"signalPrism":"/signals/fromPRISM",
 		"signalProcessPipe":"/signals/ISIS",
-		"eShelPipe":"Y:/pipeline"
+		"eShelPipe":"Y:/pipeline",
+		"eShelPipeFastWork": "K:/pipelineISIS"
 	},
 	"email": {
 		"smtp":"smtp.gmail.com:587",

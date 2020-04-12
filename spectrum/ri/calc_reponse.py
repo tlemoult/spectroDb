@@ -5,6 +5,7 @@ import scipy.interpolate
 import scipy.ndimage.filters as scipy_filter
 import scipy.signal
 import sys,json
+import glob
 
 def load_spc(file):
     """
@@ -39,26 +40,39 @@ def describe_spc_multiplan(file):
         print("----------------")
 
 
-def load_spc_multi(file,debug=False):
+def load_spc_multi(pathGlob,debug=False):
     """
-    Load a spectrum fits file.
-    return a list of couple nArray for wavelenth in Angstrum and Intensity
+    Load a spectrums than match pathGlob.
+    return a list of triplet  (nArray for wavelenth in Angstrum , Intensity , name)
     """
-    hdulist=fits.open(file)
-    print(f'This file {file} contains {len(hdulist)} fits plan.')
-
     return_value=[]
-    for hdu in hdulist:
-        
-        level='P_1B_'
-        if hdu.name.startswith(level):
-            #if hdu.name=='P_1B_FULL':
-            #    continue
-            #if hdu.name=='P_1B_32':
-            #    continue
+    files = glob.glob(pathGlob)
+    print(f'files={files}')
+    for file in files:
+
+        hdulist=fits.open(file)
+        print(f'This file {file} contains {len(hdulist)} fits plan.')
+
+        for hdu in hdulist:
             print(f'  Read hdu name="{hdu.name}"',end='')
             I=hdu.data
             H=hdu.header
+
+            if len(hdulist)==1:
+                if 'BSS_ORD' in H.keys():
+                    order=file.split(H['BSS_ORD'])[1].split('.')[0]
+                    name='P_1B_'+order
+            elif hdu.name.startswith('P_1B_'):
+                #if hdu.name=='P_1B_FULL':
+                #    continue
+                #if hdu.name=='P_1B_32':
+                #    continue
+                name=hdu.name
+            else:
+                print(f'hdu.name={hdu.name} excluded')
+                continue
+
+            print(f' name={name}')                
             print(f' NAXIS={H["NAXIS1"]} CRVAL1={H["CRVAL1"]}  CDELT1={H["CDELT1"]}')
             lam_min=H['CRVAL1']
             lam_delta=H['CDELT1']
@@ -67,10 +81,10 @@ def load_spc_multi(file,debug=False):
             lam=lam[0:I.size]   # That, suppoe todo nothing, but, in some file, we need to fix the lenght !
             if debug:
                 display_value_spc(lam,I)
-            return_value.append((lam,I,hdu.name))
+            return_value.append((lam,I,name))
     return return_value
 
-def save_spc_multi(file,ldat):
+def save_spc_multi(outConfig,ldat):
     """
     save the response file for audela pipeline, Merged order and separate order.
     """
@@ -85,7 +99,29 @@ def save_spc_multi(file,ldat):
                             'CRPIX1' : 1,
                             })
         return header
-    
+
+    if outConfig['format']=='dat':
+        print("  save format dat")
+        for name in ldat:
+            filename=outConfig['responseFileName']+"_"
+            if name=="P_1B_FULL":
+                filename+="FULL.dat"
+            else:
+                filename+=name.split("P_1B_")[1]+".dat"
+            
+            print(f"write file{filename}")
+            f = open(filename,"w")
+            lamList,fluxList=ldat[name]
+            for lamValue,fluxValue in zip(lamList,fluxList):
+                f.write(f'{lamValue:.2f} {fluxValue:.4f}\n')
+            f.close()
+        return
+    else:
+        print("  save format multiplan fits")
+        file=outConfig['responseFileName']
+        print(f'write Response in: {file}')
+
+    #prepare fits file headers..
     hdu_list= fits.HDUList()
     key_merged_spectrum='P_1B_FULL'
     if key_merged_spectrum in ldat:
@@ -98,7 +134,7 @@ def save_spc_multi(file,ldat):
         hdu_list.append(hdu)
         del ldat[key_merged_spectrum]   # exclude these data from next
 
-    print(f'write Response in: {file}')
+
     for name in ldat:
 #        print(f'{name},',end='')
         lam,flux = ldat[name]
@@ -124,6 +160,9 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
         takes in input the wavelength vector, the lower limit to choose, the upper limit to choose, the flux vector and the new element resolution
         """
         #print(f'linearize delta={delta}')
+        if len(lam)!=len(S):
+            print("\nlin() Warning size of lam & S are different")
+            print(f'  len lam={len(lam)}  len S={len(S)}')
         i=np.arange(0,len(lam),1.) #we create the pixels vector
         f1=scipy.interpolate.interp1d(i,S) #interpolate pixels against flux
         f2=scipy.interpolate.interp1d(lam,i) #interpolate wavelength against pixels
@@ -204,6 +243,11 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
                    (6368,6374),(6525,6600),(6864,6925.5)]
     #lam_excluded=[]
 
+    #print(f'len(lam_obs)={len(lam_obs)}  len(flux_obs)={len(flux_obs)}')
+    if len(lam_obs)+1==len(flux_obs):
+        #print("fix len of flux_obs")
+        flux_obs=flux_obs[:-1]
+    #print(f'len(lam_obs)={len(lam_obs)}  len(flux_obs)={len(flux_obs)}')
     lam_obs,flux_obs = fix_zero_border(lam_obs,flux_obs)
     if debug:
         display_value_spc(lam_obs,flux_obs)
@@ -268,7 +312,9 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     return { name: [lam_obs2,coef_reponse_filt] }
 
-# main code here 
+#########################
+# main code here        #
+#########################
 if len(sys.argv)!=2:
     print("syntax:\n    python3 calc_reponse.py resp.json")
     exit()
@@ -278,7 +324,6 @@ print(config)
 #describe_spc_multiplan(r'./org/reponse.fit')
 
 lam_std,flux_std = load_spc(config['refFileName'])
-#lam_std,flux_std = load_spc(r'./org/HD39283.fits')
 
 obsFilename=config['obsFilename']
 print(f"Load observation {obsFilename}")
@@ -292,10 +337,10 @@ for lam_obs,flux_obs,name in observationLst:
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
 print("\nRescale value")
 mean_ri_order=np.array([ ri[name][1].mean() for name in ri if not name.endswith('_FULL') ]).mean()
-print(f'moys={mean_ri_order}')
+print(f'moys={mean_ri_order} , found {len(ri)} orders')
 for name in ri:
     if not name.endswith('_FULL'):
         ri[name][1]=10.*ri[name][1]/mean_ri_order
 
-save_spc_multi(config['responseOutFileName'],ri)
+save_spc_multi(config['output'],ri)
 #describe_spc_multiplan('Newreponse.fits')

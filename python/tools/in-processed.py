@@ -317,13 +317,14 @@ def calibProcess(srcPath,tmpPath):
 	print "*******C A L I B    P r o c e s s **************"
 
 	metas={}
-	print "srcpath", srcPath
+	print("srcpath", srcPath)
 	parentSrc=srcPath.split('/calib')[0]
-#	print "parent Source",parentSrc
+	print("parent Source",parentSrc)
 
 	logFiles = [f for f in listdir(parentSrc) if isfile(join(parentSrc, f)) and f.endswith('.log')]
 	calibFiles= [f for f in listdir(srcPath) if isfile(join(srcPath, f))]
-#	print logFiles
+	print("logFiles",logFiles)
+	print("calibFiles",calibFiles)
 	for f in logFiles:
 		metaLog={'sourceFilename':f,'sourcePath':parentSrc}
 		metaLog=parseLogFileISIS(parentSrc,f,metaLog)

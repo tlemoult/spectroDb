@@ -51,9 +51,9 @@ signalPrism=path['signalPrism']
 PathProcessedFiles=path['eShelPipe']+'/processed'
 PathTmpPipeFiles=path['eShelPipe']+'/temp'
 PathSignalNewRaw=racineArchive+signalPrism+"/newRawData"
-signalAudela=path['signalAudela']
-PathSignalStartPipeline=racineArchive+signalAudela+"/eShelPipeLine-askStart"
-PathSignalEndedPipeline=racineArchive+signalAudela+"/eShelPipeLine-end"
+signalPipeline=path['signalProcessPipe']
+PathSignalStartPipeline=racineArchive+signalPipeline+"/askStart"
+PathSignalEndedPipeline=racineArchive+signalPipeline+"/ended"
 
 cmdInNewRaw="../tools/in-raw-run.sh"
 cmdInNewProcessed="../tools/in-processed-run.sh"
@@ -67,8 +67,6 @@ print "  Signals: "+PathSignalEndedPipeline
 print "   => action="+cmdInNewProcessed
 
 
-MinDurationEndProcessEshel=60
-timerEndProcessEshel=0
 while True:
 
 	#########  start raw integration,  then  start spectrum reduction.
@@ -77,24 +75,20 @@ while True:
 		print "start Raw integration in archive"
 		os.system(cmdInNewRaw)
 		os.remove(PathSignalNewRaw)
-		print "End of Raw integration in archive"
-		print "Trigger spectral reduction pipeline"
+		print("End of Raw integration in archive")
+		print("Trigger spectral reduction pipeline")
 		open(PathSignalStartPipeline, 'a').close()  # declenche la reduction pipeline audela
 
 	#######  check if eShel Pipeline is stopped  #####
-	if isEndProcessEshel(PathProcessedFiles,PathTmpPipeFiles):
-		timerEndProcessEshel+=1
-	else:
-		timerEndProcessEshel=0
-
-	if timerEndProcessEshel>=MinDurationEndProcessEshel:
-		timerEndProcessEshel=MinDurationEndProcessEshel   # avoid overflow
+	if os.path.isfile(PathSignalEndedPipeline):
 		isEndProcessEshelOnDuration=True
+		os.remove(PathSignalEndedPipeline)
+		print("Pipeline process ended")
 	else:
 		isEndProcessEshelOnDuration=False
 
 	######## start integration of processed spectrum
-	if len(os.listdir(PathProcessedFiles))!=0 and isEndProcessEshelOnDuration:
+	if isEndProcessEshelOnDuration:
 		print "new processed files and no processing in progress"
 		print "start spectrum integration in archive"
 		os.system(cmdInNewProcessed)          # on integre en base les nouveaux spectres

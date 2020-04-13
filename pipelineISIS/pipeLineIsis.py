@@ -56,6 +56,9 @@ PathSignalEndedPipeline=signalPipeline+"/ended"
 PathPipelineSrcRaw=path['eShelPipe']+'/raw'
 PathPipelineSrcCalib=path['eShelPipe']+'/calib'
 
+#destination path
+eShelPipeProcessedRoot=path['eShelPipe']+'/processed'
+
 #work path
 eShelPipeFastWork=path['eShelPipeFastWork']+'/work'
 PathObservationJson=eShelPipeFastWork+'/observation.json'
@@ -77,19 +80,19 @@ while True:
     #dst path
     now = datetime.now()
     strDate= now.strftime("%Y-%m-%d-%H-%M-%S")
-    eShelPipeProcessed=path['eShelPipe']+"/processed/"+strDate
+    eShelPipeProcessed=eShelPipeProcessedRoot+'/'+strDate
     print("create traget processed directory",eShelPipeProcessed)
     os.mkdir(eShelPipeProcessed)
 
     print("clean directory eShelPipeFastWork=",eShelPipeFastWork)
     for f in os.listdir(eShelPipeFastWork):
-        path=eShelPipeFastWork+'/'+f
-        if os.path.isfile(path):
+        p=eShelPipeFastWork+'/'+f
+        if os.path.isfile(p):
             #print("file", f)
-            os.remove(path)
-        if os.path.isdir(path):
+            os.remove(p)
+        if os.path.isdir(p):
             #print("dir",f)
-            shutil.rmtree(path)
+            shutil.rmtree(p)
 
     print("copy calibration files directory from",PathPipelineSrcCalib,"to",eShelPipeFastWork)
     shutil.copytree(PathPipelineSrcCalib,eShelPipeFastWork+'/calib')

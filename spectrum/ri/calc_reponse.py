@@ -149,7 +149,7 @@ def save_spc_multi(outConfig,ldat):
 
     hdu_list.writeto(file,overwrite=True)
 
-def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save_plot=False,debug=False):
+def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=False,enable_save_plot=False,debug=False):
     """
     Calculate Instrumental response with the observed spectrum and the reference spectrum
     return a tuple:  (lambda,coef_response)
@@ -238,9 +238,14 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=False,enable_save
 
     print(f'{name},',end='',flush=True)
 
-    reso_element_low, reso_element_high, reso_final = 6., 0.05, 18
-    lam_excluded=[(4318,4370),(4820,4900),(5266,5273),(5271,5278),(6345,6350),
-                   (6368,6374),(6525,6600),(6864,6925.5)]
+    #reso_element_low, reso_element_high, reso_final = 6., 0.05, 18
+    #lam_excluded=[(4318,4370),(4820,4900),(5266,5273),(5271,5278),(6345,6350),
+    #               (6368,6374),(6525,6600),(6864,6925.5)]
+
+    reso_element_low=calcRiConf['reso_element_low']
+    reso_element_high=calcRiConf['reso_element_high']
+    reso_final=calcRiConf['reso_final']
+    lam_excluded=calcRiConf['lam_excluded']
     #lam_excluded=[]
 
     #print(f'len(lam_obs)={len(lam_obs)}  len(flux_obs)={len(flux_obs)}')
@@ -330,9 +335,10 @@ print(f"Load observation {obsFilename}")
 observationLst=load_spc_multi(obsFilename)
 
 print("\nCalc Response")
+calcRiConf=config['calcRiConf']
 ri=dict([])
 for lam_obs,flux_obs,name in observationLst:
-    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,enable_plot=True,enable_save_plot=False))
+    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=True,enable_save_plot=False))
 
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
 print("\nRescale value")

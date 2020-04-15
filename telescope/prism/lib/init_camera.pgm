@@ -1,0 +1,181 @@
+
+ConfigCamera:
+
+	if configCameraDone=1 THEN
+		print "cameras deja configure, on passe a la suite"
+		return
+	endif
+
+	CLEARIMGWINDOWS
+	durationOffsetInit=10
+    //////////  Champ	  ///////////
+	Print "Initialise camera Champ"	
+	print "   Mise sous tension"
+	EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOn$
+	delay 5000
+	WAITFORENDDELAY
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraChamp Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	print "   Configuration"
+	SETBINNINGX_EX CameraChamp binCameraChamp
+	SETBINNINGY_EX CameraChamp binCameraChamp
+	SetWindowFullFrame_EX CameraChamp
+	SetFlagShutter_EX CameraChamp 0
+	
+	StartExposure_EX CameraChamp durationOffsetInit
+	WaitForEndExposure_EX CameraChamp
+	GetLastImageExposure_EX CameraChamp img2
+	GETBACKGROUND  img2  OffsetValueCameraChamp  Sigma
+	Print "   Offset Camera Champ " OffsetValueCameraChamp " ADU"
+	GetSizePixX img2 TaillePixXCameraChamp
+	GetSizePixY img2 TaillePixYCameraChamp
+	GetFocus img2 FocaleCameraChamp
+	WIDTH img2 WidthImgCameraChamp
+	HEIGHT Img2 HeightImgCameraChamp
+	Close Img2
+	CLEARIMGWINDOWS
+	
+	if AngleCCDChampWEST<180 then
+		AngleCCDChampEAST=AngleCCDChampWEST+180
+	else
+		AngleCCDChampEAST=AngleCCDChampWEST-180
+	EndIf
+
+
+	//////  Spectro ///////////
+	Print "Initialize Camera Spectro"
+	print "   Mise sous tension"
+	parm$=PythonScriptControlIPX800$+"  5=1"
+	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	delay 5000
+	WAITFORENDDELAY
+	
+	print "   Connexion"
+	INIT_CCD_CAMERA_EX CameraSpectre Valid Cause$
+	if Valid<>2 THEN
+		print "erreur" Cause$
+	endif
+
+	print "   Configuration"	
+	SETBINNINGX_EX CameraSpectre binCameraSpectre
+	SETBINNINGY_EX CameraSpectre binCameraSpectre
+	SetMirror_EX CameraSpectre MiroirXCameraSpectre MiroirYCameraSpectre
+	SetWindowFullFrame_EX CameraSpectre
+	SetFlagShutter_EX CameraSpectre 0
+	
+	StartExposure_EX CameraSpectre durationOffsetInit
+	WaitForEndExposure_EX CameraSpectre
+	GetLastImageExposure_EX CameraSpectre img3
+	GETBACKGROUND  Img3  OffsetValueCameraSpectre  Sigma
+	Print "   Offset Camera Spectre " OffsetValueCameraSpectre " ADU"
+	Close img3
+	CLEARIMGWINDOWS
+
+	
+    ////// Chercheur   ////////////
+	if CameraChercheurPresente=1 then
+		Print "Initialise camera Chercheur"
+		//print "   Connexion"
+
+		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
+		if Valid<>2 THEN
+			print "erreur" Cause$
+		endif
+
+		print "   Configuration"		
+		SETBINNINGX_EX CameraChercheur binCameraChercheur
+		SETBINNINGY_EX CameraChercheur binCameraChercheur
+		SetWindowFullFrame_EX CameraChercheur
+		SetFlagShutter_EX CameraChercheur 0
+		StartExposure_EX CameraChercheur  durationOffsetInit
+		WaitForEndExposure_EX CameraChercheur
+		GetLastImageExposure_EX CameraChercheur img1
+		GetSizePixX img1 TaillePixXCameraChercheur
+		GetSizePixY img1 TaillePixYCameraChercheur
+		GetFocus img1 FocaleCameraChercheur
+		WIDTH img1 WidthImgCameraChercheur
+		HEIGHT Img1 HeightImgCameraChercheur
+		Close Img1
+		CLEARIMGWINDOWS
+		
+		if AngleCCDChercheurWEST<180 then
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
+		else
+			AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
+		EndIf
+
+	endif
+
+	
+return
+
+
+set_cooling_camera_on:
+	print "Mise en route des refroidissements de camera"
+	SETCCDTEMPERATURE_EX CameraChamp  1 TempCameraChamp
+	SETCCDTEMPERATURE_EX CameraSpectre  1 TempCameraSpectre
+	return
+
+wait_cooling_camera_ready:
+	print "On attend que la temperature de consigne soit atteinte"
+	
+boucle_cooling_ready:
+	iboucleCollingReady=1
+	// recupere la temperature du capteur
+	GETCCDTEMPERATURE_Ex CameraSpectre 1 ActualTempSpectre
+	difTemp=ActualTempSpectre-TempCameraSpectre
+	abs difTemp difTemp
+	if difTemp>3.0 then
+		print "    Consigne temp=" TempCameraSpectre " actualTemp=" ActualTempSpectre " delta=" difTemp
+		delay 10000
+		WAITFORENDDELAY
+		iboucleCollingReady=iboucleCollingReady+1
+		if iboucleCollingReady<>30 Then
+			goto boucle_cooling_ready:
+		endif
+		print "Mise en temperature trop longue, on abandonne"
+		return
+		
+	endif
+	print "Temperature de consigne atteinte"
+	
+return
+
+set_cooling_camera_off:
+	print "Arret du refroidissement des cameras"
+	TempCameraHot=45
+	SETCCDTEMPERATURE_EX CameraChamp  1 TempCameraHot
+	SETCCDTEMPERATURE_EX CameraSpectre  1 TempCameraHot
+return
+
+//#########################
+//#  Orientation Camera   #
+//#########################
+Oriente_Camera:
+	Print "Orientation des cameras suivant position du telescope"
+	GOSUB CalcPierSide:
+
+	SetMirror_EX CameraChamp MiroirXCameraChamp MiroirYCameraChamp
+	SetCCDRepDirCamHeader CameraChamp DirRepChamp
+
+	SetMirror_EX CameraChamp MiroirXCameraChercheur MiroirYCameraChercheur
+	SetCCDRepDirCamHeader CameraChercheur DirRepChercheur
+	
+	if ActualSide$="WEST" then
+		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurWEST
+		SetCCDOriCamHeader CameraChamp  AngleCCDChampWEST
+	else
+		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurEAST
+		SetCCDOriCamHeader CameraChamp  AngleCCDChampEAST
+	EndIf
+
+return
+
+
+
+

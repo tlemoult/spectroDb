@@ -46,11 +46,16 @@ ConfigCamera:
 		AngleCCDChampEAST=AngleCCDChampWEST-180
 	EndIf
 
+	Print "Coupe camera de surveillance"
+	parm$=PythonScriptControlIPX800$+"  camera 1=0"
+	EXECEXTERNAL   pathPythonInterpreter$ parm$
+	delay 2000
+	WAITFORENDDELAY
 
 	//////  Spectro ///////////
 	Print "Initialize Camera Spectro"
 	print "   Mise sous tension"
-	parm$=PythonScriptControlIPX800$+"  5=1"
+	parm$=PythonScriptControlIPX800$+"  elec 2=1"
 	EXECEXTERNAL   pathPythonInterpreter$ parm$
 	delay 5000
 	WAITFORENDDELAY

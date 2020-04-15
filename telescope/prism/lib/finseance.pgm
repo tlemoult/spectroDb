@@ -83,7 +83,7 @@ shutDownCameraFinal:
 			EXECEXTERNAL   pathPythonInterpreter$ PythonScriptCameraGuidageOff$
 			
 			print "Coupure alimentation camera eShel"
-			parm$=PythonScriptControlIPX800$+"  5=0"
+			parm$=PythonScriptControlIPX800$+"  elec 2=0"
 			EXECEXTERNAL   pathPythonInterpreter$ parm$
 
 			Print "Attente apres coupure alim camera"

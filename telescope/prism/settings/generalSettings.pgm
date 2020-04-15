@@ -30,7 +30,7 @@ PythonScriptNeonLISALHIRESOff$=pathPythonScript$+"neon-off.py"
 PythonScriptFLATLISALHIRESOff$=pathPythonScript$+"FLAT-off.py"
 PythonScriptFLATLISALHIRESOn$=pathPythonScript$+"FLAT-on.py"
 
-PythonScriptControlIPX800$=pathPythonScript$+"IPX800set.py"
+PythonScriptControlIPX800$=pathPythonScript$+"IPX800ctrl.py"
 PythonScriptControlBox$=pathPythonScript$+"PowerBoxSet.py COM2"
 PythonScriptAstrosibCmd$=pathPythonScript$+"astrosib-cmd.py COM9"
 delayOpenClosePetale=15000
@@ -91,8 +91,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=173
-	ChercheurPosYBin=68
+	ChercheurPosXBin=167
+	ChercheurPosYBin=217
 	
 else
     // Lodestar (config de backup)
@@ -166,8 +166,8 @@ OrientationFente=OriFentevertical
 // Position cible du guidage
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
 
-fentePosX=387
-fentePosY=250
+fentePosX=376
+fentePosY=268
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0

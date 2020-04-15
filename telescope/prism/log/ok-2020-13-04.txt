@@ -1,0 +1,1136 @@
+checkDstDir X:\astro\base\in
+testfilename=X:\astro\base\in\testFilePRISM.txt
+Chargement du fichier de cible et verification syntaxe
+Fichier de cible=C:\USERS\DELL\DROPBOX\ASTRO\CIBLES\JOURNALIER\2020\2020-04-13-ZETGEM-RRLYR.LST
+cible no 1
+nom= zet Gem
+Project=del_cep
+cible no 2
+nom= bet Aur
+Project=refStar
+cible no 3
+nom= RR Lyr
+Project=RR_Lyr
+cible no 4
+nom= RR Lyr
+Project=RR_Lyr
+cible no 5
+nom= RR Lyr
+Project=RR_Lyr
+cible no 6
+nom= RR Lyr
+Project=RR_Lyr
+cible no 7
+nom= RR Lyr
+Project=RR_Lyr
+cible no 8
+nom= RR Lyr
+Project=RR_Lyr
+cible no 9
+nom= RR Lyr
+Project=RR_Lyr
+cible no 10
+nom= RR Lyr
+Project=RR_Lyr
+cible no 11
+nom= RR Lyr
+Project=RR_Lyr
+cible no 12
+nom= RR Lyr
+Project=RR_Lyr
+ligne vide, on est a la fin du fichier
+Chargement d un total de 12 cibles
+Extinction de toutes les lampes.
+Boucle seance lancee.
+On observe sans attendre la meteo
+Nous sommes le 13/4/2020Ã  20:31:20,952( en UT ! )
+on commence a observer
+Initialise camera Champ
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Champ 278 ADU
+Initialize Camera Spectro
+   Mise sous tension
+   Connexion
+   Configuration
+   Offset Camera Spectre 334 ADU
+Initialise camera Chercheur
+   Configuration
+Mise en route des refroidissements de camera
+----init_dome_telescope----------------------------------------------------
+Mise sous tension telescope
+ouverture petale telescope
+mise en route ventillateur miroir primaire
+mise en route chauffage secondaire
+calcul RA DEC parking telescope
+    Angle horaire = 18h 04m 00.500s
+    Declinaison   = +00d 00m00.00s
+    Alpha calcule = 16h 08m 12.700s
+Connexion telescope, dome , focuser
+Initialisation dome
+dome deja ouvert
+Orientation des cameras suivant position du telescope
+Tï¿½lescope cï¿½tï¿½ EAST
+Repertoire de travail general: X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\
+On attend que la temperature de consigne soit atteinte
+Temperature de consigne atteinte
+------------------------------------------------------------
+20:32:10UTC   LightLevel=17.73
+Test de visibilitee de zet Gem  Project=del_cep&calib=true&TotExposure=3600
+     -angle horaire=    3.13869 heures
+     -hauteur      = 43.155786 degre
+Repertoire de travail : X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\2020-4-13_20h32m10\
+Ecris le fichier JSON avec les details de l objet: zet Gem
+Cible suivantezet Gem   Project=del_cep&calib=true&TotExposure=3600  Mag=   3.88000
+Project=del_cep
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers EAST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 07h04m06.530s  +20°34'13.10''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=135mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'37.37'' DEC=+00°03'52.20''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2361mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'47.82'' DEC=+00°03'48.78''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=377,267
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=714 Y1=494 X2=794 Y2=574
+   pose de 0.01 secondes  donne une etoile a 14521 ADU
+   On choisit un temps de pose de guidage de =0.009 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+determination du temps de pose et nb de pose optimum
+dureMax= 3600
+   pose evaluation spectre dure:1 secondes
+      Flux= 201
+   pose evaluation spectre dure:10 secondes
+      Flux= 2175
+   La pose d evaluation de 10 secondes donne un max ADU=2175
+   La pose unitaire maximum est de 114 secondes
+    Temps exposition total fixe TotExposure=3600 secondes
+   On choisit de realiser 31 poses unitaires exposees pendant 116 secondes
+   Soit un total de 3596 secondes
+Ecris le fichier JSON avec les details de l objet: zet Gem
+commence l aquisition de l objet=zet Gem
+Extinction de toutes les lampes.
+actualSide=EAST AHor=0.83233917
+spectre de zet Gem ,debut de la pose 1/31 duree 116 secondes
+20:36:38UTC   LightLevel=17.74
+actualSide=EAST AHor=0.84134082
+spectre de zet Gem ,debut de la pose 2/31 duree 116 secondes
+20:38:42UTC   LightLevel=17.73
+actualSide=EAST AHor=0.85032178
+spectre de zet Gem ,debut de la pose 3/31 duree 116 secondes
+20:40:45UTC   LightLevel=17.76
+actualSide=EAST AHor=0.85929697
+spectre de zet Gem ,debut de la pose 4/31 duree 116 secondes
+20:42:49UTC   LightLevel=17.73
+actualSide=EAST AHor=0.86833042
+spectre de zet Gem ,debut de la pose 5/31 duree 116 secondes
+20:44:51UTC   LightLevel=17.76
+actualSide=EAST AHor=0.87728821
+spectre de zet Gem ,debut de la pose 6/31 duree 116 secondes
+20:46:54UTC   LightLevel=17.73
+actualSide=EAST AHor=0.88624247
+spectre de zet Gem ,debut de la pose 7/31 duree 116 secondes
+20:48:57UTC   LightLevel=17.73
+actualSide=EAST AHor=0.89519736
+spectre de zet Gem ,debut de la pose 8/31 duree 116 secondes
+20:50:59UTC   LightLevel=17.73
+actualSide=EAST AHor=0.90412602
+spectre de zet Gem ,debut de la pose 9/31 duree 116 secondes
+20:53:3UTC   LightLevel=17.73
+actualSide=EAST AHor=0.91310643
+spectre de zet Gem ,debut de la pose 10/31 duree 116 secondes
+20:55:5UTC   LightLevel=17.76
+actualSide=EAST AHor=0.92206503
+spectre de zet Gem ,debut de la pose 11/31 duree 116 secondes
+20:57:8UTC   LightLevel=17.76
+actualSide=EAST AHor=0.93094839
+spectre de zet Gem ,debut de la pose 12/31 duree 116 secondes
+20:59:11UTC   LightLevel=17.76
+actualSide=EAST AHor=0.93992374
+spectre de zet Gem ,debut de la pose 13/31 duree 116 secondes
+21:1:14UTC   LightLevel=17.76
+actualSide=EAST AHor=0.94888081
+spectre de zet Gem ,debut de la pose 14/31 duree 116 secondes
+21:3:17UTC   LightLevel=17.76
+actualSide=EAST AHor=0.95785148
+spectre de zet Gem ,debut de la pose 15/31 duree 116 secondes
+21:5:20UTC   LightLevel=17.76
+actualSide=EAST AHor=0.96680082
+spectre de zet Gem ,debut de la pose 16/31 duree 116 secondes
+21:7:23UTC   LightLevel=17.78
+actualSide=EAST AHor=0.97574463
+spectre de zet Gem ,debut de la pose 17/31 duree 116 secondes
+21:9:25UTC   LightLevel=17.76
+actualSide=EAST AHor=0.98469706
+spectre de zet Gem ,debut de la pose 18/31 duree 116 secondes
+21:11:28UTC   LightLevel=17.78
+actualSide=EAST AHor=0.99365604
+spectre de zet Gem ,debut de la pose 19/31 duree 116 secondes
+21:13:33UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0027675
+spectre de zet Gem ,debut de la pose 20/31 duree 116 secondes
+21:15:36UTC   LightLevel=17.78
+actualSide=EAST AHor=1.011715
+spectre de zet Gem ,debut de la pose 21/31 duree 116 secondes
+21:17:39UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0206666
+spectre de zet Gem ,debut de la pose 22/31 duree 116 secondes
+21:19:42UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0295698
+spectre de zet Gem ,debut de la pose 23/31 duree 116 secondes
+21:21:45UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0385246
+spectre de zet Gem ,debut de la pose 24/31 duree 116 secondes
+21:23:47UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0474696
+spectre de zet Gem ,debut de la pose 25/31 duree 116 secondes
+21:25:50UTC   LightLevel=17.73
+actualSide=EAST AHor=1.0564204
+spectre de zet Gem ,debut de la pose 26/31 duree 116 secondes
+21:27:53UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0653672
+spectre de zet Gem ,debut de la pose 27/31 duree 116 secondes
+21:29:55UTC   LightLevel=17.76
+actualSide=EAST AHor=1.074315
+spectre de zet Gem ,debut de la pose 28/31 duree 116 secondes
+21:31:58UTC   LightLevel=17.75
+actualSide=EAST AHor=1.0831839
+spectre de zet Gem ,debut de la pose 29/31 duree 116 secondes
+21:34:1UTC   LightLevel=17.76
+actualSide=EAST AHor=1.0921376
+spectre de zet Gem ,debut de la pose 30/31 duree 116 secondes
+21:36:3UTC   LightLevel=17.76
+actualSide=EAST AHor=1.1010821
+spectre de zet Gem ,debut de la pose 31/31 duree 116 secondes
+21:38:6UTC   LightLevel=17.76
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 53
+Pas de assez de flux, Procedure debloquage mirroir calibration
+  Attend 25 secondes
+  10 impulsions
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 51
+Pas de assez de flux, Procedure debloquage mirroir calibration
+  Attend 25 secondes
+  10 impulsions
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 3231
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de zet Gem ,debut de la pose 1/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 2/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 3/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 4/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 5/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 6/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 7/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 8/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 9/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 10/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 11/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 12/13 duree 10 secondes
+Tungsten de zet Gem ,debut de la pose 13/13 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de zet Gem ,debut de la pose 1/3 duree 60 secondes
+LED de zet Gem ,debut de la pose 2/3 duree 60 secondes
+LED de zet Gem ,debut de la pose 3/3 duree 60 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de zet Gem ,debut de la pose 1/5 duree 2 secondes
+Thorium Argon de zet Gem ,debut de la pose 2/5 duree 2 secondes
+Thorium Argon de zet Gem ,debut de la pose 3/5 duree 2 secondes
+Thorium Argon de zet Gem ,debut de la pose 4/5 duree 2 secondes
+Thorium Argon de zet Gem ,debut de la pose 5/5 duree 2 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: zet Gem
+passe a la cible suivante
+------------------------------------------------------------
+21:47:33UTC   LightLevel=17.76
+Test de visibilitee de bet Aur  Project=refStar&ExposureTime=20&NbExposure=25
+     -angle horaire=    5.47486 heures
+     -hauteur      = 36.584272 degre
+Repertoire de travail : X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\2020-4-13_21h47m33\
+Ecris le fichier JSON avec les details de l objet: bet Aur
+Cible suivantebet Aur   Project=refStar&ExposureTime=20&NbExposure=25  Mag=   1.90000
+Project=refStar
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers EAST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 05h59m31.720s  +44°56'50.80''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2361mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'01.35'' DEC=+00°01'14.85''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=377,267
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=714 Y1=494 X2=794 Y2=574
+   pose de 0.01 secondes  donne une etoile a 8292 ADU
+   pose de 0.03 secondes  donne une etoile a 28138 ADU
+   On choisit un temps de pose de guidage de =0.014 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 20 secondes
+   Nb Pose      = 25 secondes
+Ecris le fichier JSON avec les details de l objet: bet Aur
+commence l aquisition de l objet=bet Aur
+Extinction de toutes les lampes.
+actualSide=EAST AHor=1.4398844
+spectre de bet Aur ,debut de la pose 1/25 duree 20 secondes
+21:49:30UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4418729
+spectre de bet Aur ,debut de la pose 2/25 duree 20 secondes
+21:49:57UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4438286
+spectre de bet Aur ,debut de la pose 3/25 duree 20 secondes
+21:50:24UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4457852
+spectre de bet Aur ,debut de la pose 4/25 duree 20 secondes
+21:50:51UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4477529
+spectre de bet Aur ,debut de la pose 5/25 duree 20 secondes
+21:51:17UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4497164
+spectre de bet Aur ,debut de la pose 6/25 duree 20 secondes
+21:51:44UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4516661
+spectre de bet Aur ,debut de la pose 7/25 duree 20 secondes
+21:52:11UTC   LightLevel=17.76
+actualSide=EAST AHor=1.45362
+spectre de bet Aur ,debut de la pose 8/25 duree 20 secondes
+21:52:38UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4555645
+spectre de bet Aur ,debut de la pose 9/25 duree 20 secondes
+21:53:4UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4575088
+spectre de bet Aur ,debut de la pose 10/25 duree 20 secondes
+21:53:31UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4594862
+spectre de bet Aur ,debut de la pose 11/25 duree 20 secondes
+21:53:58UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4614391
+spectre de bet Aur ,debut de la pose 12/25 duree 20 secondes
+21:54:25UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4633928
+spectre de bet Aur ,debut de la pose 13/25 duree 20 secondes
+21:54:52UTC   LightLevel=17.78
+actualSide=EAST AHor=1.4653348
+spectre de bet Aur ,debut de la pose 14/25 duree 20 secondes
+21:55:18UTC   LightLevel=17.78
+actualSide=EAST AHor=1.4672888
+spectre de bet Aur ,debut de la pose 15/25 duree 20 secondes
+21:55:45UTC   LightLevel=17.78
+actualSide=EAST AHor=1.4692423
+spectre de bet Aur ,debut de la pose 16/25 duree 20 secondes
+21:56:12UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4712242
+spectre de bet Aur ,debut de la pose 17/25 duree 20 secondes
+21:56:39UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4731639
+spectre de bet Aur ,debut de la pose 18/25 duree 20 secondes
+21:57:6UTC   LightLevel=17.76
+actualSide=EAST AHor=1.475125
+spectre de bet Aur ,debut de la pose 19/25 duree 20 secondes
+21:57:33UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4770764
+spectre de bet Aur ,debut de la pose 20/25 duree 20 secondes
+21:57:59UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4790342
+spectre de bet Aur ,debut de la pose 21/25 duree 20 secondes
+21:58:27UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4810062
+spectre de bet Aur ,debut de la pose 22/25 duree 20 secondes
+21:58:53UTC   LightLevel=17.78
+actualSide=EAST AHor=1.4829498
+spectre de bet Aur ,debut de la pose 23/25 duree 20 secondes
+21:59:20UTC   LightLevel=17.78
+actualSide=EAST AHor=1.4849014
+spectre de bet Aur ,debut de la pose 24/25 duree 20 secondes
+21:59:47UTC   LightLevel=17.76
+actualSide=EAST AHor=1.4868579
+spectre de bet Aur ,debut de la pose 25/25 duree 20 secondes
+22:0:14UTC   LightLevel=17.76
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 3121
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de bet Aur ,debut de la pose 1/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 2/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 3/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 4/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 5/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 6/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 7/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 8/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 9/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 10/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 11/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 12/13 duree 10 secondes
+Tungsten de bet Aur ,debut de la pose 13/13 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de bet Aur ,debut de la pose 1/3 duree 60 secondes
+LED de bet Aur ,debut de la pose 2/3 duree 60 secondes
+LED de bet Aur ,debut de la pose 3/3 duree 60 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de bet Aur ,debut de la pose 1/5 duree 2 secondes
+Thorium Argon de bet Aur ,debut de la pose 2/5 duree 2 secondes
+Thorium Argon de bet Aur ,debut de la pose 3/5 duree 2 secondes
+Thorium Argon de bet Aur ,debut de la pose 4/5 duree 2 secondes
+Thorium Argon de bet Aur ,debut de la pose 5/5 duree 2 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: bet Aur
+passe a la cible suivante
+------------------------------------------------------------
+22:8:5UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61431 heures
+     -hauteur      = 18.28493 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:6UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61402 heures
+     -hauteur      = 18.286958 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:7UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61373 heures
+     -hauteur      = 18.288986 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:8UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61343 heures
+     -hauteur      = 18.291059 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:9UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61314 heures
+     -hauteur      = 18.293095 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:10UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61284 heures
+     -hauteur      = 18.295127 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:11UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61255 heures
+     -hauteur      = 18.297165 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:12UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61220 heures
+     -hauteur      = 18.299572 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:13UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61191 heures
+     -hauteur      = 18.301628 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:14UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61162 heures
+     -hauteur      = 18.303653 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+rebouclage
+------------------------------------------------------------
+22:8:15UTC   LightLevel=17.78
+passe a la cible suivante
+------------------------------------------------------------
+22:8:16UTC   LightLevel=17.78
+passe a la cible suivante
+------------------------------------------------------------
+22:8:17UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61075 heures
+     -hauteur      = 18.309678 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:19UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61046 heures
+     -hauteur      = 18.311715 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:20UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.61017 heures
+     -hauteur      = 18.313746 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:21UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60988 heures
+     -hauteur      = 18.315777 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:22UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60958 heures
+     -hauteur      = 18.31783 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:23UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60929 heures
+     -hauteur      = 18.319873 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:24UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60899 heures
+     -hauteur      = 18.321969 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:25UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60869 heures
+     -hauteur      = 18.324014 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:26UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60840 heures
+     -hauteur      = 18.326053 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+------------------------------------------------------------
+22:8:27UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.60811 heures
+     -hauteur      = 18.328097 degre
+     *** La cible RR Lyr Project=RR_Lyr&ExposureTime=600&NbExposure=12 est trop basse
+passe a la cible suivante
+Aucun success dans la boucle precedante, attente que ca passe
+stop entrainment horaire
+22:8:28UTC   LightLevel=17.78
+    1/30
+22:9:29UTC   LightLevel=17.75
+    2/30
+22:10:30UTC   LightLevel=17.78
+    3/30
+22:11:31UTC   LightLevel=17.76
+    4/30
+22:12:32UTC   LightLevel=17.76
+    5/30
+22:13:33UTC   LightLevel=17.78
+    6/30
+22:14:34UTC   LightLevel=17.76
+    7/30
+22:15:35UTC   LightLevel=17.78
+    8/30
+22:16:36UTC   LightLevel=17.76
+    9/30
+22:17:37UTC   LightLevel=17.78
+    10/30
+22:18:38UTC   LightLevel=17.78
+    11/30
+22:19:40UTC   LightLevel=17.76
+    12/30
+22:20:41UTC   LightLevel=17.78
+    13/30
+22:21:42UTC   LightLevel=17.78
+    14/30
+22:22:43UTC   LightLevel=17.76
+    15/30
+22:23:44UTC   LightLevel=17.78
+    16/30
+22:24:45UTC   LightLevel=17.78
+    17/30
+22:25:46UTC   LightLevel=17.78
+    18/30
+22:26:47UTC   LightLevel=17.76
+    19/30
+22:27:48UTC   LightLevel=17.78
+    20/30
+22:28:49UTC   LightLevel=17.78
+    21/30
+22:29:50UTC   LightLevel=17.76
+    22/30
+22:30:51UTC   LightLevel=17.78
+    23/30
+22:31:52UTC   LightLevel=17.76
+    24/30
+22:32:53UTC   LightLevel=17.78
+    25/30
+22:33:54UTC   LightLevel=17.76
+    26/30
+22:34:55UTC   LightLevel=17.78
+    27/30
+22:35:56UTC   LightLevel=17.76
+    28/30
+22:36:57UTC   LightLevel=17.78
+    29/30
+22:37:58UTC   LightLevel=17.76
+    30/30
+rebouclage
+------------------------------------------------------------
+22:38:59UTC   LightLevel=17.78
+passe a la cible suivante
+------------------------------------------------------------
+22:39:0UTC   LightLevel=17.78
+passe a la cible suivante
+------------------------------------------------------------
+22:39:1UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -7.09715 heures
+     -hauteur      = 22.022524 degre
+Repertoire de travail : X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\2020-4-13_22h39m1\
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+Cible suivanteRR Lyr   Project=RR_Lyr&ExposureTime=600&NbExposure=12  Mag=   7.50000
+Project=RR_Lyr
+Tï¿½lescope cï¿½tï¿½ EAST
+Objet pointï¿½ vers WEST
+Retournement de monture nï¿½cessaire
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+Orientation des cameras suivant position du telescope
+Tï¿½lescope cï¿½tï¿½ WEST
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+c est le premier pointage ou on vient de se retourner
+tentative au chercheur
+Chercheur: Procedure Astrometrie allsky
+   -Pose d astrometrie sur le ciel pendant 10 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=135mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°01'43.92'' DEC=+00°02'54.56''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2361mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°00'18.96'' DEC=+00°00'27.67''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=377,267
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=714 Y1=494 X2=794 Y2=574
+   pose de 0.01 secondes  donne une etoile a 187 ADU
+   pose de 0.03 secondes  donne une etoile a 769 ADU
+   pose de 0.09 secondes  donne une etoile a 1520 ADU
+   pose de 0.27 secondes  donne une etoile a 3517 ADU
+   pose de 0.81 secondes  donne une etoile a 10673 ADU
+   pose de 2.43 secondes  donne une etoile a 28973 ADU
+   On choisit un temps de pose de guidage de =1.174 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+commence l aquisition de l objet=RR Lyr
+Extinction de toutes les lampes.
+actualSide=WEST AHor=-1.8438218
+spectre de RR Lyr ,debut de la pose 1/12 duree 600 secondes
+22:52:24UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.7994941
+spectre de RR Lyr ,debut de la pose 2/12 duree 600 secondes
+23:2:31UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.7552975
+spectre de RR Lyr ,debut de la pose 3/12 duree 600 secondes
+23:12:38UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.7109874
+spectre de RR Lyr ,debut de la pose 4/12 duree 600 secondes
+23:22:46UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.6667324
+spectre de RR Lyr ,debut de la pose 5/12 duree 600 secondes
+23:32:53UTC   LightLevel=17.81
+actualSide=WEST AHor=-1.6224945
+spectre de RR Lyr ,debut de la pose 6/12 duree 600 secondes
+23:43:1UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.5782532
+spectre de RR Lyr ,debut de la pose 7/12 duree 600 secondes
+23:53:7UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.5340121
+spectre de RR Lyr ,debut de la pose 8/12 duree 600 secondes
+0:3:14UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.4898479
+spectre de RR Lyr ,debut de la pose 9/12 duree 600 secondes
+0:13:21UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.4455771
+spectre de RR Lyr ,debut de la pose 10/12 duree 600 secondes
+0:23:29UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.4013362
+spectre de RR Lyr ,debut de la pose 11/12 duree 600 secondes
+0:33:36UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.3570929
+spectre de RR Lyr ,debut de la pose 12/12 duree 600 secondes
+0:43:43UTC   LightLevel=17.78
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 3235
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de RR Lyr ,debut de la pose 1/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 2/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 3/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 4/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 5/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 6/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 7/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 8/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 9/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 10/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 11/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 12/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 13/13 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de RR Lyr ,debut de la pose 1/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 2/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 3/3 duree 60 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de RR Lyr ,debut de la pose 1/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 2/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 3/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 4/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 5/5 duree 2 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+passe a la cible suivante
+------------------------------------------------------------
+0:51:34UTC   LightLevel=17.78
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -4.88210 heures
+     -hauteur      = 40.613887 degre
+Repertoire de travail : X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\2020-4-14_0h51m34\
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+Cible suivanteRR Lyr   Project=RR_Lyr&ExposureTime=600&NbExposure=12  Mag=   7.50000
+Project=RR_Lyr
+Tï¿½lescope cï¿½tï¿½ WEST
+Objet pointï¿½ vers WEST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2361mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°01'39.02'' DEC=+00°00'09.71''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=377,267
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=714 Y1=494 X2=794 Y2=574
+   pose de 0.01 secondes  donne une etoile a 313 ADU
+   pose de 0.03 secondes  donne une etoile a 881 ADU
+   pose de 0.09 secondes  donne une etoile a 2301 ADU
+   pose de 0.27 secondes  donne une etoile a 7599 ADU
+   pose de 0.81 secondes  donne une etoile a 19869 ADU
+   On choisit un temps de pose de guidage de =0.57 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+commence l aquisition de l objet=RR Lyr
+Extinction de toutes les lampes.
+actualSide=WEST AHor=-1.2718106
+spectre de RR Lyr ,debut de la pose 1/12 duree 600 secondes
+1:3:7UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.2274778
+spectre de RR Lyr ,debut de la pose 2/12 duree 600 secondes
+1:13:14UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.1833069
+spectre de RR Lyr ,debut de la pose 3/12 duree 600 secondes
+1:23:20UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.1390671
+spectre de RR Lyr ,debut de la pose 4/12 duree 600 secondes
+1:33:28UTC   LightLevel=17.78
+actualSide=WEST AHor=-1.09485
+spectre de RR Lyr ,debut de la pose 5/12 duree 600 secondes
+1:43:34UTC   LightLevel=17.76
+actualSide=WEST AHor=-1.0506201
+spectre de RR Lyr ,debut de la pose 6/12 duree 600 secondes
+1:53:41UTC   LightLevel=17.75
+actualSide=WEST AHor=-1.0064309
+spectre de RR Lyr ,debut de la pose 7/12 duree 600 secondes
+2:3:48UTC   LightLevel=17.76
+actualSide=WEST AHor=-0.96219536
+spectre de RR Lyr ,debut de la pose 8/12 duree 600 secondes
+2:13:55UTC   LightLevel=17.76
+actualSide=WEST AHor=-0.91795849
+spectre de RR Lyr ,debut de la pose 9/12 duree 600 secondes
+2:24:1UTC   LightLevel=17.73
+actualSide=WEST AHor=-0.87380133
+spectre de RR Lyr ,debut de la pose 10/12 duree 600 secondes
+2:34:8UTC   LightLevel=17.73
+actualSide=WEST AHor=-0.8295598
+spectre de RR Lyr ,debut de la pose 11/12 duree 600 secondes
+2:44:15UTC   LightLevel=17.73
+actualSide=WEST AHor=-0.7852708
+spectre de RR Lyr ,debut de la pose 12/12 duree 600 secondes
+2:54:23UTC   LightLevel=17.73
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 3067
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de RR Lyr ,debut de la pose 1/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 2/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 3/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 4/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 5/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 6/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 7/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 8/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 9/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 10/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 11/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 12/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 13/13 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de RR Lyr ,debut de la pose 1/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 2/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 3/3 duree 60 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de RR Lyr ,debut de la pose 1/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 2/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 3/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 4/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 5/5 duree 2 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+passe a la cible suivante
+------------------------------------------------------------
+3:2:14UTC   LightLevel=17.71
+Test de visibilitee de RR Lyr  Project=RR_Lyr&ExposureTime=600&NbExposure=12
+     -angle horaire=   -2.69826 heures
+     -hauteur      = 61.505532 degre
+Repertoire de travail : X:\astro\base\in\2020-4-13_20h32m9_ESHEL_RACINE\2020-4-14_3h2m14\
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+Cible suivanteRR Lyr   Project=RR_Lyr&ExposureTime=600&NbExposure=12  Mag=   7.50000
+Project=RR_Lyr
+Tï¿½lescope cï¿½tï¿½ WEST
+Objet pointï¿½ vers WEST
+Pas de retournement de monture nï¿½cessaire
+pointe le telescope sur 19h25m27.900s  +42°47'03.00''
+   Pointage termine
+attente 1 minute max que le dome arrive
+    Fin d attente:  duree: 1 sec
+Extinction de toutes les lampes.
+Champ: Procedure Astrometrie alsky
+   -Pose d astrometrie sur le ciel pendant 18 secondes
+   -debut astrometrie ALLSKY
+     -reconnaissance ALLSKY reussie, recalage telescope
+   -debut astrometrie precise
+      Dir=0
+      Focale=2361mm
+      -reussite astrometrie precise, on recalibre
+         erreur RA=+00°01'01.66'' DEC=+00°00'23.72''
+      -recalibre telescope
+     -repointe cible
+   attente rattrage entrainement horaire
+   La cible est l'etoile de guidage on va guider doucement
+consigne X,Y=377,267
+autoguidage
+Determine le temps de pose pour le guidage
+  fenetrage camera guidage demiFenetre=20 X1=714 Y1=494 X2=794 Y2=574
+   pose de 0.01 secondes  donne une etoile a 509 ADU
+   pose de 0.03 secondes  donne une etoile a 1880 ADU
+   pose de 0.09 secondes  donne une etoile a 3721 ADU
+   pose de 0.27 secondes  donne une etoile a 12735 ADU
+   pose de 0.81 secondes  donne une etoile a 36257 ADU
+   On choisit un temps de pose de guidage de =0.312 secondes
+   lance centrage rapide: agressivite RA,DEC=1,1
+      WindowSize=100
+      Centrosize=10
+      AllFrame=0
+      WindowAllFrame=100
+   centrage stop
+   centrage OK
+   agressivite pour guidage sur fibre
+   Pose sur le champ pour sauvegarde
+   lance autoguidage final Agressivite RA=0.3 DEC=0.3
+      WindowSize=100
+      AllFrame=0
+      WindowAllFrame=100
+   Autoguidage definitif en cours
+Temps de pose definis par le fichier cible
+   Pose unitaire= 600 secondes
+   Nb Pose      = 12 secondes
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+commence l aquisition de l objet=RR Lyr
+Extinction de toutes les lampes.
+actualSide=WEST AHor=-0.69923276
+spectre de RR Lyr ,debut de la pose 1/12 duree 600 secondes
+3:13:59UTC   LightLevel=17.71
+actualSide=WEST AHor=-0.65488908
+spectre de RR Lyr ,debut de la pose 2/12 duree 600 secondes
+3:24:6UTC   LightLevel=17.71
+actualSide=WEST AHor=-0.61063403
+spectre de RR Lyr ,debut de la pose 3/12 duree 600 secondes
+3:34:13UTC   LightLevel=17.69
+actualSide=WEST AHor=-0.56639093
+spectre de RR Lyr ,debut de la pose 4/12 duree 600 secondes
+3:44:20UTC   LightLevel=17.60
+actualSide=WEST AHor=-0.52212285
+spectre de RR Lyr ,debut de la pose 5/12 duree 600 secondes
+3:54:27UTC   LightLevel=17.35
+actualSide=WEST AHor=-0.47795211
+spectre de RR Lyr ,debut de la pose 6/12 duree 600 secondes
+4:4:34UTC   LightLevel=16.69
+il faut mauvais temps on arrete les acquisitions au milieu
+fermeture du dome
+
+Arrêt de l'autoguidage sur Consigne
+test calibration
+allume la lampe tungsten
+  Attend 5 secondes
+      Flux= 3203
+on a du flux , ca fonctionne
+allume la lampe tungsten
+attente apres manipulation lampe 5 secondes
+Tungsten de RR Lyr ,debut de la pose 1/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 2/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 3/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 4/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 5/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 6/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 7/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 8/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 9/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 10/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 11/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 12/13 duree 10 secondes
+Tungsten de RR Lyr ,debut de la pose 13/13 duree 10 secondes
+
+Allume les LED
+attente apres manipulation lampe 5 secondes
+LED de RR Lyr ,debut de la pose 1/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 2/3 duree 60 secondes
+LED de RR Lyr ,debut de la pose 3/3 duree 60 secondes
+
+Allume la lampe Thorium-Argon
+attente apres manipulation lampe 5 secondes
+Thorium Argon de RR Lyr ,debut de la pose 1/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 2/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 3/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 4/5 duree 2 secondes
+Thorium Argon de RR Lyr ,debut de la pose 5/5 duree 2 secondes
+
+Extinction de toutes les lampes.
+Ecris le fichier JSON avec les details de l objet: RR Lyr
+passe a la cible suivante
+------------------------------------------------------------
+4:13:5UTC   LightLevel=15.56
+14/04/2020 04:13:05: Il ne fait pas beau, on arrete les observations.
+-------------------------------------------------
+Fin de seance
+stop entrainment horaire
+fermeture du dome
+calcul RA DEC parking telescope
+    Angle horaire = 18h 04m 00.500s
+    Declinaison   = +00d 00m00.00s
+    Alpha calcule = 23h 50m 37.053s
+parking du telescope
+    execution mouvement telescope
+    attente fin mouvement telescope
+    arret entrainement
+    attente
+    deconnexion telescope et dome
+attend 1 seconde liberation port serie telescope
+fermeture petale telescope
+Coupure Alimentation telescope
+Arret du refroidissement des cameras
+prepare les listes au format LST du reste a faire., et realise.
+Total des succes 5 sur un total de 12
+seance termine
+attente d un ciel noir pour demarrer une nouvelle seance
+ou du leve du soleil qui mettra fin au script
+******************************************************
+Le soleil est quasiment levee, elevation=-7.9923521
+On arrete la seance ici
+Attente rechauffement camera avant coupure alimentation en millisec=60000
+Fermeture des panneaux cameras
+Attente avant coupure alim camera
+Coupure alimentation camera guidage
+Coupure alimentation camera eShel
+Attente apres coupure alim camera
+arret du script ici, il fait jours
+Script terminé ...

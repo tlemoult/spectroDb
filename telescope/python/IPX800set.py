@@ -8,7 +8,7 @@ if ( len(sys.argv)==1):
 	exit()
 	
 argno=sys.argv[1]
-urlname="http://192.168.0.10/preset.htm?set"+argno
+urlname="http://192.168.0.13/preset.htm?set"+argno
 response = urllib.urlopen(urlname)
 data=response.read()
 	

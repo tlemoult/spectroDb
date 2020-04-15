@@ -1,1 +1,1 @@
-python gui-eshel.py COM7
+python gui-eshel.py COM12

@@ -184,11 +184,11 @@ exposureTimeNeonLHIRES1=2
 exposureTimeNeonLHIRES2=10
 
 // eShel temps et quantitee poses de calibration 
-nbExposureTungsten=8
-exposureTimeTungsten=10
+nbExposureTungsten=30
+exposureTimeTungsten=13
 nbExposureLED=3
-exposureTimeLED=10
-nbExposureThar=3
+exposureTimeLED=60
+nbExposureThar=7
 exposureTimeThar=3
 
 // Etoile de d�gagement si �chec reconnaissance du ciel :

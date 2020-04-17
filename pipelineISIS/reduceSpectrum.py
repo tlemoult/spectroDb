@@ -65,7 +65,7 @@ PathObservationJson=eShelPipeFastWork+'/observation.json'
 PathObjectFileName=eShelPipeFastWork+"/objname.txt"
 
 
-cmdStartPipeline="go-process.bat"
+cmdStartPipeline="actionna.bat"
 loopSleepTime=1
 
 while True:

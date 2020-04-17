@@ -76,23 +76,6 @@ while True:
 		os.system(cmdInNewRaw)
 		os.remove(PathSignalNewRaw)
 		print("End of Raw integration in archive")
-		print("Trigger spectral reduction pipeline")
-		open(PathSignalStartPipeline, 'a').close()  # declenche la reduction pipeline audela
-
-	#######  check if eShel Pipeline is stopped  #####
-	if os.path.isfile(PathSignalEndedPipeline):
-		isEndProcessEshelOnDuration=True
-		os.remove(PathSignalEndedPipeline)
-		print("Pipeline process ended")
-	else:
-		isEndProcessEshelOnDuration=False
-
-	######## start integration of processed spectrum
-	if isEndProcessEshelOnDuration:
-		print "new processed files and no processing in progress"
-		print "start spectrum integration in archive"
-		os.system(cmdInNewProcessed)          # on integre en base les nouveaux spectres
-		print "End of spectrum integration in archive"
 
 	# attente bloucle
 	time.sleep(1)

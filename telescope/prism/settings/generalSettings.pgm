@@ -84,6 +84,22 @@ CameraChercheurPresente=1
 CameraChercheurName$="ZWO"
 CameraChercheur=3
 
+// parametrage liee a la fente / trou de guidage
+// affine position de la fente au cours du temps
+//  0-> non actif   1->actif
+activeAffinePositionFenteAuto=0
+
+// orientation de la fente
+OriFenteHorizon=1
+OriFentevertical=2
+OrientationFente=OriFentevertical
+
+// Position cible du guidage sur le trou
+// attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
+fentePosX=377
+fentePosY=241
+
+
 if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
 	MiroirXCameraChercheur=0
@@ -91,8 +107,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=174
-	ChercheurPosYBin=213
+	ChercheurPosXBin=252
+	ChercheurPosYBin=202
 	
 else
     // Lodestar (config de backup)
@@ -153,21 +169,6 @@ DurationAttenteAvantCoupeCameraMillis=60000
 // presence d'une coupole  1=> Oui   0=>non
 coupole=1
 
-// parametrage liee a la fente / trou de guidage
-// affine position de la fente au cours du temps
-//  0-> non actif   1->actif
-activeAffinePositionFenteAuto=0
-
-// orientation de la fente
-OriFenteHorizon=1
-OriFentevertical=2
-OrientationFente=OriFentevertical
-
-// Position cible du guidage
-// attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
-
-fentePosX=376
-fentePosY=268
 
 // FLAT LISA LHIRES
 ActiveFlatLISALHIRESFinSession=0
@@ -185,7 +186,7 @@ exposureTimeNeonLHIRES2=10
 
 // eShel temps et quantitee poses de calibration 
 nbExposureTungsten=30
-exposureTimeTungsten=13
+exposureTimeTungsten=10
 nbExposureLED=3
 exposureTimeLED=60
 nbExposureThar=7

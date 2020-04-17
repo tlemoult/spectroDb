@@ -291,7 +291,13 @@ testMeridien_Hauteur:
 			AHor=AHor+6.283185
 		ENDIF
 		
-		print "actualSide=" ActualSide$ " AHor=" AHor
+		dispHor=AHor/3.1415*180
+		INT dispHor dispHorInt
+		dispAzi=Azi/3.1415*180
+		INT dispAzi dispAziInt
+		dispHaut=Haut/3.1415*180
+		INT dispHaut dispHautInt 
+		print "actualSide=" ActualSide$ " AHor=" dispHorInt "deg Azi=" dispAziInt "deg  Elev=" dispHautInt "deg"
 
 		IF ActualSide$="WEST" THEN
 			// en minutes

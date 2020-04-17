@@ -1,0 +1,18 @@
+		PIERSIDE_TEL ActualSide$
+		GET_TELESCOPE_POSITION AD2000 DEC2000 Haut Azi AHor	
+		// Ramene l'angle dans l' intervale [-pi/2...+pi]
+		if AHor>3.1416 THEN
+			AHor=AHor-6.283185
+		ENDIF
+		if AHor<-3.1416 THEN
+			AHor=AHor+6.283185
+		ENDIF
+		
+		dispHor=AHor/3.1415*180
+		INT dispHor dispHorInt
+		
+		dispAzi=Azi/3.1415*180
+		INT dispAzi dispAziInt
+		dispHaut=Haut/3.1415*180
+		INT dispHaut dispHautInt 
+		print "actualSide=" ActualSide$ " AHor=" dispHorInt "deg Azi=" dispAziInt "deg  Elev=" dispHautInt "deg"

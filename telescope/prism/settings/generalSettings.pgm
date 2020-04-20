@@ -42,7 +42,7 @@ PythonScriptCameraGuidageOff$=PythonScriptControlBox$+" 0=0"
 PythonScriptTelescopeOn$=PythonScriptControlBox$+" 3=1"
 PythonScriptTelescopeOff$=PythonScriptControlBox$+" 3=0"
 
-PythonScriptCalibeShel$=pathPythonScript$+"eShell-calib.py COM7"
+PythonScriptCalibeShel$=pathPythonScript$+"eShell-calib.py COM12"
 
 // type de spectrographe valeur possible:  "ESHEL"  "LISA"  "LHIRES"
 SPECTROGRAPHE$="ESHEL"

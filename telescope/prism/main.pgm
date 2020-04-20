@@ -123,6 +123,9 @@ For iobj=1 nbCibles
 	exposureTimeObjet=ExposureUnit[iobj]
     nbExposureObjet=Nbexposure[iobj]
     TotExposure=TotExposure[iobj]
+
+	CalibrationAsk$=CalibrationAsk[iobj]$
+	Series$=Series[iobj]$
 	
 	// objet deja observé
 	if (Observe[iobj]$="TRUE") then
@@ -167,7 +170,7 @@ For iobj=1 nbCibles
 
 	GOSUB LampCalibOff:
 	// si double calibration demande
-	IF  CalibrationAsk[iobj]=2 THEN
+	IF  CalibrationAsk$="double" THEN
 		// on ajoute un prefixe au nomb de l objet pour eviter d ecraser cette calib
 		// lors de la calib apres acquisition
 		NomObjet$=NomObjet[iobj]$+"-a"
@@ -206,7 +209,7 @@ For iobj=1 nbCibles
 	GOSUB arret_guidage:
 	
 	// calibration a la fin de l acqusition
-	IF  CalibrationAsk[iobj]<>0 THEN
+	IF  CalibrationAsk$<>"false" THEN
 		STOPTELESCOPE
 		GOSUB Calibration:
 	ENDIF

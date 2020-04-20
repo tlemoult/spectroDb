@@ -111,7 +111,7 @@ boucle_read_cible:
 	Delta[i]$=DEC$
 	nbExposureObjet[i]=0
 	exposureTimeObjet[i]=DefaultTotalExposure
-	CalibrationAsk[i]=1
+	
 	Observe[i]$="FALSE"
 	LigneLST[i]$=ligne$
 	
@@ -127,6 +127,8 @@ boucle_read_cible:
 	ExposureUnit[i]=ExposureUnit
     Nbexposure[i]=Nbexposure
     TotExposure[i]=TotExposure
+	CalibrationAsk[i]$=CalibrationAsk$
+	Series[i]$=Series$
 	
 	i=i+1
 	
@@ -163,6 +165,8 @@ exit_terme:
    DECGuide$=""
    ProjectObject$="none"
    IsRef$="false"
+   CalibrationAsk$="true"
+   Series$="false"
 
    ExposureMode$="default"
    ExposureUnit=1
@@ -213,6 +217,16 @@ exit_terme:
 			if key$="IsRef" then
 				IsRef$=value$
 			endif
+
+	// valeur possible:  "true", "false",  "double"
+			if key$="Calib" then
+				CalibrationAsk$=value$
+			endif
+
+			if key$="Series" then
+				Series$=value$
+			endif
+
 			
 	   endif		
    next j

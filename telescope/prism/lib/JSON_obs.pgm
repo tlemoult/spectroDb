@@ -105,7 +105,9 @@ write_JSON_Observation:
 		WriteFileTxt fileJSON "  ""obsConfig"": {"
 		WriteFileTxt fileJSON "		""NbExposure"":"+nbExposure$+","
 		WriteFileTxt fileJSON "		""ExposureTime"":"+exposure$+","
-		WriteFileTxt fileJSON "		""TotalExposure"":"+TotalExposure$
+		WriteFileTxt fileJSON "		""TotalExposure"":"+TotalExposure$+","
+		WriteFileTxt fileJSON "		""Serie"":"+Series$+","
+		WriteFileTxt fileJSON "		""Calib"":"+CalibrationAsk$+""""
 		WriteFileTxt fileJSON "		}"
 	endif
 

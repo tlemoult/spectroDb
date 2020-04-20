@@ -39,7 +39,7 @@ for  ip=1 NbCibles
 		goto PlanningCibleSuivante:
 	ENDIF
 
-	if CalibrationAsk[ip]=2 THEN
+	if CalibrationAsk$="double" THEN
 		print "   -calibration initiale " pdate$
 		pdate=pdate+DureeCalib/DureeJour
 		DATETOSTR  pdate pdate$
@@ -68,7 +68,7 @@ for  ip=1 NbCibles
 	print "      -angle horaire= " Ha$ " heures"
 	print "      -hauteur      = " hauteur$
 
-	if CalibrationAsk[ip]<>0 THEN
+	if CalibrationAsk$<>"false" THEN
 		print "   -calibration finale a " pdate$
 		pdate=pdate+DureeCalib/DureeJour
 		DATETOSTR  pdate pdate$

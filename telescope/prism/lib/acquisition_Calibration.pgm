@@ -324,8 +324,8 @@ testMeridien_Hauteur:
 			STOPTELESCOPE
 			Print "On a passe le meridien, on repointe"
 			GOSUB arret_guidage:
-			IF  CalibrationAsk[iobj]=1 THEN
-				//   sur un spectro eShel le passage du meridien  n'implique une calib suplementaire
+			IF  CalibrationAsk$<>"false" THEN
+				//   sur un spectro eShel le passage du meridien  n'implique pas une calib suplementaire
 				IF SPECTROGRAPHE$<>"ESHEL" then
 					GOSUB Calibration:
 					// relance la numerotation des poses a 1 et avec un mon modifie

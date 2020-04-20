@@ -211,7 +211,7 @@ DATETOSTR  Date_Start Date_Start$
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
-LimitMagnitudeCiel=16.8
+LimitMagnitudeCiel=17.3
 // apr�s cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=9
 CompteurBeauTemp=0

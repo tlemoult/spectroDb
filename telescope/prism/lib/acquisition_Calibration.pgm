@@ -131,33 +131,35 @@ CalibEshel:
 
 GOSUB unlockMirorEshel:
 
-PRINT "allume la lampe tungsten"
-params$=PythonScriptCalibeShel$+" flat"
-EXECEXTERNAL   pathPythonInterpreter$ params$
+IF CalibrationAsk$<>"thor" THEN
+	PRINT "allume la lampe tungsten"
+	params$=PythonScriptCalibeShel$+" flat"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+	intituleCalib$="Tungsten de "+NomObjet$
+	exposureCalib=exposureTimeTungsten
+	nbExposureCalib=nbExposureTungsten
+	FileNameEndCalib$="TUNGSTEN-"
+	GOSUB boucleAcquisitionCalib:
 
-intituleCalib$="Tungsten de "+NomObjet$
-exposureCalib=exposureTimeTungsten
-nbExposureCalib=nbExposureTungsten
-FileNameEndCalib$="TUNGSTEN-"
-GOSUB boucleAcquisitionCalib:
+	Print "Allume les LED"
+	params$=PythonScriptCalibeShel$+" led"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+	intituleCalib$="LED de "+NomObjet$
+	exposureCalib=exposureTimeLED
+	nbExposureCalib=nbExposureLED
+	FileNameEndCalib$="LED-"
+	GOSUB boucleAcquisitionCalib:
+ELSE
+	Print "Allume la lampe Thorium-Argon"
+	params$=PythonScriptCalibeShel$+" calib"
+	EXECEXTERNAL   pathPythonInterpreter$ params$
+	intituleCalib$="Thorium Argon de "+NomObjet$
+	exposureCalib=exposureTimeThar
+	nbExposureCalib=nbExposureThar
+	FileNameEndCalib$="CALIB-"
+	GOSUB boucleAcquisitionCalib:
+ENDIF
 
-Print "Allume les LED"
-params$=PythonScriptCalibeShel$+" led"
-EXECEXTERNAL   pathPythonInterpreter$ params$
-intituleCalib$="LED de "+NomObjet$
-exposureCalib=exposureTimeLED
-nbExposureCalib=nbExposureLED
-FileNameEndCalib$="LED-"
-GOSUB boucleAcquisitionCalib:
-
-Print "Allume la lampe Thorium-Argon"
-params$=PythonScriptCalibeShel$+" calib"
-EXECEXTERNAL   pathPythonInterpreter$ params$
-intituleCalib$="Thorium Argon de "+NomObjet$
-exposureCalib=exposureTimeThar
-nbExposureCalib=nbExposureThar
-FileNameEndCalib$="CALIB-"
-GOSUB boucleAcquisitionCalib:
 GOSUB LampCalibOff:
 
 RETURN

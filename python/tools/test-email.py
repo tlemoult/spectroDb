@@ -2,8 +2,13 @@ import lib.emailFnc as emailFnc
 import lib.dbSpectro as dbSpectro
 
 db=dbSpectro.init_connection()
-print dbSpectro.getProjectFollowers_fromProjectName(db,'del_cep')
+project="del_cep"
+print("follower of this project are: ")
+print dbSpectro.getProjectFollowers_fromProjectName(db,project)
 
-emailFnc.sendEmail("sujet Test carl", "message de test de carl. Hey j'ai ma propre adresse maintenant.",db,'NewBe')
+emailFnc.sendEmail("sujet Test carl Obs failed", "message de test de carl. Hey j'ai ma propre adresse maintenant.",db,project)
+
+emailFnc.sendEmail("sujet Test carl Obs finished ", "Normalement ce message la est recus par les follower du projet.",db,project)
+
 
 exit()

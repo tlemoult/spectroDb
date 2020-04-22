@@ -12,9 +12,10 @@ def sendEmail(subject, message,db,projectName):
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
 
-	adress=dbSpectro.getProjectFollowers_fromProjectName(db,projectName)
 	to_addr_list=[ config['email']['myAdress'] ]
-	to_addr_list.extend(adress.split(','))
+	if "Obs finished" in subject:
+		print("Obs finished add followers of this project")
+		to_addr_list.extend(dbSpectro.getProjectFollowers_fromProjectName(db,projectName).split(','))
 	print to_addr_list
 
 	smtpserver= config['email']['smtp']

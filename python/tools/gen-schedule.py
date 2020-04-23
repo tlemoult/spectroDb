@@ -54,7 +54,7 @@ for request in requests:
 
     config = {'FLUX_V': FLUX_V, 'project': project, 'ExposureTime': ExposureTime, 'NbExposure': NbExposure,
               'TotExposure': TotExposure, 'intTime': intTime, 'uid': uid, 'extraConf': conf,
-              'calib': calib
+              'Calib': calib
               }
     schedule.addTargetFromCoord(name, SkyCoord(
         coords), durationBlock, priority, config)

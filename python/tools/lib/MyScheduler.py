@@ -71,7 +71,7 @@ class MySchedule(object):
 			intTime=block.configuration['intTime']
 			uid=block.configuration['uid']
 			extraConfig=block.configuration['extraConf']
-			calib=block.configuration['calib']
+			calib=block.configuration['Calib']
 			
 			block.start_time.format = 'isot'
 
@@ -81,7 +81,7 @@ class MySchedule(object):
 				print "name=%s  ra=%s  dec=%s"%(name,ra,dec)
 				line='"'+name+'"  '+ra[:-3]+'s  '+dec[:-3]+'s  '+str(FLUX_V)+'  FALSE  "Project='+str(project)
 				line+="&uid="+str(uid)
-				line+="&calib="+str(calib)
+				line+="&Calib="+str(calib)
 				line+="&uid="+str(uid)
 				if ExposureTime!=None:  line+="&ExposureTime="+str(ExposureTime)
 				if NbExposure!=None: line+="&NbExposure="+str(NbExposure)

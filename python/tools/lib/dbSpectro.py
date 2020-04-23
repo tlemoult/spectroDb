@@ -231,6 +231,43 @@ def getPathFilename_from_md5sum(db,md5sum):
 	query+="""where fileName.md5sum='%s' """%md5sum
 	return commit_query_sql_table(db,query)
 
+def getObsDateFromObsId(db,obsId):
+	query="select dateObs from observation where observation.obsId=%d"%obsId
+	return commit_query_sql(db,query)
+
+def	getClosestSerieId(db,obsDate,fileType):
+	from datetime import datetime
+	query="""select fileName.serieId,fileName.obsId from fileName where fileName.filetype='%s'"""%fileType
+	query+=""" and phase='RAW' and date>'%s' order by date limit 1"""%obsDate
+	#print("Query1=",query)
+	serieId1,obsId1=commit_query_sql_table(db,query)
+
+	query="""select fileName.serieId,fileName.obsId from fileName where fileName.filetype='%s'"""%fileType
+	query+=""" and phase='RAW' and date<'%s' order by date desc limit 1"""%obsDate
+	#print("Query2=",query)
+	serieId2,obsId2=commit_query_sql_table(db,query)
+
+	t1=datetime.strptime(serieId1,"%Y-%m-%dT%H:%M:%S.%f")
+	t2=datetime.strptime(serieId2,"%Y-%m-%dT%H:%M:%S.%f")
+	if abs(t1-obsDate)<abs(t2-obsDate):
+		return serieId1,obsId1
+	else:
+		return serieId2,obsId2
+
+def copySerieIdBetweenObsId(db,srcObsId,dstObsId,serieId):
+
+	query="INSERT INTO fileName "
+	query+="(md5sum,obsId,phase,filetype,filename,serieId ,expTime ,date ,destDir, tempCCD, binning, detector) \n"
+	query+="SELECT "
+	query+="md5sum, %d  as obsId ,phase,filetype,"%dstObsId
+	query+="filename, serieId, expTime, date, destDir, tempCCD, binning, detector \n"
+	query+="from fileName "
+	query+="""where fileName.serieId='%s' and obsId=%d"""%(serieId,srcObsId)
+
+	print(query)
+	commit_insert_sql(db,query)
+
+	return
 
 def update_files_serieId(db,fileId,serieId):
 	sql="""UPDATE fileName SET """

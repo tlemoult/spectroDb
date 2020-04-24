@@ -39,6 +39,18 @@ def archiveProcessedFiles(src,dst):
         print("    copy ",f)
         shutil.copy(src+'/'+f,dst+'/'+f)
 
+def convertJSONtoINI(sourcePath,destinationPath):
+    print("load Json ",sourcePath)
+    jsonObs=open(PathObservationJson).read()
+    jsonTable=json.loads(jsonObs)
+    objname=jsonTable['target']['objname'][0]
+    serie=jsonTable['obsConfig']['Serie']
+
+    print("Generate ini parameters filename",destinationPath,'object name = "'+objname+'"  serie = '+serie)
+    f = open(destinationPath,"w")
+    f.write("objname="+objname+"\n")
+    f.write("serie="+serie+"\n")
+    f.close()
 
 #open local configuration file
 json_text=open("../python/config/config.json").read()
@@ -62,7 +74,7 @@ eShelPipeProcessedRoot=path['eShelPipe']+'/processed'
 #work path
 eShelPipeFastWork=path['eShelPipeFastWork']+'/work'
 PathObservationJson=eShelPipeFastWork+'/observation.json'
-PathObjectFileName=eShelPipeFastWork+"/objname.txt"
+PathObservationINI=eShelPipeFastWork+"/observation.ini"
 
 
 cmdStartPipeline="actionna.bat"
@@ -104,18 +116,10 @@ while True:
         print("     move file",src,"-to->",dst)
         shutil.move(src,dst)
 
-    print("load Json ",PathObservationJson)
     if not os.path.isfile(PathObservationJson):
         print("Error cannot found Json "+PathObservationJson)
         continue
-    jsonObs=open(PathObservationJson).read()
-    configObs=json.loads(jsonObs)
-
-    objname=configObs['target']['objname'][0]
-    print("Generate object filename",PathObjectFileName,'with name "'+objname+'"')
-    f = open(PathObjectFileName,"w")
-    f.write(objname)
-    f.close()
+    convertJSONtoINI(PathObservationJson,PathObservationINI)
 
     print("rename calibration files")
     renameCalib(eShelPipeFastWork,"TUNGSTEN","tung","calib")

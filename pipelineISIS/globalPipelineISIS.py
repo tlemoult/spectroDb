@@ -1,4 +1,6 @@
-import os,time,json,shutil
+
+
+import os,json,sys,time,shutil
 from datetime import datetime
 
 def renameCalib(path,prefix,newprefix,gen):
@@ -10,7 +12,7 @@ def renameCalib(path,prefix,newprefix,gen):
             os.rename(src,dst)
 
 def archiveProcessedFiles(src,dst):
-    print(f"archiveProcessedFiles src={src}  dst={dst}")
+    print("archiveProcessedFiles src"+src+"  dst="+dst)
 
     print("  copy calibration directory")
     shutil.rmtree(dst+"/calib",ignore_errors=True)
@@ -44,7 +46,11 @@ def convertJSONtoINI(sourcePath,destinationPath):
     jsonObs=open(PathObservationJson).read()
     jsonTable=json.loads(jsonObs)
     objname=jsonTable['target']['objname'][0]
-    serie=jsonTable['obsConfig']['Serie']
+    try:
+        serie=jsonTable['obsConfig']['Serie']
+    except:
+        #default value, if not defined in JSON file
+        serie='false'
 
     print("Generate ini parameters filename",destinationPath,'object name = "'+objname+'"  serie = '+serie)
     f = open(destinationPath,"w")
@@ -52,24 +58,28 @@ def convertJSONtoINI(sourcePath,destinationPath):
     f.write("serie="+serie+"\n")
     f.close()
 
-#open local configuration file
+if len(sys.argv)<2:
+	print("nombre d'argument incorrect")
+	print("utiliser: ")
+	print("   python globalPipelineISIS.py obsId1 obsId2 ...")
+	print("   python globalPipelineISIS.py range obsIdStart obsIdStop ")
+	exit(1)
+
+
+print("load configuration")
 json_text=open("../python/config/config.json").read()
 config=json.loads(json_text)
 path=config['path']
 racineArchive=path['archive']
 
-
-#signal path
-signalPipeline=racineArchive+path['signalProcessPipe']
-PathSignalStartPipeline=signalPipeline+"/askStart"
-PathSignalEndedPipeline=signalPipeline+"/ended"
-
 #source raw path
-PathPipelineSrcRaw=path['eShelPipe']+'/raw'
-PathPipelineSrcCalib=path['eShelPipe']+'/calib'
+PathPipelineSrcRaw=path['eShelPipeFastWork']+'/raw'
 
-#destination path
-eShelPipeProcessedRoot=path['eShelPipe']+'/processed'
+#source Calib path
+PathPipelineSrcCalib=path['eShelPipeFastWork']+'/calib'
+
+#destination path for processed
+eShelPipeProcessedRoot=path['eShelPipeFastWork']+'/processed'
 
 #work path
 eShelPipeFastWork=path['eShelPipeFastWork']+'/work'
@@ -77,23 +87,33 @@ PathObservationJson=eShelPipeFastWork+'/observation.json'
 PathObservationINI=eShelPipeFastWork+"/observation.ini"
 
 
-cmdStartPipeline="actionna.bat"
+
 loopSleepTime=1
 
-while True:
 
-    print("Wait start signal ",PathSignalStartPipeline)
-    while not os.path.isfile(PathSignalStartPipeline):
-        time.sleep(loopSleepTime)
+print("process command line argument")
+if len(sys.argv)==2:
+	obsIds=[int(sys.argv[1])]
+else:
+	if sys.argv[1]=='range':
+		obsIds=range(int(sys.argv[2]),int(sys.argv[3])+1)
+	else:
+		obsIds=[]
+		for arg in sys.argv[1:]:
+				obsIds.append(int(arg))
 
-    print("Received start signal",PathSignalStartPipeline)
-    os.remove(PathSignalStartPipeline)
+print("Selected ObsId=",obsIds)
+print("************")
+
+print("start loop process observations")
+for obsId in obsIds:
+    print("***observation ID = ",obsId)
 
     #dst path
     now = datetime.now()
     strDate= now.strftime("%Y-%m-%d-%H-%M-%S")
     eShelPipeProcessed=eShelPipeProcessedRoot+'/'+strDate
-    print("create traget processed directory",eShelPipeProcessed)
+    print("create target processed directory",eShelPipeProcessed)
     os.mkdir(eShelPipeProcessed)
 
     print("clean directory eShelPipeFastWork=",eShelPipeFastWork)
@@ -106,15 +126,13 @@ while True:
             #print("dir",f)
             shutil.rmtree(p)
 
+    orgPath=os.getcwd()
+    os.chdir('../python/tools')
+    os.system("python get-raw-obs.py"+" "+str(obsId)+" "+eShelPipeFastWork)
+    os.chdir(orgPath)
+
     print("copy calibration files directory from",PathPipelineSrcCalib,"to",eShelPipeFastWork)
     shutil.copytree(PathPipelineSrcCalib,eShelPipeFastWork+'/calib')
-
-    print("move raw files from",PathPipelineSrcRaw,"to",eShelPipeFastWork)
-    for f in os.listdir(PathPipelineSrcRaw):
-        src=PathPipelineSrcRaw+'/'+f
-        dst=eShelPipeFastWork+'/'+f
-        print("     move file",src,"-to->",dst)
-        shutil.move(src,dst)
 
     if not os.path.isfile(PathObservationJson):
         print("Error cannot found Json "+PathObservationJson)
@@ -127,11 +145,26 @@ while True:
     renameCalib(eShelPipeFastWork,"LED","led","calib")
 
     print("Start ISIS pipeline")
-    os.system(cmdStartPipeline)
+    os.system("actionna.bat")
 
     archiveProcessedFiles(eShelPipeFastWork,eShelPipeProcessed)
 
     print("END of ISIS pipeline")
-    f = open(PathSignalEndedPipeline,"w")
-    f.write("ISIS end")
-    f.close()
+
+
+
+print("**** Integrate processed spectrum in data base")
+
+now = datetime.now()
+strDate = now.strftime("%Y-%m-%d-%H-%M-%S")
+logFile = racineArchive+"/log/in.processed."+strDate+".log"
+errFile = racineArchive+"/log/in.processed."+strDate+".err"
+
+cmd="python in-processed.py "+eShelPipeProcessedRoot+" delete "
+cmd+="> "+logFile+" 2> "+errFile
+os.chdir('../python/tools')
+print(cmd)
+os.system(cmd)
+
+
+

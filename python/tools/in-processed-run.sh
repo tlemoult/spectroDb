@@ -7,7 +7,7 @@ function getJsonVal () {
 }
 
 _base=`cat ../config/config.json | getJsonVal "['path']['archive']" | tr -d '"' `
-_eShelPipe=`cat ../config/config.json | getJsonVal "['path']['eShelPipe']" | tr -d '"' `
+_eShelPipe=`cat ../config/config.json | getJsonVal "['path']['eShelPipeFastWork']" | tr -d '"' `
 
 
 _now=$(date +%Y_%m_%d_%H_%M_%S)

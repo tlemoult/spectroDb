@@ -1,22 +1,22 @@
 import sys,os
 from os import walk
 import urllib,glob
-import pyfits
+import astropy.io.fits as fits
 from astropy.time import Time
 import zipfile
 
 def explodeFits(pathSrc,pathDst,filenameOrg):
-	print "explodeFits src=%s dst=%s filename=%s"%(pathSrc,pathDst,filenameOrg)
+	print("explodeFits src=%s dst=%s filename=%s"%(pathSrc,pathDst,filenameOrg))
 	files=[]  # liste des fichiers de sortie
 	newBaseName=''
-	hdulistOrg = pyfits.open(pathSrc+'/'+filenameOrg)
+	hdulistOrg = fits.open(pathSrc+'/'+filenameOrg)
 	if len(hdulistOrg)<2:  # pas de multiplan, rien a exploser
 		return ([],'')
 
-	print "ExplodeFits("+pathSrc+"/"+filenameOrg	
+	print("ExplodeFits("+pathSrc+"/"+filenameOrg)	
 	headerOrg=hdulistOrg[0].header
-	print "OBJ=",headerOrg['OBJNAME']," Date Obs=",headerOrg['DATE-OBS']
-	print "order: ",
+	print("OBJ=",headerOrg['OBJNAME']," Date Obs=",headerOrg['DATE-OBS'])
+	print("order: ")
 	# determine if level is P_1C_ or P_1B
 	if 'P_1C_' in ';'.join([ hdu.name for hdu in hdulistOrg]):
 		level='P_1C_'
@@ -28,7 +28,7 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 			order=hdu.name.split(level)[1]
 
 			# create PRIMARY plan of new fits with data
-			myHdu=pyfits.PrimaryHDU(hdu.data)
+			myHdu=fits.PrimaryHDU(hdu.data)
 
 			# fill header of new plan, with keyword from 
 			for key in ['BITPIX','NAXIS','NAXIS1','CRPIX1','CRVAL1','CDELT1','CTYPE1','CUNIT1']:
@@ -47,12 +47,12 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 
 			t1=Time(myHdu.header['DATE-OBS'],format='isot', scale='utc')
 			t1.format = 'jd'
-	#		print 'DATE-OBS=',t1
+	#		print('DATE-OBS=',t1)
 			myHdu.header['JD-OBS']="%.5f"%float(str(t1))
 
 			t2=Time(myHdu.header['DATE-END'],format='isot', scale='utc')
 			t2.format = 'jd'
-	#		print 'DATE-END=',t2
+	#		print('DATE-END=',t2)
 			myHdu.header['JD-MID']="%.5f"%((float(str(t1))+float(str(t2)))/2)
 
 			dateISIS=headerOrg['DATE-OBS'][:10].replace('-','')+'_'+(("%.3f")%headerOrg['MJD-OBS']).split('.')[1]
@@ -62,7 +62,7 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 				myHdu.header['BSS_ORD']=newBaseName 	
 			
 			# create new fits package
-			myHduList= pyfits.HDUList([myHdu])
+			myHduList= fits.HDUList([myHdu])
 			filename=newBaseName+order+'.fits'
 			try:
 
@@ -71,9 +71,9 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 				files.append(filename)
 
 			except:
-				print ".",
+				print(".")
 
-			print " ",order,
+			print(" ",order)
 
 	hdulistOrg.close()
 	return (files,newBaseName)

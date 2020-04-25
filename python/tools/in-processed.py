@@ -4,7 +4,7 @@ from os import listdir
 from os.path import isfile, join
 
 import urllib,glob
-import pyfits
+import astropy.io.fits as fits
 from astropy.time import Time
 
 import lib.dbSpectro as dbSpectro
@@ -43,7 +43,7 @@ def parseXmlISIS(path,filename,ret):
 		#print "fileNameImg",fileNameImg 
 		s=filename.split('_')
 		try:
-			hdu=pyfits.open(path+'/'+fileNameImg)
+			hdu=fits.open(path+'/'+fileNameImg)
 			header=hdu[0].header
 			ret['dateObs']=header['DATE-OBS'][:19]
 		except:
@@ -52,7 +52,7 @@ def parseXmlISIS(path,filename,ret):
 				rootfileName='_'+s[1]+'_'+s[2]+'_'+s[3]+'_'
 				print "looking for rootfileName="+rootfileName
 				fileNameSpec = [f for f in listdir(path) if isfile(join(path, f)) and f.startswith(rootfileName) and f.endswith('.fits')][0]
-				hdu=pyfits.open(path+'/'+fileNameSpec)
+				hdu=fits.open(path+'/'+fileNameSpec)
 				header=hdu[0].header
 				ret['dateObs']=header['DATE-OBS'][:19]
 			except:
@@ -85,13 +85,14 @@ def parseLogFileISIS(path,filename,ret):
 ## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnee.
 def getMetaDataFiles(srcPath,filenames,tmpPath):
 
-	print "filename"+str(filenames)
+	print("getMetaDataFiles: /n  srcPath = "+srcPath)
+	print("  filenames = "+str(filenames))
 
-	if dirpath.endswith('/calib'):
-		return calibProcess(dirpath,tmpPath)
+	if srcPath.endswith('/calib') or srcPath.endswith('\calib'):
+		return calibProcess(srcPath,tmpPath)
 
 	# ce n'est pas un dossier de calib ISIS, on regarde
-	print "****** Enter Directory "+dirpath+"  **********"
+	print "****** Enter Directory "+srcPath+"  **********"
 	metasReturn={}
 	responseFound=False
 	for filename in filenames:
@@ -127,7 +128,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			metasReturn[filename]=parseLogFileISIS(srcPath,filename,ret)
 		
 		if (filename.endswith('.fits') or filename.endswith('.fit')):  # fichier fits
-			hdu=pyfits.open(srcPath+'/'+filename)
+			hdu=fits.open(srcPath+'/'+filename)
 			header=hdu[0].header
 			ret['naxis1']=header['NAXIS1']
 
@@ -317,20 +318,21 @@ def calibProcess(srcPath,tmpPath):
 	print "*******C A L I B    P r o c e s s **************"
 
 	metas={}
-	print("srcpath", srcPath)
+	print("calibProcess")
+	print("  srcpath", srcPath)
 	parentSrc=srcPath.split('/calib')[0]
-	print("parent Source",parentSrc)
+	print("  parent Source",parentSrc)
 
 	logFiles = [f for f in listdir(parentSrc) if isfile(join(parentSrc, f)) and f.endswith('.log')]
 	calibFiles= [f for f in listdir(srcPath) if isfile(join(srcPath, f))]
-	print("logFiles",logFiles)
-	print("calibFiles",calibFiles)
+	print("  logFiles",logFiles)
+	print("  calibFiles",calibFiles)
 	for f in logFiles:
 		metaLog={'sourceFilename':f,'sourcePath':parentSrc}
 		metaLog=parseLogFileISIS(parentSrc,f,metaLog)
-		print "dateObs "+metaLog['dateObs']
+		print("  dateObs "+metaLog['dateObs'])
 		archiveName='calib.zip'  # metaLog['dateObs'].replace(' ','-').replace(':','-')+
-		print "create",archiveName
+		print(" create archive"+archiveName)
 		meta={}
 		meta['sourceFilename']=archiveName
 		meta['destinationFilename']=archiveName
@@ -352,7 +354,7 @@ def calibProcess(srcPath,tmpPath):
 
 		metas[meta['sourceFilename']]=meta
 
-		print 'Md5sum=',meta['md5sum'],""
+		print('  Md5sum = '+str(meta['md5sum']))
 	return metas
 
 
@@ -385,16 +387,33 @@ def defineTargetNameSpectrumFile(meta):
 	return meta
 
 def createDir(dirpath):
-	#print "dirpath="+dirpath
-	paths=dirpath.split('/')
-	pwd="/"
-	for path in paths:
-		pwd+=path+'/'
-		try:
-			os.stat(pwd)
-		except:
-			print "create dir"+pwd
+    print("test create Dir")
+    print("dirpath="+dirpath)
+
+    if dirpath[1]==':':
+        pwd=dirpath[0:3]
+        dirpath=dirpath[3:]
+    elif dirpath[0]=='/':
+        pwd="/"
+        dirpath=dirpath[1:]
+    else:
+        pwd=""
+
+    print("new dirPath="+dirpath)
+    print("pwd = "+pwd)
+    pathList=dirpath.split('/')
+    print("pathList = ",pathList)
+
+    for path in pathList:
+        pwd+=path+'/'
+        print("seq pwd: "+pwd)
+
+        try:
+            os.stat(pwd)
+        except:
+			print("create dir "+pwd)
 			os.mkdir(pwd)
+
 
 def archiveFiles(metas,pathArchive,enableDelete):
 
@@ -443,7 +462,7 @@ def conformBess(metas,tmpPath):
 		if meta['fileType']=='1DSPECTRUM':
 			# on ouvre le spectre
 			fullSourcePath=meta['sourcePath']+'/'+meta['sourceFilename']
-			hdulist = pyfits.open(fullSourcePath)
+			hdulist = fits.open(fullSourcePath)
 			prihdr = hdulist[0].header
 
 			# pas de vitesse Helio
@@ -494,20 +513,26 @@ dbSpectro.setLogLevel(4)
 json_text=open("../config/config.json").read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
-print "pathArchive="+pathArchive
+print("pathArchive = "+pathArchive)
 
 # open exception file
 globalExceptFile=open(pathArchive+'/Except-in-processed/except-'+str(datetime.datetime.today()).replace(' ','T').replace(':','-')+'.log','a')
 
 for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
+	dirpath=dirpath.replace("\\","/").replace('//','/')
+	print("** Boucle principale **")
+	print("  dirpath = "+str(dirpath))
+	print("  dirnames = "+str(dirnames))
+	print("  filenames = "+str(filenames))
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
 	tmpPath=tempfile.mkdtemp()
-	print "temporary dir", 	tmpPath
+	print("  temporary dir = "+ tmpPath)
+	print("***********************")
 
 	try:
 		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 		metas=setDstPath(metas,db)
-		print json.dumps(metas,sort_keys=True, indent=4)
+		print(json.dumps(metas,sort_keys=True, indent=4))
 
 		# redefinis les nom des spectres
 		for f in metas: 

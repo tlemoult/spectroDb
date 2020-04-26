@@ -2,79 +2,119 @@
 <scriptfile>
     <settings program="actiona" version="3.9.4" scriptVersion="1.1.0" os="Windows"/>
     <actions>
-        <action name="ActionDetachedCommand" version="1.0.0"/>
-        <action name="ActionWindowCondition" version="1.0.0"/>
+        <action name="ActionVariableCondition" version="1.0.0"/>
         <action name="ActionWriteText" version="1.0.0"/>
-        <action name="ActionExit" version="1.0.0"/>
-        <action name="ActionWindow" version="1.0.0"/>
         <action name="ActionPause" version="1.0.0"/>
+        <action name="ActionWindow" version="1.0.0"/>
         <action name="ActionGoto" version="1.0.0"/>
-        <action name="ActionReadIniFile" version="1.0.0"/>
-        <action name="ActionFindImage" version="1.1.0"/>
+        <action name="ActionExit" version="1.0.0"/>
         <action name="ActionKey" version="1.0.0"/>
         <action name="ActionClick" version="1.0.0"/>
-        <action name="ActionVariableCondition" version="1.0.0"/>
+        <action name="ActionFindImage" version="1.1.0"/>
+        <action name="ActionReadIniFile" version="1.0.0"/>
+        <action name="ActionWindowCondition" version="1.0.0"/>
+        <action name="ActionDetachedCommand" version="1.0.0"/>
     </actions>
     <parameters/>
     <resources>
         <resource id="boutonGoStopProcess" type="2">AAADAXic6wzwc+flkuJiYGDg9fRwCWJgYASxDTmYgOTa5AIXIMVZ4BFZzMDAdwSEGadq80kzMDBt9nRxDKmY8/auYd5iB5FjH6dfvdfsmfiUYYl72ZK1KzS2d2UELV24eNOKOxd33Ep7kuWttcqDryifL2HniYJmmUTuOSe8KiaGefUw/49nn/bmuLTd+RtuPx79/BnJUPLzYjnjgZ9Kcg1dFQxajxhXdLAv+HVzZ/neuPk7+OYsnz179uOzC+dJ5PN9Di23cXny69ev010Hv2+4m3f/vcy9zouVM3TFwpG0opiDxlFSWuel/F7Ba+3r3fMCC75d+KyxKfT+UY2Odo+pat4775usrdnEf6lYdt3DFZcW8Nye9zyxcnbYObeLN/carhTf0t+2+XTsDPHg4htmHxe93DhnYoG/tf0eYyWlpEeLBAvLbuZ7xrrZV+84HnRo5suaE3LTYgQ3n0w33hywyX5b0bq7ZWYnX1lx3+J84vt8bu+iLdM3StTa9IW+PP2c//WRmyrZ02NmF5R7O9jN7Px8NWU/T9O2u2rnnu+zvy+y8eWbGt3Jeyz/Rgj0K192vWxyNu2dt/XqM++Xubmc0flS7r/u+iW2Ez6PXS8CZUqnqrrPt7Kyfu9/S/LfkWTDXxUzIjWeLn69u0fQ+HL8/td/g++nlkjV2hw58j08dVKYn4tLzFS2SF397senOjuqdV6v9r4c3cr8JOfJ3prGd6va9/978unrxnPnrv/+pvvmSLKjjcuy7j9x0xqfV86bbuMTVhzvcuTIzz13pac8TDN8u/uUo2Hhvkmbcis3TAmVky6W9BKryLx6s7J+u/+ey/1HXZ/rrrj++uuHPI/G/1uBcXf/xPJ24cM3NSbu6Th73ebv78M1R98wrvgRKZB+/ojrxfPaxtWEIzRo/c5fD/ivG6QttjLcpZ/BrqCzroFfgN/B1YZB9CNDyH+GwzcEsuNfOt0HpmkGT1c/l3VOCU0A5m50Uw==</resource>
-        <resource id="ongletInstrument" type="2">AAACB3icAQcC+P2JUE5HDQoaCgAAAA1JSERSAAAAUwAAAB0IAgAAAFmCx0sAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAG5SURBVFiF7ZgvbsMwFMZfd4J3hqxSpEKD3CAuGAoYH2xIZDLgEwSUTCU2HC8IKkhyA4PASJFWn+EdYSBV2qzt1k7tBuwfyb+n7/PnlxeQCRGBkzz89wL+DZ/cPXxy9/DJ3cMnvwSrOFf2bkv5Y+7Q83tv0I30/dt+OVZxLpTgiIjIRb27t7tUtVpIYyTjylrFuRB95dClvmMHj7iqleCIXNS2Lxi0lT22s3v9ke/VL8Gvem7a7kkTEa1n7VJZqFdytiaiJmnlZqrzKMqbKg0AwLThk6Ymj06JhFlFTQ5yCVlFTdIuSwtWLYpQExGRDouFsl/tyvle/9B3Vf9F8ijJ4gAA4DGE/hC9P3Muyqlu3uJx5byvPCUyD8YnAGDLwhjJEBGRSWOKcntsN3De9wJuMudBWhHp17BbMiau3fsjXtY0UKWP9/K9SfJaIFcQp286j9qP7fEKpzPTlf0Ub7vvlIJ5Er1v1G7gf/qGj32vnPSbJI+zfFYwRGRFotN4moBkeNiEOMtbyRCRrzbfSwWpXkPBEBEXXaLTE6MSDPpj3zNTdY6J/yfjHD65e/jk7uGTu4dP7h7uJv8E2Lj7vbSrbkYAAAAASUVORK5CYIJAhe70</resource>
-        <resource id="GoStopProcess" type="2">AAAC8Xic6wzwc+flkuJiYGDg9fRwCWJgYGQFsvU5mIBk6hYPJSDFWeARWczAwHcEhBmnavNJMzAwLfZ0cQypmPP2rmHeYgeRYx+nX73X7Jn4lGGJu0WQltaptUqzQjJfrNDRKjdZt81x3bYli7qeKHx/xjCtm8f8hOC2A+c2J82auinh4P/rjaq/P7adN94muO/njx8CDEpKn5JfMDVoO8kxuMoxfP1cdD1t88v9fDEL29vbP5/dOE/iefvNieyCO/fvf79aImbl3bzyncU16semH07Zy6LxiYEQUtjm5fRcw6fIusR2csLn5POHDda36T078+RzgOpHr7htvtqzZfc8mXUsfc6qI9rN255HBtipTj17+IPWvc5d67/P45m9/ptj2I9nO3IXpRonWAon3v+e9yHHxeWIi6ty0uerG1Tn+lTXbchfylJ8+WdAXYxr6xnx+2fPMHvWP5+69e22s4+3rAteP1dpX8m9Z4kzvpiJXT53eKeWZW3bibU3bPxuh14xu2E/sSM/bVGOrfUam/W52zs3tb7W2+aaYmUdf1on+5ck96eCR/qzl2Vu4w6/VZn88Y20oOHnA3f333b0llZ87H56Ueast7/0es/bWZaU3Zu7tbiCP9nwrc2MSoWns2V39XAa/3u8/tcHuxLJ+cvmshtePB0rqT5VVFAwWjUu6nRmY3Sk4Mb81NrybLbVBS05clbL32/N/frr+Ny7dXbXbv78dWFf+lcDMeHzzR37z8SlPLXse2zx8XXO3gJXF58purf2xknmTP93IbSvq3PT1im5p/dOXbP5xIzbDkHnPVedO7f7t/ObL8Zi5tO/r76TY/Z4dy/Tv6t523fvuX+GQb3t7OGITUpG/5+/3C/z7Mlz9gdnjtT3H75qHBj45XvWGf4GJbzo1b66lZ/3H264OF9C9no18+SjVZwBTxihqJ5xurpA+uNFoR+BaZjB09XPZZ1TQhMAlIxogw==</resource>
-        <resource id="FenetreProcessOK" type="2">AAAEn3ic6wzwc+flkuJiYGDg9fRwCQLScUDsy8EEJBd8cuEBUpwFHpHFDAx8R0CYcao2nzQDA0ugp4tjSMWct7Osy1ZbibRtP7fLeWLMBgnGHobdnq6v9aZc2NHlvdxTSmNu3zSt3rMcawQ3aCjxKhlf0DyQbyZ27rR6eb3oaY7M35tbfupu/v69/MWjly9ffvy48fOV/y329rEH3jplBehceXEm3frPiivzjTedq7HfvW89f1zexc67az4GpfYYHluxc7PA3b21XmvNZPi+TG3miwmw6fgs0nW1XMMhu8N89oz58vVmh9+b1jw5FcXoIPmTfbXObLUgtbc9lyKrz/X72V9+q1kfdeJxuJ/06zPfF2t8kkyuC0ubeF/v+bnI4kue/89sWv2w6/aGgj2vfJlZTvvuPnUoa+OsJyufL80SLr5wc0tBUXKP4c5gH/7Tl26aNO40OvakuPw31zUJh7BzOckhXCeZ0manLXh39M5lT/fk1VLrAhZnveyrSL6V3mM48cTiheGtUzoT3mpWbvjzZVVDiVgBw4NDH39JMzeI+/346Ph9tu1rl69m21Yn7pD6G1bZ12Ak1Gp8vtfQbem9zMW/t94s/JhmsGJjrPqj5OnFDQezSmb6Cpffi3nd9IBhQfjXi2seTr5QXZmb9vSk1fPJApOeBzl/Dvxqvu35HmG7otS7NT+iri7vfZu1IXjz3DwfnVc7o9gYBM4EabAk9/h2czE09Dt5sHR7PSjcd2/e6sN/CuQ+WPiv3pjQ45v94Vb4hmPMd+aUCp25pCXYY/j/59c9G0N5e4xE2FhZRYKagdG15mpN5pzfv9ZUHH263SR7n+6Cbz3VBX/ufw9vOvT47LPnx67e9OQNt+F9PzmCM/bU940GWhPldm2Ojw/r6XN/u2L52S7bg0UJcbKr0uafDYnonfidb1PRu6LkaQcP3NvuPKfVNvJq+U7DY2vuZl2cH14tOSmcXU9jr5bC2dk5Zpx7H639fe1B6+QHt+IDv6yaEMQ1Led31EqBPRs4WxRktsxT0/52+UhIbUHD9YLKa3+OlB9n3/xoeUF9ZO/tlpLQ7Z5vDGbvVL4n/KTsw8VC9b3TebjmyEZeXDSv+4Pni70xYZtjdrcm5MQsrTzTeLySi/ughLDrimmMX1h3yh4sVP8LUv088uIyoGqL+OA9LjuXuu+Tbr6yYIKUiLZp1fb1m253/1i553NvxApNZcM8OYvek3OZbu75UxsTNll3VYju7fZoufxreZ96njTfP5pq6rr59RZni3unXzfONvpk/96eaXvL0aZPcxarl9rdOm4R6/bv0Enz06uFL/MmC+qnrmX4lh+7P5ShnEGh+2WIV3lu3UIxhtmRwmbWd6xDdN+/B+bf8nmrRf6nPop/vmlWxTu1RXtnvjD6fDzUipuBwcb9g9qhP36WYt9nJay85rsoJSmw/VVF9K6Jl+sWThf8dvqePcdRbxEuLo0lbK1g34Aj2IOXa6WjoilJgkvf+6vw8/PfDzvO2/SuUnjLAlwaTsU3zrdq3a528S+wxGHwdPVzWeeU0AQAWkk4wg==</resource>
         <resource id="iconeISIS" type="2">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</resource>
-        <resource id="onglet_Instrument" type="2">AAACVHic6wzwc+flkuJiYGDg9fRwCQLSiUCsyMEEJN1sgmYAKc4Cj8hiBga+IyDMOFWbT5qBgYnN08UxJKPx7QzrvsUOAm3Z35jWGRtMmyAjVMB866ALi3S182SFSZwWjI2TJ05+V1DEPsHiwJ2GBoGTl3adD9h3kCWiJ/7xralvKz2+qm5b+FX8365djjYCghziP79eFf/ALOBu86jDXeZjh/K8ZHfXQB62Zv2dU/KP7mN/qSxXeES5r+KI4Plemci1U7ZtP/mrrCZP/m7009pPqWs/3rky8aqXqlVgR8eKSVnlOd+Dw6tmXSt9pZm7NkzLc9fEv2fKYzeUe730UucKVJ36lu3LzVvzpm1+/5O9dH3umujvgXfXzecRvJh05dyW1qx5fWIuV1pyd8nMOvN9c5qoJUPA9neTF6p9Pt+642PXLJ5Lkke0sw6VhUVtqJq1u62jo2e2/1ZbvfC++5+/vz63+vW/y2tlfybKWDAw9OuVyP97nb90UlHGrOkPCp7skK7US3kjU8fIEP2sdG5VR8eLpaVzp8++XGQrf/1v/bu98pYXu07Y7H4987lq+Dn1A/NZv65ZdNx/VXW+e2iTl7PA3hln8v/n+Z2zPhy4V2/33bTN+6Y86XH+X7qyXFq4/L/Vmuq7fSX57o5zeov4BffamAQa8Ch+LahParbIDuYXvFpTaXmq8wwTUK5wF59vSdpCq9p/iXf5r32x/1TwxW63RtfJlE1389Z7/f35pnrCc3hg91s8EnS3Of697qHIS2TBSuZbgvyyK6ryZwKTCYOnq5/LOqeEJgCteBNs</resource>
+        <resource id="GoStopProcess" type="2">AAAC8Xic6wzwc+flkuJiYGDg9fRwCWJgYGQFsvU5mIBk6hYPJSDFWeARWczAwHcEhBmnavNJMzAwLfZ0cQypmPP2rmHeYgeRYx+nX73X7Jn4lGGJu0WQltaptUqzQjJfrNDRKjdZt81x3bYli7qeKHx/xjCtm8f8hOC2A+c2J82auinh4P/rjaq/P7adN94muO/njx8CDEpKn5JfMDVoO8kxuMoxfP1cdD1t88v9fDEL29vbP5/dOE/iefvNieyCO/fvf79aImbl3bzyncU16semH07Zy6LxiYEQUtjm5fRcw6fIusR2csLn5POHDda36T078+RzgOpHr7htvtqzZfc8mXUsfc6qI9rN255HBtipTj17+IPWvc5d67/P45m9/ptj2I9nO3IXpRonWAon3v+e9yHHxeWIi6ty0uerG1Tn+lTXbchfylJ8+WdAXYxr6xnx+2fPMHvWP5+69e22s4+3rAteP1dpX8m9Z4kzvpiJXT53eKeWZW3bibU3bPxuh14xu2E/sSM/bVGOrfUam/W52zs3tb7W2+aaYmUdf1on+5ck96eCR/qzl2Vu4w6/VZn88Y20oOHnA3f333b0llZ87H56Ueast7/0es/bWZaU3Zu7tbiCP9nwrc2MSoWns2V39XAa/3u8/tcHuxLJ+cvmshtePB0rqT5VVFAwWjUu6nRmY3Sk4Mb81NrybLbVBS05clbL32/N/frr+Ny7dXbXbv78dWFf+lcDMeHzzR37z8SlPLXse2zx8XXO3gJXF58purf2xknmTP93IbSvq3PT1im5p/dOXbP5xIzbDkHnPVedO7f7t/ObL8Zi5tO/r76TY/Z4dy/Tv6t523fvuX+GQb3t7OGITUpG/5+/3C/z7Mlz9gdnjtT3H75qHBj45XvWGf4GJbzo1b66lZ/3H264OF9C9no18+SjVZwBTxihqJ5xurpA+uNFoR+BaZjB09XPZZ1TQhMAlIxogw==</resource>
         <resource id="boutonGo" type="2">AAAB73ic6wzwc+flkuJiYGDg9fRwCQLSm4FYh4MJSC50kzMCUpwFHpHFDAx8R0CYcao2nzQDA+NCTxfHkIo5b+8o5jUHSBz4uN77/cHZGVUN14Sjul9xTpu1UkqmK+ShQahxivoMJ92FLP78F3zeFDbLJTate7lJf2ZNyvv/wSJadh/PV3MkFO2MYfnx9OBXBgnNUw15VdarXt96KCPR/7VK93tqx4minSUmPMcWvd71sOEui9Wphj6jBYt5XmgwY2P+0T1s9lJtx60lS0ttz9/4EeU2WY395ta/C2bUtmQ+rlpWOPPf3+n1J6a1F8fscX3263bO53sPLRY/eTorsX/qEe3FcVrrq88c+2565LTRO9OX3/e6ZR6ddrLuRvKtH3+elEvfmy74tPb+99xtExJ1T85TVlZKE9U/N//ay4y8ysi2yKNBsmtfGx47e9roSE75Zy1PaW0lpW2eh/96tiV90+8VFaxe4/fZ/XGO0/c/Os4qp7rnyhxS4GhSqJy/N41bUHCz7qaHORFHc+V2zru09ORb2a271lWWycRe580X/bEr7YH+FEbZVAd3yQuBbCXYmfbzBPbVLuac8WFpxIobvqCQ2Mdw8Vh+oLfdywZgDDJ4uvq5rHNKaAIA3FDh5Q==</resource>
+        <resource id="FenetreProcessOK" type="2">AAAEn3ic6wzwc+flkuJiYGDg9fRwCQLScUDsy8EEJBd8cuEBUpwFHpHFDAx8R0CYcao2nzQDA0ugp4tjSMWct7Osy1ZbibRtP7fLeWLMBgnGHobdnq6v9aZc2NHlvdxTSmNu3zSt3rMcawQ3aCjxKhlf0DyQbyZ27rR6eb3oaY7M35tbfupu/v69/MWjly9ffvy48fOV/y329rEH3jplBehceXEm3frPiivzjTedq7HfvW89f1zexc67az4GpfYYHluxc7PA3b21XmvNZPi+TG3miwmw6fgs0nW1XMMhu8N89oz58vVmh9+b1jw5FcXoIPmTfbXObLUgtbc9lyKrz/X72V9+q1kfdeJxuJ/06zPfF2t8kkyuC0ubeF/v+bnI4kue/89sWv2w6/aGgj2vfJlZTvvuPnUoa+OsJyufL80SLr5wc0tBUXKP4c5gH/7Tl26aNO40OvakuPw31zUJh7BzOckhXCeZ0manLXh39M5lT/fk1VLrAhZnveyrSL6V3mM48cTiheGtUzoT3mpWbvjzZVVDiVgBw4NDH39JMzeI+/346Ph9tu1rl69m21Yn7pD6G1bZ12Ak1Gp8vtfQbem9zMW/t94s/JhmsGJjrPqj5OnFDQezSmb6Cpffi3nd9IBhQfjXi2seTr5QXZmb9vSk1fPJApOeBzl/Dvxqvu35HmG7otS7NT+iri7vfZu1IXjz3DwfnVc7o9gYBM4EabAk9/h2czE09Dt5sHR7PSjcd2/e6sN/CuQ+WPiv3pjQ45v94Vb4hmPMd+aUCp25pCXYY/j/59c9G0N5e4xE2FhZRYKagdG15mpN5pzfv9ZUHH263SR7n+6Cbz3VBX/ufw9vOvT47LPnx67e9OQNt+F9PzmCM/bU940GWhPldm2Ojw/r6XN/u2L52S7bg0UJcbKr0uafDYnonfidb1PRu6LkaQcP3NvuPKfVNvJq+U7DY2vuZl2cH14tOSmcXU9jr5bC2dk5Zpx7H639fe1B6+QHt+IDv6yaEMQ1Led31EqBPRs4WxRktsxT0/52+UhIbUHD9YLKa3+OlB9n3/xoeUF9ZO/tlpLQ7Z5vDGbvVL4n/KTsw8VC9b3TebjmyEZeXDSv+4Pni70xYZtjdrcm5MQsrTzTeLySi/ughLDrimmMX1h3yh4sVP8LUv088uIyoGqL+OA9LjuXuu+Tbr6yYIKUiLZp1fb1m253/1i553NvxApNZcM8OYvek3OZbu75UxsTNll3VYju7fZoufxreZ96njTfP5pq6rr59RZni3unXzfONvpk/96eaXvL0aZPcxarl9rdOm4R6/bv0Enz06uFL/MmC+qnrmX4lh+7P5ShnEGh+2WIV3lu3UIxhtmRwmbWd6xDdN+/B+bf8nmrRf6nPop/vmlWxTu1RXtnvjD6fDzUipuBwcb9g9qhP36WYt9nJay85rsoJSmw/VVF9K6Jl+sWThf8dvqePcdRbxEuLo0lbK1g34Aj2IOXa6WjoilJgkvf+6vw8/PfDzvO2/SuUnjLAlwaTsU3zrdq3a528S+wxGHwdPVzWeeU0AQAWkk4wg==</resource>
+        <resource id="onglet_Instrument" type="2">AAACVHic6wzwc+flkuJiYGDg9fRwCQLSiUCsyMEEJN1sgmYAKc4Cj8hiBga+IyDMOFWbT5qBgYnN08UxJKPx7QzrvsUOAm3Z35jWGRtMmyAjVMB866ALi3S182SFSZwWjI2TJ05+V1DEPsHiwJ2GBoGTl3adD9h3kCWiJ/7xralvKz2+qm5b+FX8365djjYCghziP79eFf/ALOBu86jDXeZjh/K8ZHfXQB62Zv2dU/KP7mN/qSxXeES5r+KI4Plemci1U7ZtP/mrrCZP/m7009pPqWs/3rky8aqXqlVgR8eKSVnlOd+Dw6tmXSt9pZm7NkzLc9fEv2fKYzeUe730UucKVJ36lu3LzVvzpm1+/5O9dH3umujvgXfXzecRvJh05dyW1qx5fWIuV1pyd8nMOvN9c5qoJUPA9neTF6p9Pt+642PXLJ5Lkke0sw6VhUVtqJq1u62jo2e2/1ZbvfC++5+/vz63+vW/y2tlfybKWDAw9OuVyP97nb90UlHGrOkPCp7skK7US3kjU8fIEP2sdG5VR8eLpaVzp8++XGQrf/1v/bu98pYXu07Y7H4987lq+Dn1A/NZv65ZdNx/VXW+e2iTl7PA3hln8v/n+Z2zPhy4V2/33bTN+6Y86XH+X7qyXFq4/L/Vmuq7fSX57o5zeov4BffamAQa8Ch+LahParbIDuYXvFpTaXmq8wwTUK5wF59vSdpCq9p/iXf5r32x/1TwxW63RtfJlE1389Z7/f35pnrCc3hg91s8EnS3Of697qHIS2TBSuZbgvyyK6ryZwKTCYOnq5/LOqeEJgCteBNs</resource>
+        <resource id="ongletInstrument" type="2">AAACB3icAQcC+P2JUE5HDQoaCgAAAA1JSERSAAAAUwAAAB0IAgAAAFmCx0sAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAG5SURBVFiF7ZgvbsMwFMZfd4J3hqxSpEKD3CAuGAoYH2xIZDLgEwSUTCU2HC8IKkhyA4PASJFWn+EdYSBV2qzt1k7tBuwfyb+n7/PnlxeQCRGBkzz89wL+DZ/cPXxy9/DJ3cMnvwSrOFf2bkv5Y+7Q83tv0I30/dt+OVZxLpTgiIjIRb27t7tUtVpIYyTjylrFuRB95dClvmMHj7iqleCIXNS2Lxi0lT22s3v9ke/VL8Gvem7a7kkTEa1n7VJZqFdytiaiJmnlZqrzKMqbKg0AwLThk6Ymj06JhFlFTQ5yCVlFTdIuSwtWLYpQExGRDouFsl/tyvle/9B3Vf9F8ijJ4gAA4DGE/hC9P3Muyqlu3uJx5byvPCUyD8YnAGDLwhjJEBGRSWOKcntsN3De9wJuMudBWhHp17BbMiau3fsjXtY0UKWP9/K9SfJaIFcQp286j9qP7fEKpzPTlf0Ub7vvlIJ5Er1v1G7gf/qGj32vnPSbJI+zfFYwRGRFotN4moBkeNiEOMtbyRCRrzbfSwWpXkPBEBEXXaLTE6MSDPpj3zNTdY6J/yfjHD65e/jk7uGTu4dP7h7uJv8E2Lj7vbSrbkYAAAAASUVORK5CYIJAhe70</resource>
     </resources>
     <script pauseBefore="0" pauseAfter="0">
         <action name="ActionReadIniFile" comment="lit parametre $nom_objet">
-            <exception id="2" action="1" line=""/>
-            <exception id="32" action="0" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="variable">
+                <subParameter name="value" code="0">nom_objet</subParameter>
+            </parameter>
             <parameter name="file">
                 <subParameter name="value" code="0">K:/pipelineISIS/work/observation.ini</subParameter>
             </parameter>
-            <parameter name="variable">
-                <subParameter name="value" code="0">nom_objet</subParameter>
+            <parameter name="mode">
+                <subParameter name="value" code="0">singleParameter</subParameter>
+            </parameter>
+            <parameter name="section">
+                <subParameter name="value" code="0"></subParameter>
             </parameter>
             <parameter name="parameter">
                 <subParameter name="value" code="0">objname</subParameter>
             </parameter>
-            <parameter name="section">
-                <subParameter name="value" code="0"></subParameter>
+        </action>
+        <action name="ActionReadIniFile" comment="lit parametre $serie">
+            <exception id="33" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
+            <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="variable">
+                <subParameter name="value" code="0">serie</subParameter>
+            </parameter>
+            <parameter name="file">
+                <subParameter name="value" code="0">K:/pipelineISIS/work/observation.ini</subParameter>
             </parameter>
             <parameter name="mode">
                 <subParameter name="value" code="0">singleParameter</subParameter>
             </parameter>
-        </action>
-        <action name="ActionReadIniFile" comment="lit parametre $serie">
-            <exception id="2" action="1" line=""/>
-            <exception id="32" action="0" line=""/>
-            <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
-            <exception id="1" action="0" line=""/>
-            <parameter name="file">
-                <subParameter name="value" code="0">K:/pipelineISIS/work/observation.ini</subParameter>
-            </parameter>
-            <parameter name="variable">
-                <subParameter name="value" code="0">serie</subParameter>
+            <parameter name="section">
+                <subParameter name="value" code="0"></subParameter>
             </parameter>
             <parameter name="parameter">
                 <subParameter name="value" code="0">serie</subParameter>
             </parameter>
-            <parameter name="section">
+        </action>
+        <action name="ActionWindowCondition" comment="Si ISIS existe, on saute a ligne 6">
+            <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="condition">
+                <subParameter name="value" code="0">exists</subParameter>
+            </parameter>
+            <parameter name="title">
+                <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
+            </parameter>
+            <parameter name="ifFalse">
+                <subParameter name="action" code="0">do_nothing</subParameter>
+                <subParameter name="line" code="0"></subParameter>
+            </parameter>
+            <parameter name="xCoordinate">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="mode">
-                <subParameter name="value" code="0">singleParameter</subParameter>
+            <parameter name="height">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="processId">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="width">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="size">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="position">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="ifTrue">
+                <subParameter name="action" code="0">goto</subParameter>
+                <subParameter name="line" code="0">6</subParameter>
+            </parameter>
+            <parameter name="yCoordinate">
+                <subParameter name="value" code="0"></subParameter>
             </parameter>
         </action>
         <action name="ActionDetachedCommand" comment="Lance ISIS">
             <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="command">
                 <subParameter name="value" code="0">C:\Program Files (x86)\Isis\isis.exe</subParameter>
             </parameter>
@@ -89,25 +129,21 @@
             </parameter>
         </action>
         <action name="ActionWindowCondition" comment="Attend la fenetre ISIS">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="condition">
+                <subParameter name="value" code="0">exists</subParameter>
+            </parameter>
+            <parameter name="title">
+                <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
+            </parameter>
             <parameter name="ifFalse">
                 <subParameter name="action" code="0">wait</subParameter>
                 <subParameter name="line" code="0"></subParameter>
             </parameter>
-            <parameter name="size">
+            <parameter name="xCoordinate">
                 <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="width">
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="ifTrue">
-                <subParameter name="action" code="0">do_nothing</subParameter>
-                <subParameter name="line" code="0"></subParameter>
-            </parameter>
-            <parameter name="title">
-                <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
             </parameter>
             <parameter name="height">
                 <subParameter name="value" code="0"></subParameter>
@@ -115,73 +151,103 @@
             <parameter name="processId">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="xCoordinate">
+            <parameter name="width">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="yCoordinate">
+            <parameter name="size">
                 <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="condition">
-                <subParameter name="value" code="0">exists</subParameter>
             </parameter>
             <parameter name="position">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
+            <parameter name="ifTrue">
+                <subParameter name="action" code="0">do_nothing</subParameter>
+                <subParameter name="line" code="0"></subParameter>
+            </parameter>
+            <parameter name="yCoordinate">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
         </action>
-        <action name="ActionWindow" comment="Maximise">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
+        <action name="ActionWindow" comment="Mettre au premier plan">
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="resizeHeight">
-                <subParameter name="value" code="0">0</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="action">
+                <subParameter name="value" code="0">setForeground</subParameter>
             </parameter>
             <parameter name="title">
                 <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
             </parameter>
+            <parameter name="movePosition">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
+            </parameter>
+            <parameter name="resizeHeight">
+                <subParameter name="value" code="0">0</subParameter>
+            </parameter>
             <parameter name="resizeWidth">
                 <subParameter name="value" code="0">0</subParameter>
             </parameter>
+            <parameter name="useBorders">
+                <subParameter name="value" code="0">true</subParameter>
+            </parameter>
+        </action>
+        <action name="ActionWindow" comment="Maximise">
+            <exception id="33" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
+            <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="action">
                 <subParameter name="value" code="0">maximize</subParameter>
             </parameter>
+            <parameter name="title">
+                <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
+            </parameter>
             <parameter name="movePosition">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
+            </parameter>
+            <parameter name="resizeHeight">
+                <subParameter name="value" code="0">0</subParameter>
+            </parameter>
+            <parameter name="resizeWidth">
+                <subParameter name="value" code="0">0</subParameter>
             </parameter>
             <parameter name="useBorders">
                 <subParameter name="value" code="0">true</subParameter>
             </parameter>
         </action>
         <action name="ActionClick" comment="Clic Onglet Configuration" pauseBefore="100" pauseAfter="200">
-            <exception id="2" action="1" line=""/>
-            <exception id="32" action="0" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">887:45</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
-        <action name="ActionVariableCondition" comment="$serie=true   =&gt;  go ligne 10">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
+        <action name="ActionVariableCondition" comment="$serie=true   =&gt;  go ligne 12">
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="variable">
                 <subParameter name="value" code="0">serie</subParameter>
             </parameter>
@@ -191,7 +257,7 @@
             </parameter>
             <parameter name="ifEqual">
                 <subParameter name="action" code="0">goto</subParameter>
-                <subParameter name="line" code="0">10</subParameter>
+                <subParameter name="line" code="0">12</subParameter>
             </parameter>
             <parameter name="comparison">
                 <subParameter name="value" code="0">equal</subParameter>
@@ -201,101 +267,99 @@
             </parameter>
         </action>
         <action name="ActionClick" comment="Supression @pro=Oui" pauseBefore="100" pauseAfter="100">
-            <exception id="2" action="1" line=""/>
-            <exception id="32" action="0" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">709:471</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
-        <action name="ActionGoto" comment="Aller ligne 11">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
+        <action name="ActionGoto" comment="Aller ligne 13">
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="line">
-                <subParameter name="value" code="0">11</subParameter>
+                <subParameter name="value" code="0">13</subParameter>
             </parameter>
         </action>
         <action name="ActionClick" comment="Supression @pro=Non">
-            <exception id="2" action="1" line=""/>
-            <exception id="32" action="0" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">846:474</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionPause" comment="2 sec">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="unit">
-                <subParameter name="value" code="0">seconds</subParameter>
-            </parameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="duration">
                 <subParameter name="value" code="0">2</subParameter>
+            </parameter>
+            <parameter name="unit">
+                <subParameter name="value" code="0">seconds</subParameter>
             </parameter>
         </action>
         <action name="ActionFindImage" comment="Trouve onglet Instrument">
             <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="ifNotFound">
-                <subParameter name="action" code="0">wait</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="source">
+                <subParameter name="value" code="0">screenshot</subParameter>
+            </parameter>
+            <parameter name="searchExpansion">
+                <subParameter name="value" code="0">15</subParameter>
+            </parameter>
+            <parameter name="ifFound">
+                <subParameter name="action" code="0">do_nothing</subParameter>
                 <subParameter name="line" code="0"></subParameter>
-            </parameter>
-            <parameter name="method">
-                <subParameter name="value" code="0">correlationcoefficient</subParameter>
-            </parameter>
-            <parameter name="imageToSearchIn">
-                <subParameter name="value" code="0"></subParameter>
             </parameter>
             <parameter name="confidence">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="source">
-                <subParameter name="value" code="0">screenshot</subParameter>
-            </parameter>
-            <parameter name="imageToFind">
-                <subParameter name="value" code="0">$ongletInstrument</subParameter>
-            </parameter>
-            <parameter name="confidenceMinimum">
-                <subParameter name="value" code="0">70</subParameter>
+            <parameter name="downPyramidCount">
+                <subParameter name="value" code="0">1</subParameter>
             </parameter>
             <parameter name="searchDelay">
                 <subParameter name="value" code="0">100</subParameter>
+            </parameter>
+            <parameter name="ifNotFound">
+                <subParameter name="action" code="0">wait</subParameter>
+                <subParameter name="line" code="0"></subParameter>
             </parameter>
             <parameter name="windowRelativePosition">
                 <subParameter name="value" code="0">false</subParameter>
@@ -303,297 +367,297 @@
             <parameter name="maximumMatches">
                 <subParameter name="value" code="0">1</subParameter>
             </parameter>
-            <parameter name="ifFound">
-                <subParameter name="action" code="0">do_nothing</subParameter>
-                <subParameter name="line" code="0"></subParameter>
+            <parameter name="imageToSearchIn">
+                <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="downPyramidCount">
-                <subParameter name="value" code="0">1</subParameter>
+            <parameter name="method">
+                <subParameter name="value" code="0">correlationcoefficient</subParameter>
+            </parameter>
+            <parameter name="imageToFind">
+                <subParameter name="value" code="0">$ongletInstrument</subParameter>
             </parameter>
             <parameter name="windowName">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="searchExpansion">
-                <subParameter name="value" code="0">15</subParameter>
-            </parameter>
             <parameter name="position">
                 <subParameter name="value" code="0">pos_onglet_instrument</subParameter>
             </parameter>
+            <parameter name="confidenceMinimum">
+                <subParameter name="value" code="0">70</subParameter>
+            </parameter>
         </action>
         <action name="ActionClick" comment="Ouvre onglet Instrument">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="1">pos_onglet_instrument</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionClick" comment="Nombre image automatique">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">141:173</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionClick" comment="Nom de l'objet">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
+            </parameter>
+            <parameter name="action">
+                <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
             <parameter name="amount">
                 <subParameter name="value" code="0">1</subParameter>
             </parameter>
-            <parameter name="action">
-                <subParameter name="value" code="0">pressRelease</subParameter>
-            </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">366:210</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionKey" comment="efface ancien nom">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="type">
-                <subParameter name="value" code="0">win32</subParameter>
-            </parameter>
-            <parameter name="key">
-                <subParameter name="key" code="0">Backspace</subParameter>
-                <subParameter name="isQtKey" code="0">true</subParameter>
-            </parameter>
-            <parameter name="alt">
-                <subParameter name="value" code="0">false</subParameter>
-            </parameter>
-            <parameter name="pause">
-                <subParameter name="value" code="0">10</subParameter>
-            </parameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="ctrl">
-                <subParameter name="value" code="0">false</subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">30</subParameter>
-            </parameter>
-            <parameter name="action">
-                <subParameter name="value" code="0">pressRelease</subParameter>
-            </parameter>
-            <parameter name="shift">
                 <subParameter name="value" code="0">false</subParameter>
             </parameter>
             <parameter name="meta">
                 <subParameter name="value" code="0">false</subParameter>
             </parameter>
+            <parameter name="action">
+                <subParameter name="value" code="0">pressRelease</subParameter>
+            </parameter>
+            <parameter name="type">
+                <subParameter name="value" code="0">win32</subParameter>
+            </parameter>
+            <parameter name="alt">
+                <subParameter name="value" code="0">false</subParameter>
+            </parameter>
+            <parameter name="shift">
+                <subParameter name="value" code="0">false</subParameter>
+            </parameter>
+            <parameter name="pause">
+                <subParameter name="value" code="0">10</subParameter>
+            </parameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">30</subParameter>
+            </parameter>
+            <parameter name="key">
+                <subParameter name="key" code="0">Backspace</subParameter>
+                <subParameter name="isQtKey" code="0">true</subParameter>
+            </parameter>
         </action>
         <action name="ActionWriteText" comment="Nom objet">
             <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="text">
-                <subParameter name="value" code="0">$nom_objet</subParameter>
-            </parameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="noUnicodeCharacters">
                 <subParameter name="value" code="0">false</subParameter>
+            </parameter>
+            <parameter name="text">
+                <subParameter name="value" code="0">$nom_objet</subParameter>
             </parameter>
             <parameter name="pause">
                 <subParameter name="value" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionPause">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="unit">
-                <subParameter name="value" code="0">seconds</subParameter>
-            </parameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="duration">
                 <subParameter name="value" code="0">1</subParameter>
             </parameter>
+            <parameter name="unit">
+                <subParameter name="value" code="0">seconds</subParameter>
+            </parameter>
         </action>
         <action name="ActionClick" comment="Go production automatique image etalonnage">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">895:440</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionPause" comment="Attend que le bouton se grise">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="unit">
-                <subParameter name="value" code="0">seconds</subParameter>
-            </parameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
             <parameter name="duration">
                 <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="unit">
+                <subParameter name="value" code="0">seconds</subParameter>
             </parameter>
         </action>
         <action name="ActionFindImage" comment="attend bouton Go-Stop Traitement,  en cours c 'est grisé.">
             <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="ifNotFound">
-                <subParameter name="action" code="0">wait</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="source">
+                <subParameter name="value" code="0">screenshot</subParameter>
+            </parameter>
+            <parameter name="searchExpansion">
+                <subParameter name="value" code="0">15</subParameter>
+            </parameter>
+            <parameter name="ifFound">
+                <subParameter name="action" code="0">do_nothing</subParameter>
                 <subParameter name="line" code="0"></subParameter>
-            </parameter>
-            <parameter name="method">
-                <subParameter name="value" code="0">correlationcoefficient</subParameter>
-            </parameter>
-            <parameter name="imageToSearchIn">
-                <subParameter name="value" code="0"></subParameter>
             </parameter>
             <parameter name="confidence">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="source">
-                <subParameter name="value" code="0">screenshot</subParameter>
+            <parameter name="downPyramidCount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="searchDelay">
+                <subParameter name="value" code="0">100</subParameter>
+            </parameter>
+            <parameter name="ifNotFound">
+                <subParameter name="action" code="0">wait</subParameter>
+                <subParameter name="line" code="0"></subParameter>
+            </parameter>
+            <parameter name="windowRelativePosition">
+                <subParameter name="value" code="0">false</subParameter>
+            </parameter>
+            <parameter name="maximumMatches">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="imageToSearchIn">
+                <subParameter name="value" code="0"></subParameter>
+            </parameter>
+            <parameter name="method">
+                <subParameter name="value" code="0">correlationcoefficient</subParameter>
             </parameter>
             <parameter name="imageToFind">
                 <subParameter name="value" code="0">$boutonGoStopProcess</subParameter>
             </parameter>
-            <parameter name="confidenceMinimum">
-                <subParameter name="value" code="0">70</subParameter>
-            </parameter>
-            <parameter name="searchDelay">
-                <subParameter name="value" code="0">100</subParameter>
-            </parameter>
-            <parameter name="windowRelativePosition">
-                <subParameter name="value" code="0">false</subParameter>
-            </parameter>
-            <parameter name="maximumMatches">
-                <subParameter name="value" code="0">1</subParameter>
-            </parameter>
-            <parameter name="ifFound">
-                <subParameter name="action" code="0">do_nothing</subParameter>
-                <subParameter name="line" code="0"></subParameter>
-            </parameter>
-            <parameter name="downPyramidCount">
-                <subParameter name="value" code="0">1</subParameter>
-            </parameter>
             <parameter name="windowName">
                 <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="searchExpansion">
-                <subParameter name="value" code="0">15</subParameter>
             </parameter>
             <parameter name="position">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
+            <parameter name="confidenceMinimum">
+                <subParameter name="value" code="0">70</subParameter>
+            </parameter>
         </action>
         <action name="ActionClick" comment="Go traitement">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="positionOffset">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
-            </parameter>
-            <parameter name="amount">
-                <subParameter name="value" code="0">1</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="button">
+                <subParameter name="value" code="0">left</subParameter>
             </parameter>
             <parameter name="action">
                 <subParameter name="value" code="0">pressRelease</subParameter>
             </parameter>
-            <parameter name="button">
-                <subParameter name="value" code="0">left</subParameter>
+            <parameter name="amount">
+                <subParameter name="value" code="0">1</subParameter>
+            </parameter>
+            <parameter name="positionOffset">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
             <parameter name="position">
-                <subParameter name="unit" code="0">0</subParameter>
                 <subParameter name="value" code="0">156:409</subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
             </parameter>
         </action>
         <action name="ActionFindImage" comment="attend fenetre process OK">
             <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="ifNotFound">
-                <subParameter name="action" code="0">wait</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="source">
+                <subParameter name="value" code="0">screenshot</subParameter>
+            </parameter>
+            <parameter name="searchExpansion">
+                <subParameter name="value" code="0">15</subParameter>
+            </parameter>
+            <parameter name="ifFound">
+                <subParameter name="action" code="0">do_nothing</subParameter>
                 <subParameter name="line" code="0"></subParameter>
-            </parameter>
-            <parameter name="method">
-                <subParameter name="value" code="0">correlationcoefficient</subParameter>
-            </parameter>
-            <parameter name="imageToSearchIn">
-                <subParameter name="value" code="0"></subParameter>
             </parameter>
             <parameter name="confidence">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="source">
-                <subParameter name="value" code="0">screenshot</subParameter>
-            </parameter>
-            <parameter name="imageToFind">
-                <subParameter name="value" code="0">$FenetreProcessOK</subParameter>
-            </parameter>
-            <parameter name="confidenceMinimum">
-                <subParameter name="value" code="0">70</subParameter>
+            <parameter name="downPyramidCount">
+                <subParameter name="value" code="0">1</subParameter>
             </parameter>
             <parameter name="searchDelay">
                 <subParameter name="value" code="0">100</subParameter>
+            </parameter>
+            <parameter name="ifNotFound">
+                <subParameter name="action" code="0">wait</subParameter>
+                <subParameter name="line" code="0"></subParameter>
             </parameter>
             <parameter name="windowRelativePosition">
                 <subParameter name="value" code="0">false</subParameter>
@@ -601,53 +665,55 @@
             <parameter name="maximumMatches">
                 <subParameter name="value" code="0">1</subParameter>
             </parameter>
-            <parameter name="ifFound">
-                <subParameter name="action" code="0">do_nothing</subParameter>
-                <subParameter name="line" code="0"></subParameter>
+            <parameter name="imageToSearchIn">
+                <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="downPyramidCount">
-                <subParameter name="value" code="0">1</subParameter>
+            <parameter name="method">
+                <subParameter name="value" code="0">correlationcoefficient</subParameter>
+            </parameter>
+            <parameter name="imageToFind">
+                <subParameter name="value" code="0">$FenetreProcessOK</subParameter>
             </parameter>
             <parameter name="windowName">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
-            <parameter name="searchExpansion">
-                <subParameter name="value" code="0">15</subParameter>
-            </parameter>
             <parameter name="position">
                 <subParameter name="value" code="0"></subParameter>
             </parameter>
+            <parameter name="confidenceMinimum">
+                <subParameter name="value" code="0">70</subParameter>
+            </parameter>
         </action>
         <action name="ActionWindow" comment="Fermer ISIS">
-            <exception id="32" action="0" line=""/>
-            <exception id="2" action="1" line=""/>
             <exception id="33" action="0" line=""/>
-            <exception id="0" action="0" line=""/>
+            <exception id="32" action="0" line=""/>
             <exception id="1" action="0" line=""/>
-            <parameter name="resizeHeight">
-                <subParameter name="value" code="0">0</subParameter>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
+            <parameter name="action">
+                <subParameter name="value" code="0">close</subParameter>
             </parameter>
             <parameter name="title">
                 <subParameter name="value" code="0">ISIS - V5.9.7</subParameter>
             </parameter>
-            <parameter name="resizeWidth">
+            <parameter name="movePosition">
+                <subParameter name="value" code="0"></subParameter>
+                <subParameter name="unit" code="0">0</subParameter>
+            </parameter>
+            <parameter name="resizeHeight">
                 <subParameter name="value" code="0">0</subParameter>
             </parameter>
-            <parameter name="action">
-                <subParameter name="value" code="0">close</subParameter>
-            </parameter>
-            <parameter name="movePosition">
-                <subParameter name="unit" code="0">0</subParameter>
-                <subParameter name="value" code="0"></subParameter>
+            <parameter name="resizeWidth">
+                <subParameter name="value" code="0">0</subParameter>
             </parameter>
             <parameter name="useBorders">
                 <subParameter name="value" code="0">true</subParameter>
             </parameter>
         </action>
         <action name="ActionExit">
-            <exception id="2" action="1" line=""/>
-            <exception id="0" action="0" line=""/>
             <exception id="1" action="0" line=""/>
+            <exception id="0" action="0" line=""/>
+            <exception id="2" action="1" line=""/>
         </action>
     </script>
 </scriptfile>

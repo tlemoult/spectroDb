@@ -336,3 +336,19 @@ def getRequestToObserve(db):
 	query+="LEFT join object on RequestToObserveList.objectId=object.objectId "
 	query+="LEFT join project on RequestToObserveList.projectId=project.projectId"
 	return commit_query_sql_All_table(db,query)
+
+def getListRemoveWork(db,obsId):
+	query="select CONCAT(CONCAT(path,'/'),filename) from fileSpectrum where obsId = %d order by filename"%(obsId)
+	cursorSpcFiles=commit_query_sql_All_table(db,query)
+	query="select CONCAT(CONCAT(destDir,'/'),filename) from fileName where fileName.phase = 'data' and obsId=%d order by filename"%(obsId) 
+	cursorOtherFiles=commit_query_sql_All_table(db,query)
+	return (cursorSpcFiles,cursorOtherFiles)
+
+def removeWork(db,obsId):
+	query="delete from fileSpectrum where obsId = %d"%(obsId)
+	commit_insert_sql(db,query)
+
+	query="delete from fileName where fileName.phase = 'data' and obsId=%d"%(obsId) 
+	commit_insert_sql(db,query)
+
+	return

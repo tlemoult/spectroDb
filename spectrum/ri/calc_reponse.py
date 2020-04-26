@@ -62,6 +62,8 @@ def load_spc_multi(pathGlob,debug=False):
                 if 'BSS_ORD' in H.keys():
                     order=file.split(H['BSS_ORD'])[1].split('.')[0]
                     name='P_1B_'+order
+                else:
+                    name='P_1B_FULL'
             elif hdu.name.startswith('P_1B_'):
                 #if hdu.name=='P_1B_FULL':
                 #    continue
@@ -285,7 +287,10 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=False,
     if name=="P_1B_FULL":
         lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
     else:
-        lam_filter,coef_reponse_filt= polyfit_spectrum(lam_obs2,coef_response,[],4)
+        lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
+
+#        lam_filter,coef_reponse_filt= polyfit_spectrum(lam_obs2,coef_response,[],4)
+
 
     flux_restore = flux_obs_lin/coef_reponse_filt
 
@@ -338,7 +343,7 @@ print("\nCalc Response")
 calcRiConf=config['calcRiConf']
 ri=dict([])
 for lam_obs,flux_obs,name in observationLst:
-    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=True,enable_save_plot=False))
+    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=True,enable_save_plot=True))
 
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
 print("\nRescale value")

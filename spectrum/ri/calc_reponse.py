@@ -40,7 +40,7 @@ def describe_spc_multiplan(file):
         print("----------------")
 
 
-def load_spc_multi(pathGlob,debug=False):
+def load_spc_multi(pathGlob,debug=True):
     """
     Load a spectrums than match pathGlob.
     return a list of triplet  (nArray for wavelenth in Angstrum , Intensity , name)
@@ -240,15 +240,9 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=False,
 
     print(f'{name},',end='',flush=True)
 
-    #reso_element_low, reso_element_high, reso_final = 6., 0.05, 18
-    #lam_excluded=[(4318,4370),(4820,4900),(5266,5273),(5271,5278),(6345,6350),
-    #               (6368,6374),(6525,6600),(6864,6925.5)]
-
     reso_element_low=calcRiConf['reso_element_low']
     reso_element_high=calcRiConf['reso_element_high']
-    reso_final=calcRiConf['reso_final']
     lam_excluded=calcRiConf['lam_excluded']
-    #lam_excluded=[]
 
     #print(f'len(lam_obs)={len(lam_obs)}  len(flux_obs)={len(flux_obs)}')
     if len(lam_obs)+1==len(flux_obs):
@@ -259,39 +253,41 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=False,
     if debug:
         display_value_spc(lam_obs,flux_obs)
 
-    # For final :: linearize the standard and the object to have same resolution & # get same limit..
+    #  linearize the standard and the object to have same resolution & # get same limit..
     lam_std_lin,flux_std_lin=lin(lam_std,lam_obs.min(),lam_obs.max(),flux_std, reso_element_high) 
     lam_obs_lin,flux_obs_lin=lin(lam_obs,lam_obs.min(),lam_obs.max(),flux_obs, reso_element_high)
     if debug:
         display_value_spc(lam_obs_lin,flux_obs_lin)
 
-    #cut line in spectrum
-    lam_std_cut,flux_std_cut = cut_spectrum(lam_std,flux_std,lam_excluded)
-    lam_obs_cut,flux_obs_cut = cut_spectrum(lam_obs,flux_obs,lam_excluded)
-    #lam_obs_cut,flux_obs_cut = polyfit_spectrum(lam_obs,flux_obs,lam_excluded,4)
-    if debug:
-        display_value_spc(lam_obs_cut,flux_obs_cut)
+    # filter to get  same resolution:
+    lam_std2,flux_std2=low_res_gaus(lam_std_lin,flux_std_lin,reso_element_low)
+    lam_obs2,flux_obs2=low_res_gaus(lam_obs_lin,flux_obs_lin,reso_element_low)
 
-    #linearize the standard and the object to have same resolution & # get same limit..
-    lam_std1,flux_std1=lin(lam_std_cut,lam_obs.min(),lam_obs.max(),flux_std_cut, reso_element_high) 
-    lam_obs1,flux_obs1=lin(lam_obs_cut,lam_obs.min(),lam_obs.max(),flux_obs_cut, reso_element_high)
-
-    #reduce the resolution to get rid of the absorption lines
-    lam_std2,flux_std2 = low_res_median(lam_std1,flux_std1,reso_element_low)
-    lam_obs2,flux_obs2 = low_res_median(lam_obs1,flux_obs1,reso_element_low)
-
-
-    #calculating the sensitivity curve
+    # calc response
     coef_response=flux_obs2/flux_std2
-    #filter RI
+    print("len coef_response = "+str(len(coef_response)))
+
+    #cut line in response
+    lam_response_cut,coef_response_cut = cut_spectrum(lam_obs2,coef_response,lam_excluded)
+    print("len coef_response_cut = "+str(len(coef_response_cut)))
+
+    #linearise
+    lam_response_cut_lin,coef_response_cut_lin=lin(lam_response_cut,lam_response_cut.min(),lam_response_cut.max(),coef_response_cut,reso_element_high)
+
+    #filter RI    ()
     if name=="P_1B_FULL":
-        lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
+        lam_filter,coef_reponse_filt= low_res_gaus(lam_response_cut_lin,coef_response_cut_lin,calcRiConf['finalFilter']['parameter'])
     else:
-        lam_filter,coef_reponse_filt= low_res_gaus(lam_obs2,coef_response,reso_final)
+        if calcRiConf['finalFilter']['type']=="poly":
+            print("apply polynomial fit")
+            lam_filter,coef_reponse_filt= polyfit_spectrum(lam_response_cut_lin,coef_response_cut_lin,calcRiConf['finalFilter']['parameter'])
+        else:
+            # default filter is gauss
+            print("apply gaussian filter")
+            lam_filter,coef_reponse_filt= low_res_gaus(lam_response_cut_lin,coef_response_cut_lin,calcRiConf['finalFilter']['parameter'])
 
-#        lam_filter,coef_reponse_filt= polyfit_spectrum(lam_obs2,coef_response,[],4)
 
-
+    # applique la RI sur l'observation pour vérifier la qualitée de la RI.
     flux_restore = flux_obs_lin/coef_reponse_filt
 
     #plot all
@@ -300,15 +296,15 @@ def calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=False,
         fig1.set_size_inches(16, 10)
         fig1.suptitle('RI for '+name)
         ax_obs.set_title('observation without RI')
-        ax_obs.plot(lam_obs,flux_obs,'r-',lam_obs1,flux_obs1,'k-',lam_obs2,flux_obs2,'b-')
+        ax_obs.plot(lam_obs,flux_obs,'r-',lam_obs_lin,flux_obs_lin,'k-',lam_obs2,flux_obs2,'b-')
         ax_obs.set_ylim(bottom=0)
 
         ax_std.set_title('reference spectrum')
-        ax_std.plot(lam_std_lin,flux_std_lin,'r-',lam_std_lin,flux_std1,'k-',lam_std_lin,flux_std2,'b-')
+        ax_std.plot(lam_std_lin,flux_std_lin,'r-',lam_std_lin,flux_std_lin,'k-',lam_std_lin,flux_std2,'b-')
         ax_std.set_ylim(bottom=0)
 
         ax_resp.set_title('RI')
-        ax_resp.plot(lam_obs2,coef_response,'r-',lam_obs2,coef_reponse_filt,'k')
+        ax_resp.plot(lam_obs2,coef_response,'b-',lam_response_cut_lin,coef_response_cut_lin,'r-',lam_filter,coef_reponse_filt,'k')
         ax_resp.set_ylim(bottom=0)
 
         ax_restore.set_title('observation+RI vs reference')
@@ -343,7 +339,7 @@ print("\nCalc Response")
 calcRiConf=config['calcRiConf']
 ri=dict([])
 for lam_obs,flux_obs,name in observationLst:
-    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=True,enable_save_plot=True))
+    ri.update( calc_RI(lam_obs,flux_obs,name,lam_std,flux_std,calcRiConf,enable_plot=True,enable_save_plot=False))
 
 #TODO, renormer... pour un maximum de RI global et par ordre a environ 1.
 print("\nRescale value")

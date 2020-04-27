@@ -18,23 +18,22 @@ def archiveProcessedFiles(src,dst):
     shutil.rmtree(dst+"/calib",ignore_errors=True)
     shutil.copytree(src+"/calib",dst+"/calib")
 
+    fileList=os.listdir(src)
     interrestingFileList=[]
-    series=False
-    for f in os.listdir(src):
-        if f.endswith('.xml') or f.endswith('.log'):
-            interrestingFileList.append(f)
-            continue
 
+    series=False
+    for f in fileList:
         if f.startswith("@pro") :
             interrestingFileList.append(f)
             series=True
-            continue
-        
-        if f.startswith('_'):
+    print("series="+str(series))
+
+    for f in fileList:
+        if f.endswith('.xml') or f.endswith('.log') or f.startswith('observation.json'):
             interrestingFileList.append(f)
             continue
-
-        if f.startswith('observation.json'):
+        
+        if (not series) and f.startswith('_'):  # we exclude cummulated exposure, if we have a serie.
             interrestingFileList.append(f)
             continue
 
@@ -73,9 +72,6 @@ json_text=open("../python/config/config.json").read()
 config=json.loads(json_text)
 path=config['path']
 racineArchive=path['archive']
-
-#source raw path
-PathPipelineSrcRaw=path['eShelPipeFastWork']+'/raw'
 
 #source Calib path
 PathPipelineSrcCalib=path['eShelPipeFastWork']+'/calib'

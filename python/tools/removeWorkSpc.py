@@ -20,3 +20,5 @@ answer = raw_input("are you sure to delete from database these files ?   Y/N  O/
 if answer=='Y' or answer=='O':
     print("delete files...")
     dbSpectro.removeWork(db,obsId)
+
+dbSpectro.update_observation_status(db,obsId,'ACQFINISH')

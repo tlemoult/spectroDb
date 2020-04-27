@@ -19,6 +19,7 @@ def archiveProcessedFiles(src,dst):
     shutil.copytree(src+"/calib",dst+"/calib")
 
     interrestingFileList=[]
+    series=False
     for f in os.listdir(src):
         if f.endswith('.xml') or f.endswith('.log'):
             interrestingFileList.append(f)
@@ -26,6 +27,7 @@ def archiveProcessedFiles(src,dst):
 
         if f.startswith("@pro") :
             interrestingFileList.append(f)
+            series=True
             continue
         
         if f.startswith('_'):
@@ -47,15 +49,15 @@ def convertJSONtoINI(sourcePath,destinationPath):
     jsonTable=json.loads(jsonObs)
     objname=jsonTable['target']['objname'][0]
     try:
-        serie=jsonTable['obsConfig']['Serie']
+        series=jsonTable['obsConfig']['Series']
     except:
         #default value, if not defined in JSON file
-        serie='false'
+        series='false'
 
-    print("Generate ini parameters filename",destinationPath,'object name = "'+objname+'"  serie = '+serie)
+    print("Generate ini parameters filename",destinationPath,'object name = "'+objname+'"  series = '+series)
     f = open(destinationPath,"w")
     f.write("objname="+objname+"\n")
-    f.write("serie="+serie+"\n")
+    f.write("series="+series+"\n")
     f.close()
 
 if len(sys.argv)<2:
@@ -89,7 +91,7 @@ PathObservationINI=eShelPipeFastWork+"/observation.ini"
 
 
 loopSleepTime=1
-
+relPathTools='../python/tools'
 
 print("process command line argument")
 if len(sys.argv)==2:
@@ -127,7 +129,11 @@ for obsId in obsIds:
             shutil.rmtree(p)
 
     orgPath=os.getcwd()
-    os.chdir('../python/tools')
+    os.chdir(relPathTools)
+    print("Fill observation RAW Calib files")
+    os.system("python fillObservationRawCalib.py "+str(obsId))
+
+    print("Get Raw spectrum")
     os.system("python get-raw-obs.py"+" "+str(obsId)+" "+eShelPipeFastWork)
     os.chdir(orgPath)
 
@@ -151,20 +157,20 @@ for obsId in obsIds:
 
     print("END of ISIS pipeline")
 
+    print("**** Integrate processed spectrum in data base")
 
+    now = datetime.now()
+    strDate = now.strftime("%Y-%m-%d-%H-%M-%S")
+    logFile = racineArchive+"/log/in.processed."+strDate+".log"
+    errFile = racineArchive+"/log/in.processed."+strDate+".err"
+    cmdProcess="python in-processed.py "+eShelPipeProcessedRoot+" >"+logFile+" 2> "+errFile
+    orgPath=os.getcwd()
+    os.chdir(relPathTools)
+    print(cmdProcess)
+    os.system(cmdProcess)
+    os.chdir(orgPath)
 
-print("**** Integrate processed spectrum in data base")
-
-now = datetime.now()
-strDate = now.strftime("%Y-%m-%d-%H-%M-%S")
-logFile = racineArchive+"/log/in.processed."+strDate+".log"
-errFile = racineArchive+"/log/in.processed."+strDate+".err"
-
-cmd="python in-processed.py "+eShelPipeProcessedRoot+" delete "
-cmd+="> "+logFile+" 2> "+errFile
-os.chdir('../python/tools')
-print(cmd)
-os.system(cmd)
-
+    print("delete iSIS work files")
+    shutil.rmtree(eShelPipeProcessed)
 
 

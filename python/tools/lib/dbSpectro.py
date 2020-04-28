@@ -209,6 +209,16 @@ def getFilesSpcPerObjId(db,objId,orderNo):
 	query+=""" and fileSpectrum.orderNo like '%s' """%orderNo
 	return commit_query_sql_All_table(db,query)
 
+def getFilesSpcPerObjIdDate(db,objId,orderNo,dateStart,dateStop):
+	query="select fileSpectrum.path,fileSpectrum.filename,fileSpectrum.dateObs from fileSpectrum"
+	query+=" left join observation on fileSpectrum.obsId=observation.obsId "
+	query+=" left join object on observation.objId=object.objectId"
+	query+=" where object.objectId=%d "%objId
+	query+=" and fileSpectrum.dateObs > '%s' and fileSpectrum.dateObs < '%s'"%(dateStart,dateStop)
+	query+=""" and fileSpectrum.orderNo like '%s' """%orderNo
+	return commit_query_sql_All_table(db,query)
+
+
 def getAllFileIdFileName(db,fileTypeList):
 	query="select fileId,phase,destDir,filename from fileName"
 	query+=""" where filetype in (%s)"""%fileTypeList

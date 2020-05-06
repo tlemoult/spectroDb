@@ -5,12 +5,12 @@ from datetime import datetime
 import sys
 import os
 import shutil
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import glob
 import lib.dbSpectro as dbSpectro
 import lib.cds as cds  # mes modules
 
-print "Robot extrait les fichiers spectres traite"
+print("Robot extrait les fichiers spectres traite")
 
 if len(sys.argv) < 3:
     print("nombre d'argument incorrect")
@@ -23,7 +23,7 @@ if len(sys.argv) < 3:
     exit(1)
 
 db = dbSpectro.init_connection()
-print "len(sys.argv)=" , len(sys.argv)
+print("len(sys.argv)=" , len(sys.argv))
 if len(sys.argv)>8 and sys.argv[3] == 'orderNo' and sys.argv[6] == 'date':
     orderNo=sys.argv[4]
     destPath = sys.argv[5]
@@ -41,20 +41,20 @@ else:
     dateStop='3000'
 
 
-print("sys.argv[1] = "+sys.argv[1])
-print("orderNo = "+str(orderNo))
-print("dateStart = " + dateStart + "dateStop = " + dateStop)
-print("destPath = "+destPath)
+print(("sys.argv[1] = "+sys.argv[1]))
+print(("orderNo = "+str(orderNo)))
+print(("dateStart = " + dateStart + "dateStop = " + dateStop))
+print(("destPath = "+destPath))
 
 
 if sys.argv[1] == 'obsId':
-    print("obsId="+str(sys.argv[2]))
+    print(("obsId="+str(sys.argv[2])))
     fileList = dbSpectro.getFilesSpcPerObsId(db, int(sys.argv[2]),orderNo)
 elif sys.argv[1] == 'objectId':
-    print("objectId="+str(sys.argv[2]))
+    print(("objectId="+str(sys.argv[2])))
     fileList = dbSpectro.getFilesSpcPerObjIdDate(db, int(sys.argv[2]),orderNo,dateStart,dateStop)
 else:
-    print("argument " + sys.argv[1] + " incorrect utiliser ObsId ou objectId")
+    print(("argument " + sys.argv[1] + " incorrect utiliser ObsId ou objectId"))
     db.close()
     exit(1)
 
@@ -64,8 +64,8 @@ config = json.loads(json_text)
 PathBaseSpectro = config['path']['archive'] + '/archive'
 
 
-print("dossier source = "+ PathBaseSpectro)
-print("dossier destination = "+ destPath)
+print(("dossier source = "+ PathBaseSpectro))
+print(("dossier destination = "+ destPath))
 
 print("-----------------------")
 
@@ -74,7 +74,7 @@ for f in fileList:
     i = i + 1
     fileSource = PathBaseSpectro + f[0] + '/' + f[1]
     fileDest = destPath + f[1]
-    print("fileSource = " + fileSource + "-->fileDest = " + fileDest)
+    print(("fileSource = " + fileSource + "-->fileDest = " + fileDest))
     shutil.copy(fileSource, fileDest)
-print(str(i) + " files extracted")
+print((str(i) + " files extracted"))
 db.close()

@@ -10,18 +10,18 @@ def init_connection():
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
 	db= MySQLdb.connect(config['db']['host'],config['db']['userName'],config['db']['password'],config['db']['dataBase'])
-	print 'Init db connection, host=%s dataBase=%s'%(config['db']['host'],config['db']['dataBase'])	
+	print('Init db connection, host=%s dataBase=%s'%(config['db']['host'],config['db']['dataBase']))	
 	return db
 
 def setLogLevel(n):
 	global logLevel
-	print "loglevel=",n
+	print("loglevel=",n)
 	logLevel=n
 	return 1
 
 def commit_query_sql(db,query):
 	global logLevel
-	if logLevel>2: print query
+	if logLevel>2: print(query)
 	cursor=db.cursor()
 	cursor.execute(query)
 	line=cursor.fetchone()
@@ -32,7 +32,7 @@ def commit_query_sql(db,query):
 
 def commit_query_sql_table(db,query):
 	global logLevel
-	if logLevel>2: print query
+	if logLevel>2: print(query)
 	cursor=db.cursor()
 	cursor.execute(query)
 	line=cursor.fetchone()
@@ -43,7 +43,7 @@ def commit_query_sql_table(db,query):
 
 def commit_query_sql_All_table(db,query):
 	global logLevel
-	if logLevel>2: print query
+	if logLevel>2: print(query)
 	cursor=db.cursor()
 	cursor.execute(query)
 	return cursor
@@ -67,7 +67,7 @@ def getObjName_fromRaDec(db,alpha,delta):
 def getDirectory_from_STRdate(db,date):
 	query='SELECT destDir,obsId FROM fileName where phase="RAW" and filetype="OBJECT" and date="%s"'%(date.replace('T',' ')[:19])
 	result=commit_query_sql_table(db,query)
-	print "result",result
+	print("result",result)
 	if result=='None':
 		return {}
 
@@ -78,16 +78,16 @@ def getDirectory_from_STRdate(db,date):
 		
 def commit_insert_sql(db,sql):
 	global logLevel
-	print "logLevel=",logLevel
-	if logLevel>2: print "insert sql=",sql,
+	print("logLevel=",logLevel)
+	if logLevel>2: print("insert sql=",sql, end=' ')
 	cursor=db.cursor()
 	try:
 		cursor.execute(sql)
 		db.commit()
-		if logLevel>2: print '  insert (OK)'
+		if logLevel>2: print('  insert (OK)')
 		return True
 	except:
-		print '  insert (ERROR)'
+		print('  insert (ERROR)')
 		db.rollback()
 		return False
 
@@ -96,7 +96,7 @@ def update_Obj_info(db,cdsInfo,objID):
 
 	sql="""UPDATE object SET """
 	for k in ['bayerName','noHD','alpha','delta','OTYPE_V','FLUX_V','FLUX_B','FLUX_R','FLUX_K','FLUX_H','RV_VALUE','SP_TYPE','SP_QUAL','MK_Spectral_type']:
-		if k in cdsInfo.keys():   # la clek existe
+		if k in list(cdsInfo.keys()):   # la clek existe
 			if cdsInfo[k]!=None:   # elle n est pas vide
 				if type(cdsInfo[k])==type(" "):
 					sql+=k+"='"+str(cdsInfo[k])+"',"   # type string
@@ -115,11 +115,11 @@ def update_comment_obsId(db,obsId,comment):
 def insert_Alias(db,objIdbyCoord,objName):
 	query="""SELECT * from objalias where objId=%d and alias like '%s'"""%(objIdbyCoord,objName)
 	if commit_query_sql(db,query)==0:
-		print "   ajoute le nouveau alias : ",objName
+		print("   ajoute le nouveau alias : ",objName)
 		sql="""INSERT INTO objalias(objId,alias) VALUES ('%d','%s')"""%(objIdbyCoord,objName)
 		commit_insert_sql(db,sql)
 	else:
-		print "   alias ",objName," deja connus"
+		print("   alias ",objName," deja connus")
 
 def insert_Project(db,ProjectName):
 	sql="""INSERT INTO project(name) VALUES ('%s')"""%(ProjectName)
@@ -148,7 +148,7 @@ def insert_request_observation_with_name(db,ProjectName,objName,alpha,delta,prio
 	objIdbyName=getObjId_fromObjName(db,objName)
 	if objIdbyName!=0:
 		# objet connus par son nom
-		print "Object connus par son nom ",objName
+		print("Object connus par son nom ",objName)
 		isNewObject=False
 		objId=objIdbyName
 	
@@ -156,19 +156,19 @@ def insert_request_observation_with_name(db,ProjectName,objName,alpha,delta,prio
 		objIdbyCoord=getObjId_fromRaDec(db,alpha,delta)
 		if objIdbyCoord!=0:
 			# object connus par ses coordonnes
-			print "objet connus sous ces coordonnes",alpha,delta		
+			print("objet connus sous ces coordonnes",alpha,delta)		
 			isNewObject=False
 			ObjNameFromRaDec=getObjName_fromRaDec(db,alpha,delta)
 			if objName!=ObjNameFromRaDec:
-				print "nouveau nom "+objName+" pour l objet connus sous le nom de "+ObjNameFromRaDec
+				print("nouveau nom "+objName+" pour l objet connus sous le nom de "+ObjNameFromRaDec)
 				insert_Alias(db,objIdbyCoord,objName)
 			else:
-				print "Nom deja en base"
+				print("Nom deja en base")
 			objId=objIdbyCoord
 
 		else:
 			# object nouveau
-			print "nouvel object en base suivant les coordonnes",alpha,delta
+			print("nouvel object en base suivant les coordonnes",alpha,delta)
 			isNewObject=True
 			insert_Obj(db,objName,0,alpha,delta)
 			objId=getObjId_fromRaDec(db,alpha,delta)
@@ -176,11 +176,11 @@ def insert_request_observation_with_name(db,ProjectName,objName,alpha,delta,prio
 	# verifie le projet
 	projectId=getProjectId_fromProjectName(db,ProjectName)
 	if projectId==0:
-		print "Projet",ProjectName,"nouveau, on le cree en base"
+		print("Projet",ProjectName,"nouveau, on le cree en base")
 		insert_Project(db,ProjectName)
 		projectId=getProjectId_fromProjectName(db,ProjectName)
 	else:
-		print "Projet",ProjectName,"connus"
+		print("Projet",ProjectName,"connus")
 
 	# insertion de l observation
 	insert_request_observation(db,projectId,objId,priority,exposure)
@@ -228,7 +228,7 @@ def getFile_from_type_obsId(db,objId,fileTypeList):
 	query="select fileName.obsId,fileName.serieId,fileName.destDir,fileName.filename from fileName"
 	query+=" left join observation on fileName.obsId=observation.obsId"
 	query+=""" where observation.objId=%d and fileName.filetype in (%s)"""%(objId,fileTypeList)
-	print query
+	print(query)
 	return commit_query_sql_All_table(db,query)
 
 def getFilesSpcPerObsId(db,obsId,orderNo):
@@ -299,12 +299,12 @@ def update_observation_status(db,obsId,status):
 
 def insert_filename_meta(db,meta):
 
-	if 'obsId' not in meta.keys():
-		print "ignore this, obsId not defined."+ json.dumps(meta,sort_keys=True, indent=4)
+	if 'obsId' not in list(meta.keys()):
+		print("ignore this, obsId not defined."+ json.dumps(meta,sort_keys=True, indent=4))
 		return
 
 	if meta['fileType']=='1DSPECTRUM':
-		if 'BSS_ORD' in meta.keys():
+		if 'BSS_ORD' in list(meta.keys()):
 			orderSuffix="'"+meta['destinationBSS_ORD']+"'"
 		else:
 			orderSuffix='NULL'
@@ -318,15 +318,15 @@ def insert_filename_meta(db,meta):
 		return commit_insert_sql(db,sql)
 
 	else:
-		print "normal file destinationFile="+ meta['destinationFilename']
+		print("normal file destinationFile="+ meta['destinationFilename'])
 
-		if 'detector' in meta.keys(): detector="'"+meta['detector']+"'" 	
+		if 'detector' in list(meta.keys()): detector="'"+meta['detector']+"'" 	
 		else:  detector='NULL'
-		if 'tempCCD' in meta.keys(): tempCCD=meta['tempCCD'] 				
+		if 'tempCCD' in list(meta.keys()): tempCCD=meta['tempCCD'] 				
 		else: tempCCD='NULL'
-		if 'binning' in meta.keys(): binning="'"+meta['binning']+"'"		
+		if 'binning' in list(meta.keys()): binning="'"+meta['binning']+"'"		
 		else: binning='NULL'
-		if 'expTime' in meta.keys(): expTime=str(meta['expTime'])
+		if 'expTime' in list(meta.keys()): expTime=str(meta['expTime'])
 		else: expTime='NULL'
 
 		sql="""INSERT INTO fileName(obsId,filename,destDir,expTime,"""

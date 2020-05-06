@@ -38,7 +38,7 @@ def getHD_and_BayerIdentifier(obj):
 				break
 
 	except:
-		print "Except getHD_and_BayerIdentifier "
+		print("Except getHD_and_BayerIdentifier ")
 	return d
 	
 
@@ -48,7 +48,7 @@ def getVizier():
 	result = v.query_object("omi and",catalog=["II/237"])
 	#print result
 	for r in result:
-		print r
+		print(r)
 
 def getsimbadMesurement(obj):
 #	print Simbad.list_votable_fields()
@@ -102,12 +102,12 @@ def getsimbadMesurement(obj):
 	return d
 	
 def testget(obj):
-	print "obj=",obj,
-	print " Coord:",getCoord(obj),
-	print " HD,bayer=",getHD_and_BayerIdentifier(obj)
+	print("obj=",obj, end=' ')
+	print(" Coord:",getCoord(obj), end=' ')
+	print(" HD,bayer=",getHD_and_BayerIdentifier(obj))
 
 def test_cds():
-	print "getSimbad:",getsimbadMesurement("del cep")
+	print("getSimbad:",getsimbadMesurement("del cep"))
 	#print "getSimbad:",getsimbadMesurement("Mss1")
 	testget("del cas")
 	#testget("omi and")

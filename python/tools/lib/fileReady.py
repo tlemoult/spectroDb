@@ -15,7 +15,7 @@ def is_locked(filepath):
             if file_object:
                 #print "%s is not locked." % filepath
                 locked = False
-        except IOError, message:
+        except IOError as message:
             #print "File is locked (unable to open in append mode). %s." % message
             locked = True
         finally:
@@ -23,7 +23,7 @@ def is_locked(filepath):
                 file_object.close()
                 #print "%s closed." % filepath
     else:
-        print "%s not found." % filepath
+        print("%s not found." % filepath)
     return locked
 
 def wait_for_files(filepaths):
@@ -37,18 +37,18 @@ def wait_for_files(filepaths):
         # If the file doesn't exist, wait wait_time seconds and try again
         # until it's found.
         while not os.path.exists(filepath):
-            print "%s hasn't arrived. Waiting %s seconds." % \
-                  (filepath, wait_time)
+            print("%s hasn't arrived. Waiting %s seconds." % \
+                  (filepath, wait_time))
             time.sleep(wait_time)
         # If the file exists but locked, wait wait_time seconds and check
         # again until it's no longer locked by another process.
         while is_locked(filepath):
-            print "%s is currently in use. Waiting %s seconds." % \
-                  (filepath, wait_time)
+            print("%s is currently in use. Waiting %s seconds." % \
+                  (filepath, wait_time))
             time.sleep(wait_time)
 
 # Test
 if __name__ == '__main__':
     files = [r"C:\testfolder\testfile1.txt",
              r"C:\testfolder\testfile2.txt"]
-    print "wait_for_files(files)<br>"
+    print("wait_for_files(files)<br>")

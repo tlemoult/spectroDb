@@ -3,7 +3,7 @@ from os import walk
 from os import listdir
 from os.path import isfile, join
 
-import urllib,glob
+import urllib.request, urllib.parse, urllib.error,glob
 import astropy.io.fits as fits
 from astropy.time import Time
 
@@ -38,7 +38,7 @@ def parseXmlISIS(path,filename,ret):
 	ret.update(xmlDict)
 
 	ret['dateObs']="unknow"
-	for spectroType in xmlDict.keys():   # find dateObs from first RAW file
+	for spectroType in list(xmlDict.keys()):   # find dateObs from first RAW file
 		fileNameImg=xmlDict[spectroType]['GenericName']+'1.fits'
 		#print "fileNameImg",fileNameImg 
 		s=filename.split('_')
@@ -47,16 +47,16 @@ def parseXmlISIS(path,filename,ret):
 			header=hdu[0].header
 			ret['dateObs']=header['DATE-OBS'][:19]
 		except:
-			print "can't open Image file: "+fileNameImg
+			print("can't open Image file: "+fileNameImg)
 			try:
 				rootfileName='_'+s[1]+'_'+s[2]+'_'+s[3]+'_'
-				print "looking for rootfileName="+rootfileName
+				print("looking for rootfileName="+rootfileName)
 				fileNameSpec = [f for f in listdir(path) if isfile(join(path, f)) and f.startswith(rootfileName) and f.endswith('.fits')][0]
 				hdu=fits.open(path+'/'+fileNameSpec)
 				header=hdu[0].header
 				ret['dateObs']=header['DATE-OBS'][:19]
 			except:
-				print "can't open Image file: so, can't find obstime for "+filename
+				print("can't open Image file: so, can't find obstime for "+filename)
 
 		if spectroType!="eShel":
 			ret['Response']=xmlDict[spectroType]['ResponseFile']
@@ -85,14 +85,14 @@ def parseLogFileISIS(path,filename,ret):
 ## TODO   corriger le nom de l o'bjet a partir de ce que l'on en base de donnee.
 def getMetaDataFiles(srcPath,filenames,tmpPath):
 
-	print("getMetaDataFiles: /n  srcPath = "+srcPath)
-	print("  filenames = "+str(filenames))
+	print(("getMetaDataFiles: /n  srcPath = "+srcPath))
+	print(("  filenames = "+str(filenames)))
 
 	if srcPath.endswith('/calib') or srcPath.endswith('\calib'):
 		return calibProcess(srcPath,tmpPath)
 
 	# ce n'est pas un dossier de calib ISIS, on regarde
-	print "****** Enter Directory "+srcPath+"  **********"
+	print("****** Enter Directory "+srcPath+"  **********")
 	metasReturn={}
 	responseFound=False
 	for filename in filenames:
@@ -105,7 +105,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 		if filename.endswith('.xml') and filename.startswith('_'):  # probablement un fichier de conf isis
 			metasReturn[filename]=parseXmlISIS(srcPath,filename,ret)
 			#rint metasReturn[filename]
-			if 'eShel' in metasReturn[filename].keys():   # c est un spectro eShel, la reponse na pas besoin d etre trouve,  elle est le dossier calib
+			if 'eShel' in list(metasReturn[filename].keys()):   # c est un spectro eShel, la reponse na pas besoin d etre trouve,  elle est le dossier calib
 				responseFound=True
 			else:
 				fileResponse=""  # ce n est pas un xml type eShel, on regarde quelle est la reponse instrumentale
@@ -132,7 +132,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			header=hdu[0].header
 			ret['naxis1']=header['NAXIS1']
 
-			if 'DATE-OBS' in header.keys():
+			if 'DATE-OBS' in list(header.keys()):
 				if header['DATE-OBS']!="":
 					ret['dateObs']=header['DATE-OBS']
 				else:
@@ -140,16 +140,16 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 			else:
 				ret['dateObs']="unknow"
 				#ret['dateObs2']=Time(header['DATE-OBS'],format='isot', scale='utc')
-			if 'EXPTIME' in header.keys():
+			if 'EXPTIME' in list(header.keys()):
 				ret['expTime']=header['EXPTIME']
-			elif 'EXPOSURE' in header.keys(): 		
+			elif 'EXPOSURE' in list(header.keys()): 		
 				ret['expTime']=header['EXPOSURE']
 
-			if 'OBJNAME' in header.keys():			ret['objName']=header['OBJNAME']
-			if 'DETNAM' in header.keys(): 			ret['detector']=header['DETNAM']
-			if 'CCD-TEMP' in header.keys():			ret['tempCCD']=header['CCD-TEMP']
-			if 'BIN1' in header.keys():    			ret['binning']=str(header['BIN1'])+'x'+str(header['BIN2'])
-			if 'BINX' in header.keys():    			ret['binning']=str(header['BINX'])+'x'+str(header['BINY'])
+			if 'OBJNAME' in list(header.keys()):			ret['objName']=header['OBJNAME']
+			if 'DETNAM' in list(header.keys()): 			ret['detector']=header['DETNAM']
+			if 'CCD-TEMP' in list(header.keys()):			ret['tempCCD']=header['CCD-TEMP']
+			if 'BIN1' in list(header.keys()):    			ret['binning']=str(header['BIN1'])+'x'+str(header['BIN2'])
+			if 'BINX' in list(header.keys()):    			ret['binning']=str(header['BINX'])+'x'+str(header['BINY'])
 							
 			if len(hdu)>1:   # FITS multiplan
 				ret['fileType']="MULTIPLAN"
@@ -158,7 +158,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				#print newFiles
 				metasReturn.update(getMetaDataFiles(tmpPath,newFiles,tmpPath))
 
-			if header['NAXIS']==1 and 'CRVAL1' in header.keys():   # SPECTRUM
+			if header['NAXIS']==1 and 'CRVAL1' in list(header.keys()):   # SPECTRUM
 				ret['fileType']="1DSPECTRUM"
 				ret['lStart']=header['CRVAL1']
 				ret['lStop']=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1']
@@ -173,7 +173,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 						ret['BSS_ORD']='@pro'
 					else:
 						continue  # ignore file with @pro but bad format
-				elif 'BSS_ORD' in header.keys(): # echelle spectrum
+				elif 'BSS_ORD' in list(header.keys()): # echelle spectrum
 					ret['BSS_ORD']=header['BSS_ORD']
 					ret['order']=sf.split(ret['BSS_ORD'])[1]
 				elif sf.endswith('_full'):   # merged spectrum
@@ -201,18 +201,18 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 					metasReturn[filename]=ret
 
 		# if we indentify the file, we print a log
-		if filename in metasReturn.keys():
+		if filename in list(metasReturn.keys()):
 			meta=metasReturn[filename]
-			if 'BSS_ORD' in meta.keys() and meta['BSS_ORD']!="":
+			if 'BSS_ORD' in list(meta.keys()) and meta['BSS_ORD']!="":
 				orderLog=" Eshel order="+meta['order']
 			else:
 				orderLog=""
-			print "FoundFileType("+filename+")-> "+ metasReturn[filename]['fileType'] + "   DateObs=" + metasReturn[filename]['dateObs']+orderLog
+			print("FoundFileType("+filename+")-> "+ metasReturn[filename]['fileType'] + "   DateObs=" + metasReturn[filename]['dateObs']+orderLog)
 
 
 	if not responseFound:
 		# try to find a response file
-		print "Try to find a response"
+		print("Try to find a response")
 		for filename in filenames:
 			if 'reponse' in filename or 'response' in filename:
 				fileResponse=filename
@@ -220,7 +220,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				break
 
 		if responseFound:
-			print "ReponseFilenmae=",fileResponse
+			print("ReponseFilenmae=",fileResponse)
 			# build a list of targets
 			targets={}
 			for filename in metasReturn: 
@@ -229,7 +229,7 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 					if not meta['objName']=='':
 						targets[meta['objName']]=meta['dateObs']
 
-			print "Target List=",targets
+			print("Target List=",targets)
 			r={'phase':'PROCESS'}
 			r['sourcePath']=srcPath
 			r['sourceFilename']=fileResponse
@@ -243,8 +243,8 @@ def getMetaDataFiles(srcPath,filenames,tmpPath):
 				newR['dateObs']=targets[objName]
 				synthName=objName+'_gess_reponse'
 				metasReturn[synthName]=newR
-				print "synthName",synthName
-				print newR
+				print("synthName",synthName)
+				print(newR)
 
 	return metasReturn
 
@@ -257,52 +257,52 @@ def setDstPath(metas,db):
 	noDirFound=[]
 
 	for f in metas:
-		print "found destination of file "+f,"--->",
+		print("found destination of file "+f,"--->", end=' ')
 
 		#print "f=",f					
 		dateObs=metas[f]['dateObs']
 		if dateObs=="unknow":
-			print "DateObs unknow"
+			print("DateObs unknow")
 			continue
 
 		r=findPathFromObsDate(metas[f]['dateObs'],db)
 
-		if 'path' in r.keys():
+		if 'path' in list(r.keys()):
 			goodR=r  # pour recylage... dans le block en dessous
-			print r['path']+" obsId="+str(r['obsId'])
+			print(r['path']+" obsId="+str(r['obsId']))
 			metas[f]['destinationPath']=r['path']+'/wrk'
 			metas[f]['obsId']=r['obsId']
 		else:
-			print "Warning path not found"
+			print("Warning path not found")
 			noDirFound.append(f)
 
 	if len(noDirFound)!=0: 
-		print "*** No Dir Found **", noDirFound
+		print("*** No Dir Found **", noDirFound)
 		for f in noDirFound:
 			if f.startswith('check2.fit'):
 				for m in metas:
 					if metas[m]['fileType']=='LOGFILEISIS':
 						dateObs=metas[f]['dateObs']
 						metas[m]['dateObs']=dateObs
-						print "LOGFILEISIS Found"
+						print("LOGFILEISIS Found")
 				r=findPathFromObsDate(dateObs,db)
-				if 'path' not in r.keys():
+				if 'path' not in list(r.keys()):
 					r=goodR  # recyclage d'un valeur dans le dossier
 				
-				print "check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+str(r['obsId'])
+				print("check2.fits file use DateObs= "+dateObs+" from LogFile="+m+ "  dstPath --->"+r['path']+" ObsId="+str(r['obsId']))
 
 				metas[f]['destinationPath']=r['path']+'/wrk'
 				metas[f]['obsId']=r['obsId']
 			else:
-				print "unknow path"
+				print("unknow path")
 
 	return metas
 
 def findPathFromObsDate(dateObs,db):
 	global globPathCache  # cache pour les path et ObsId connus en fonction de dateObs
-	if not dateObs in globPathCache.keys():  # on ne connais pas de repertoire pour cette date
+	if not dateObs in list(globPathCache.keys()):  # on ne connais pas de repertoire pour cette date
 		r=dbSpectro.getDirectory_from_STRdate(db,dateObs)
-		if 'path' in r.keys():
+		if 'path' in list(r.keys()):
 			globPathCache[dateObs]=r
 		else:
 			path=""
@@ -314,25 +314,25 @@ def findPathFromObsDate(dateObs,db):
 
 
 def calibProcess(srcPath,tmpPath):
-	print "************************************************"
-	print "*******C A L I B    P r o c e s s **************"
+	print("************************************************")
+	print("*******C A L I B    P r o c e s s **************")
 
 	metas={}
 	print("calibProcess")
-	print("  srcpath", srcPath)
+	print(("  srcpath", srcPath))
 	parentSrc=srcPath.split('/calib')[0]
-	print("  parent Source",parentSrc)
+	print(("  parent Source",parentSrc))
 
 	logFiles = [f for f in listdir(parentSrc) if isfile(join(parentSrc, f)) and f.endswith('.log')]
 	calibFiles= [f for f in listdir(srcPath) if isfile(join(srcPath, f))]
-	print("  logFiles",logFiles)
-	print("  calibFiles",calibFiles)
+	print(("  logFiles",logFiles))
+	print(("  calibFiles",calibFiles))
 	for f in logFiles:
 		metaLog={'sourceFilename':f,'sourcePath':parentSrc}
 		metaLog=parseLogFileISIS(parentSrc,f,metaLog)
-		print("  dateObs "+metaLog['dateObs'])
+		print(("  dateObs "+metaLog['dateObs']))
 		archiveName='calib.zip'  # metaLog['dateObs'].replace(' ','-').replace(':','-')+
-		print(" create archive"+archiveName)
+		print((" create archive"+archiveName))
 		meta={}
 		meta['sourceFilename']=archiveName
 		meta['destinationFilename']=archiveName
@@ -354,7 +354,7 @@ def calibProcess(srcPath,tmpPath):
 
 		metas[meta['sourceFilename']]=meta
 
-		print('  Md5sum = '+str(meta['md5sum']))
+		print(('  Md5sum = '+str(meta['md5sum'])))
 	return metas
 
 
@@ -367,7 +367,7 @@ def defineTargetNameSpectrumFile(meta):
 		minutes=int(meta['dateObs'][14:16])
 		seconds=int(meta['dateObs'][17:19])
 	except:
-		print filename+"-> Cannot rename file, the DateObs is incorrect"
+		print(filename+"-> Cannot rename file, the DateObs is incorrect")
 		return meta
 
 	fracDay=str(hours/24.0+minutes/24.0/60.0+seconds/24.0/60.0/60.0)[2:5]
@@ -377,7 +377,7 @@ def defineTargetNameSpectrumFile(meta):
 	newBaseName='_'+meta['objName'].replace(' ','')+'_'+datestr+'_'+fracDay+'_'+str(int(round(float(meta['expTime']))))+'_'+observer
 	extensionFit=filename.split('.')[-1]
 
-	if 'BSS_ORD' in meta.keys():
+	if 'BSS_ORD' in list(meta.keys()):
 		addOrder='_'+meta['order']
 		meta['destinationBSS_ORD']=newBaseName+'_'
 	else:
@@ -388,7 +388,7 @@ def defineTargetNameSpectrumFile(meta):
 
 def createDir(dirpath):
     print("test create Dir")
-    print("dirpath="+dirpath)
+    print(("dirpath="+dirpath))
 
     if dirpath[1]==':':
         pwd=dirpath[0:3]
@@ -399,19 +399,19 @@ def createDir(dirpath):
     else:
         pwd=""
 
-    print("new dirPath="+dirpath)
-    print("pwd = "+pwd)
+    print(("new dirPath="+dirpath))
+    print(("pwd = "+pwd))
     pathList=dirpath.split('/')
-    print("pathList = ",pathList)
+    print(("pathList = ",pathList))
 
     for path in pathList:
         pwd+=path+'/'
-        print("seq pwd: "+pwd)
+        print(("seq pwd: "+pwd))
 
         try:
             os.stat(pwd)
         except:
-			print("create dir "+pwd)
+			print(("create dir "+pwd))
 			os.mkdir(pwd)
 
 
@@ -420,17 +420,17 @@ def archiveFiles(metas,pathArchive,enableDelete):
 	for f in metas:
 		meta=metas[f]
 
-		if 'destinationPath' in meta.keys():
+		if 'destinationPath' in list(meta.keys()):
 			
 			if meta['fileType']=='CALIBDIRISIS':
 				packExist=dbSpectro.getPathFilename_from_md5sum(db,meta['md5sum'])
-				print "packExist=",packExist, "   type(packExist)=",type(packExist)
+				print("packExist=",packExist, "   type(packExist)=",type(packExist))
 			else:
 				packExist=None
 
 			if packExist!=None:
 				# fichier deja trouve,  on modifie le fichier cible
-				print "file already exist here"+ packExist[0]+'/'+packExist[1] 
+				print("file already exist here"+ packExist[0]+'/'+packExist[1]) 
 				meta['destinationPath']=packExist[0]
 				meta['destinationFilename']=packExist[1]
 			else:
@@ -478,7 +478,7 @@ def conformBess(metas,tmpPath):
 				pass
 
 			# on corrige BSS_ORD
-			if 'BSS_ORD' in meta.keys():
+			if 'BSS_ORD' in list(meta.keys()):
 				prihdr['BSS_ORD']=meta['destinationBSS_ORD']
 
 			# on ecris le fichier corrige
@@ -494,17 +494,17 @@ def conformBess(metas,tmpPath):
 #########
 # main  #
 #########
-print "in-process.py"
+print("in-process.py")
 
 if len(sys.argv)==1:  # pas d argument
-	print "prend un argument pour laisser la source: repertoire"
-	print "ou deux arguments pour effacer la source apres integration:   repertoire delete"
+	print("prend un argument pour laisser la source: repertoire")
+	print("ou deux arguments pour effacer la source apres integration:   repertoire delete")
 	exit()
 elif len(sys.argv)==2:  # un seul argument
 	enableDelete=False
 elif len(sys.argv)==3 and sys.argv[2]=='delete':
 	enableDelete=True
-	print "efface les fichiers apres integration"
+	print("efface les fichiers apres integration")
 
 db=dbSpectro.init_connection()
 dbSpectro.setLogLevel(4)
@@ -513,7 +513,7 @@ dbSpectro.setLogLevel(4)
 json_text=open("../config/config.json").read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
-print("pathArchive = "+pathArchive)
+print(("pathArchive = "+pathArchive))
 
 # open exception file
 globalExceptFile=open(pathArchive+'/Except-in-processed/except-'+str(datetime.datetime.today()).replace(' ','T').replace(':','-')+'.log','a')
@@ -521,18 +521,18 @@ globalExceptFile=open(pathArchive+'/Except-in-processed/except-'+str(datetime.da
 for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 	dirpath=dirpath.replace("\\","/").replace('//','/')
 	print("** Boucle principale **")
-	print("  dirpath = "+str(dirpath))
-	print("  dirnames = "+str(dirnames))
-	print("  filenames = "+str(filenames))
+	print(("  dirpath = "+str(dirpath)))
+	print(("  dirnames = "+str(dirnames)))
+	print(("  filenames = "+str(filenames)))
 	globPathCache={}  # cache pour les path connus en fonction de dateObs
 	tmpPath=tempfile.mkdtemp()
-	print("  temporary dir = "+ tmpPath)
+	print(("  temporary dir = "+ tmpPath))
 	print("***********************")
 
 	try:
 		metas=getMetaDataFiles(dirpath,filenames,tmpPath)
 		metas=setDstPath(metas,db)
-		print(json.dumps(metas,sort_keys=True, indent=4))
+		print((json.dumps(metas,sort_keys=True, indent=4)))
 
 		# redefinis les nom des spectres
 		for f in metas: 
@@ -547,5 +547,5 @@ for (dirpath, dirnames, filenames) in walk(sys.argv[1]):
 		logging.exception("Main Loop:")
 		logException(dirpath,'mainException'+str(sys.exc_info()[0]))
 
-	print "remove temporary Path=",tmpPath
+	print("remove temporary Path=",tmpPath)
 	shutil.rmtree(tmpPath)

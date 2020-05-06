@@ -1,5 +1,5 @@
 import smtplib,json
-import dbSpectro
+from . import dbSpectro
 
 def main():
 	sendEmail(subject      = '[Carl]test', 
@@ -16,7 +16,7 @@ def sendEmail(subject, message,db,projectName):
 	if "Obs finished" in subject:
 		print("Obs finished add followers of this project")
 		to_addr_list.extend(dbSpectro.getProjectFollowers_fromProjectName(db,projectName).split(','))
-	print to_addr_list
+	print(to_addr_list)
 
 	smtpserver= config['email']['smtp']
 	login= config['email']['login']

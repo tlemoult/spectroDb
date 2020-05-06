@@ -15,7 +15,7 @@ def is_locked(filepath):
             if file_object:
                 #print "%s is not locked." % filepath
                 locked = False
-        except IOError, message:
+        except IOError as message:
             #print "File is locked (unable to open in append mode). %s." % message
             locked = True
         finally:
@@ -23,7 +23,7 @@ def is_locked(filepath):
                 file_object.close()
                 #print "%s closed." % filepath
     else:
-        print "%s not found." % filepath
+        print("%s not found." % filepath)
     return locked
 
 def isEndProcessEshel(PathProcessedFiles,PathTmpPipeFiles):
@@ -58,21 +58,21 @@ PathSignalEndedPipeline=racineArchive+signalPipeline+"/ended"
 cmdInNewRaw="../tools/in-raw-run.sh"
 cmdInNewProcessed="../tools/in-processed-run.sh"
 
-print "Majordome, check every 60 seconds."
-print "Check  Signals: "+PathSignalNewRaw
-print "   => action="+cmdInNewRaw+""
-print "   => action trigger signal"+PathSignalStartPipeline
-print
-print "  Signals: "+PathSignalEndedPipeline
-print "   => action="+cmdInNewProcessed
+print("Majordome, check every 60 seconds.")
+print("Check  Signals: "+PathSignalNewRaw)
+print("   => action="+cmdInNewRaw+"")
+print("   => action trigger signal"+PathSignalStartPipeline)
+print()
+print("  Signals: "+PathSignalEndedPipeline)
+print("   => action="+cmdInNewProcessed)
 
 
 while True:
 
 	#########  start raw integration,  then  start spectrum reduction.
 	if os.path.isfile(PathSignalNewRaw):
-		print "Raw receive from Telescope"
-		print "start Raw integration in archive"
+		print("Raw receive from Telescope")
+		print("start Raw integration in archive")
 		os.system(cmdInNewRaw)
 		os.remove(PathSignalNewRaw)
 		print("End of Raw integration in archive")

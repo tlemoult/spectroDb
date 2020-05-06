@@ -1,4 +1,5 @@
-import json,sys,os,shutil,pyfits
+import json,sys,os,shutil
+import astropy.io.fits as fits
 import lib.dbSpectro as dbSpectro
 
 print("retablis les temps d exposition dans la base de donne")
@@ -18,7 +19,7 @@ for row in table:
 	r={'fileId':row[0],'phase':row[1],'path':row[2],'filename':row[3]}
 	print(r)
 	try:
-		hdulist = pyfits.open(PathBaseSpectro+r['path']+"/"+r['filename'])
+		hdulist = fits.open(PathBaseSpectro+r['path']+"/"+r['filename'])
 		prihdr  = hdulist[0].header
 		expTime=float(prihdr['EXPOSURE'])
 	except:

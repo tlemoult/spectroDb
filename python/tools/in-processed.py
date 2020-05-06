@@ -411,8 +411,8 @@ def createDir(dirpath):
         try:
             os.stat(pwd)
         except:
-			print(("create dir "+pwd))
-			os.mkdir(pwd)
+            print(("create dir "+pwd))
+            os.mkdir(pwd)
 
 
 def archiveFiles(metas,pathArchive,enableDelete):

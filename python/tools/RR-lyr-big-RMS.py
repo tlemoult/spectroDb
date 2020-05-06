@@ -2,7 +2,7 @@ import lib.dbSpectro as dbSpectro
 import json
 from astropy.time import Time
 import numpy
-import pyfits
+import astropy.io.fits as fits
 
 print("Find spectrum with to big calibration RMS for RR lyr")
 
@@ -20,7 +20,7 @@ spcFullLst=dbSpectro.getFile_from_type_obsId(db,objId,"'MULTIPLAN'")
 for spcFull in spcFullLst:
     srcPath=pathArchive+'/archive'+spcFull[2]
     filename=spcFull[3]
-    hduLst=pyfits.open(srcPath+'/'+filename)
+    hduLst=fits.open(srcPath+'/'+filename)
     serieId=spcFull[1]
     for hdu in hduLst:
         if hdu.name=='ORDERS':

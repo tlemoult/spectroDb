@@ -56,7 +56,7 @@ observer = Observer(location=location, name="Chelles", timezone="UTC")
 
 
 
-print("Observatory name=",observer.name,"location.lat=",location.latitude,"    location.lon=",location.longitude)
+#print("Observatory name=",observer.name,"location.lat=",location.latitude,"    location.lon=",location.longitude)
 
 coord=SkyCoord('19h25m27.911285s', '+42d47m03.6942s', unit=( u.hourangle,u.deg), frame='icrs')
 target=FixedTarget(name='RR lyr', coord=coord)

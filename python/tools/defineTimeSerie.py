@@ -2,7 +2,7 @@ import datetime,time,json
 from datetime import datetime
 import sys,os,shutil
 import urllib.request, urllib.parse, urllib.error,glob
-import pyfits
+import astropy.io.fits as fits
 import lib.dbSpectro as dbSpectro
 import lib.cds as cds #mes modules
 
@@ -55,7 +55,7 @@ def redefineTimeSerieObject(obsIds,NbRawPerStack):
 			serieId=row[4]
 
 
-			hdulist = pyfits.open(fileSource)
+			hdulist = fits.open(fileSource)
 			prihdr  = hdulist[0].header
 
 			if i==1:  # au premier passage

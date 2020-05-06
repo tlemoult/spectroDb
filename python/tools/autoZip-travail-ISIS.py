@@ -1,5 +1,5 @@
 import sys,os
-import urllib,glob
+import urllib.request, urllib.parse, urllib.error,glob
 import pyfits
 import zipfile
 import shutil
@@ -21,7 +21,7 @@ def listdirectory2(path):
 			a.append(f)
     return a
 	
-print "Script de mise en zip des spectres Traité par ISIS pour publication"
+print("Script de mise en zip des spectres Traité par ISIS pour publication")
 
 BasePath=sys.path[0]
 dbSourcePath=BasePath
@@ -33,7 +33,7 @@ dirList=sorted(dirList)
 
 for dirPath in listdirectory2(BasePath):
 	dir=os.path.dirname(dirPath[0])
-	print 'enter directory: "'+dir+'"'
+	print('enter directory: "'+dir+'"')
 	spectres=[]
 	for path in dirPath:
 		file=os.path.basename(path)
@@ -45,7 +45,7 @@ for dirPath in listdirectory2(BasePath):
 	obsDay=s[2]
 	obsTime=s[3]
 	archiveName=starName+"_"+obsDay+"_"+obsTime+"_Thierry_Lemoult.zip"
-	print archiveName
+	print(archiveName)
 	os.chdir(dir)
 	with zipfile.ZipFile(archiveName,'w') as myzip:
 		for file in spectres:

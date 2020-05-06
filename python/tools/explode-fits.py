@@ -1,6 +1,6 @@
 import sys,os
 from os import walk
-import urllib,glob
+import urllib.request, urllib.parse, urllib.error,glob
 import pyfits
 from astropy.time import Time
 import zipfile
@@ -11,7 +11,7 @@ import lib.explodeFits as expFits
 # main  #
 #########
 if len(sys.argv)==1:  # pas d argument
-	print "prend un argument: repertoire de travail"	
+	print("prend un argument: repertoire de travail")	
 	exit()
 else:
 	for (dirpath, dirnames, filenames) in walk(sys.argv[1]):

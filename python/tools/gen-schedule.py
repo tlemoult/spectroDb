@@ -12,7 +12,7 @@ db = dbSpectro.init_connection()
 
 requests = dbSpectro.getRequestToObserve(db)
 for request in requests:
-    print request
+    print(request)
     project = request[0]
     priority = request[1]
     name = request[2]

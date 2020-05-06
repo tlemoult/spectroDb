@@ -1,5 +1,5 @@
 import sys,os
-import urllib,glob
+import urllib.request, urllib.parse, urllib.error,glob
 import pyfits
 import zipfile
 import shutil
@@ -21,7 +21,7 @@ def listdirectory2(path):
 			a.append(f)
     return a
 	
-print "Script de Nettoyage des dossiers de travail ISIS"
+print("Script de Nettoyage des dossiers de travail ISIS")
 
 BasePath=sys.path[0]
 dbSourcePath=BasePath
@@ -33,6 +33,6 @@ dirList=sorted(dirList)
 for path in listdirectory(BasePath):
 	file=os.path.basename(path)
 	if (file.startswith('blaze_') or file.startswith('calib_') or file.startswith('flat_') or file.startswith('#') or (file.endswith('.dat') and not file.startswith('reponse')) or (file.startswith('@') and not file.startswith('@pro')) ):
-		print('remove:'+path)
+		print(('remove:'+path))
 		os.remove(path)
 	

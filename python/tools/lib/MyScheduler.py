@@ -36,30 +36,30 @@ class MySchedule(object):
 		end.format = 'isot'
 		# Create a schedule
 		self.priority_schedule = Schedule(beg, end)
-		print "to next sun Rise" 
-		print 'Schedule created from [',beg,'UTC to',end,'UTC ]'
+		print("to next sun Rise") 
+		print('Schedule created from [',beg,'UTC to',end,'UTC ]')
 
 	def addTargetFromName(self,name,durationBlock,priority,config):  # config= dictionnary
-		print 'add target name=',name
+		print('add target name=',name)
 		self.blocks.append(ObservingBlock(FixedTarget.from_name(name), durationBlock, priority, configuration = config, constraints = []))
 
 	def addTargetFromCoord(self,name,coord,durationBlock,priority,config):  # config= dictionnary
-		print 'add target name=',name
+		print('add target name=',name)
 		self.blocks.append(ObservingBlock(FixedTarget(coord=coord, name=name), durationBlock, priority, configuration = config, constraints = []))
 
 
 	def optimize(self):
 		# insert blocks into the schedule, and run the scheduler
-		print "**************************"
-		print "start schedule.optimize()"
+		print("**************************")
+		print("start schedule.optimize()")
 		self.prior_scheduler(self.blocks, self.priority_schedule)
-		print "**************************"
-		print self.priority_schedule
-		print "**************************"
+		print("**************************")
+		print(self.priority_schedule)
+		print("**************************")
 	
 
 	def writeLst(self,filename):
-		print "mySchedule.writeLst ",filename
+		print("mySchedule.writeLst ",filename)
 		f=open(filename,'w+')
 		for block in self.priority_schedule.observing_blocks:
 			name=block.target.name
@@ -78,7 +78,7 @@ class MySchedule(object):
 			if name!='TransitionBlock':
 				coord=block.target.coord.to_string('hmsdms')
 				(ra,dec)=coord.split(' ')
-				print "name=%s  ra=%s  dec=%s"%(name,ra,dec)
+				print("name=%s  ra=%s  dec=%s"%(name,ra,dec))
 				line='"'+name+'"  '+ra[:-3]+'s  '+dec[:-3]+'s  '+str(FLUX_V)+'  FALSE  "Project='+str(project)
 				line+="&uid="+str(uid)
 				line+="&Calib="+str(calib)
@@ -103,4 +103,4 @@ class MySchedule(object):
 		plt.show()
 
 	def showTable(self):
-		print self.priority_schedule.to_table()
+		print(self.priority_schedule.to_table())

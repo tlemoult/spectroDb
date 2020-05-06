@@ -3,22 +3,22 @@ import lib.dbSpectro as dbSpectro
 
 def getClosestSerie(db,fileType,targetObsId,targetObsDate):
 
-    print("try to get "+fileType)
+    print(("try to get "+fileType))
     files=dbSpectro.getFilesPerObsId(db,targetObsId,"""'"""+fileType+"""'""")
     countFile=0
     for file in files:
         countFile=countFile+1
-    if countFile<>0:
-        print(" -Already a serie of "+fileType+" in targetObsId = "+str(targetObsId))
+    if countFile!=0:
+        print((" -Already a serie of "+fileType+" in targetObsId = "+str(targetObsId)))
         return
 
     serieId,srcObsId=dbSpectro.getClosestSerieId(db,targetObsDate,fileType)
     if (srcObsId==targetObsId):
-        print("  Already a serie of "+fileType+" in targetObsId = "+str(targetObsId))
+        print(("  Already a serie of "+fileType+" in targetObsId = "+str(targetObsId)))
         return
     else:
-        print("  Closest serie "+fileType+" of targetObsId = "+str(targetObsId)+" from observation srcObsId="+str(srcObsId)+""" serieId='"""+str(serieId))+"""'"""
-        print("  Link this this serie to obsId "+str(targetObsId))
+        print(("  Closest serie "+fileType+" of targetObsId = "+str(targetObsId)+" from observation srcObsId="+str(srcObsId)+""" serieId='"""+str(serieId))+"""'""")
+        print(("  Link this this serie to obsId "+str(targetObsId)))
         dbSpectro.copySerieIdBetweenObsId(db,srcObsId,targetObsId,serieId)
 
     return
@@ -36,10 +36,10 @@ targetObsId=int(sys.argv[1])
 
 targetObsDate=dbSpectro.getObsDateFromObsId(db,targetObsId)
 if targetObsDate==0:
-    print("targetObsId="+str(targetObsId)+" not found in database")
+    print(("targetObsId="+str(targetObsId)+" not found in database"))
     exit()
-print('targetObsId=%d'%targetObsId)
-print('targetObsDate=%s'%targetObsDate)
+print(('targetObsId=%d'%targetObsId))
+print(('targetObsDate=%s'%targetObsDate))
 
 getClosestSerie(db,'CALIB',targetObsId,targetObsDate)
 getClosestSerie(db,'TUNGSTEN',targetObsId,targetObsDate)

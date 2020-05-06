@@ -32,17 +32,17 @@ def disp_date(target,observer,times):
 	for time in times:
 		if is_observable(global_constraints,observer,{target},[time])[0]:
 			time.format = 'isot'
-			print str(time)[:16]+'UTC  alt='+str(observer.altaz(time,target).alt)[:3],
+			print(str(time)[:16]+'UTC  alt='+str(observer.altaz(time,target).alt)[:3], end=' ')
 			time.format = 'jd'
-			print "jd=",time,
+			print("jd=",time, end=' ')
 			jd=float(str(time))
 			phase=phase_RR_jd(jd)
-			print "phase=%.2f"%(phase-int(phase)),
+			print("phase=%.2f"%(phase-int(phase)), end=' ')
 			phase_blasko=phase_RR_blasko_jd(jd)
-			print "& Blasko_Phase=%.2f"%(phase_blasko-int(phase_blasko)),
+			print("& Blasko_Phase=%.2f"%(phase_blasko-int(phase_blasko)), end=' ')
 			time.format = 'isot'
-			print "ObsTime=["+str(time+fuseau-1*u.hour)[11:16]+"TL,",str(time+fuseau+1*u.hour)[11:16]+"TL]",			
-			print "<=> alt=["+str(observer.altaz(time-1*u.hour,target).alt)[:3]+".."+str(observer.altaz(time+1*u.hour,target).alt)[:3]+"]"
+			print("ObsTime=["+str(time+fuseau-1*u.hour)[11:16]+"TL,",str(time+fuseau+1*u.hour)[11:16]+"TL]", end=' ')			
+			print("<=> alt=["+str(observer.altaz(time-1*u.hour,target).alt)[:3]+".."+str(observer.altaz(time+1*u.hour,target).alt)[:3]+"]")
 
 def getCurrentJDMod():
 	t=Time.now()
@@ -56,25 +56,25 @@ observer = Observer(location=location, name="Chelles", timezone="UTC")
 
 
 
-print "Observatory name=",observer.name,"location.lat=",location.latitude,"    location.lon=",location.longitude
+print("Observatory name=",observer.name,"location.lat=",location.latitude,"    location.lon=",location.longitude)
 
 coord=SkyCoord('19h25m27.911285s', '+42d47m03.6942s', unit=( u.hourangle,u.deg), frame='icrs')
 target=FixedTarget(name='RR lyr', coord=coord)
 #target=FixedTarget.from_name('RR lyr')  #interroge le CDS pour les coordonnes
-print "target Name=",target.name
-print " Coord:",
-print  "ra.hms=",target.ra.hms," dec=",target.dec 
+print("target Name=",target.name)
+print(" Coord:", end=' ')
+print("ra.hms=",target.ra.hms," dec=",target.dec) 
 
 # l'heure
-scanRange=range(getCurrentJDMod()-15,getCurrentJDMod()+15)
-print "*********Phase 0.91 ********************"
+scanRange=list(range(getCurrentJDMod()-15,getCurrentJDMod()+15))
+print("*********Phase 0.91 ********************")
 t=[]
 for j in scanRange:
 	t.append(jd_RR_phi(j+0.91))
 T=Time(t,format='jd', scale='utc')
 disp_date(target,observer,T)
 
-print "**********Phase 0.3 *************"
+print("**********Phase 0.3 *************")
 t=[]
 for j in scanRange:
 	t.append(jd_RR_phi(j+0.3))

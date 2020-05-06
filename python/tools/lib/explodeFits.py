@@ -1,21 +1,21 @@
 import sys,os
 from os import walk
-import urllib,glob
+import urllib.request, urllib.parse, urllib.error,glob
 import astropy.io.fits as fits
 from astropy.time import Time
 import zipfile
 
 def explodeFits(pathSrc,pathDst,filenameOrg):
-	print("explodeFits src=%s dst=%s filename=%s"%(pathSrc,pathDst,filenameOrg))
+	print(("explodeFits src=%s dst=%s filename=%s"%(pathSrc,pathDst,filenameOrg)))
 	files=[]  # liste des fichiers de sortie
 	newBaseName=''
 	hdulistOrg = fits.open(pathSrc+'/'+filenameOrg)
 	if len(hdulistOrg)<2:  # pas de multiplan, rien a exploser
 		return ([],'')
 
-	print("ExplodeFits("+pathSrc+"/"+filenameOrg)	
+	print(("ExplodeFits("+pathSrc+"/"+filenameOrg))	
 	headerOrg=hdulistOrg[0].header
-	print("OBJ=",headerOrg['OBJNAME']," Date Obs=",headerOrg['DATE-OBS'])
+	print(("OBJ=",headerOrg['OBJNAME']," Date Obs=",headerOrg['DATE-OBS']))
 	print("order: ")
 	# determine if level is P_1C_ or P_1B
 	if 'P_1C_' in ';'.join([ hdu.name for hdu in hdulistOrg]):
@@ -73,7 +73,7 @@ def explodeFits(pathSrc,pathDst,filenameOrg):
 			except:
 				print(".")
 
-			print(" ",order)
+			print((" ",order))
 
 	hdulistOrg.close()
 	return (files,newBaseName)

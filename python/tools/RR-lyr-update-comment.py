@@ -20,7 +20,7 @@ def phase_RR_blasko_jd(jd):
         else:
             return (jd-2457354.322)/39.0   # ephem 2015
 
-print "update observation comment field for RR lyr project.py"
+print("update observation comment field for RR lyr project.py")
 
 db=dbSpectro.init_connection()
 dbSpectro.setLogLevel(0)
@@ -29,14 +29,14 @@ dbSpectro.setLogLevel(0)
 json_text=open("../config/config.json").read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
-print "pathArchive="+pathArchive
+print("pathArchive="+pathArchive)
 
 objId=226  # RRlyr
 obsLst=dbSpectro.getObsIdFromObjId(db,objId)
-print "observation Id"
+print("observation Id")
 for obsIdt in obsLst:
     obsId=obsIdt[0]
-    print "obsId=%d "%obsId,
+    print("obsId=%d "%obsId, end=' ')
     obsExposureObjectLst=dbSpectro.getObsDateLstFromObsId(db,obsId)
 
     # transform 2D tuple in 1D
@@ -62,6 +62,6 @@ for obsIdt in obsLst:
 
     comment="psi=%.2f phi=%.2f,%.2f "%(phiBlasko,minphi,maxphi)
     
-    print comment
+    print(comment)
 
     dbSpectro.update_comment_obsId(db,obsId,comment)

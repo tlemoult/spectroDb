@@ -61,10 +61,10 @@ orderNo=34  # H alpha order
 phiMin=0.85
 phiMax=0.95
 print("get RR lyrae spectrum for defined pulsating phase")
-print("phiMin="+str(phiMin)+" phiMax="+str(phiMax))
-print("len(sys.argv)=" , len(sys.argv))
-print("argv=",sys.argv)
-if len(sys.argv)<>2:
+print(("phiMin="+str(phiMin)+" phiMax="+str(phiMax)))
+print(("len(sys.argv)=" , len(sys.argv)))
+print(("argv=",sys.argv))
+if len(sys.argv)!=2:
     print("use destination path as first argument")
     exit()
 else:
@@ -88,9 +88,9 @@ for f in fileList:
     phi=pulsating_phase_RR(dateObs)%1
     if phiMin<phi<phiMax:
         i = i + 1
-        print(str(dateObs)+" phi="+str(phi))+" "+str(f[1])
-        print "fileSource", fileSource, "-->fileDest", fileDest
+        print((str(dateObs)+" phi="+str(phi))+" "+str(f[1]))
+        print("fileSource", fileSource, "-->fileDest", fileDest)
         shutil.copy(fileSource, fileDest)
 
-print str(i) + " files extracted"
+print(str(i) + " files extracted")
 db.close()

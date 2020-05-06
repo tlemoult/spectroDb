@@ -1,5 +1,6 @@
 # module  spectrodbAccess.py
-import MySQLdb,json
+import mysql.connector as MySQLdb
+import json
 import datetime,time
 
 logLevel=0
@@ -9,8 +10,8 @@ def init_connection():
 	logLevel=0
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
-	db= MySQLdb.connect(config['db']['host'],config['db']['userName'],config['db']['password'],config['db']['dataBase'])
-	print('Init db connection, host=%s dataBase=%s'%(config['db']['host'],config['db']['dataBase']))	
+	db= MySQLdb.connect(host=config['db']['host'],user=config['db']['userName'],password=config['db']['password'],database=config['db']['dataBase'])
+	print(f"Init db connection, host = {config['db']['host']}, dataBase = {config['db']['dataBase']}, user = {config['db']['userName']}")	
 	return db
 
 def setLogLevel(n):

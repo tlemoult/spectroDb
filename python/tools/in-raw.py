@@ -3,11 +3,11 @@ from datetime import datetime
 import sys,os
 import urllib.request, urllib.parse, urllib.error,glob
 #mes modules
-import libr1.dbSpectro as dbSpectro
-import libr1.fixHeader as fixHeader
-import libr1.archive as archive
-import libr1.cds as cds
-import libr1.myJson as myJson
+import lib.dbSpectro as dbSpectro
+import lib.fixHeader as fixHeader
+import lib.archive as archive
+import lib.cds as cds
+import lib.myJson as myJson
 import lib.emailFnc as emailFnc
 import defineTimeSerie
 

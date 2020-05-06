@@ -2,14 +2,14 @@ import datetime,time
 from datetime import datetime
 import sys,os,shutil
 import urllib.request, urllib.parse, urllib.error,glob
-import pyfits
+import astropy.io.fits as fits
 
 def renameSpectrumFile(observer,path,f):
 
 	print("********************")
 	print("oldName",f)
 
-	hdulist = pyfits.open(path+'/'+f)
+	hdulist = fits.open(path+'/'+f)
 	prihdr  = hdulist[0].header
 
 

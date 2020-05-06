@@ -1,6 +1,6 @@
 import sys,os
 import urllib.request, urllib.parse, urllib.error,glob
-import pyfits
+import astropy.io.fits as fits
 import zipfile
 import shutil
 

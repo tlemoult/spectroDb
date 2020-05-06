@@ -73,5 +73,5 @@ schedule.optimize()
 
 schedule.writeLst("schedule.lst")
 
-schedule.showTable()
+#schedule.showTable()
 schedule.plotAirMas()

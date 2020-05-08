@@ -5,10 +5,10 @@ import datetime,time
 
 logLevel=0
 
-def init_connection():
+def init_connection(configFilePath):
 	global logLevel
 	logLevel=0
-	json_text=open("../config/config.json").read()
+	json_text=open(configFilePath).read()
 	config=json.loads(json_text)
 	db= MySQLdb.connect(host=config['db']['host'],user=config['db']['userName'],password=config['db']['password'],database=config['db']['dataBase'])
 	print(f"Init db connection, host = {config['db']['host']}, dataBase = {config['db']['dataBase']}, user = {config['db']['userName']}")	

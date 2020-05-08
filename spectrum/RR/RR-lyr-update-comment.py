@@ -1,4 +1,4 @@
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 import json
 from astropy.time import Time
 import numpy
@@ -21,12 +21,12 @@ def phase_RR_blasko_jd(jd):
             return (jd-2457354.322)/39.0   # ephem 2015
 
 print("update observation comment field for RR lyr project.py")
-
-db=dbSpectro.init_connection()
+configFilePath="../../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 dbSpectro.setLogLevel(0)
 
 # load configuration
-json_text=open("../config/config.json").read()
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
 print("pathArchive="+pathArchive)

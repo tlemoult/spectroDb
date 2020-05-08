@@ -1,17 +1,18 @@
 import json,sys,os,shutil
 import astropy.io.fits as fits
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 
 print("retablis les temps d exposition dans la base de donne")
 
-json_text=open("../config/config.json").read()
+configFilePath="../config/config.json"
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 
 PathBaseSpectro= config['path']['archive']+'/archive'
 
 print("dossier source",PathBaseSpectro)
 
-db=dbSpectro.init_connection()
+db=dbSpectro.init_connection(configFilePath)
 
 table=dbSpectro.getAllFileIdFileName(db,""" "TUNGSTEN","FIELD","OBJECT","LED","CALIB","DARK","BIAS","NEON","FLAT","PRNU","MULTIPLAN","2DSPECTRUM","REPONSE" """)
 

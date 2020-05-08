@@ -87,7 +87,6 @@ PathObservationINI=eShelPipeFastWork+"/observation.ini"
 
 
 loopSleepTime=1
-relPathTools='../python/tools'
 
 print("process command line argument")
 if len(sys.argv)==2:
@@ -125,11 +124,12 @@ for obsId in obsIds:
             shutil.rmtree(p)
 
     orgPath=os.getcwd()
-    os.chdir(relPathTools)
+    os.chdir("..")
     print("Fill observation RAW Calib files")
     os.system("python fillObservationRawCalib.py "+str(obsId))
 
     print("Get Raw spectrum")
+    os.chdir("../base")
     os.system("python get-raw-obs.py"+" "+str(obsId)+" "+eShelPipeFastWork)
     os.chdir(orgPath)
 
@@ -161,7 +161,7 @@ for obsId in obsIds:
     errFile = racineArchive+"/log/in.processed."+strDate+".err"
     cmdProcess="python in-processed.py "+eShelPipeProcessedRoot+" >"+logFile+" 2> "+errFile
     orgPath=os.getcwd()
-    os.chdir(relPathTools)
+    os.chdir('../../base')
     print(cmdProcess)
     os.system(cmdProcess)
     os.chdir(orgPath)

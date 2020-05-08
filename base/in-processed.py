@@ -7,8 +7,8 @@ import urllib.request, urllib.parse, urllib.error,glob
 import astropy.io.fits as fits
 from astropy.time import Time
 
-import lib.dbSpectro as dbSpectro
-import lib.explodeFits as expFits
+import libsdb.dbSpectro as dbSpectro
+import libsdb.explodeFits as expFits
 import json
 
 import hashlib
@@ -506,11 +506,12 @@ elif len(sys.argv)==3 and sys.argv[2]=='delete':
 	enableDelete=True
 	print("efface les fichiers apres integration")
 
-db=dbSpectro.init_connection()
+configFilePath = "../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 dbSpectro.setLogLevel(4)
 
 # load configuration
-json_text=open("../config/config.json").read()
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
 print(("pathArchive = "+pathArchive))

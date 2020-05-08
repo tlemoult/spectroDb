@@ -5,10 +5,10 @@ Excep_dir_noFits="no-fits"
 
 #racineArchive="/mnt/gdrive/astro/base"  # linux
 
-def loadConfig():
+def loadConfig(pathConfigFile):
 	print("load config archive: ")
 	global racineArchive,pathPipeline
-	json_text=open("../config/config.json").read()
+	json_text=open(pathConfigFile).read()
 	config=json.loads(json_text)
 	racineArchive= config['path']['archive']
 	pathPipeline= config['path']['eShelPipe']

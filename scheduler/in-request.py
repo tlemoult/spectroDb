@@ -2,12 +2,14 @@ import datetime,time
 from datetime import datetime
 import sys,os
 import urllib.request, urllib.parse, urllib.error,glob
-import lib.dbSpectro as dbSpectro
-import lib.cds as cds #mes modules
+import libsdb.dbSpectro as dbSpectro
+import libsdb.cds as cds #mes modules
 
 print("Ajout demande observation dans la base")
 
-db=dbSpectro.init_connection()
+
+configFilePath="../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 #dbSpectro.listObs(db)
 #BasePath=sys.path[0]
 

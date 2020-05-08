@@ -7,8 +7,8 @@ import os
 import shutil
 import urllib.request, urllib.parse, urllib.error
 import glob
-import lib.dbSpectro as dbSpectro
-import lib.cds as cds  # mes modules
+import libsdb.dbSpectro as dbSpectro
+import libsdb.cds as cds  # mes modules
 
 print("Robot extrait les fichiers spectres traite")
 
@@ -22,7 +22,8 @@ if len(sys.argv) < 3:
     print("   python get-spc-obs.py objectId 226 orderNo 34 ./spectrum/RRlyr/34/ date 2019-12-31 2020-12-31")
     exit(1)
 
-db = dbSpectro.init_connection()
+configFilePath="../config/config.json"
+db = dbSpectro.init_connection(configFilePath)
 print("len(sys.argv)=" , len(sys.argv))
 if len(sys.argv)>8 and sys.argv[3] == 'orderNo' and sys.argv[6] == 'date':
     orderNo=sys.argv[4]
@@ -58,7 +59,7 @@ else:
     db.close()
     exit(1)
 
-json_text = open("../config/config.json").read()
+json_text = open(configFilePath).read()
 config = json.loads(json_text)
 
 PathBaseSpectro = config['path']['archive'] + '/archive'

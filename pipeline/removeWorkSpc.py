@@ -10,7 +10,8 @@ if len(sys.argv) < 2:
 obsId=int(sys.argv[1])
 print(("obsId = "+str(obsId)))
 
-db = dbSpectro.init_connection()
+configFilePath="../config/config.json"
+db = dbSpectro.init_connection(configFilePath)
 cursorSpcFiles,cursorOtherFiles = dbSpectro.getListRemoveWork(db, obsId)
 
 for spcFile in cursorSpcFiles: print((spcFile[0]))

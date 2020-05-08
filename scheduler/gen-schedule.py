@@ -1,6 +1,6 @@
 
-import lib.MyScheduler as MyScheduler
-import lib.dbSpectro as dbSpectro
+import libsdb.MyScheduler as MyScheduler
+import libsdb.dbSpectro as dbSpectro
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from datetime import date
@@ -8,7 +8,8 @@ from datetime import date
 
 schedule = MyScheduler.MySchedule()
 
-db = dbSpectro.init_connection()
+configFilePath="../config/config.json"
+db = dbSpectro.init_connection(configFilePath)
 
 requests = dbSpectro.getRequestToObserve(db)
 for request in requests:

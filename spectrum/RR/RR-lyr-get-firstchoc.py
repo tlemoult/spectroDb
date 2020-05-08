@@ -1,4 +1,4 @@
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 import json,sys,shutil
 from astropy.time import Time
 import numpy
@@ -69,12 +69,12 @@ if len(sys.argv)!=2:
     exit()
 else:
 	destPath = sys.argv[1]
-
-db=dbSpectro.init_connection()
+configFilePath = "../../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 dbSpectro.setLogLevel(0)
 
 # load configuration
-json_text=open("../config/config.json").read()
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 PathBaseSpectro = config['path']['archive'] + '/archive'
 

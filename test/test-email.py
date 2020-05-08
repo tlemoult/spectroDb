@@ -1,7 +1,8 @@
-import lib.emailFnc as emailFnc
-import lib.dbSpectro as dbSpectro
+import libsdb.emailFnc as emailFnc
+import libsdb.dbSpectro as dbSpectro
 
-db=dbSpectro.init_connection()
+configFilePath="../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 project="del_cep"
 print("follower of this project are: ")
 print(dbSpectro.getProjectFollowers_fromProjectName(db,project))

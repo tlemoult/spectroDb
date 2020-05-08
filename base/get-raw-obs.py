@@ -2,12 +2,13 @@ import datetime,time,json
 from datetime import datetime
 import sys,os,shutil
 import urllib.request, urllib.parse, urllib.error,glob
-import lib.dbSpectro as dbSpectro
-import lib.cds as cds #mes modules
+import libsdb.dbSpectro as dbSpectro
+import libsdb.cds as cds #mes modules
 
 print("Robot extrait les fichiers OBJECT, CALIB, TUNGSTEN, LED pour le pipeline Eshell")
 
-json_text=open("../config/config.json").read()
+configFilePath="../config/config.json")
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 
 PathBaseSpectro= config['path']['archive']+'/archive'
@@ -22,7 +23,7 @@ if len(sys.argv)<3:
 	print("   python get-raw-obs.py obsId dstPath")
 	exit(1)
 
-db=dbSpectro.init_connection()
+db=dbSpectro.init_connection(configFilePath)
 
 if len(sys.argv)==3:
 	obsIds=[int(sys.argv[1])]

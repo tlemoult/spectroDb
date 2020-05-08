@@ -1,4 +1,4 @@
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 import json
 from astropy.time import Time
 import numpy
@@ -6,11 +6,13 @@ import astropy.io.fits as fits
 
 print("Find spectrum with to big calibration RMS for RR lyr")
 
-db=dbSpectro.init_connection()
+configFilePath="../../config/config.json"
+
+db=dbSpectro.init_connection(configFilePath)
 dbSpectro.setLogLevel(0)
 
 # load configuration
-json_text=open("../config/config.json").read()
+json_text=open(configFilePath).read()
 config=json.loads(json_text)
 pathArchive=config['path']['archive']
 print("pathArchive="+pathArchive)

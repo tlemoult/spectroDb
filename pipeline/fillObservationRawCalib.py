@@ -1,5 +1,5 @@
 import sys
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 
 def getClosestSerie(db,fileType,targetObsId,targetObsDate):
 
@@ -30,7 +30,8 @@ if len(sys.argv) < 2:
     print("   python fillObservationRawCalib.py targetObsId")
     exit(1)
 
-db = dbSpectro.init_connection()
+configFilePath="../config/config.json"
+db = dbSpectro.init_connection(configFilePath)
 
 targetObsId=int(sys.argv[1])
 

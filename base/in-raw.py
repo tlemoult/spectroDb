@@ -3,17 +3,18 @@ from datetime import datetime
 import sys,os
 import urllib.request, urllib.parse, urllib.error,glob
 #mes modules
-import lib.dbSpectro as dbSpectro
-import lib.fixHeader as fixHeader
-import lib.archive as archive
-import lib.cds as cds
-import lib.myJson as myJson
-import lib.emailFnc as emailFnc
+import libsdb.dbSpectro as dbSpectro
+import libsdb.fixHeader as fixHeader
+import libsdb.archive as archive
+import libsdb.cds as cds
+import libsdb.myJson as myJson
+import libsdb.emailFnc as emailFnc
 import defineTimeSerie
 
 print("Robot integration acquisition dans la base")
 
-db=dbSpectro.init_connection()
+configFilePath = "../config/config.json"
+db=dbSpectro.init_connection(configFilePath)
 archive.loadConfig()
 #dbSpectro.listObs(db)
 #BasePath=sys.path[0]

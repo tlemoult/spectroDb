@@ -2,7 +2,7 @@
 
 function connectDb() {
 
-	$string = file_get_contents("../python/config/config.json");
+	$string = file_get_contents("../../config/config.json");
 	$json_a = json_decode($string, true);
 	$host=$json_a['db']['host'];
 	$user=$json_a['db']['userName'];

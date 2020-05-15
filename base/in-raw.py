@@ -16,8 +16,6 @@ print("Robot integration acquisition dans la base")
 configFilePath = "../config/config.json"
 db=dbSpectro.init_connection(configFilePath)
 archive.loadConfig(configFilePath)
-#dbSpectro.listObs(db)
-#BasePath=sys.path[0]
 
 if len(sys.argv)<2:
 	print("nombre d'argument incorrect")
@@ -234,7 +232,7 @@ for dirSource in lstDir:
 			timeSerie=dbSpectro.get_confObs_from_objId(db,objId)['timeSerie']
 			if timeSerie=='YES':
 				print("Redefine time Serie individual")
-				defineTimeSerie.redefineTimeSerieObject([obsId],1)
+				defineTimeSerie.redefineTimeSerieObject([obsId],1,configFilePath)
 				
 			#copie les fichiers vers le pipeline de traitement
 			archive.getFileRaw(returnedFileLST,destDir,obsId)

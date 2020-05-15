@@ -68,7 +68,7 @@ if len(sys.argv)<2:
 
 
 print("load configuration")
-json_text=open("../python/config/config.json").read()
+json_text=open("../../config/config.json").read()
 config=json.loads(json_text)
 path=config['path']
 racineArchive=path['archive']

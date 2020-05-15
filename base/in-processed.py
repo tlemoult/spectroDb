@@ -34,6 +34,7 @@ def parseXmlISIS(path,filename,ret):
 	ret['fileType']="CONFISIS"
 
 	with open(path+'/'+filename) as fd:
+		firstInconsistentLine=fd.readline()
 		xmlDict = xmltodict.parse(fd.read())
 	ret.update(xmlDict)
 

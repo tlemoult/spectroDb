@@ -7,7 +7,7 @@ import libsdb.cds as cds #mes modules
 
 print("Robot extrait les fichiers OBJECT, CALIB, TUNGSTEN, LED pour le pipeline Eshell")
 
-configFilePath="../config/config.json")
+configFilePath="../config/config.json"
 json_text=open(configFilePath).read()
 config=json.loads(json_text)
 

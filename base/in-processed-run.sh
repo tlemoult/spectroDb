@@ -20,4 +20,4 @@ echo "source dir: $_source_dir"
 echo "save log in $_log_file"
 echo "save err in $_err_file"
 
-python ../tools/in-processed.py $_source_dir delete > $_log_file 2> $_err_file
+python3 ../base/in-processed.py $_source_dir delete > $_log_file 2> $_err_file

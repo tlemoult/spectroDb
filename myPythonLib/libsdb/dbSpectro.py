@@ -49,9 +49,9 @@ def commit_query_sql_All_table(db,query):
 	cursor.execute(query)
 	return cursor
 
-#def get_instrument_from_id(db,Id):
-#	query='SELECT * FROM instrum where instruId=%d'%(Id)
-#	return commit_query_sql(db,query)
+def get_instrument_from_id(db,Id):
+	query='SELECT * FROM instrum where instruId=%d'%(Id)
+	return commit_query_sql(db,query)
 
 def getObjId_fromObjName(db,name):
 	query='SELECT objectId from object where name="'+name+'"'

@@ -5,7 +5,6 @@ from datetime import datetime
 import sys
 import os
 import shutil
-import urllib.request, urllib.parse, urllib.error
 import glob
 import libsdb.dbSpectro as dbSpectro
 import libsdb.cds as cds  # mes modules

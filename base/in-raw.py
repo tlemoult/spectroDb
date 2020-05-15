@@ -9,13 +9,13 @@ import libsdb.archive as archive
 import libsdb.cds as cds
 import libsdb.myJson as myJson
 import libsdb.emailFnc as emailFnc
-import defineTimeSerie
+import libsdb.defineTimeSerie as defineTimeSerie
 
 print("Robot integration acquisition dans la base")
 
 configFilePath = "../config/config.json"
 db=dbSpectro.init_connection(configFilePath)
-archive.loadConfig()
+archive.loadConfig(configFilePath)
 #dbSpectro.listObs(db)
 #BasePath=sys.path[0]
 

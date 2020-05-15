@@ -55,8 +55,8 @@ signalPipeline=path['signalProcessPipe']
 PathSignalStartPipeline=racineArchive+signalPipeline+"/askStart"
 PathSignalEndedPipeline=racineArchive+signalPipeline+"/ended"
 
-cmdInNewRaw="../tools/in-raw-run.sh"
-cmdInNewProcessed="../tools/in-processed-run.sh"
+cmdInNewRaw="../base/in-raw-run.sh"
+cmdInNewProcessed="../base/in-processed-run.sh"
 
 print("Majordome, check every 60 seconds.")
 print("Check  Signals: "+PathSignalNewRaw)

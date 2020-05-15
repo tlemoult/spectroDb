@@ -8,12 +8,12 @@ import libsdb.cds as cds #mes modules
 
 
 
-def redefineTimeSerieObject(obsIds,NbRawPerStack):
+def redefineTimeSerieObject(obsIds,NbRawPerStack,configPathFile):
 	json_text=open("../config/config.json").read()
 	config=json.loads(json_text)
 	PathBaseSpectro= config['path']['archive']+'/archive'
 
-	db=dbSpectro.init_connection()
+	db=dbSpectro.init_connection(configPathFile)
 
 	print("obsIds=",obsIds)
 	print("NbRawPerStack=",NbRawPerStack)

@@ -1,6 +1,8 @@
 import sys
 import libsdb.defineTimeSerie as defineTimeSerie
 
+configPathFile="../../config/config.json"
+
 print("redefinie les time serie facon Audela")
 
 if len(sys.argv)<3:
@@ -13,11 +15,11 @@ if len(sys.argv)<3:
 if len(sys.argv)==3:
 	obsIds=[int(sys.argv[1])]
 	NbRawPerStack=int(sys.argv[2])
-	defineTimeSerie.redefineTimeSerieObject(obsIds,NbRawPerStack)
+	defineTimeSerie.redefineTimeSerieObject(obsIds,NbRawPerStack,configPathFile)
 elif len(sys.argv)==5 and sys.argv[1]=='range':
 	obsIds=list(range(int(sys.argv[2]),int(sys.argv[3])+1))
 	NbRawPerStack=int(sys.argv[4])
-	defineTimeSerie.redefineTimeSerieObject(obsIds,NbRawPerStack)
+	defineTimeSerie.redefineTimeSerieObject(obsIds,NbRawPerStack,configPathFile)
 else:
 	print("arguments incorrects")
 	exit()

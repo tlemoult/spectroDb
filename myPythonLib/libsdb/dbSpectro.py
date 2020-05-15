@@ -23,7 +23,7 @@ def setLogLevel(n):
 def commit_query_sql(db,query):
 	global logLevel
 	if logLevel>2: print(query)
-	cursor=db.cursor()
+	cursor=db.cursor(buffered=True)
 	cursor.execute(query)
 	line=cursor.fetchone()
 	try:
@@ -34,7 +34,7 @@ def commit_query_sql(db,query):
 def commit_query_sql_table(db,query):
 	global logLevel
 	if logLevel>2: print(query)
-	cursor=db.cursor()
+	cursor=db.cursor(buffered=True)
 	cursor.execute(query)
 	line=cursor.fetchone()
 	try:
@@ -45,13 +45,95 @@ def commit_query_sql_table(db,query):
 def commit_query_sql_All_table(db,query):
 	global logLevel
 	if logLevel>2: print(query)
-	cursor=db.cursor()
+	cursor=db.cursor(buffered=True)
 	cursor.execute(query)
 	return cursor
 
 def get_instrument_from_id(db,Id):
 	query='SELECT * FROM instrum where instruId=%d'%(Id)
 	return commit_query_sql(db,query)
+
+def get_instruId_from_name(db,confInstru):
+	confName=confInstru['configName']
+	query='SELECT instruId FROM instrum where name="%s"'%(confName)
+	return commit_query_sql(db,query)
+
+def insert_InstrumConf(db,confInstru):
+	sql="""INSERT INTO instrum(name,telescop,spectro,resol,detector,guideDetector)"""
+	sql+=""" VALUES ('%s','%s','%s',%d,'%s','%s')"""%(confInstru['configName'],confInstru['telescop'],
+												confInstru['spectro'],int(confInstru['resol']),confInstru['detname'],confInstru['guideDetname'])
+	commit_insert_sql(db,sql)
+	return get_instruId_from_name(db,confInstru)  # retourne l id juste insere
+
+def get_site_from_id(db,siteId):
+	query='SELECT name,lat,lon,alt,country,UAIcode FROM site where siteID=%d'%(siteId)
+	result=commit_query_sql_table(db,query)
+	site={}
+	site['name']=result[0]
+	site['lat']=result[1]
+	site['lon']=result[2]
+	site['alt']=result[3]
+	site['country']=result[4]
+	site['UAIcode']=result[5]
+	return site
+
+def get_siteId_from_name(db,site):
+	siteName=site['name']
+	query='SELECT siteId FROM site where name="%s"'%(siteName)
+	return commit_query_sql(db,query)
+
+def insert_site(db,site):
+	sql="""INSERT INTO site(name,country,lat,lon,alt,UAIcode)"""
+	sql+=""" VALUES ('%s','%s','%s','%s','%s','%s')"""%(site['name'],site['country'],site['lat'],site['lon'],site['alt'],site['UAIcode'])
+	commit_insert_sql(db,sql)
+	return get_siteId_from_name(db,site) # retourne l id juste insere
+
+def get_confInstru_fromId(db,instruId):
+	query='SELECT name,telescop,spectro,resol,detector,guideDetector FROM instrum where instruId=%d'%(instruId)
+	result=commit_query_sql_table(db,query)
+
+	confInstru={}
+	confInstru['configName']=result[0]
+	confInstru['telescop']=result[1]
+	confInstru['spectro']=result[2]
+	confInstru['resol']=result[3]
+	confInstru['detname']=result[4]
+	confInstru['guideDetname']=result[5]
+	return confInstru
+
+def get_confObs_from_objId(db,objectId):
+	query='SELECT timeSerie FROM object WHERE objectId=%d'%objectId
+	result=commit_query_sql_table(db,query)
+	return { 'timeSerie': result[0]}
+
+def get_observerId_from_alias(db,observer):
+	query='SELECT observerID from observer where alias="'+observer['alias']+'"'
+	return commit_query_sql(db,query)
+
+def get_observer_from_id(db,observerId):
+	query='SELECT firstName,lastName,email,alias FROM observer where observerID=%d'%(observerId)
+	result=commit_query_sql_table(db,query)
+	observer={}
+	observer['firstName']=result[0]
+	observer['lastName']=result[1]
+	observer['email']=result[2]
+	observer['alias']=result[3]
+	return observer	
+
+def insert_observer(db,observer):
+	sql="""INSERT INTO observer(firstName,lastName,email,alias)"""
+	sql+=""" VALUES ('%s','%s','%s','%s')"""%(observer['firstName'],observer['lastName'],observer['email'],observer['alias'])
+	commit_insert_sql(db,sql)
+	return get_observerId_from_alias(db,observer)  # retourne l id juste insere
+
+def getRaDecfromObjName(db,name):
+	query='SELECT alpha,delta,objectId from object where name="'+name+'"'
+	res=commit_query_sql_table(db,query)
+	print("res=",res)
+	if res!=None:
+		return {'alpha':res[0], 'delta': res[1], 'objId': res[2] }
+	else:
+		return {}
 
 def getObjId_fromObjName(db,name):
 	query='SELECT objectId from object where name="'+name+'"'
@@ -63,6 +145,10 @@ def getObjId_fromRaDec(db,alpha,delta):
 
 def getObjName_fromRaDec(db,alpha,delta):
 	query='SELECT name from object where alpha like "%s%s" and delta like "%s%s"'%(alpha[:8],'%',delta[:9],'%')
+	return commit_query_sql(db,query)
+
+def getObservationId_fromDateObs(db,dateObs):
+	query='SELECT obsId from observation where DateObs="%s"'%(dateObs.strftime('%Y-%m-%d %H:%M:%S'))
 	return commit_query_sql(db,query)
 
 def getDirectory_from_STRdate(db,date):
@@ -81,7 +167,7 @@ def commit_insert_sql(db,sql):
 	global logLevel
 	print("logLevel=",logLevel)
 	if logLevel>2: print("insert sql=",sql, end=' ')
-	cursor=db.cursor()
+	cursor=db.cursor(buffered=True)
 	try:
 		cursor.execute(sql)
 		db.commit()
@@ -128,6 +214,10 @@ def insert_Project(db,ProjectName):
 	
 def getProjectId_fromProjectName(db,ProjectName):
 	query='SELECT projectId from project where name="%s"'%(ProjectName)
+	return commit_query_sql(db,query)
+
+def getFileId_from_date(db,date):
+	query='SELECT fileId FROM fileName where date="%s"'%(date.strftime('%Y-%m-%d %H:%M:%S'))
 	return commit_query_sql(db,query)
 
 def getProjectFollowers_fromProjectName(db,ProjectName):
@@ -298,6 +388,20 @@ def update_observation_status(db,obsId,status):
 	sql+=""" WHERE obsId=%d"""%obsId
 	return commit_insert_sql(db,sql)
 
+def insert_filename(db,obsId,phase,destDir,f):
+	if obsId==None: obsId='NULL'
+	if f['binning']==None: f['binning']=''
+	if f['ccdTemp']==None: f['ccdTemp']='NULL'
+	if f['detector']==None: f['detector']=''
+	if f['expTime']==None: f['expTime']='NULL'
+
+	sql="""INSERT INTO fileName(obsId,phase,filetype,filename,date,serieId,destDir,tempCCD,binning,detector,expTime)"""
+	sql+=""" VALUES (%s,'%s','%s','%s','%s','%s','%s',%s,'%s','%s',%s)"""%(str(obsId),phase,f['typ'],f['filename'],
+															f['date'].strftime('%Y-%m-%d %H:%M:%S'),
+															f['serieId'],destDir,str(f['ccdTemp']),str(f['binning']),str(f['detector']),f['expTime'])
+	commit_insert_sql(db,sql)
+
+
 def insert_filename_meta(db,meta):
 
 	if 'obsId' not in list(meta.keys()):
@@ -361,5 +465,62 @@ def removeWork(db,obsId):
 
 	query="delete from fileName where fileName.phase = 'data' and obsId=%d"%(obsId) 
 	commit_insert_sql(db,query)
+
+def insert_observation(db,projectId,objID,dateObs,isRef,observerId,instruId,siteId):
+	if isRef:
+		ref='R'
+	else:
+		ref=' '
+	sql="""INSERT INTO observation(projectId,objId,dateObs,observerId,instruId,siteId,status,ref)
+	VALUES (%d,%d,'%s',%d,%d,%d,'ACQFINISH','%s')"""%(projectId,objID,dateObs.strftime('%Y-%m-%d %H:%M:%S'),observerId,instruId,siteId,ref)
+	commit_insert_sql(db,sql)
+
+def insert_observation_with_name(db,ProjectName,objName,alpha,delta,dateObs,isRef,observerId,instruId,siteId):
+	# verifie si l etoile est connue
+	
+	objIdbyName=getObjId_fromObjName(db,objName)
+	if objIdbyName!=0:
+		# objet connus par son nom
+		print("Object connus par son nom ",objName)
+		isNewObject=False
+		objId=objIdbyName
+	
+	else:
+		objIdbyCoord=getObjId_fromRaDec(db,alpha,delta)
+		if objIdbyCoord!=0:
+			# object connus par ses coordonnes
+			print("objet connus sous ces coordonnes",alpha,delta)
+			isNewObject=False
+			ObjNameFromRaDec=getObjName_fromRaDec(db,alpha,delta)
+			if objName!=ObjNameFromRaDec:
+				print("nouveau nom "+objName+" pour l objet connus sous le nom de "+ObjNameFromRaDec)
+				insert_Alias(db,objIdbyCoord,objName)
+			else:
+				print("Nom deja en base")
+			objId=objIdbyCoord
+
+		else:
+			# object nouveau
+			print("nouvel object en base suivant les coordonnes",alpha,delta)
+			isNewObject=True
+			insert_Obj(db,objName,0,alpha,delta)
+			objId=getObjId_fromRaDec(db,alpha,delta)
+			
+	
+
+	# verifie le projet
+	projectId=getProjectId_fromProjectName(db,ProjectName)
+	if projectId==0:
+		print("Projet",ProjectName,"nouveau, on le cree en base")
+		insert_Project(db,ProjectName)
+		projectId=getProjectId_fromProjectName(db,ProjectName)
+	else:
+		print("Projet",ProjectName,"connus")
+
+	# insertion de l observation
+	insert_observation(db,projectId,objId,dateObs,isRef,observerId,instruId,siteId)
+	obsId=getObservationId_fromDateObs(db,dateObs)
+	return (obsId,objId,isNewObject)
+
 
 	return

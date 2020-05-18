@@ -341,12 +341,20 @@ def	getClosestSerieId(db,obsDate,fileType):
 	query="""select fileName.serieId,fileName.obsId from fileName where fileName.filetype='%s'"""%fileType
 	query+=""" and phase='RAW' and date>'%s' order by date limit 1"""%obsDate
 	#print("Query1=",query)
-	serieId1,obsId1=commit_query_sql_table(db,query)
+	try:
+		serieId1,obsId1=commit_query_sql_table(db,query)
+	except TypeError:
+		serieId1='2999-12-12T12:59:59.55'
+		obsId1=None
 
 	query="""select fileName.serieId,fileName.obsId from fileName where fileName.filetype='%s'"""%fileType
 	query+=""" and phase='RAW' and date<'%s' order by date desc limit 1"""%obsDate
 	#print("Query2=",query)
-	serieId2,obsId2=commit_query_sql_table(db,query)
+	try:
+		serieId2,obsId2=commit_query_sql_table(db,query)
+	except TypeError:
+		serieId2='1000-12-30T12:59:59.55'
+		obsId2=None
 
 	t1=datetime.strptime(serieId1,"%Y-%m-%dT%H:%M:%S.%f")
 	t2=datetime.strptime(serieId2,"%Y-%m-%dT%H:%M:%S.%f")

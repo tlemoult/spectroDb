@@ -300,9 +300,11 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 		dateObs=datetime.datetime.strptime(serieID['OBJECT'][:19],'%Y-%m-%dT%H:%M:%S')
 	else:
 		isObservation=False
-		if serieID.keys()!=[]:
+		if len(serieID.keys())!=0:
+			print("fix Header: SerieId.keys() = ",serieID.keys())
 			# on utilise la date de la premiere serie trouvee dans le dictionnaire.
-			dateObs=datetime.datetime.strptime(serieID[serieID.keys()[0]][:19],'%Y-%m-%dT%H:%M:%S')
+			firstKeys=list(serieID.keys())[0]
+			dateObs=datetime.datetime.strptime(serieID[firstKeys][:19],'%Y-%m-%dT%H:%M:%S')
 		else:
 			dateObs=''  # pas de serieID ... on ne sait pas dater.
 	return (isObservation,dateObs,returnedFileLST)

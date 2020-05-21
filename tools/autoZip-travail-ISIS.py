@@ -1,6 +1,6 @@
 import sys,os
 import urllib.request, urllib.parse, urllib.error,glob
-import pyfits
+import astropy.io.fits as fits
 import zipfile
 import shutil
 
@@ -13,13 +13,13 @@ def listdirectory(path):
     return fichier
 
 def listdirectory2(path):  
-    a=[]
-    l = glob.glob(path+'\\*')  
-    for i in l:  
-        if os.path.isdir(i):
+	a=[]
+	l = glob.glob(path+'\\*')
+	for i in l:
+		if os.path.isdir(i):
 			f=listdirectory(i)
 			a.append(f)
-    return a
+	return a
 	
 print("Script de mise en zip des spectres Traité par ISIS pour publication")
 

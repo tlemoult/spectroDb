@@ -1,5 +1,5 @@
 import sys
-import lib.dbSpectro as dbSpectro
+import libsdb.dbSpectro as dbSpectro
 
 print("efface les spectres et fichiers de travail d'une observation")
 if len(sys.argv) < 2:

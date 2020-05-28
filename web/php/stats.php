@@ -28,24 +28,51 @@ if(!empty($_POST['statusValue']))
 else 
 { $statusValue=""; }
 
+if(!empty($_POST['dateStartValue']))
+{ $dateStartValue=$_POST['dateStartValue']; }
+else 
+{ $dateStartValue=""; }
+
+if(!empty($_POST['dateStopValue']))
+{ $dateStopValue=$_POST['dateStopValue']; }
+else 
+{ $dateStopValue=""; }
+
+if(!empty($_POST['granularValue']))
+{ $granularValue=$_POST['granularValue']; }
+else 
+{ $granularValue="month"; }
+
+
 echo '<form action="stats.php" method="post">';
 echo '<p>object name ';
 echo '    <input type="text" name="searchStar" value="'.$searchStar .'"/>';
 echo ' project ';
 echo '    <input type="text" name="projectName" value="'.$projectName .'"/>';
 echo ' status';
-echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/>';
-echo '';
+echo '    <input type="text" name="statusValue" value="'.$statusValue .'"/> ';
+echo '<br>';
+echo 'dateStart    <input type="text" name="dateStartValue" value="'.$dateStartValue .'"/>';
+echo 'dateStop    <input type="text" name="dateStopValue" value="'.$dateStopValue .'"/>';
+echo 'granular: day,month,year  <input type="text" name="granularValue" value="'.$granularValue .'"/>';
+echo '<br>';
 echo '    <input type="submit"  value="apply filter" />';
 echo '</form>';
 
 $link=connectDb();
 
 
+if($granularValue=="month")
+{ $dateFieldLimit=7;}
+elseif ($granularValue=="day")
+{ $dateFieldLimit=10;}
+else
+{ $dateFieldLimit=4;}
+
 // Attempt select query execution
 //$sql = "select * from object order by alpha";
 
-$sql = "select substring(dateObs,1,7)  as mo, count(DISTINCT observation.obsId) as obs,
+$sql = "select substring(dateObs,1,". $dateFieldLimit .")  as mo, count(DISTINCT observation.obsId) as obs,
 count(DISTINCT substring(observation.dateObs,1,11)) as night, 
  sum(expTime)/3600 as hours
 from observation

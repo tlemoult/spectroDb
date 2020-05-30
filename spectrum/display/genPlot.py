@@ -1,7 +1,7 @@
 from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
-import os
+import os,sys
 
 def loadSpc(fileName):
 
@@ -20,7 +20,7 @@ def loadSpc(fileName):
 
     return flux,waveLenght,header
 
-def plot(path,filename,save=True):
+def plot(path,filename,save=True,zoomWaveLenght=None,zoomTitle=""):
 
     flux,waveLenght,header = loadSpc(path+'/'+fileName)
 
@@ -34,11 +34,12 @@ def plot(path,filename,save=True):
     axes[0].set_ylim(bottom=0)
 
 
-    axes[1].set_title('zoom on Ha')
+    axes[1].set_title('zoom on '+zoomTitle)
     axes[1].plot(waveLenght,flux,'r-')
 
-    axes[1].set_ylim(bottom=0)
-    axes[1].set_xlim(6540,6585)
+    if zoomWaveLenght!=None:
+        axes[1].set_ylim(top=2.5,bottom=1.9)
+        axes[1].set_xlim(zoomWaveLenght[0],zoomWaveLenght[1])
 
     if save:
         plt.savefig('plot/plot'+header['DATE-OBS'].replace(':','-')+'.png')
@@ -51,12 +52,19 @@ def plot(path,filename,save=True):
 
 #fileName="RRlyr_RRLyr_20200415_153_600_TLE_34.fits"
 
-path="K:/spcWork/RRlyr"
+if len(sys.argv) < 2:
+    print("nombre d'argument incorrect")
+    print("utiliser: ")
+    print("   python plot.py path")
+    exit(1)
+
+path=sys.argv[1]
 filesName=os.listdir(path)
 i=1
 for fileName in filesName:
     print(f"{i}/{len(filesName)} file:{fileName}  ")
-    plot(path,fileName)
+    plot(path,fileName,zoomWaveLenght=[4681,4691],zoomTitle="on 4686A")
+    """    plot(path,fileName,zoomWaveLenght=[6540,6585],"on Ha") """
     i=i+1
 
 

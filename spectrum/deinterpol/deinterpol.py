@@ -14,11 +14,17 @@ def loadSpc(fileName):
 
     
     flux=hdu[0].data
-    waveLenght = np.linspace(start=header['CRVAL1'],num=header['NAXIS1'],stop=header['CRVAL1']+header['NAXIS1']*header['CDELT1'])
+    waveLenght = np.linspace(start=header['CRVAL1'],num=header['NAXIS1'],stop=header['CRVAL1']+(header['NAXIS1']-1)*header['CDELT1'])
 
     hdu.close()
 
     return flux,waveLenght,header
+
+def saveSpc(fileName,newsHeader,flux):
+    hdu = fits.PrimaryHDU(flux)
+    hdu.header=newsHeader
+#    hdu[0].data=flux
+    hdu.writeto(fileName)
 
 def plot(path,filename,save=True):
 
@@ -66,10 +72,9 @@ def simplePlot(waveLenght,flux,plotTitle):
     plt.show()
 
 
-def deriv(path,filename):
+def deriv(path,filename,dstPath):
 
     flux,waveLenght,header = loadSpc(path+'/'+fileName)
-    print(f"CDELT1 = {header['CDELT1']}")
 
     cntEch = np.arange(1, len(waveLenght)+1, 1)
 
@@ -82,10 +87,7 @@ def deriv(path,filename):
     #simplePlot(waveLenghtDif2,absD2Flux,"2nd diff")
     # find zeros seg:
 
-    currentSlope="increasing"
-    print
-    print(f"dif2({dif2Flux[0]})={waveLenghtDif2[0]}")
-
+ 
     lastF=flux[1]
     lastY=dif2Flux[0]
     lastX=waveLenghtDif2[0]
@@ -110,24 +112,64 @@ def deriv(path,filename):
         elif slope == "decrease" and lastY < y:
             if log:
                 print("start to increade")
-#            pixelWave.append(lastX)
-#            pixelFlux.append(lastF)
             slope = "increase"
 
         lastF=f
         lastX=x
         lastY=y
 
-#        if cntAlgo == 30:
-#            break
 
-    
+    # we add the last point of interpolled data
+    pixelWave.append(waveLenght[-1])
+    pixelFlux.append(flux[-1])
 
-    w0=pixelWave[0]
-    for w in pixelWave[1:]:
-        print(f"d(Wave)={w-w0}")
-        w0=w
+    #convert wavelenght in pixel number.  Int are more easy to debug..
+    pixelWaveInt=[ round((waveLenght - header['CRVAL1']) / header['CDELT1']) for waveLenght in pixelWave]
 
+
+    barWaveInt=[]
+    lastBarWaveInt=0
+
+    barFlux=[]
+    lastBarWaveInt=0
+
+    for posSrc in range(len(pixelWaveInt)):
+        
+        if posSrc != len(pixelWaveInt)-1:
+            endPixelPosInt=(pixelWaveInt[posSrc]+pixelWaveInt[posSrc+1])  # double of average
+        else:
+            endPixelPosInt=len(waveLenght)*2   # last pos 
+
+        sizePixel=endPixelPosInt-lastBarWaveInt
+
+
+        print(f"endPixelPosInt={endPixelPosInt}")
+        #print(f"sizePixel={sizePixel}")
+        print(f"lastBarWaveInt={lastBarWaveInt}")
+        barWaveInt.extend(list(range(int(lastBarWaveInt),int(endPixelPosInt))))
+        barFlux.extend([pixelFlux[posSrc]] * int(sizePixel))
+
+        #print(f"barWaveInt={barWaveInt}")
+        #print(f"barFlux={barFlux}")
+
+#        input("Press a key")
+
+        lastBarWaveInt=lastBarWaveInt + sizePixel
+
+    barWave=[header['CRVAL1'] +  header['CDELT1']*0.25 + i * header['CDELT1'] / 2 for i in barWaveInt]
+
+
+    #print(f"original  data len = {len(flux)}")
+    #print(f"pixelized data len = {len(barFlux)}")
+
+
+    #save data
+    # modify header for wavelenght
+    header['NAXIS1'] = header['NAXIS1'] * 2
+    header['CRVAL1'] = header['CRVAL1'] + header['CDELT1'] * 0.25
+    header['CDELT1'] = header['CDELT1'] / 2
+
+    saveSpc(dstPath + '/' + fileName,header,barFlux)
 
     # plot..
     minWavelenght,maxWavelenght= 6540 , 6542
@@ -136,6 +178,7 @@ def deriv(path,filename):
 
     ax[0].plot(waveLenght,flux,'b')
     ax[0].plot(pixelWave,pixelFlux,'*r')
+    ax[0].plot(barWave,barFlux,'g')
     ax[0].set_xlim(minWavelenght,maxWavelenght)
 
     ax[1].plot(waveLenghtDif2,dif2Flux,'r')
@@ -157,13 +200,14 @@ def deriv(path,filename):
 #testDeriv()
 #exit()
 
-path="C:/myworkspace/spectroDb/spectrum/interpol/data"
-filesName=os.listdir(path)
+srcPath="./data"
+dstPath="./dataPixel"
+filesName=os.listdir(srcPath)
 i=1
 for fileName in filesName:
     print(f"{i}/{len(filesName)} file:{fileName}  ")
-    #plot(path,fileName,save=False)
-    deriv(path,fileName)
+    #plot(srcPath,fileName,save=False)
+    deriv(srcPath,fileName,dstPath)
     i=i+1
 
 

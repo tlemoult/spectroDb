@@ -187,7 +187,18 @@ def deriv(path,filename,dstPath):
     plt.grid()
     plt.show()
 
+def enquete(fileBilin,fileSpline,fileRepixel):
+    fluxBilin,waveLenghtBilin,headerBilin = loadSpc(fileBilin)
+    fluxSpline,waveLenghtSpline,headerSpline = loadSpc(fileSpline)
+    fluxRepixel,waveLengthRepixel,headerRepixel = loadSpc(fileRepixel)
+    fig, ax = plt.subplots(1,1)
 
+    ax.step(waveLenghtBilin,fluxBilin)
+    ax.step(waveLenghtSpline,fluxSpline)
+    ax.step(waveLengthRepixel,fluxRepixel)
+    fig.suptitle("Compare plot\n"+fileBilin+" ->>> Blue\n vs "+fileSpline+" ->>> Orange\n and Repixel Version ->>> Green")
+    plt.grid()
+    plt.show()
 
 
 
@@ -197,8 +208,8 @@ def deriv(path,filename,dstPath):
 ********************
 """
 
-#testDeriv()
-#exit()
+enquete("./_RRLyr_20200726_976_600_TLE_34_bilin.fits","./_RRLyr_20200726_976_600_TLE_34_spline.fits","./_RRLyr_20200726_976_600_TLE_34_bilin_repixel.fits")
+exit()
 
 srcPath="./data"
 dstPath="./dataPixel"

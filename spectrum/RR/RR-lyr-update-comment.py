@@ -125,11 +125,11 @@ for obsIdt in obsLst:
             y0=y1
 
         #prepare latexTable
-        tableObsLatex+=f"{obsId} & {str(dateUTC[0])[0:10]}  &  {int(jds[0])}" 
+        tableObsLatex+=f"{str(dateUTC[0])[0:10]}  &  {int(jds[0])-2400000}" 
         tableObsLatex+="& 36 & Chelles &\\textsc{eShel V2} & 11\\,000 & 3.2 & $3\\,978-7\\,374$ " 
         tableObsLatex+=f"& xx & {formatPhase(begphi)} & {formatPhase(endphi)} & {formatPhase(phiBlasko)} "
-        tableObsLatex+=f"& {len(dateUTC)} & 600"
-        tableObsLatex+="\n"
+        tableObsLatex+=f"& {len(dateUTC)} & 600 "
+        tableObsLatex+="\\\\\n"
 
 
 

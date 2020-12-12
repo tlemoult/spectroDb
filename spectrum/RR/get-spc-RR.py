@@ -28,7 +28,19 @@ def createPath(racine,path):
 
 print("Robot extrait les fichiers spectres RR Lyr traite")
 
+objectId = 226  # RR Lyr in my data Base
+#phiMin=0.2
+#phiMax=0.4
+phiMin=0.85
+phiMax=0.96
+
+directoryPerCycle=True
+
 if len(sys.argv) !=7:
+    print(" ordre 34 (Ha),  nomé Ha")
+    print(" ordre 38 (He 5876),  nomé He5876")
+    print(" ordre 48 (He 4686), nomé He4686")
+    print("")
     print("nombre d'argument incorrect")
     print("utiliser: ")
     print("   python get-spc-RR.py orderNo 34 ./spectrum/RRlyr/34/ date 2019-12-31 2020-12-31")
@@ -44,22 +56,12 @@ if len(sys.argv) == 7 and sys.argv[1] == 'orderNo' and sys.argv[4] == 'date':
     dateStart = sys.argv[5]
     dateStop = sys.argv[6]
 
-objectId = 226  # RR Lyr in my data Base
-
-print(f"sys.argv[1] = {sys.argv[1]}")
-print(f"objectId = {objectId}")
-print(f"orderNo = {orderNo}")
-print(f"dateStart = {dateStart}  dateStop = {dateStop}")
-print(f"destPath = {destPath}")
-
 fileList = dbSpectro.getFilesSpcPerObjIdDate(db, objectId, orderNo, dateStart, dateStop)
 
 json_text = open(configFilePath).read()
 config = json.loads(json_text)
 
 PathBaseSpectro = config['path']['archive'] + '/archive'
-print(("dossier source = "+ PathBaseSpectro))
-print(("dossier destination = "+ destPath))
 
 if orderNo == '34':
     orderDirPath = "Ha"
@@ -70,19 +72,19 @@ elif orderNo == '48':
 else:
     orderDirPath = str(orderNo)
 
-print(f"sous dossier destination orderDirPath = {orderDirPath}")
-print("-----------------------")
+print(f"  objectId = {objectId}")
+print(f"  orderNo = {orderNo}")
+print(f"  phi = [{phiMin} ... {phiMax}]")
+print(f"  dateStart = {dateStart}  dateStop = {dateStop}")
+print(("  dossier source = "+ PathBaseSpectro))
+print(("  dossier destination = "+ destPath))
+if directoryPerCycle:
+    print(f"     sous dossier par cycle: orderDirPath = {orderDirPath}")
+else:
+    print(f"     tous les cycles dans le meme dossier")
+
 """
-Je souhaiterais plutot : Dossier:  date(aaaammjj)_TLE_RC36_psi
- 
-* un sous dossier ordre 34 (Ha),  nomé Ha
-* un sous dossier ordre 38 (He 5876),  nomé He5876
-* un sous dossier ordre 48 (He 4686), nomé He4686
-
-Nom de fichier en .fit
-
 Je prends usuellement 0.87 a 0.95.
-
 """
 
 i = 0
@@ -96,13 +98,16 @@ for f in fileList:
     psi = phase_RR_blasko_jd(jd)
     nMax=int(jd/0.566793)-4333000
 
-    if phi > 0.2 and phi < 0.4:
+    if phi > phiMin and phi < phiMax:
         i = i +1
 #        print(f"n = {nMax}, jd = {jd}, phi = {phi}, fileSource = {fileSource} --> fileDest = {fileDest}")
         if not str(nMax) in pulseDict:
             pathDirDatePsi = str(dateUTC)[0:10].replace("-","")+"_TLE_RC36_psi"+formatPhase(psi)[2:4]
             pulseDict[str(nMax)]={}
-            pulseDict[str(nMax)]['pathDir']=pathDirDatePsi+"/"+orderDirPath
+            if directoryPerCycle:
+                pulseDict[str(nMax)]['pathDir']=pathDirDatePsi+"/"+orderDirPath
+            else:
+                pulseDict[str(nMax)]['pathDir']=orderDirPath
             pulseDict[str(nMax)]['files']=[]
 
         pulseDict[str(nMax)]['files'].append({"dirSrc":f[0] , "file": f[1] , "phi": phi})

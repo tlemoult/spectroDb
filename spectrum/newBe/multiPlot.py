@@ -100,7 +100,67 @@ def coorHelioSpeed(wave,header):
 
     return np.linspace(start=header['CRVAL1'],num=header['NAXIS1'],stop=header['CRVAL1']+header['NAXIS1']*header['CDELT1'])
 
-def plots(loadPath='.',savePath='.',save=True, offsetStep=1, xmin=False, xmax=False, xCentral=False, xLen=False):
+def speedFct(l,l0):
+    # convert in km/s,  return    
+    return (l-l0)/l0* 299792.458
+
+def waveFct(speed,l0):
+    #speed in km/s  
+    #return same unit than l0
+    return l0*(speed/299792.458+1)
+
+def doppler(header,centralWave):
+    print(f"Start speed = {speedFct(header['CRVAL1'],centralWave)}")
+    return np.linspace(start = speedFct(header['CRVAL1'],centralWave), num=header['NAXIS1'], stop= speedFct(header['CRVAL1']+header['NAXIS1']*header['CDELT1'],centralWave))
+
+def truncData(flux,waveCoorHelio,header,waveCentral,speedSpan):
+
+    print(f"truncData startValue CRVAL1 = {header['CRVAL1']} , NAXIS1= {header['NAXIS1']} , CDELT1 = {header['CDELT1']} ")
+
+    waveStart = waveFct(-speedSpan,waveCentral)
+    waveStop  = waveFct(+speedSpan,waveCentral)
+    print(f"waveStart = {waveStart}, waveStop = {waveStop}")
+
+    #trunc data on left
+    if header['CRVAL1'] > waveStart:
+        nTruncLeft = 0
+    else:
+        nTruncLeft = int((waveStart - header['CRVAL1'])/header['CDELT1'])
+        header['CRVAL1'] = header['CRVAL1'] + nTruncLeft * header['CDELT1']
+        header['NAXIS1'] = header['NAXIS1'] - nTruncLeft
+
+    waveTruncLeft = waveCoorHelio[nTruncLeft:]
+    fluxTruncLeft = flux[nTruncLeft:]
+    print(f"truncData midvalue:  CRVAL1 = {header['CRVAL1']} , NAXIS1= {header['NAXIS1']} , CDELT1 = {header['CDELT1']} ")
+
+    #trunc data on right 
+    if header['CRVAL1']+header['NAXIS1']*header['CDELT1'] < waveStop:
+        nTruncRight = 0
+    else:
+        nTruncRight = int((header['CRVAL1']+header['NAXIS1']*header['CDELT1']-waveStop)/header['CDELT1'])
+        header['NAXIS1'] = header['NAXIS1'] - nTruncRight
+
+    waveTruncLeftRight = waveTruncLeft[:-nTruncRight]
+    fluxTruncLeftRight = fluxTruncLeft[:-nTruncRight]
+
+    print(f"truncData endvalue:  CRVAL1 = {header['CRVAL1']} , NAXIS1= {header['NAXIS1']} , CDELT1 = {header['CDELT1']} ")
+
+    return fluxTruncLeftRight,waveTruncLeftRight,header
+
+def resolution(header):
+    dicResol = {
+        'LISA':800 , 'C11_LHIRES_2400_ATK314': 15000 , 'LHIRES3 C9 SXVR-H694': 15000,
+        'C11 VHIRES_MO ATIK460EX': 48000
+     }
+
+    if 'BSS_ITRP' in header.keys():
+        resol = header['BSS_ITRP']
+    else:
+        resol = dicResol[header['BSS_INST']]  
+
+    return resol
+
+def plots(loadPath='.',savePath='.',save=True, waveCentral=6562.8, speedSpan=1000):
 
     print(f"loadPath = {loadPath}")
     dirEndName=loadPath.split('/')[-1]
@@ -111,63 +171,82 @@ def plots(loadPath='.',savePath='.',save=True, offsetStep=1, xmin=False, xmax=Fa
     for fileName in filesName:
         if fileName.endswith('.fit') or fileName.endswith('.fits'):
             selectFilename.append(loadPath+'/'+fileName)
+    selectFilename.sort(reverse=False)
 
-    selectFilename.sort(reverse=True)
-
-    fluxes, waves, headers = [] , [], []
+    #load fluxes, waves, headers
+    fluxes, waves, speeds, headers = [] , [], [], []
     for fileName in selectFilename:
         print(f"load file = {fileName}")
         flux,wave,header=loadSpc(fileName)
-        fluxes.append(flux)
-        waves.append(wave)
-        headers.append(header)
 
-
-    fig = plt.figure(figsize=(4, 4))
-    ax=plt.axes()
-
-    ax.grid(which='both')
-#    ax.set_ylim(bottom=0,top=offsetStep*len(selectFilename)+3)
-    ax.set_ylim(bottom=0,auto=True)
-    ax.set_xticks(np.arange(xmin,xmax,1))
-    ax.xaxis.set_major_locator(MultipleLocator(20))
-    ax.xaxis.set_major_formatter(FormatStrFormatter('%d A'))
-    ax.xaxis.set_minor_locator(MultipleLocator(5))
-
-    if xmin!=False:
-        ax.set_xlim(xmin,xmax)
-    elif xCentral!=False and xLen!=False:
-        ax.set_xlim(xCentral-xLen/2,xCentral+xLen/2)
-
-    offset=len(selectFilename)-1
-    for flux,wave,header,fileName in zip(fluxes,waves,headers,selectFilename):
-
+        # correct helio speed
         try:
             waveCoorHelio = coorHelioSpeed(wave,header)
         except ValueError:
             waveCoorHelio = wave
             print("************ Warning missing Helio correction *********")
 
-        flux+=offset
-        ax.plot(waveCoorHelio,flux,label=header['DATE-OBS'][:10]+" "+header['OBSERVER'])
-        offset-=offsetStep
+        #Troncate data data
+        fluxTruncLeftRight,waveTruncLeftRight,header = truncData(flux,waveCoorHelio,header,waveCentral,speedSpan)
+
+        fluxes.append(fluxTruncLeftRight)
+        waves.append(waveTruncLeftRight)
+        speeds.append(doppler(header,waveCentral))
+        headers.append(header)
 
 
-    ax.legend( loc="lower center", bbox_to_anchor=(0.4, -1))
-    fig.subplots_adjust(bottom=0.45)
+    ####################
+    # start real plot
+    ####################
+    n = len(selectFilename)
+    print(f"n={n}")
+    scaleSize = 3.0
+    #sharey=True, sharex=True,
+    fig , axs = plt.subplots(1,n,figsize=(n*scaleSize, scaleSize),sharey=True,gridspec_kw={'hspace': 0, 'wspace': 0})
+    if n == 1:
+        axs = [ axs]
 
-    xmin,xmax,ymin,ymax = plt.axis()
+    #find maximum of fluxes,  list of array
+    maxFlux=0
+    for flux in fluxes:
+        maxFlux = max(max(flux),maxFlux)
+    
+    title = headers[0]['OBJNAME']
 
-    title=header['OBJNAME']
-    ax.set_title(title)
+#    ax.grid(which='both')
+#    ax.set_ylim(bottom=0,top=offsetStep*len(selectFilename)+3)
+#    ax.set_ylim(bottom=0,auto=True)
+#    ax.set_xticks(np.arange(xmin,xmax,1))
+#    ax.xaxis.set_major_locator(MultipleLocator(20))
+#    ax.xaxis.set_major_formatter(FormatStrFormatter('%d A'))
+#    ax.xaxis.set_minor_locator(MultipleLocator(5))
 
+#    plt.xlabel("Velocity km/s relative to Ha")
+#    plt.ylabel("Relative flux")
+
+
+    for ax,flux,wave,speed,header,fileName in zip(axs,fluxes,waves,speeds,headers,selectFilename):
+        ax.set_xlim(-speedSpan,+speedSpan)
+        ax.set_xticks([-500,0,500])
+        ax.set_ylim(bottom=0,top=maxFlux*1.1)
+       
+        ax.plot(speed, flux)
+        #ax.legend()
+        #ax.label_outer()
+
+        ax.text(-900,0.1,"R="+str(resolution(header))+"\n"+header['DATE-OBS'][:10]+" "+header['OBSERVER'])
+
+        #ax.set_xlabel(header['DATE-OBS'][:10]+"\n"+header['OBSERVER'])
+
+    #fig.subplots_adjust(bottom=0.45)
+    plt.subplots_adjust(top=0.85,bottom=0.15)
+    fig.suptitle(title, fontsize=16)
 
     if save:
-        fileNameSave=dirEndName+'plot_'+header['OBJNAME'].replace(' ','_')+'_'
-        fileNameSave+=f"{int((xmin+xmax)/2)}A_"
-        fileNameSave+=f"{header['DATE-OBS'].replace(':','_')}.png"
+        fileNameSave=dirEndName
         print(f"save '{fileNameSave}' in '{savePath}'")
-        plt.savefig(savePath+'/'+fileNameSave)
+        plt.savefig(savePath+'/'+fileNameSave+'.png')
+        plt.savefig(savePath+'/'+fileNameSave+'.eps')
     else:
         plt.show()
     
@@ -181,7 +260,7 @@ savePath="./plot"
 dirs = os.listdir(dataPath)
 for dir in dirs:
     print(f"source path = {dataPath+dir}")
-    plots(loadPath=dataPath+dir,savePath=savePath,save=True,offsetStep=1,xCentral=6562,xLen=50)
+    plots(loadPath=dataPath+dir,savePath=savePath,save=True, waveCentral=6562.8, speedSpan=1000)
 
 
 

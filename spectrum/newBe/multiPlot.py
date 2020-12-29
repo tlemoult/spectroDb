@@ -160,22 +160,26 @@ def resolution(header):
 
     return resol
 
-def plots(loadPath='.',savePath='.',save=True, waveCentral=6562.8, speedSpan=1000):
-
+def getFitsFileName(loadPath):
     print(f"loadPath = {loadPath}")
     dirEndName=loadPath.split('/')[-1]
     filesName=os.listdir(loadPath)
-    selectFilename=[]
+    selectFilenames=[]
 
     #select correct fileNames
     for fileName in filesName:
         if fileName.endswith('.fit') or fileName.endswith('.fits'):
-            selectFilename.append(loadPath+'/'+fileName)
-    selectFilename.sort(reverse=False)
+            selectFilenames.append(loadPath+'/'+fileName)
+    selectFilenames.sort(reverse=False)
+
+    return selectFilenames
+
+
+def plots(axs,selectFilenames, waveCentral=6562.8, speedSpan=1000):
 
     #load fluxes, waves, headers
     fluxes, waves, speeds, headers = [] , [], [], []
-    for fileName in selectFilename:
+    for fileName in selectFilenames:
         print(f"load file = {fileName}")
         flux,wave,header=loadSpc(fileName)
 
@@ -198,13 +202,6 @@ def plots(loadPath='.',savePath='.',save=True, waveCentral=6562.8, speedSpan=100
     ####################
     # start real plot
     ####################
-    n = len(selectFilename)
-    print(f"n={n}")
-    scaleSize = 3.0
-    #sharey=True, sharex=True,
-    fig , axs = plt.subplots(1,n,figsize=(n*scaleSize, scaleSize),sharey=True,gridspec_kw={'hspace': 0, 'wspace': 0})
-    if n == 1:
-        axs = [ axs]
 
     #find maximum of fluxes,  list of array
     maxFlux=0
@@ -213,54 +210,59 @@ def plots(loadPath='.',savePath='.',save=True, waveCentral=6562.8, speedSpan=100
     
     title = headers[0]['OBJNAME']
 
-#    ax.grid(which='both')
-#    ax.set_ylim(bottom=0,top=offsetStep*len(selectFilename)+3)
-#    ax.set_ylim(bottom=0,auto=True)
-#    ax.set_xticks(np.arange(xmin,xmax,1))
-#    ax.xaxis.set_major_locator(MultipleLocator(20))
-#    ax.xaxis.set_major_formatter(FormatStrFormatter('%d A'))
-#    ax.xaxis.set_minor_locator(MultipleLocator(5))
-
-#    plt.xlabel("Velocity km/s relative to Ha")
-#    plt.ylabel("Relative flux")
-
-
-    for ax,flux,wave,speed,header,fileName in zip(axs,fluxes,waves,speeds,headers,selectFilename):
+    for ax,flux,wave,speed,header,fileName in zip(axs,fluxes,waves,speeds,headers,selectFilenames):
         ax.set_xlim(-speedSpan,+speedSpan)
         ax.set_xticks([-500,0,500])
-        ax.set_ylim(bottom=0,top=maxFlux*1.1)
+        ax.set_ylim(bottom=-maxFlux*0.07,top=maxFlux*1.1)
        
-        ax.plot(speed, flux)
-        #ax.legend()
-        #ax.label_outer()
+        ax.plot(speed, flux, 'k')
 
-        ax.text(-900,0.1,"R="+str(resolution(header))+"\n"+header['DATE-OBS'][:10]+" "+header['OBSERVER'])
+        #print(f"JD-MID = {header['JD-MID']} {type(header['JD-MID'])}")
+        bottomLegend  = "R="+str(resolution(header))+"\n"
+        bottomLegend += "JD-MID="+"{:10.1f}".format(float(header['JD-MID']))+"\n"
+        bottomLegend += header['DATE-OBS'][:10]+" "+header['OBSERVER']
+        ax.text(-900,-maxFlux*0.06,bottomLegend)
+        ax.text(-900,maxFlux,title)
 
-        #ax.set_xlabel(header['DATE-OBS'][:10]+"\n"+header['OBSERVER'])
-
-    #fig.subplots_adjust(bottom=0.45)
-    plt.subplots_adjust(top=0.85,bottom=0.15)
-    fig.suptitle(title, fontsize=16)
-
-    if save:
-        fileNameSave=dirEndName
-        print(f"save '{fileNameSave}' in '{savePath}'")
-        plt.savefig(savePath+'/'+fileNameSave+'.png')
-        plt.savefig(savePath+'/'+fileNameSave+'.eps')
-    else:
-        plt.show()
     
+
+
+def plotsBigFig(dataPath,savePath,saveFileName):
+
+    dirs = os.listdir(dataPath)
+
+    # find nbCol  = max nb Files in each directory
+    nbCol = 0
+    for dir in dirs:
+        n = len( getFitsFileName(dataPath+dir))
+        if n > nbCol:
+            nbCol = n
+
+    nbRow = len (dirs)
+    #create subplot
+    scaleSize = 3.0
+    fig , axis = plt.subplots(nbRow,nbCol,figsize=(nbCol*scaleSize, nbRow*scaleSize),sharex=True,sharey='row',gridspec_kw={'hspace': 0.05, 'wspace': 0.05})
+
+    # axis label
+    for ax in axis.flat:
+        ax.set(xlabel='Ha line radial velocity (km/h)', ylabel='relative flux')
+        ax.label_outer()
+
+    # plot loop on each rows
+    for dir,axs in zip(dirs,axis):
+        print(f"source path = {dataPath+dir}")
+        plots(axs,getFitsFileName(dataPath+dir), waveCentral=6562.8, speedSpan=1000)
+
+    plt.subplots_adjust(top=1.0,bottom=0.15)
+
+    print(f"save '{saveFileName}' in '{savePath}'")
+    plt.savefig(savePath+'/'+saveFileName)    
     plt.close()
 
 
 #dataPath = "U:/astro/mes_articles/newBe/2020-aa/data/"
-dataPath = "./data/"
-savePath="./plot"
 
-dirs = os.listdir(dataPath)
-for dir in dirs:
-    print(f"source path = {dataPath+dir}")
-    plots(loadPath=dataPath+dir,savePath=savePath,save=True, waveCentral=6562.8, speedSpan=1000)
-
-
+for n in range(5):
+    print(f"*** process figure page {n+1} ***")
+    plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.png")
 

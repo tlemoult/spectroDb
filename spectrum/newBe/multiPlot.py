@@ -210,6 +210,12 @@ def plots(axs,selectFilenames, waveCentral=6562.8, speedSpan=1000):
     
     title = headers[0]['OBJNAME']
 
+    #fix the singleton plot as a list.
+    try:
+        iter(axs)
+    except:
+        axs = [axs]
+
     for ax,flux,wave,speed,header,fileName in zip(axs,fluxes,waves,speeds,headers,selectFilenames):
         ax.set_xlim(-speedSpan,+speedSpan)
         ax.set_xticks([-500,0,500])
@@ -241,7 +247,8 @@ def plotsBigFig(dataPath,savePath,saveFileName):
     nbRow = len (dirs)
     #create subplot
     scaleSize = 3.0
-    fig , axis = plt.subplots(nbRow,nbCol,figsize=(nbCol*scaleSize, nbRow*scaleSize),sharex=True,sharey='row',gridspec_kw={'hspace': 0.05, 'wspace': 0.05})
+    scaleRation = 1.05
+    fig , axis = plt.subplots(nbRow,nbCol,figsize=(nbCol*scaleSize, nbRow*scaleSize*scaleRation),sharex=True,sharey='row',gridspec_kw={'hspace': 0.05, 'wspace': 0.05})
 
     # axis label
     for ax in axis.flat:
@@ -264,5 +271,5 @@ def plotsBigFig(dataPath,savePath,saveFileName):
 
 for n in range(5):
     print(f"*** process figure page {n+1} ***")
-    plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.png")
+    plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.eps")
 

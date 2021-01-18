@@ -4,6 +4,7 @@ import libsdb.dbSpectro as dbSpectro
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from datetime import date
+import datetime
 
 
 schedule = MyScheduler.MySchedule()
@@ -70,9 +71,13 @@ for request in requests:
 
 # schedule.addTargetFromName('Deneb',stdExpo,priority,config)
 
-schedule.optimize()
+locDate = datetime.datetime.now().strftime("%Y-%m-%d.%Hh%Mm.")
+path = 'U:\\astro\cibles\\journalier\\2021\\'
+schedule.writeLstRequest(path+locDate+"request.lst")
 
-schedule.writeLst("schedule.lst")
+schedule.optimize()
+schedule.writeLstSchedule(path+locDate+"schedule.lst")
+
 
 #schedule.showTable()
 schedule.plotAirMas()

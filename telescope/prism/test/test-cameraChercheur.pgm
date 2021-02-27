@@ -1,0 +1,10 @@
+
+
+print "Programme de test camera chercheur"
+CameraChercheur=3
+expomilli=1000
+
+StartExposure_EX CameraChercheur expomilli
+WaitForEndExposure_EX CameraChercheur
+GetLastImageExposure_EX CameraChercheur img1
+

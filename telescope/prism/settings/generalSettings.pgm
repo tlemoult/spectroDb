@@ -10,7 +10,7 @@ NbPoseMin=3
 maxDyn=25000
 TargetFlux=300000
 
-DirCible$="C:\Users\DELL\Dropbox\astro\cibles\journalier\"
+DirCible$="X:\astro\cibles\journalier\2020\"
 
 REM chemin de sauvegarde des acquistions
 Directory$="X:\astro\base\in"
@@ -96,9 +96,8 @@ OrientationFente=OriFentevertical
 
 // Position cible du guidage sur le trou
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
-fentePosX=377
-fentePosY=241
-
+fentePosX=376
+fentePosY=246
 
 if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
@@ -107,9 +106,8 @@ if CameraChercheurName$="ZWO" then
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
 	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=252
-	ChercheurPosYBin=202
-	
+	ChercheurPosXBin=136
+	ChercheurPosYBin=230.0
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0
@@ -128,7 +126,7 @@ exposurephotometriechercheur=3
 // securitee hauteur pointage     1->actif  0->inactif
 testHauteurTelescope=1
 HautDegMiniTelescope=20
-HautDegMaxTelecope=83
+HautDegMaxTelecope=90
 // gestion du passage du meridien  pendant les poses(monture allemande)
 testColisionMeridien=1
 // blocage du passage du meridien,  On n'observe pas les cibles qui demandent un changement cot� de m�ridien.
@@ -211,7 +209,7 @@ DATETOSTR  Date_Start Date_Start$
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
-LimitMagnitudeCiel=17.3
+LimitMagnitudeCiel=17.0
 // apr�s cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=9
 CompteurBeauTemp=0

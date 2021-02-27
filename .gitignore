@@ -7,3 +7,11 @@ telescope/prism/dist/spectroAuto.pgm
 telescope/indi/FIELD/
 
 telescope/indi/finder/
+
+*.png
+
+*.jpg
+
+*.zip
+
+spectrum/RR/brut/

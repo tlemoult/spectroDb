@@ -1,43 +1,24 @@
 #if 0
 Modified by Thierry Lemoult, to try a simple CCD acquisition
 
-Simple Client Tutorial
-Demonstration of libindi v0.7 capabilities.
+Simple camera Client acquisition 
+Tested with libindi v1.8.9
 
-Copyright (C) 2010 Jasem Mutlaq (mutlaqja@ikarustech.com)
+to Compile:
+  git clone https://github.com/indilib/indi.git
+  cd indi
+  git checkout v1.8.9
+  mkdir build
+  cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr . ../libindi
 
-This library is free software;
-you can redistribute it and / or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation;
-either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY;
-without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library;
-if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110 - 1301  USA
+  cd ..   # back to indi main directory
+  cd example
+  mkdir myClient
+  echo "add_subdirectory(myClient)" > CMakeLists.txt
+  create directory in example/myclient
 
 #endif
-
-/** \file tutorial_client.cpp
-    \brief Construct a basic INDI client that demonstrates INDI::Client capabilities. This client must be used with tutorial_three device "Simple CCD".
-    \author Jasem Mutlaq
-
-    \example tutorial_client.cpp
-    Construct a basic INDI client that demonstrates INDI::Client capabilities. This client must be used with tutorial_three device "Simple CCD".
-    To run the example, you must first run tutorial_three:
-    \code indiserver tutorial_three \endcode
-    Then in another terminal, run the client:
-    \code tutorial_client \endcode
-    The client will connect to the CCD driver and attempts to change the CCD temperature.
-*/
 
 #include "myClient.h"
 

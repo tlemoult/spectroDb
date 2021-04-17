@@ -33,10 +33,10 @@ def solveAstro(filename,scale):
 
 # exemple utilisation
 if __name__ == "__main__":
-    fenteXpix=240
-    fenteYpix=200
+    fenteXpix=320
+    fenteYpix=240
 
-    w=solveAstro("./champs/M95-1.fits",2.25)
+    w=solveAstro("../imageFinder/finder8.fits",11.4)
     wx, wy = w.wcs_pix2world(fenteXpix, fenteYpix,1)
     print("fente X=",fenteXpix," ,Y=",fenteYpix)
     print('RA={0}deg  DEC={1}deg '.format(wx, wy))

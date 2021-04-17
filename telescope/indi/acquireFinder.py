@@ -27,9 +27,9 @@ time.sleep(3)
 
 #acquisition
 print("run acquisition") 
-expTime=10
+expTime=1
 basePath="."
-camSpectro.newAcquSerie(basePath,"FINDER-",1,expTime)
+camSpectro.newAcquSerie(basePath,"FINDER-",2,expTime)
 camSpectro.waitEndAcqSerie()
 
 print("acquisition finished")

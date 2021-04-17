@@ -62,12 +62,13 @@ class IndiClient(PyIndi.BaseClient):
         if self.device==None:
             return
 
-        if bp.bvp.device.decode()==self.device.getDeviceName():
+        if bp.bvp.device == self.device.getDeviceName():
             # get image data
         
             self.logger.info(" OK my BLOB")
-            img = bp.getblobdata()
-            import cStringIO
+            fits = bp.getblobdata()
+            print(type(fits))
+
             # write image data to StringIO buffer
             blobfile = cStringIO.StringIO(img)
             # open a file and save buffer to disk
@@ -111,22 +112,9 @@ class IndiClient(PyIndi.BaseClient):
 
 
     def takeExposure(self,expTime):
-        def explainVar(name,v):
-            print(f"explain var {name} \n   {name}= {v}   \n   type({name}) = {type(v)}\n   dir({name})={dir(v)}")
-
         self.logger.info("<<<<<<<< Take Exposure, duration=%.2f >>>>>>>>>"%(expTime))
-        #get current exposure time
         exp = self.device.getNumber("CCD_EXPOSURE")
-        explainVar("exp",exp)
-        #print(f"exp.name={exp.name}")
-
-        for n in exp:
-            # n is a INumber as we only monitor number vectors
-            print(n.name, " = ", n.value)
-
-        #explainVar("item",item)
-        # set exposure time to 5 seconds
-        exp['CCD_EXPOSURE_VALUE'] = expTime
+        exp[0].value  = expTime
         # send new exposure time to server/device
         self.sendNewNumber(exp)
         self.ccdExposure=expTime

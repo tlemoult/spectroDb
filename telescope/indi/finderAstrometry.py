@@ -23,10 +23,10 @@ if (not(camSpectro.connectServer())):
      print("No indiserver running on "+camSpectro.getHost()+":"+str(camSpectro.getPort())+" - Try to run")
      print("  indiserver indi_simulator_ccd")
      sys.exit(1)
-time.sleep(2)
+time.sleep(3)
 
 #acquisition
-print "run acquisition" 
+print("run acquisition") 
 expTime=10
 basePath="."
 camSpectro.newAcquSerie(basePath,"FINDER-",1,expTime)

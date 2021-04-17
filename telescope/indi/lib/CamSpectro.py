@@ -37,15 +37,17 @@ class IndiClient(PyIndi.BaseClient):
 
     def newProperty(self, p):
         self.logger.info("new property "+ p.getName() + " for device "+ p.getDeviceName())
-        if self.device is not None and p.getName() == "CONNECTION" and p.getDeviceName() == self.device.getDeviceName():
-            self.logger.info("Got property CONNECTION for CCD Simulator!")
+        #if self.device is not None and p.getName() == "CONNECTION" and p.getDeviceName() == self.device.getDeviceName():
+        if p.getName() == "CONNECTION":
+            self.logger.info("Got property CONNECTION for "+ p.getDeviceName())
             # connect to device
             self.connectDevice(self.device.getDeviceName())
             # set BLOB mode to BLOB_ALSO
             self.setBLOBMode(1, self.device.getDeviceName(), None)
         if p.getName() == "CCD_EXPOSURE":
-            self.logger.info("Got CCD_Exposure Property")
-            pass
+            self.logger.info("**Got CCD_Exposure Property")
+            print(type(p),dir(p))
+            print(p.getName, " = ", p.getNumber)
 
         if p.getName() == "CCD_TEMPERATURE":
             self.logger.info("Got temperature Property")
@@ -55,7 +57,7 @@ class IndiClient(PyIndi.BaseClient):
 
     def newBLOB(self, bp):
 
-        self.logger.info("new BLOB name="+ bp.name.decode()+' device='+bp.bvp.device.decode())
+        self.logger.info("new BLOB name="+ bp.name+' device='+bp.bvp.device)
         
         if self.device==None:
             return
@@ -82,26 +84,26 @@ class IndiClient(PyIndi.BaseClient):
                 self.serieRun=False
         
     def newSwitch(self, svp):
-        self.logger.info ("new Switch "+ svp.name.decode()  +" for device "+ svp.device.decode())
+        self.logger.info ("new Switch "+ svp.name  +" for device "+ svp.device)
     def newNumber(self, nvp):
-        self.logger.info("new Number "+ nvp.name.decode() + " value= %.2f"%(nvp[0].value)+ " for device "+ nvp.device.decode())
+        self.logger.info("new Number "+ nvp.name + " value= %.2f"%(nvp[0].value)+ " for device "+ nvp.device)
 
         if self.device==None:
             return
 
-        if nvp.device.decode()==self.device.getDeviceName():
-            if nvp.name.decode()=="CCD_TEMPERATURE":
+        if nvp.device == self.device.getDeviceName():
+            if nvp.name == "CCD_TEMPERATURE":
                 self.ccdTemperature=nvp[0].value
 
-            if nvp.name.decode()=="CCD_EXPOSURE":
+            if nvp.name == "CCD_EXPOSURE":
                 self.ccdExposure=nvp[0].value
 
     def newText(self, tvp):
-        self.logger.info("new Text "+ tvp.name.decode() + " for device "+ tvp.device.decode())
+        self.logger.info("new Text "+ tvp.name + " for device "+ tvp.device)
     def newLight(self, lvp):
-        self.logger.info("new Light "+ lvp.name.decode() + " for device "+ lvp.device.decode())
+        self.logger.info("new Light "+ lvp.name + " for device "+ lvp.device)
     def newMessage(self, d, m):
-        self.logger.info("new Message "+ d.messageQueue(m).decode())
+        self.logger.info("new Message "+ d.messageQueue(m))
     def serverConnected(self):
         print("Server connected ("+self.getHost()+":"+str(self.getPort())+")")
     def serverDisconnected(self, code):
@@ -109,11 +111,22 @@ class IndiClient(PyIndi.BaseClient):
 
 
     def takeExposure(self,expTime):
+        def explainVar(name,v):
+            print(f"explain var {name} \n   {name}= {v}   \n   type({name}) = {type(v)}\n   dir({name})={dir(v)}")
+
         self.logger.info("<<<<<<<< Take Exposure, duration=%.2f >>>>>>>>>"%(expTime))
         #get current exposure time
         exp = self.device.getNumber("CCD_EXPOSURE")
+        explainVar("exp",exp)
+        #print(f"exp.name={exp.name}")
+
+        for n in exp:
+            # n is a INumber as we only monitor number vectors
+            print(n.name, " = ", n.value)
+
+        #explainVar("item",item)
         # set exposure time to 5 seconds
-        exp[0].value = expTime
+        exp['CCD_EXPOSURE_VALUE'] = expTime
         # send new exposure time to server/device
         self.sendNewNumber(exp)
         self.ccdExposure=expTime
@@ -132,7 +145,7 @@ class IndiClient(PyIndi.BaseClient):
 
     def waitCCDTemperatureOK(self):
         while not self.isCCDTemperatureOK():
-            print "   CCD temperature=%.1f"%self.ccdTemperature
+            print("   CCD temperature=%.1f"%self.ccdTemperature)
             time.sleep(2)
 
     def setBinning(self,binning):
@@ -149,4 +162,4 @@ class IndiClient(PyIndi.BaseClient):
             sys.stdout.write('\r'+out)
             sys.stdout.flush()
             time.sleep(1)
-        print " "
+        print(" ")

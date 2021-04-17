@@ -17,14 +17,14 @@
     },
     "ccdFinder": {
         "server": {
-            "host": "192.168.13.100",
+            "host": "127.0.0.1",
             "port": 7624
         },
-        "name": "SX CCD LodeStar",
+        "name": "ZWO CCD ASI120MM",
         "tempSetPoint": 5,
         "binning": {
-            "X": 1,
-            "Y": 1
+            "X": 2,
+            "Y": 2
         }
     },
     

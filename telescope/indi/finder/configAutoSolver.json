@@ -1,0 +1,31 @@
+{
+  "path": 
+	{ 
+		"camClientExe" : "../cameraClient/myClient",
+		"signalStart" : "/mnt/gdrive/astro/base/signals/finder/start.txt",
+		"signalStatus" : "/mnt/gdrive/astro/base/signals/finder/status.txt",
+		"output" : "/mnt/gdrive/astro/base/signals/finder/output.txt",
+		"image" : "./image/finderAutoSolver.fits"
+	},
+		
+	"camera":
+	{
+		"indiServerAddress" : "localhost",
+		"indiServerPort" : 7624,
+		"name": "ZWO CCD ASI120MM"		
+	},
+	
+	"acquisition":
+	{
+		"exposureTime" : 6,
+		"binning" : 2
+	},
+	
+	"centerX": 320,
+	"centerY": 240,
+	"scale": 11.4,
+	
+	"testWithoutSky": true,
+	"imageTest":"./image/finder1.fits"
+
+}

@@ -1,0 +1,78 @@
+//  deja dans le general settings
+   pathRepoGit$="C:\Users\DELL\worspace\prod\spectroDb\"
+
+// nouvelle configuration a reporter dans general settings
+	pathPython3Interpreter$="C:\Python38\python.exe"
+	FileResultFinder$="C:\temp\finderOutput.txt"
+	PythonScriptFinderIndiClient$=pathRepoGit$+"telescope\indi\finder\clientfinder.py 192.168.0.45 5000 "+FileResultFinder$
+
+
+// variables necessaire pour le test
+  AlphaObjet=1.39
+  DeltaObjet=0.59
+  DelayRepriseRA=1000
+
+//boucle de test
+
+ gosub RecaleAstrometrieChercheurIndi:
+
+ end
+
+RecaleAstrometrieChercheurIndi:
+
+  FILEEXISTS  FileResultFinder$  YesNo
+
+  IF YesNo=1 THEN
+     print "efface fichier resultat precedant " FileResultFinder$
+     delete FileResultFinder$
+  ENDIF
+
+  print "lance chercheur externe Rasberry Pi"
+  print pathPython3Interpreter$
+  print PythonScriptFinderIndiClient$
+  EXECEXTERNAL   pathPython3Interpreter$ PythonScriptFinderIndiClient$
+// dommage le exec external rend la main avant la fin de l execution...
+  print "attente resultat chercheur " FileResultFinder$
+boucleAttenteouputFinder:  
+  FILEEXISTS  FileResultFinder$  YesNo	
+  delay 500
+  waitforenddelay
+  if YesNo<>1 then 
+      goto boucleAttenteouputFinder:
+  endif  
+  print "fichier resultat chercheur obtenus"
+
+  print "Lit fichier resultat en radian position de la fente"
+  OPEN_FILETXT_FOR_READ fileFinderResult FileResultFinder$
+  READFILETXT fileFinderResult comment$
+  READFILETXT fileFinderResult AlphafenteSTR$
+  VAL AlphafenteSTR$ Alphafente
+  READFILETXT fileFinderResult DeltafenteSTR$
+  VAL DeltafenteSTR$ Deltafente
+  CLOSEFILETXT   fileFinderResult
+  delete FileResultFinder$
+
+  RAD_TO_RA  Alphafente AlphafenteSexaSTR$
+  RAD_TO_DEC Deltafente DeltafenteSexaSTR$
+  print "coordonne de la fente/fibre  RA=" AlphafenteSexaSTR$ "  DEC=" DeltafenteSexaSTR$
+  
+  errAlpha=Alphafente-AlphaObjet
+  ABS errAlpha errAlpha
+  RAD_TO_DEC  errAlpha errAlphaCoord$
+  errDelta=Deltafente-DeltaObjet
+  ABS errDelta errDelta
+  RAD_TO_DEC  errDelta errDeltaCoord$
+  print "          erreur RA=" errAlphaCoord$ " DEC=" errDeltaCoord$
+  print "      -recalibre telescope"
+  
+  CALIBRATE_TELESCOPE Alphafente Deltafente
+  delay 500
+  waitforenddelay
+  print "     -repointe cible"
+  MoveTelescope AlphaObjet DeltaObjet
+  WaitForEndMoveTelescope
+  print "   attente rattrage entrainement horaire"
+  delay DelayRepriseRA
+  waitforenddelay
+	
+  return

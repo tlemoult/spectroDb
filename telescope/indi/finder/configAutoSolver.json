@@ -26,6 +26,6 @@
 	"scale": 11.4,
 	
 	"testWithoutSky": true,
-	"imageTest":"./image/finder1.fits"
+	"imageTest":"./image/finder2.fits"
 
 }

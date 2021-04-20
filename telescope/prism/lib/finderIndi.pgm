@@ -1,0 +1,67 @@
+
+// configuration a reporter dans general settings
+	rootDirectory$="X:\astro\base"
+	DirectorySignalsFinder$=rootDirectory$+"\signals\finder"
+	FileResultFinder$=DirectorySignalsFinder$+"\output.txt"
+
+// variables necessaire pour le test
+  AlphaObjet=1.39
+  DeltaObjet=0.59
+  DelayRepriseRA=1000
+
+//boucle de test
+
+ gosub RecaleAstrometrieChercheurIndi:
+
+ end
+
+RecaleAstrometrieChercheurIndi:
+
+  print "lance chercheur externe Rasberry Pi"
+   paramStartFinderIndi$="/C echo a >"+DirectorySignalsFinder$+"\start.txt" 
+   ExecExternal "c:\Windows\system32\cmd.exe" paramStartFinderIndi$ 
+
+  print "attente resultat chercheur " FileResultFinder$
+boucleAttenteouputFinder:  
+  FILEEXISTS  FileResultFinder$  YesNo	
+  delay 500
+  waitforenddelay
+  if YesNo<>1 then 
+      goto boucleAttenteouputFinder:
+  endif  
+  print "fichier resultat chercheur obtenus"
+
+  print "Lit fichier resultat en radian position de la fente"
+  OPEN_FILETXT_FOR_READ fileFinderResult FileResultFinder$
+  READFILETXT fileFinderResult comment$
+  READFILETXT fileFinderResult AlphafenteSTR$
+  VAL AlphafenteSTR$ Alphafente
+  READFILETXT fileFinderResult DeltafenteSTR$
+  VAL DeltafenteSTR$ Deltafente
+  CLOSEFILETXT   fileFinderResult
+  delete FileResultFinder$
+
+  RAD_TO_RA  Alphafente AlphafenteSexaSTR$
+  RAD_TO_DEC Deltafente DeltafenteSexaSTR$
+  print "coordonne de la fente/fibre  RA=" AlphafenteSexaSTR$ "  DEC=" DeltafenteSexaSTR$
+  
+  errAlpha=Alphafente-AlphaObjet
+  ABS errAlpha errAlpha
+  RAD_TO_DEC  errAlpha errAlphaCoord$
+  errDelta=Deltafente-DeltaObjet
+  ABS errDelta errDelta
+  RAD_TO_DEC  errDelta errDeltaCoord$
+  print "          erreur RA=" errAlphaCoord$ " DEC=" errDeltaCoord$
+  print "      -recalibre telescope"
+  
+  CALIBRATE_TELESCOPE Alphafente Deltafente
+  delay 500
+  waitforenddelay
+  print "     -repointe cible"
+  MoveTelescope AlphaObjet DeltaObjet
+  WaitForEndMoveTelescope
+  print "   attente rattrage entrainement horaire"
+  delay DelayRepriseRA
+  waitforenddelay
+	
+  return

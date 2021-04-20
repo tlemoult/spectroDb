@@ -10,11 +10,12 @@ NbPoseMin=3
 maxDyn=25000
 TargetFlux=300000
 
-DirCible$="X:\astro\cibles\journalier\2020\"
+DirCible$="X:\astro\cibles\journalier\2021\"
 
 REM chemin de sauvegarde des acquistions
-Directory$="X:\astro\base\in"
-DirectorySignals$="X:\astro\base\signals\fromPRISM"
+rootDirectory$="X:\astro\base"
+Directory$=rootDirectory$+"\in"
+DirectorySignals$=rootDirectory$+"\signals\fromPRISM"
 REM Chemin racines des catalogues pour l astrometrie
 sDirCatalogue$="C:\catalogues\"
 
@@ -96,8 +97,8 @@ OrientationFente=OriFentevertical
 
 // Position cible du guidage sur le trou
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
-fentePosX=376
-fentePosY=246
+fentePosX=378.3
+fentePosY=244.5
 
 if CameraChercheurName$="ZWO" then
 	DirRepChercheur=0
@@ -105,9 +106,9 @@ if CameraChercheurName$="ZWO" then
 	MiroirYCameraChercheur=0
 	FocaleCameraChercheur=135
 	binCameraChercheur=2
-	AngleCCDChercheurWEST=272
-	ChercheurPosXBin=136
-	ChercheurPosYBin=230.0
+	AngleCCDChercheurWEST=266
+	ChercheurPosXBin=147.5
+	ChercheurPosYBin=214.4
 else
     // Lodestar (config de backup)
 	DirRepChercheur=0
@@ -209,7 +210,7 @@ DATETOSTR  Date_Start Date_Start$
 // temperature du ciel pour considerer qu il fait beau..
 LimitTempCiel=10
 // magnitude limite pour considere que le ciel est bien noir..  16.6
-LimitMagnitudeCiel=17.0
+LimitMagnitudeCiel=16.2
 // apr�s cette valeur de compteur, on lance les observations, une unitee = 1 minute d attente
 ValMinBelleMeteo=9
 CompteurBeauTemp=0

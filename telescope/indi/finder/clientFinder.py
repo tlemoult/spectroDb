@@ -1,8 +1,17 @@
 import requests
-import json,os
+import json,os,sys
 
-url = "http://127.0.0.1:5000/api/finder"
-outputfile  = "./finderOutput.txt"
+if len(sys.argv) != 4:
+	print(f"usage python3 clientFinder.py ipServer portServer outputFile")
+	exit()
+
+ipServer=sys.argv[1]
+portServer=sys.argv[2]
+outputfile=sys.argv[3]
+
+url = "http://"+ipServer+":"+str(portServer)+"/api/finder"
+
+#outputfile  = "./finderOutput.txt"
 
 try:
     os.remove(outputfile)

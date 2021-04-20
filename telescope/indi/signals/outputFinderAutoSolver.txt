@@ -1,3 +1,0 @@
-#format:  RA in degree, then DEC in degree
-176.41141305005945
-1.7037648255434479

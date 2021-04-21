@@ -17,15 +17,15 @@
 	
 	"acquisition":
 	{
-		"exposureTime" : 4,
+		"exposureTime" : 6,
 		"binning" : 2
 	},
 	
-	"centerX": 438,
-	"centerY": 395,
+	"centerX": 320,
+	"centerY": 240,
 	"scale": 11.4,
 	
-	"testWithoutSky": false,
+	"testWithoutSky": true,
 	"imageTest":"./image/finder2.fits"
 
 }

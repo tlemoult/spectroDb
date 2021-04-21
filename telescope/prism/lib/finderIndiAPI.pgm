@@ -1,3 +1,4 @@
+testRecaleAstrometrieChercheurIndi:
 //  deja dans le general settings
    pathRepoGit$="C:\Users\DELL\worspace\prod\spectroDb\"
 
@@ -41,6 +42,9 @@ boucleAttenteouputFinder:
       goto boucleAttenteouputFinder:
   endif  
   print "fichier resultat chercheur obtenus"
+
+  REM TODO ajouter traitement erreur, au cas ou ca rate...
+  resultat_astrometrie_absolue=1
 
   print "Lit fichier resultat en radian position de la fente"
   OPEN_FILETXT_FOR_READ fileFinderResult FileResultFinder$

@@ -304,7 +304,8 @@ AstroPasseParLeChercheur:
 	STR nbSucess nbSucess$
 	DATETOSTR  Date  Date$
 	WriteFileTxt fileLog Date$+": passage par le recentrage au chercheur.." 
-	GOSUB RecaleAllSkyAstrometrieChercheur:
+	REM GOSUB RecaleAllSkyAstrometrieChercheur:
+	GOSUB RecaleAstrometrieChercheurIndi:
 	if (resultat_astrometrie_absolue=0) then
 		DATETOSTR  Date  Date$
 		WriteFileTxt fileLog Date$+": Echec recentrage au chercheur.."
@@ -335,6 +336,7 @@ return
 #include "init_camera.pgm"
 #include "approcheEtoileBrillante.pgm"
 #include "recaleAstrometrieAllSky-et-precis.pgm"
+#include "finderIndiAPI.pgm"
 #include "check_coord_cibles.pgm"
 #include "finSeance.pgm"
 #include "acquisition_Calibration.pgm"

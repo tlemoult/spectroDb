@@ -82,39 +82,6 @@ ConfigCamera:
 	CLEARIMGWINDOWS
 
 	
-    ////// Chercheur   ////////////
-	if CameraChercheurPresente=1 then
-		Print "Initialise camera Chercheur"
-		//print "   Connexion"
-
-		INIT_CCD_CAMERA_EX CameraChercheur Valid Cause$
-		if Valid<>2 THEN
-			print "erreur" Cause$
-		endif
-
-		print "   Configuration"		
-		SETBINNINGX_EX CameraChercheur binCameraChercheur
-		SETBINNINGY_EX CameraChercheur binCameraChercheur
-		SetWindowFullFrame_EX CameraChercheur
-		SetFlagShutter_EX CameraChercheur 0
-		StartExposure_EX CameraChercheur  durationOffsetInit
-		WaitForEndExposure_EX CameraChercheur
-		GetLastImageExposure_EX CameraChercheur img1
-		GetSizePixX img1 TaillePixXCameraChercheur
-		GetSizePixY img1 TaillePixYCameraChercheur
-		GetFocus img1 FocaleCameraChercheur
-		WIDTH img1 WidthImgCameraChercheur
-		HEIGHT Img1 HeightImgCameraChercheur
-		Close Img1
-		CLEARIMGWINDOWS
-		
-		if AngleCCDChercheurWEST<180 then
-			AngleCCDChercheurEAST=AngleCCDChercheurWEST+180
-		else
-			AngleCCDChercheurEAST=AngleCCDChercheurWEST-180
-		EndIf
-
-	endif
 
 	
 return
@@ -167,15 +134,10 @@ Oriente_Camera:
 
 	SetMirror_EX CameraChamp MiroirXCameraChamp MiroirYCameraChamp
 	SetCCDRepDirCamHeader CameraChamp DirRepChamp
-
-	SetMirror_EX CameraChamp MiroirXCameraChercheur MiroirYCameraChercheur
-	SetCCDRepDirCamHeader CameraChercheur DirRepChercheur
 	
 	if ActualSide$="WEST" then
-		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurWEST
 		SetCCDOriCamHeader CameraChamp  AngleCCDChampWEST
 	else
-		SetCCDOriCamHeader CameraChercheur  AngleCCDChercheurEAST
 		SetCCDOriCamHeader CameraChamp  AngleCCDChampEAST
 	EndIf
 

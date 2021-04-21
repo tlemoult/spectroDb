@@ -25,6 +25,12 @@ REM Chemin des scripts python
 pathPythonInterpreter$="C:\Python27\python.exe"
 pathPythonScript$=pathRepoGit$+"telescope\python\"
 
+pathPython3Interpreter$="C:\Python38\python.exe"
+FileResultFinder$="C:\temp\finderOutput.txt"
+
+REM Finder API REST ,  Rasberry address
+PythonScriptFinderIndiClient$=pathRepoGit$+"telescope\indi\finder\clientfinder.py 192.168.0.45 5000 "+FileResultFinder$
+
 REM pour LISA LIRES
 PythonScriptNeonLISALHIRESOn$=pathPythonScript$+"neon-on.py"
 PythonScriptNeonLISALHIRESOff$=pathPythonScript$+"neon-off.py"
@@ -80,10 +86,6 @@ MiroirXCameraSpectre=0
 MiroirYCameraSpectre=0
 TempCameraSpectre=-5
 
-// 1-> camera presente  0->1
-CameraChercheurPresente=1
-CameraChercheurName$="ZWO"
-CameraChercheur=3
 
 // parametrage liee a la fente / trou de guidage
 // affine position de la fente au cours du temps
@@ -100,28 +102,7 @@ OrientationFente=OriFentevertical
 fentePosX=378.3
 fentePosY=244.5
 
-if CameraChercheurName$="ZWO" then
-	DirRepChercheur=0
-	MiroirXCameraChercheur=0
-	MiroirYCameraChercheur=0
-	FocaleCameraChercheur=135
-	binCameraChercheur=2
-	AngleCCDChercheurWEST=266
-	ChercheurPosXBin=147.5
-	ChercheurPosYBin=214.4
-else
-    // Lodestar (config de backup)
-	DirRepChercheur=0
-	MiroirXCameraChercheur=0
-	MiroirYCameraChercheur=0
-	FocaleCameraChercheur=133.5
-	AngleCCDChercheurWEST=179
-	binCameraChercheur=1
-	ChercheurPosXBin=150	
-	ChercheurPosYBin=496
-endif
-
-exposurephotometriechercheur=3
+// ici definir position cible dans chercheur.. au lieu de dans le Rasberry PI
 
 /////////////////////Limite liee au pointage ////////////////////
 // securitee hauteur pointage     1->actif  0->inactif

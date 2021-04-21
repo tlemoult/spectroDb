@@ -1,0 +1,31 @@
+
+
+print "Programme de test camera chercheur"
+CameraChercheur=3
+expomilli=100
+delaymilli=100
+
+for j=1 to 2000
+	
+	print "star exposure no j=" j
+	StartExposure_EX CameraChercheur expomilli
+	print "   after start exposure"
+	WaitForEndExposure_EX CameraChercheur
+	GetLastImageExposure_EX CameraChercheur img
+	print "   end of get last exposure"
+	
+	delay delaymilli
+	WaitForEndDelay
+	
+	GETBACKGROUND  img  OffsetValue  Sigma
+	Print "  Offset Camera: " OffsetValue " ADU"
+	
+	delay delaymilli
+	WaitForEndDelay
+	
+	close img
+	
+	delay delaymilli
+	WaitForEndDelay
+	
+next j

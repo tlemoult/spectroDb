@@ -324,6 +324,10 @@ AstroPasseParLeChercheur:
 		WriteFileTxt fileLog Date$+": Echec astrometrie sur le champ apres recentrage au chercheur.." 
 		Print "Echec de la fonction de centrage...."
 		ResultatHighLevelCentrage=0
+
+		Print "dernière chance...recale avec la plus brillante du champ"
+		gosub RecaleEtoileBrillante:
+		ResultatHighLevelCentrage=1
 		return
 	ENDIF
 
@@ -337,6 +341,7 @@ return
 #include "approcheEtoileBrillante.pgm"
 #include "recaleAstrometrieAllSky-et-precis.pgm"
 #include "finderIndiAPI.pgm"
+#include "RecaleEtoileBrillante.pgm"
 #include "check_coord_cibles.pgm"
 #include "finSeance.pgm"
 #include "acquisition_Calibration.pgm"

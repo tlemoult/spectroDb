@@ -56,9 +56,9 @@ RecaleAllSkyAstrometrie:
 	FIND_ALLSKY_POSITION ImgAstrometrie MaxStarImg MaxStarCat Field Cat$ Valid
 	resultat_allsky=valid
 	IF (resultat_allsky=1) THEN
-		PRINT "     -reconnaissance ALLSKY reussie, recalage telescope"
+		PRINT "   -reconnaissance ALLSKY reussie, recalage telescope"
 	ELSE
-		PRINT "     -echec reconnaissance ALLSKY"
+		PRINT "   -echec reconnaissance ALLSKY"
 		CLEARIMGWINDOWS
 		resultat_astrometrie_absolue=0
 		return

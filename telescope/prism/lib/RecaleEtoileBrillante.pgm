@@ -1,0 +1,82 @@
+
+// pour le test sur le ciel
+    fentePosX= 379
+    fentePosY= 244
+
+	GET_TELESCOPE_POSITION  AlphaObjet  DeltaObjet  Hauteur  Azimuth  AngleHor
+
+    FocaleCameraChamp=2280
+
+    CameraAllSky=1
+	exposureAllSky=0.5
+
+    StartExposure_EX CameraAllSky (exposureAllSky*1000)
+	WaitForEndExposure_EX CameraAllSky
+	GetLastImageExposure_EX CameraAllSky ImgAstrometrie		
+	
+	GOSUB RecaleEtoileBrillante:
+
+    StartExposure_EX CameraAllSky (exposureAllSky*1000)
+	WaitForEndExposure_EX CameraAllSky
+	GetLastImageExposure_EX CameraAllSky ImgAstrometrie2		
+  
+    END
+
+RecaleEtoileBrillante:
+// Entrée:  ImgAstrometrie
+    exposureAllSky=5
+	print "    Pose sur le ciel pendant " exposureAllSky " secondes."
+    StartExposure_EX CameraAllSky (exposureAllSky*1000)
+	WaitForEndExposure_EX CameraAllSky
+	GetLastImageExposure_EX CameraAllSky img	
+
+////Trouve l etoile la plus brillante
+	HEIGHT img h 
+	Width  img l 
+	median img 1 3 
+	stat  img  Moyenne  MoyenneQuadratique  Ecarttype  Max  Min  Flux  Mediane  
+	GETMINMAX  1  l-1  1  h-1  img  Xmin  Ymin  Valmin  XCENTRO  YCENTRO  CENTROADU 
+	Print "    Brightest star: X="  XCENTRO  " Y=" YCENTRO 
+  
+   errAlphaPix=XCENTRO-fentePosX
+   errDeltaPix=YCENTRO-fentePosY
+   GETSIZEPIXX Img SizePixX
+   GETSIZEPIXY Img SizePixY
+   close img
+
+   Print   "    X pixel size  " SizePixX " microns"
+   Print   "    Y pixel size  " SizePixY " microns"
+
+   COS DeltaObjet REBcoorAlphaDelta
+   print "    REBcoorAlphaDelta = " REBcoorAlphaDelta
+
+////Calcul l'erreur en arcseconde
+// *1000 pour passer focale en mm vers focale en µm
+   errDeltaRad=((errDeltaPix*SizePixY)/(FocaleCameraChamp*1000)/1.0
+   errAlphaRad=((errAlphaPix*SizePixY)/(FocaleCameraChamp*1000)/REBcoorAlphaDelta
+
+   errDeltaArcSec=360*60*60*errDeltaRad/3.1415
+   errAlphaArcSec=360*60*60*errAlphaRad/3.1415
+   
+   PIERSIDE_TEL ActualSide$
+   //print "    Actual side = " ActualSide$
+
+   if ActualSide$="WEST" then
+		errAlphaArcSec=-errAlphaArcSec
+	else
+        errDeltaArcSec=-errDeltaArcSec
+	EndIf
+   
+
+   Print  "    errDeltaArcSec = "   errDeltaArcSec " arcsecond"
+   Print  "    errAlphaArcSec = "   errAlphaArcSec " arcsecond"
+   
+   Print "decale le telescope, attention besoin axe perpendiculaires.."
+   ShiftTelescope errAlphaArcSec errDeltaArcSec
+   WaitForEndMoveTelescope
+
+   delay 2000
+   WaitForEndDelay
+   
+  Return
+  

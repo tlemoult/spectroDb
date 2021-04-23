@@ -71,9 +71,6 @@ shutDownCameraFinal:
 			print "Fermeture des panneaux cameras"
 			CLOSE_CCD_CAMERA_EX CameraChamp
 			CLOSE_CCD_CAMERA_EX CameraSpectre
-			if (CameraChercheurPresente=1) then
-				CLOSE_CCD_CAMERA_EX CameraChercheur
-			ENDIF
 
 			Print "Attente avant coupure alim camera"
 			delay 5000

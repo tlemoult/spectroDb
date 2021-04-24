@@ -28,7 +28,7 @@ for request in requests:
     calib = request[12]
 
     if calib == 'true':
-        dureeCalibration = 300
+        dureeCalibration = 900
     else:
         dureeCalibration = 60  # non nul, car contient la duree du recentrage, lancement guidage
 

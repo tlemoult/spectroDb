@@ -15,7 +15,7 @@ def solveAstro(filename,scale):
     name, extension = os.path.splitext(filename)
     scale_low = str(scale*80.0/100.0)
     scale_high = str(scale*120.0/100.0)
-    subprocess.call(["/usr/bin/solve-field", "--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
+    subprocess.call(["/usr/bin/solve-field","--cpulimit","12","--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
     if os.path.isfile(name+'.solved'):
         print("succes resolution astrometrique, get wcs data")
         wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)
@@ -39,6 +39,7 @@ def solveAstro(filename,scale):
         raise
 
 def doFinderSolveAstro(config):
+    
     ### Picture acquisition with Finder Scope
     if config['testWithoutSky']:
         #False image
@@ -62,19 +63,21 @@ def doFinderSolveAstro(config):
         
         # acquisition of picture thru INDI server
         camSpectro=CamSpectro(config["camera"]["name"],config["camera"]["indiServerAddress"],config["camera"]["indiServerPort"])
+        
         print("Connecting to indiserver")
         if (not(camSpectro.connectServer())):
              print(f"Fail to connect to indi Server {camSpectro.getHost()}:{camSpectro.getPort()}")
              print("Try to run:")
              print("  indiserver indi_simulator_ccd")
-             abort(500,description=f"Fail to connect to indi Server {camSpectro.getHost()}:{camSpectro.getPort()}")
+             abort(500,description="Fail to connect to indi Server")
 
         print("connecting to camera")
         if (not(camSpectro.waitCameraConnected())):
              print("Fail to connect to camera")
-             abort(500,description='Fail to connect to camera')
+             camSpectro.disconnectServer()
+             abort(500,description="Fail to connect to camera")
 
-        #set binning
+        #set binning    
         camSpectro.setBinning({'X':config["acquisition"]["binning"],'Y':config["acquisition"]["binning"]})
 
         #acquisition
@@ -83,6 +86,9 @@ def doFinderSolveAstro(config):
         camSpectro.waitEndAcqSerie()
 
         print("acquisition finished")
+        
+        camSpectro.disconnectServer()
+        
 
     ### Plate Solving
     fenteXpix=config["centerX"]
@@ -127,7 +133,10 @@ if __name__ == '__main__':
         print(f"Confirguration file is {sys.argv[1]}")
         config=json.loads(open(sys.argv[1]).read())
         logging.basicConfig(filename=config['path']['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+
+
         
-        app.run(host='0.0.0.0',port=5000,debug=False)
+        
+        app.run(host='0.0.0.0',port=5000,debug=True)
 
 

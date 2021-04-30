@@ -2,7 +2,8 @@
   "path": 
 	{ 
 		"camClientExe" : "/usr/bin/myIndiClient",
-		"image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits"
+		"image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits",
+		"logFile": "acquire.log"
 	},
 		
 	"camera":

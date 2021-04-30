@@ -12,7 +12,7 @@ def solveAstro(filename,scale):
     name, extension = os.path.splitext(filename)
     scale_low = str(scale*80.0/100.0)
     scale_high = str(scale*120.0/100.0)
-    subprocess.call(["/usr/bin/solve-field", "--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
+    subprocess.call(["/usr/bin/solve-field", "-l","12","--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
     if os.path.isfile(name+'.solved'):
         print("succes resolution astrometrique, get wcs data")
         wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)

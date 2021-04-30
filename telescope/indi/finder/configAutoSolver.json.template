@@ -2,9 +2,6 @@
   "path": 
 	{ 
 		"camClientExe" : "../cameraClient/myClient",
-		"signalStart" : "/mnt/gdrive/astro/base/signals/finder/start.txt",
-		"signalStatus" : "/mnt/gdrive/astro/base/signals/finder/status.txt",
-		"output" : "/mnt/gdrive/astro/base/signals/finder/output.txt",
 		"image" : "./image/finderAutoSolver.fits"
 	},
 		
@@ -17,15 +14,15 @@
 	
 	"acquisition":
 	{
-		"exposureTime" : 6,
+		"exposureTime" : 4,
 		"binning" : 2
 	},
 	
-	"centerX": 320,
-	"centerY": 240,
+	"centerX": 434,
+	"centerY": 391,
 	"scale": 11.4,
 	
-	"testWithoutSky": true,
+	"testWithoutSky": false,
 	"imageTest":"./image/finder2.fits"
 
 }

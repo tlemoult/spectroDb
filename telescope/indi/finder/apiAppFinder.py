@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify, abort, make_response
 import json,time
-import subprocess,os
+import subprocess,os,sys
 from astropy.wcs import WCS
 import astropy.io.fits
 
@@ -88,13 +88,21 @@ def doFinderSolveAstro(config):
 ############ main ###############
 @app.route('/api/finder', methods=['GET'])
 def get_finder():
-    return jsonify(doFinderSolveAstro(json.loads(open('./configAutoSolver.json').read())))
+    return jsonify(doFinderSolveAstro(json.loads(open(sys.argv[1]).read())))
 
 @app.errorhandler(500)
 def internal_error(e):
     return jsonify(error=str(e)), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,debug=False)
+    if len(sys.argv)!=2:
+        print("Invalid number of argument")
+        print("correct syntax is")
+        print("  python3 apiFinder.py configAutoSolver.json")
+        exit()
+
+    else:
+        print(f"Confirguration file is {sys.argv[1]}")
+        app.run(host='0.0.0.0',port=5000,debug=False)
 
 

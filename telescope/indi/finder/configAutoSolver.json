@@ -1,11 +1,8 @@
 {
   "path": 
 	{ 
-		"camClientExe" : "../cameraClient/myClient",
-		"signalStart" : "/mnt/gdrive/astro/base/signals/finder/start.txt",
-		"signalStatus" : "/mnt/gdrive/astro/base/signals/finder/status.txt",
-		"output" : "/mnt/gdrive/astro/base/signals/finder/output.txt",
-		"image" : "./image/finderAutoSolver.fits"
+		"camClientExe" : "/usr/bin/myIndiClient",
+		"image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits"
 	},
 		
 	"camera":
@@ -21,8 +18,8 @@
 		"binning" : 2
 	},
 	
-	"centerX": 438,
-	"centerY": 395,
+	"centerX": 434,
+	"centerY": 391,
 	"scale": 11.4,
 	
 	"testWithoutSky": false,

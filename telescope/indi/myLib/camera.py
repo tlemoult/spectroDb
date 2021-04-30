@@ -2,7 +2,7 @@ import sys,time,logging
 import PyIndi
 from astropy.io import fits
 
-class IndiClient(PyIndi.BaseClient):
+class CameraClient(PyIndi.BaseClient):
     deviceName=""
     device = None
     filePath= "."
@@ -14,7 +14,7 @@ class IndiClient(PyIndi.BaseClient):
     ccdTemperature=+32000
 
     def __init__(self,deviceName,host,port):
-        super(IndiClient, self).__init__()
+        super(CameraClient, self).__init__()
         self.logger = logging.getLogger('PyQtIndi.IndiClient')        
         self.logger.info('creating an instance of IndiClient')
         self.deviceName=deviceName

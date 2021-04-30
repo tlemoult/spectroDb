@@ -25,7 +25,7 @@ class GuiderPHP2():
             self.sock.connect((self.host, self.port))
         except:
             self.logger.error("connection failed server PHD2 server=%s  port=%d"%(self.host,self.port))
-            print sys.exc_info()[0]
+            print(sys.exc_info()[0])
             return "error"
 
         received = self.sock.recv(1024)
@@ -81,7 +81,7 @@ class GuiderPHP2():
 
     def getResponse(self):
         try:
-            self.recvBuf += self.sock.recv(1024)
+            self.recvBuf += str(self.sock.recv(1024))
         except socket.timeout:
             pass
         
@@ -102,19 +102,19 @@ class GuiderPHP2():
                     event=data['Event']
                     #print("Event %s"%event)
                     if event=="AppState":
-                        print data
+                        print(data)
                         self.appState=data['State']
                     if event=="SettleDone":
                         self.settleStatus=data["Status"]
                         if "Error" in ks:
                             self.settleError=data["Error"] 
                     if event=="StarSelected":
-                        print "Star selected"
+                        print("Star selected")
                         self.starSelectX=data["X"]
                         self.starSelectY=data["Y"]
                         print("X=",self.starSelectX," Y=",self.starSelectY)
                     if event=="StarLost":
-                        print "StarLost"
+                        print("StarLost")
                         pass
 
             self.recvBuf=msgs[-1]
@@ -130,8 +130,8 @@ if __name__ == "__main__":
     #load configuration file
     jsonTxt=open('./configAcquire.json').read()
     config=json.loads(jsonTxt)
-    print (config)
-    print ("--------------")
+    print(config)
+    print("--------------")
 
     # setup log file
     logging.basicConfig(filename=config['PHD2']['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')

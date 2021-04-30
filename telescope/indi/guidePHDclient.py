@@ -1,6 +1,6 @@
 import socket,logging,sys,json,time
 
-from lib.GuiderPHP2 import GuiderPHP2 as GuiderPHP2
+from myLib.guiderPHD import GuiderPHP2 as GuiderPHP2
 
 #exemple of asyncronus socket: https://dzone.com/articles/understanding
 # see here PHD2 protocol:  https://github.com/OpenPHDGuiding/phd2/wiki/EventMonitoring
@@ -19,7 +19,10 @@ server=config['PHD2']['server']
 guiderPHD2=GuiderPHP2(server['host'],server['port'])
 
 #connect
-guiderPHD2.connect()
+if guiderPHD2.connect() == "error":
+    print("Cannot connect to PHDguiding")
+    exit()
+
 guiderPHD2.getResponse()
 
 #set consigne
@@ -34,19 +37,19 @@ guiderPHD2.getResponse()
 print("app state=%s"%guiderPHD2.appState)
 
 #start loop
-print "start Loop"
+print("start Loop")
 guiderPHD2.loop()
 time.sleep(3)
 
 
 #start guide
-print "Start guide"
+print("Start guide")
 guiderPHD2.guide()
 guiderPHD2.getResponse()
 
 time.sleep(2)
 
-print "Set consigne"
+print("Set consigne")
 guiderPHD2.setConsigne(posX,posY)
 time.sleep(3)
 

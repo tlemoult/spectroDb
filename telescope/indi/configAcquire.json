@@ -1,18 +1,18 @@
 {
     "path": {
-        "acquire": "/home/tlemoult/base/in"
+        "acquire": "/home/astroberry/base/in"
     },
     "logFile": "acquire.log",
     "ccdSpectro": {
         "server": {
-            "host": "192.168.13.100",
+            "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 460ex CCD",
-        "tempSetPoint": 5,
+        "name": "Atik 460ex",
+        "tempSetPoint": 15,
         "binning": {
-            "X": 1,
-            "Y": 1
+            "X": 2,
+            "Y": 2
         }
     },
     "ccdFinder": {

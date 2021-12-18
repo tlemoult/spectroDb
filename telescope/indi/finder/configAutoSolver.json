@@ -3,6 +3,7 @@
 	{ 
 		"camClientExe" : "/usr/bin/myIndiClient",
 		"image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits",
+		"offset" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/offset.fits",
 		"logFile": "acquire.log"
 	},
 		
@@ -10,17 +11,26 @@
 	{
 		"indiServerAddress" : "localhost",
 		"indiServerPort" : 7624,
-		"name": "ZWO CCD ASI120MM"		
+		"name": "ZWO CCD ASI120MM",
+		"pixelSize": 3.75,
+		"binning" : 1		
 	},
 	
 	"acquisition":
 	{
-		"exposureTime" : 4,
-		"binning" : 2
+		"exposureTime" : 1,
+		"nbExposure" : 10
+	},
+	
+	"calib":
+	{
+		"exposureTime" : 1,
+		"nbExposure" : 10
 	},
 	
 	"centerX": 434,
 	"centerY": 391,
+	"FocalLength":135,
 	"scale": 11.4,
 	
 	"testWithoutSky": false,

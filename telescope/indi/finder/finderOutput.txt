@@ -1,3 +1,0 @@
-#output file from finder, first RA, then DEC in Radian
-1.3952740901848921
-0.6996093044273463

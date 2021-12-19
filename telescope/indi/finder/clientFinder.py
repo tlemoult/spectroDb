@@ -23,13 +23,17 @@ response = requests.get(url)
 print(f"response status code = {response.status_code}")
 print(json.dumps(response.json(), indent=4))
 
+print(f"Write result file {outputfile}")
+f1 = open(outputfile,"w")
+f1.write("#output file from finder, HTTP code,  RA, DEC in Radian\n")
+f1.write(f"{response.status_code}\n")
 if response.status_code == 200:
-    print(f"API success, Write result file {outputfile}")
-    f1 = open(outputfile,"w")
-    f1.write("#output file from finder, first RA, then DEC in Radian\n")
+    print(f"API success")
     f1.write(f"{response.json()['coord']['RA']}\n")
     f1.write(f"{response.json()['coord']['DEC']}\n")
+    f1.write(f"{response.json()}\n")
     f1.close()
 else:
     print("error status = {response.status_code}")
-
+    f1.write(f"{response.json()}\n")
+    f1.close()

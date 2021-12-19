@@ -1,0 +1,3 @@
+#output file from finder, HTTP code,  RA, DEC in Radian
+500
+{'error': '500 Internal Server Error: plate solving'}

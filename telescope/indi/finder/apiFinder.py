@@ -154,7 +154,7 @@ def doFinderSolveAstro(config):
     if config['testWithoutSky']:
         #False image
         fileNameAstro=config["imageTest"]
-        print(f"  Test without sky, use {fileNameImage}",fileNameImage)
+        print(f"  Test without sky, use {fileNameAstro}")
         time.sleep(2)
     else:
         #Real image on the sky

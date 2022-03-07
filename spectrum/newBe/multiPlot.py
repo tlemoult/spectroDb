@@ -57,7 +57,13 @@ def coorHelioSpeed(wave,header):
         "Observatoire St Maurice":
             {  "lat": 46.37125*u.deg,  "lon":0.49118055555*u.deg , "alt":118* u.m},
         "Giesen (Germany)":
-            {  "lat": 52.19921*u.deg,  "lon":9.90343172157*u.deg , "alt":70* u.m}
+            {  "lat": 52.19921*u.deg,  "lon":9.90343172157*u.deg , "alt":70* u.m},
+        "Observatoire la Tourbiere":
+            {  "lat": 45.4313889*u.deg,  "lon":5.41527777778*u.deg , "alt":520* u.m},
+        "Aspremont":
+            {  "lat": 43.7*u.deg,  "lon":7.266*u.deg , "alt":520* u.m}
+
+            
     }
 
     bessSite = header['BSS_SITE']
@@ -150,6 +156,7 @@ def truncData(flux,waveCoorHelio,header,waveCentral,speedSpan):
 def resolution(header):
     dicResol = {
         'LISA':800 , 'C11_LHIRES_2400_ATK314': 15000 , 'LHIRES3 C9 SXVR-H694': 15000,
+        'RC400 Astrosib-Eshel-ATIK460EX' : 11000,
         'C11 VHIRES_MO ATIK460EX': 48000
      }
 
@@ -271,5 +278,6 @@ def plotsBigFig(dataPath,savePath,saveFileName):
 
 for n in range(5):
     print(f"*** process figure page {n+1} ***")
-    plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.eps")
+    plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.png")
+ #   plotsBigFig(f"./data/fig{n+1}/","./plot/",f"fig{n+1}plot.eps")
 

@@ -14,3 +14,7 @@ telescope/indi/FIELD/
 *.zip
 
 spectrum/RR/brut/
+
+spectrum/newBe/plot/
+spectrum/newBe/data/
+

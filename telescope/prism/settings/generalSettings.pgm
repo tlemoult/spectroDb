@@ -99,8 +99,8 @@ OrientationFente=OriFentevertical
 
 // Position cible du guidage sur le trou
 // attention au binning !,  si l'on change le bin  les coordonnes ici doivent changer.
-fentePosX=381
-fentePosY=243.5
+fentePosX=384
+fentePosY=245
 
 // ici definir position cible dans chercheur.. au lieu de dans le Rasberry PI
 

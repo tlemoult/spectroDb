@@ -29,26 +29,37 @@ RecaleAstrometrieChercheurIndi:
   ENDIF
 
   print "lance chercheur externe Rasberry Pi"
-  print pathPython3Interpreter$
-  print PythonScriptFinderIndiClient$
+  print "  "  pathPython3Interpreter$
+  print "  "  PythonScriptFinderIndiClient$
   EXECEXTERNAL   pathPython3Interpreter$ PythonScriptFinderIndiClient$
 // dommage le exec external rend la main avant la fin de l execution...
-  print "attente resultat chercheur " FileResultFinder$
+  print "  attente resultat chercheur " FileResultFinder$
 boucleAttenteouputFinder:  
-  FILEEXISTS  FileResultFinder$  YesNo	
-  delay 500
-  waitforenddelay
-  if YesNo<>1 then 
-      goto boucleAttenteouputFinder:
-  endif  
-  print "fichier resultat chercheur obtenus"
+		FILEEXISTS  FileResultFinder$  YesNo	
+		delay 500
+		waitforenddelay
+		if YesNo<>1 then 
+			goto boucleAttenteouputFinder:
+		endif
 
-  REM TODO ajouter traitement erreur, au cas ou ca rate...
-  resultat_astrometrie_absolue=1
-
-  print "Lit fichier resultat en radian position de la fente"
+  print "  fichier resultat chercheur obtenus" 
   OPEN_FILETXT_FOR_READ fileFinderResult FileResultFinder$
   READFILETXT fileFinderResult comment$
+  READFILETXT fileFinderResult resultCode$
+
+  # en cas d erreur
+  if resultCode$<>"200"
+	  print "  erreur retourne par le chercheur"
+	  resultat_astrometrie_absolue=0
+      READFILETXT fileFinderResult errorFinder$ 
+	  print "    " errorFinder$
+	  CLOSEFILETXT   fileFinderResult
+      delete FileResultFinder$
+	  return
+  ENDIF
+
+  resultat_astrometrie_absolue=1
+  print "  Lit fichier resultat en radian position de la fente"
   READFILETXT fileFinderResult AlphafenteSTR$
   VAL AlphafenteSTR$ Alphafente
   READFILETXT fileFinderResult DeltafenteSTR$

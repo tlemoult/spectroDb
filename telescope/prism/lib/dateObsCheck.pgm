@@ -1,0 +1,31 @@
+
+
+   dateBegin$="2021-04-27T23:22:20.014"
+
+  CutStr  dateBegin$  "T"  1  dateSTR$
+  CutStr  dateBegin$  "T"  2  timeSTR$
+
+  CutStr dateSTR$ "-" 1 yearSTR$
+  CutStr dateSTR$ "-" 2 monthSTR$
+  CutStr dateSTR$ "-" 3 daySTR$
+
+  CutStr timeSTR$ ":" 1 hourSTR$
+  CutStr timeSTR$ ":" 2 minuteSTR$
+  CutStr timeSTR$ ":" 3 secondSTR$
+
+  print "dateBegin = " dateBegin$
+  print "year=" yearSTR$ "  month= " monthSTR$ " day=" daySTR$ "  Time:  hour=" hourSTR$ " minutes=" minuteSTR$ " second=" secondSTR$
+
+  now date
+  
+  print "date value=" date  "millisecond"
+  DATETOSTR Date Date$
+  PRINT "Current date : " Date$
+  
+  ConvertDateToJulian  Date  JDate
+  print  "Julian date=" Jdate
+  
+  
+  Now  year  month  day  hour  minute  second  millisecond
+  print "Current date is " year "-" month "-" day "T" hour ":" minute ":" second
+  

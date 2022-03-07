@@ -2,10 +2,11 @@ import sys
 sys.path.append("..")
 from myLib.camera import CameraClient as CamSpectro
 
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response, request
 import json,time,logging
 import subprocess,os,sys
 from astropy.wcs import WCS
+from astropy.coordinates import SkyCoord
 import astropy.io.fits
 import numpy as np
 
@@ -16,6 +17,7 @@ def solveAstro(filename,scale):
     name, extension = os.path.splitext(filename)
     scale_low = str(scale*80.0/100.0)
     scale_high = str(scale*120.0/100.0)
+    #solve-field --downsample 2 --tweak-order 2  --overwrite finderAutoSolver-Astro.fits
     subprocess.call(["/usr/bin/solve-field","--cpulimit","12","--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
     if os.path.isfile(name+'.solved'):
         print("succes resolution astrometrique, get wcs data")
@@ -29,7 +31,7 @@ def solveAstro(filename,scale):
             os.remove(name+'.new')
             os.remove(name+'.rdls')
             os.remove(name+'.solved')
-            os.remove(name+'.wcs')
+            #os.remove(name+'.wcs')
         except:
             print("    Some file was not here.")
 
@@ -205,8 +207,44 @@ def doFinderSolveAstro(config):
 
     return result
 
+# called by API
+def doFinderSetCenter(config,coords):
+    print ("Enter dofinderSetCenter()")
+    alpha, delta = coords.split('&')
+    print (f"   The real optical center is at: alpha = {alpha}  delta = {delta}")
+    
+    fileNameAstro = config["path"]["image"].replace(".fits","-Astro.fits")
+    name, extension = os.path.splitext(fileNameAstro)
+    print(f"   reload astrometry data from {name}")
+    wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)
+
+    sky  = SkyCoord(alpha,delta,frame = 'icrs')
+    fenteXpix, fenteYpix =(sky.to_pixel(wcs))
+    
+    fenteXpix = float(fenteXpix)
+    fenteYpix = float(fenteYpix)
+    deltaXpix , deltaYpix = fenteXpix-config['centerX'] , fenteYpix-config['centerY']
+    config['centerX']= fenteXpix
+    config['centerY']= fenteYpix
+
+    #write to config file here ??
+  
+    result = { 'newCenter' : {'x': fenteXpix , 'y':fenteYpix} , 'deltaCenter': {'x':deltaXpix, 'y':deltaYpix} }
+    print(f"   result={result}")
+    return result
 
 ############ main ###############
+@app.route('/api/finder/setCenter', defaults = {'coords': 'none'})
+@app.route('/api/finder/setCenter/<coords>', methods=['GET'])
+def setCenter(coords):
+    global config
+    if coords == 'none':
+        return "you must use a argument for this API\n" + "example:    http://localhost:5000/api/finder/setCenter/14h25m45.6s&+65d11m"
+    if not '&' in coords:
+        return f"argument must contains & to separate alpha&delta \n argument is {coords}"
+
+    return jsonify(doFinderSetCenter(config,coords))
+
 @app.route('/api/finder/calib', methods=['GET'])
 def calib_finder():
     global config

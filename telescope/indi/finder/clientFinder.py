@@ -19,7 +19,17 @@ except:
     print(f"no file {outputfile} to remove")
 
 print(f"Request Finder server URL = {url}\n")
-response = requests.get(url)
+try:
+    response = requests.get(url)
+except:
+    print("connection to server Failed")
+    f1 = open(outputfile,"w")
+    f1.write("#output file from finder, HTTP code,  RA, DEC in Radian\n")
+    f1.write("0")
+    f1.write("{'error': '0: Failed to connect to Server'}")
+    f1.close()
+    exit()
+    
 print(f"response status code = {response.status_code}")
 print(json.dumps(response.json(), indent=4))
 

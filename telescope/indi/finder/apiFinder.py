@@ -201,9 +201,13 @@ def doFinderSolveAstro(config):
     ### Store & Display Result
     print("  fente X=",fenteXpix," ,Y=",fenteYpix)
     print('  RA={0}deg  DEC={1}deg '.format(wx, wy))
+    sky  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
+    raStr = str(sky.ra.hms)
+    decStr = str(sky.dec.dms)
+    print(f"  RA={raStr}  DEC={decStr}")
 
     pi = 3.141592653589793
-    result= { "protoVersion":"1.00", "coord": {"RA": wx/180.0*pi, "DEC":wy/180.0*pi , "unit":"RADIAN"}}
+    result= { "protoVersion":"1.00", "coord": {"RA": wx/180.0*pi, "DEC":wy/180.0*pi , "unit":"RADIAN"} , "coorSEX": {"RA":raStr, "DEC":decStr}}
 
     return result
 

@@ -1,6 +1,9 @@
 import sys,time,logging
 import PyIndi
 from astropy.io import fits
+from astropy.coordinates import SkyCoord,FK5,AltAz,EarthLocation
+import astropy.units as u
+from astropy.time import Time
 
 class TelescopeClient(PyIndi.BaseClient):
     deviceName=""
@@ -104,18 +107,51 @@ class TelescopeClient(PyIndi.BaseClient):
 
         ra = telescope_radec[0].value
         dec = telescope_radec[1].value
-        self.logger.info(f"get telescope coordinates  ra={ra}   dec = {dec}")
-        return {'ra':ra,'dec':dec,'EPOCH':'JNow','Unit':'ra:Hours dec:Degrees'}             
+        self.logger.info(f"get telescope coordinates EPOCHJNow ra={ra} Hours   dec = {dec}")
+        c = SkyCoord(ra,dec,unit=(u.hourangle, u.deg),frame='icrs', equinox=Time.now())
+        return c
 
     def setCoordinates(self,coords):
-        telescope_radec=self.device.getNumber("EQUATORIAL_EOD_COORD")
+        propertyNameCoord="EQUATORIAL_EOD_COORD"
+        telescope_radec=self.device.getNumber(propertyNameCoord)
         while not(telescope_radec):
             time.sleep(0.5)
-            telescope_radec=self.device.getNumber("EQUATORIAL_EOD_COORD")
+            telescope_radec=self.device.getNumber(propertyNameCoord)
 
-        telescope_radec[0].value = coords['ra']
-        telescope_radec[1].value = coords['dec']
+        ra=coords.ra.value/360*24
+        dec=coords.dec.value
+        print(f"setCoordinates with property={propertyNameCoord} ra={coords.ra.value} dec={coords.dec.value}")
+        
+        telescope_radec[0].value = ra
+        telescope_radec[1].value = dec
         self.sendNewNumber(telescope_radec)
-        self.logger.info(f"set telescope coordinates  coords={coords}")
+        self.logger.info(f"set telescope coordinates  coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n ra_value={coords.ra.value} dec_value={coords.dec.value}")
+        while (telescope_radec.s==PyIndi.IPS_BUSY):
+            print(f"Scope Moving to RA={coords.ra.value}  DEC= {coords.dec.value}")
+            time.sleep(1)
+            
+    
+    def onCoordSet(self,action):
+        telescope_on_coord_set=self.device.getSwitch("ON_COORD_SET")
+        while not(telescope_on_coord_set):
+            time.sleep(0.5)
+            telescope_on_coord_set=self.device.getSwitch("ON_COORD_SET")
         
-        
+        if action == 'TRACK':
+            self.logger.info(f"set telescope action onCoordSet {action}")
+            telescope_on_coord_set[0].s=PyIndi.ISS_ON
+            telescope_on_coord_set[1].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[2].s=PyIndi.ISS_OFF
+        elif action == 'SLEW':
+            self.logger.info(f"set telescope action onCoordSet {action}")
+            telescope_on_coord_set[0].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[1].s=PyIndi.ISS_ON
+            telescope_on_coord_set[2].s=PyIndi.ISS_OFF
+        elif action == 'SYNC':
+            self.logger.info(f"set telescope action onCoordSet {action}")
+            telescope_on_coord_set[0].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[1].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[2].s=PyIndi.ISS_ON
+        else:
+            self.logger.info(f"set telescope action onCoordSet Undefined")
+        self.sendNewSwitch(telescope_on_coord_set)

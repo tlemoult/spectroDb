@@ -1,40 +1,58 @@
 {
   "path": 
-	{ 
-		"camClientExe" : "/usr/bin/myIndiClient",
-		"image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits",
-		"offset" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/offset.fits",
-		"logFile": "acquire.log"
-	},
-		
-	"camera":
-	{
-		"indiServerAddress" : "localhost",
-		"indiServerPort" : 7624,
-		"name": "ZWO CCD ASI120MM",
-		"pixelSize": 3.75,
-		"binning" : 1		
-	},
-	
-	"acquisition":
-	{
-		"exposureTime" : 1,
-		"nbExposure" : 10
-	},
-	
-	"calib":
-	{
-		"exposureTime" : 1,
-		"nbExposure" : 10
-	},
-	
-	"centerX": 434,
-	"centerY": 391,
-	"FocalLength":135,
-	"scale": 11.4,
-	
-	"testWithoutSky": false,
-	"imageTest":"./image/finder2.fits"
+    { 
+        "camClientExe" : "/usr/bin/myIndiClient",
+        "image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits",
+        "offset" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/offset.fits",
+        "logFile": "acquire.log"
+    },
+  
+    "obsSite": {
+        "name" : "Chelles",
+        "latDeg" : 48,
+        "latMin" : 52,
+        "latSec" : 48.76,
+        "lonDeg" : 2,
+        "lonMin" : 34,
+        "lonSec" : 55.28,
+        "altitude" : 40
+        },
+  
+    "camera":
+    {
+        "indiServerAddress" : "localhost",
+        "indiServerPort" : 7624,
+        "name": "ZWO CCD ASI120MM",
+        "pixelSize": 3.75,
+        "binning" : 1       
+    },
+    "telescope": 
+    {
+        "server": {
+            "host": "127.0.0.1",
+            "port": 7625
+        },
+        "name": "AstroPhysics GTOCP2"
+    },
+    "acquisition":
+    {
+        "exposureTime" : 3,
+        "nbExposure" : 10
+    },
+    
+    "calib":
+    {
+        "exposureTime" : 1,
+        "nbExposure" : 10
+    },
+    
+    "centerX": 434,
+    "centerY": 391,
+    "FocalLength":135,
+    "scale": 11.4,
+    
+    "testWithoutSky": false,
+    "imageTest":"./image/imgOK.fits"
 
 
 }

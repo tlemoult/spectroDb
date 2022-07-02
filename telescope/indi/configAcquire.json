@@ -16,6 +16,17 @@
         }
     },
     
+    "obsSite": {
+        "name" : "Chelles",
+        "latDeg" : 48,
+        "latMin" : 52,
+        "latSec" : 48.76,
+        "lonDeg" : 2,
+        "lonMin" : 34,
+        "lonSec" : 55.28,
+        "altitude" : 40
+        },
+    
     "telescope": {
         "server": {
             "host": "127.0.0.1",

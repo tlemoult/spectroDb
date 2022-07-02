@@ -1,6 +1,8 @@
 import sys
 sys.path.append("..")
 from myLib.camera import CameraClient as CamSpectro
+from myLib.telescope import TelescopeClient as Telescope
+import myLib.util as myUtil
 
 from flask import Flask, jsonify, abort, make_response, request
 import json,time,logging
@@ -8,6 +10,7 @@ import subprocess,os,sys
 from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
 import astropy.io.fits
+from astropy.utils.iers import Conf as astropyConf
 import numpy as np
 
 app = Flask(__name__)
@@ -18,7 +21,7 @@ def solveAstro(filename,scale):
     scale_low = str(scale*80.0/100.0)
     scale_high = str(scale*120.0/100.0)
     #solve-field --downsample 2 --tweak-order 2  --overwrite finderAutoSolver-Astro.fits
-    subprocess.call(["/usr/bin/solve-field","--cpulimit","12","--downsample", "2", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
+    subprocess.call(["/usr/bin/solve-field","--cpulimit","25","--downsample", "4", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
     if os.path.isfile(name+'.solved'):
         print("succes resolution astrometrique, get wcs data")
         wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)
@@ -128,8 +131,8 @@ def substrackFits(fileName1,fileName2,fileNameDest):
     hdul2.close()
 
 # called by API
-def doFinderCalib(config):
-    print("doFinderCalib()")
+def doAcquireOffset(config):
+    print("doAcquireOffset()")
     
     fileNamePath=os.path.split(config["path"]["offset"])[0]
     print(f"  fileNamePath = {fileNamePath}")
@@ -201,13 +204,27 @@ def doFinderSolveAstro(config):
     ### Store & Display Result
     print("  fente X=",fenteXpix," ,Y=",fenteYpix)
     print('  RA={0}deg  DEC={1}deg '.format(wx, wy))
-    sky  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
-    raStr = str(sky.ra.hms)
-    decStr = str(sky.dec.dms)
-    print(f"  RA={raStr}  DEC={decStr}")
+    coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
+    raStr = str(coordsJ2000.ra.hms)
+    decStr = str(coordsJ2000.dec.dms)
+    print(f"  J2000 coords RA={raStr}  DEC={decStr}")
 
+    ### send coord to telescope
+    telescope=Telescope(config['telescope'])
+
+    if telescope.connect():
+        print("Telescope connected")
+        obsSite=myUtil.getEarthLocation(config)
+        telCoords = myUtil.convJ2000toJNowRefracted(coordsJ2000,obsSite)
+        telescope.onCoordSet("SYNC")
+        telescope.setCoordinates(telCoords)
+        telescope.disconnectServer()
+    else:
+        print("Cannot connect telescope {config['telescope']}")
+
+    #return coords J2000
     pi = 3.141592653589793
-    result= { "protoVersion":"1.00", "coord": {"RA": wx/180.0*pi, "DEC":wy/180.0*pi , "unit":"RADIAN"} , "coorSEX": {"RA":raStr, "DEC":decStr}}
+    result= { "protoVersion":"1.00", "coord": {"RA": wx/180.0*pi, "DEC":wy/180.0*pi , "unit":"RADIAN", "EPOCH":"J2000"} , "coorSEX": {"RA":raStr, "DEC":decStr, "EPOCH":"J2000"}}
 
     return result
 
@@ -215,7 +232,7 @@ def doFinderSolveAstro(config):
 def doFinderSetCenter(config,coords):
     print ("Enter dofinderSetCenter()")
     alpha, delta = coords.split('&')
-    print (f"   The real optical center is at: alpha = {alpha}  delta = {delta}")
+    print (f"   The real optical center is at: J2000 alpha = {alpha}  delta = {delta}")
     
     fileNameAstro = config["path"]["image"].replace(".fits","-Astro.fits")
     name, extension = os.path.splitext(fileNameAstro)
@@ -249,10 +266,10 @@ def setCenter(coords):
 
     return jsonify(doFinderSetCenter(config,coords))
 
-@app.route('/api/finder/calib', methods=['GET'])
-def calib_finder():
+@app.route('/api/finder/acquireOffset', methods=['GET'])
+def acquireOffset():
     global config
-    return jsonify(doFinderCalib(config))
+    return jsonify(doAcquireOffset(config))
 
 @app.route('/api/finder', methods=['GET'])
 def get_finder():
@@ -275,7 +292,7 @@ if __name__ == '__main__':
         config=json.loads(open(sys.argv[1]).read())
         logging.basicConfig(filename=config['path']['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
-
+        astropyConf.auto_download=False
         
         
         app.run(host='0.0.0.0',port=5000,debug=True)

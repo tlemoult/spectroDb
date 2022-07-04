@@ -1,6 +1,6 @@
 {
     "path": {
-        "acquire": "/home/astroberry/base/in"
+        "acquire": "/home/tlemoult/Documents/base/in"
     },
     "logFile": "acquire.log",
     "ccdSpectro": {
@@ -8,11 +8,11 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 460ex",
+        "name": "Atik 414ex",
         "tempSetPoint": 15,
         "binning": {
-            "X": 2,
-            "Y": 2
+            "X": 1,
+            "Y": 1
         }
     },
     
@@ -30,7 +30,7 @@
     "telescope": {
         "server": {
             "host": "127.0.0.1",
-            "port": 7625
+            "port": 7624
         },
         "name": "AstroPhysics GTOCP2"
         },
@@ -52,7 +52,7 @@
     "PHD2": {
         "server": {
             "host": "127.0.0.1",
-            "port": 4401
+            "port": 4400
         },
         "logFile": "guider.log",
         "posX": 235.65,
@@ -77,19 +77,20 @@
         "project": "none",
         "instrument": {
             "telescop": "AP130EDFGT",
-            "configName": "AP130EDFGT ALPY ATIK460N2",
+            "configName": "AP130EDFGT ALPY ATIK414",
             "spectro": "ALPY",
-            "detname": "ATIK460N2",
+            "detname": "ATIK414ex",
             "guideDetname": "ATIK314",
             "resol": 600
         },
+
         "site": {
-            "name": "OHP",
+            "name": "SARRY",
             "country": "FRANCE",
-            "lat": "42 52 49",
-            "lon": "03 34 55",
-            "alt": "120",
-            "UAIcode": "23"
+            "lat": "47 40 14",
+            "lon": "04 04 30",
+            "alt": "302",
+            "UAIcode": ""
         },
         "observer": {
             "firstName": "Thierry",

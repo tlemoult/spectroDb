@@ -111,24 +111,38 @@ class TelescopeClient(PyIndi.BaseClient):
         c = SkyCoord(ra,dec,unit=(u.hourangle, u.deg),frame='icrs', equinox=Time.now())
         return c
 
-    def setCoordinates(self,coords):
+    def slewTelescope(self,coords):
+        self.logger.info(f"slewTelescope: coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n      ra_value={coords.ra.value} dec_value={coords.dec.value}")
+
+        self.trackingSet(True)
+        self.onCoordSet("TRACK")
+
         propertyNameCoord="EQUATORIAL_EOD_COORD"
         telescope_radec=self.device.getNumber(propertyNameCoord)
         while not(telescope_radec):
             time.sleep(0.5)
             telescope_radec=self.device.getNumber(propertyNameCoord)
-
-        ra=coords.ra.value/360*24
-        dec=coords.dec.value
-        print(f"setCoordinates with property={propertyNameCoord} ra={coords.ra.value} dec={coords.dec.value}")
         
-        telescope_radec[0].value = ra
-        telescope_radec[1].value = dec
+        telescope_radec[0].value = coords.ra.value/360*24
+        telescope_radec[1].value = coords.dec.value
         self.sendNewNumber(telescope_radec)
-        self.logger.info(f"set telescope coordinates  coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n ra_value={coords.ra.value} dec_value={coords.dec.value}")
-        while (telescope_radec.s==PyIndi.IPS_BUSY):
-            print(f"Scope Moving to RA={coords.ra.value}  DEC= {coords.dec.value}")
+        while (telescope_radec.getState()==PyIndi.IPS_BUSY):
+            print(f"Scope Moving to RA={coords.ra.value}  DEC= {coords.dec.value} ")
             time.sleep(1)
+
+    def syncCoordinates(self,coords):
+        self.logger.info(f"syncCoordinates: coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n      ra_value={coords.ra.value} dec_value={coords.dec.value}")  
+        self.onCoordSet("SYNC")
+
+        propertyNameCoord="EQUATORIAL_EOD_COORD"
+        telescope_radec=self.device.getNumber(propertyNameCoord)
+        while not(telescope_radec):
+            time.sleep(0.5)
+            telescope_radec=self.device.getNumber(propertyNameCoord)
+        
+        telescope_radec[0].value = coords.ra.value/360*24
+        telescope_radec[1].value = coords.dec.value
+        self.sendNewNumber(telescope_radec)
             
     
     def onCoordSet(self,action):
@@ -155,3 +169,26 @@ class TelescopeClient(PyIndi.BaseClient):
         else:
             self.logger.info(f"set telescope action onCoordSet Undefined")
         self.sendNewSwitch(telescope_on_coord_set)
+
+    
+    def trackingSet(self,bool):
+        switchNameTracking="TELESCOPE_TRACK_STATE"
+        telescopeTrackingSwitch = self.device.getSwitch(switchNameTracking)
+        while not(telescopeTrackingSwitch):
+            time.sleep(0.5)
+            telescopeTrackingSwitch = self.device.getSwitch(switchNameTracking)
+
+        if(bool):
+            self.logger.info("Telescope Tracking ON")
+            telescopeTrackingSwitch[0].s=PyIndi.ISS_ON
+            telescopeTrackingSwitch[1].s=PyIndi.ISS_OFF
+        else:
+            self.logger.info("Telescope Tracking OFF")
+            telescopeTrackingSwitch[0].s=PyIndi.ISS_OFF
+            telescopeTrackingSwitch[1].s=PyIndi.ISS_ON
+
+        self.sendNewSwitch(telescopeTrackingSwitch)
+
+
+
+

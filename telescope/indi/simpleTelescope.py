@@ -37,23 +37,23 @@ coords = telescope.getCoordinates()
 print(f"Telescope initial coords:\n      {coords} \n       ra={coords.ra.hms}  dec={coords.dec.dms}")
 
 #slew to a star
-telescope.onCoordSet("TRACK")
 J2000Target = myUtil.getCoordFromName("Spica")
 obsSite=myUtil.getEarthLocation(config)
 CoordTelescopeTarget= myUtil.convJ2000toJNowRefracted(J2000Target,obsSite)
-telescope.setCoordinates(CoordTelescopeTarget)
-exit()
+telescope.slewTelescope(CoordTelescopeTarget)
 
+print("*********************")
 
 #telescope use JNOW..   refracted..
 #passer en alt az pour corriger de la refraction ?
 #astrometry use J2000
+coords = telescope.getCoordinates()
+print(f"Actual telescope: coords = {coords}")
 print("increase declinaison")
 coords2 = SkyCoord(coords.ra,coords.dec + 1*u.deg,frame='icrs', equinox=Time.now())
 print(f"New telescope: coords2 = {coords2}")
-print("set new coordinates")
-telescope.onCoordSet("SYNC")
-telescope.setCoordinates(coords2)
+print("set telecope to the new coordinates")
+telescope.syncCoordinates(coords2)
 
 print("Wait some time")
 time.sleep(4)

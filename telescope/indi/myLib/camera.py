@@ -13,12 +13,41 @@ class CameraClient(PyIndi.BaseClient):
     setPointTemperature=0
     ccdTemperature=+32000
 
-    def __init__(self,deviceName,host,port):
+
+    def __init__(self,cameraConf):
         super(CameraClient, self).__init__()
         self.logger = logging.getLogger('PyQtIndi.IndiClient')        
-        self.logger.info('creating an instance of IndiClient')
-        self.deviceName=deviceName
-        self.setServer(host,port)
+        self.logger.info(f'creating an instance of CameraClient with cameraConf={cameraConf}')
+        self.deviceName=cameraConf["name"]
+        self.setServer(cameraConf["server"]["host"],cameraConf["server"]["port"])
+
+        if (not(self.connectServer())):
+            self.logger.error(f"Fail to connect to indi Server {self.getHost()}:{self.getPort()}")
+            self.logger.error("Try to run:")
+            self.logger.error("  indiserver indi_simulator_ccd")
+            raise NameError('Fail to connect to indi Server')
+
+        self.logger.info("connecting to camera")
+        if (not(self.waitCameraConnected())):
+            self.logger.error("Fail to connect to camera")
+            self.disconnectServer()
+            raise NameError('Fail to connect to camera')
+
+        self.logger.info("set binnig")
+        self.setBinning({'X':cameraConf["binning"]["X"],'Y':cameraConf["binning"]["Y"]})
+
+        if "tempSetPoint" in cameraConf.keys():
+            self.logger.info("set CCD temperature")
+            self.setTemperature(cameraConf['tempSetPoint'])
+            self.waitCCDTemperatureOK()
+
+
+#    def __init__(self,deviceName,host,port):
+#        super(CameraClient, self).__init__()
+#        self.logger = logging.getLogger('PyQtIndi.IndiClient')        
+#        self.logger.info('creating an instance of IndiClient')
+#        self.deviceName=deviceName
+#        self.setServer(host,port)
 
     def newAcquSerie(self,filePath,fileNameRoot,nbExposure,expTime):
         self.logger.info("<<<<<<< New acquisition serie fileName=%s nbExposure=%d, expTime=%d"%(fileNameRoot,nbExposure,expTime))

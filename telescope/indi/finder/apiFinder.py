@@ -141,7 +141,7 @@ def doAcquireOffset(config):
 
     exposureTime = 0
 
-    camSpectro = connectCam(config)    
+    camSpectro=CamSpectro(config["camera"])    
     camSpectro.newAcquSerie(fileNamePath,fileNameRoot+"-",config["calib"]["nbExposure"],config["calib"]["exposureTime"])
     camSpectro.waitEndAcqSerie()
 
@@ -170,7 +170,7 @@ def doFinderSolveAstro(config):
               
         #acquisition
         print("  run acquisition")
-        camSpectro = connectCam(config)
+        camSpectro=CamSpectro(config["camera"])
         camSpectro.newAcquSerie(fileNamePath,fileNameRoot+"-",config["acquisition"]["nbExposure"],config["acquisition"]["exposureTime"])
         camSpectro.waitEndAcqSerie()
         print("  acquisition finished")
@@ -216,8 +216,7 @@ def doFinderSolveAstro(config):
         print("Telescope connected")
         obsSite=myUtil.getEarthLocation(config)
         telCoords = myUtil.convJ2000toJNowRefracted(coordsJ2000,obsSite)
-        telescope.onCoordSet("SYNC")
-        telescope.setCoordinates(telCoords)
+        telescope.syncCoordinates(telCoords)
         telescope.disconnectServer()
     else:
         print("Cannot connect telescope {config['telescope']}")

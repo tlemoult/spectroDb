@@ -1,10 +1,9 @@
 {
   "path": 
     { 
-        "camClientExe" : "/usr/bin/myIndiClient",
-        "image" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/finderAutoSolver.fits",
-        "offset" : "/home/astroberry/workspace/spectroDb/telescope/indi/finder/image/offset.fits",
-        "logFile": "acquire.log"
+        "image" : "/home/tlemoult/Documents/finder/finderAutoSolver.fits",
+        "offset" : "/home/tlemoult/Documents/finder/offset.fits",
+        "logFile": "/home/tlemoult/Documents/finder/finder.log"
     },
   
     "obsSite": {
@@ -20,17 +19,22 @@
   
     "camera":
     {
-        "indiServerAddress" : "localhost",
-        "indiServerPort" : 7624,
-        "name": "ZWO CCD ASI120MM",
-        "pixelSize": 3.75,
-        "binning" : 1       
+        "name": "ZWO CCD ASI120MM-S",
+        "server": {
+            "host": "localhost",
+            "port": 7624
+        },
+        "binning": {
+            "X": 1,
+            "Y": 1
+        },
+        "pixelSize": 3.75
     },
     "telescope": 
     {
         "server": {
             "host": "127.0.0.1",
-            "port": 7625
+            "port": 7624
         },
         "name": "AstroPhysics GTOCP2"
     },
@@ -51,8 +55,7 @@
     "FocalLength":135,
     "scale": 11.4,
     
-    "testWithoutSky": false,
-    "imageTest":"./image/imgOK.fits"
-
+    "testWithoutSky": true,
+    "imageTest":"/home/tlemoult/Documents/finder/imgOK.fits"
 
 }

@@ -29,6 +29,9 @@ class GuiderPHP2():
             return "error"
 
         received = self.sock.recv(1024)
+
+        print(f"Connect received={received}")
+
         return received
 
     def sendJson(self,jsonTxt):

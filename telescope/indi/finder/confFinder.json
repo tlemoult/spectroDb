@@ -28,7 +28,11 @@
             "X": 1,
             "Y": 1
         },
-        "pixelSize": 3.75
+        "pixelSize": 3.75,
+        "FocalLength": 135,
+        "centerX": 434,
+        "centerY": 391
+    
     },
     "telescope": 
     {
@@ -50,10 +54,6 @@
         "nbExposure" : 10
     },
     
-    "centerX": 434,
-    "centerY": 391,
-    "FocalLength":135,
-    "scale": 11.4,
     
     "testWithoutSky": true,
     "imageTest":"/home/tlemoult/Documents/finder/imgOK.fits"

@@ -15,56 +15,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-def solveAstro(filename,scale):
-    print("debut resolution astrometrique ",scale,"arcsec per pixel, file=",filename)
-    name, extension = os.path.splitext(filename)
-    scale_low = str(scale*80.0/100.0)
-    scale_high = str(scale*120.0/100.0)
-    #solve-field --downsample 2 --tweak-order 2  --overwrite finderAutoSolver-Astro.fits
-    subprocess.call(["/usr/bin/solve-field","--cpulimit","25","--downsample", "4", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
-    if os.path.isfile(name+'.solved'):
-        print("succes resolution astrometrique, get wcs data")
-        wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)
 
-        try:
-            os.remove(name+'-indx.xyls')
-            os.remove(name+'.axy')
-            os.remove(name+'.corr')
-            os.remove(name+'.match')
-            os.remove(name+'.new')
-            os.remove(name+'.rdls')
-            os.remove(name+'.solved')
-            #os.remove(name+'.wcs')
-        except:
-            print("    Some file was not here.")
-
-        return wcs
-
-    else:
-        print("echec resolution astrometrique")
-        raise
-
-def connectCam(config):
-    # acquisition of picture thru INDI server
-    camSpectro=CamSpectro(config["camera"]["name"],config["camera"]["indiServerAddress"],config["camera"]["indiServerPort"])
-        
-    print("Connecting to indiserver")
-    if (not(camSpectro.connectServer())):
-        print(f"Fail to connect to indi Server {camSpectro.getHost()}:{camSpectro.getPort()}")
-        print("Try to run:")
-        print("  indiserver indi_simulator_ccd")
-        abort(500,description="Fail to connect to indi Server")
-
-    print("connecting to camera")
-    if (not(camSpectro.waitCameraConnected())):
-        print("Fail to connect to camera")
-        camSpectro.disconnectServer()
-        abort(500,description="Fail to connect to camera")
-
-    #set binning    
-    camSpectro.setBinning({'X':config["camera"]["binning"],'Y':config["camera"]["binning"]})
-    
-    return camSpectro
 
 def stackSerie(sourcePath,nbImage):
     print("stackSerie()")
@@ -186,28 +137,17 @@ def doFinderSolveAstro(config):
 #    return {"debug":"true"}
 
     ### Plate Solving
-    print("Plate Solving")
-    fenteXpix=config["centerX"]
-    fenteYpix=config["centerY"]
-    scaleArcPerPixelFinder=((config["camera"]["pixelSize"]*0.001*config["camera"]["binning"])/config["FocalLength"]) /6.28 * 360 * 60 *60
-    print(f"  Calculated Scale is {scaleArcPerPixelFinder:0.2f} ArcSecond per pixel")
+     
     
-    
-    try:
-        w=solveAstro(fileNameAstro,scaleArcPerPixelFinder)
-        wx, wy = w.wcs_pix2world(fenteXpix, fenteYpix,1)
-    except:
+    astro = myUtil.solveAstro(fileNameAstro,config["camera"])
+
+    if astro == None:
         print("error during plate solving...")
+        print("Unexpected error:", sys.exc_info()[0])
         abort(500,description='plate solving')
         return { 'error':'error' }
 
-    ### Store & Display Result
-    print("  fente X=",fenteXpix," ,Y=",fenteYpix)
-    print('  RA={0}deg  DEC={1}deg '.format(wx, wy))
-    coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
-    raStr = str(coordsJ2000.ra.hms)
-    decStr = str(coordsJ2000.dec.dms)
-    print(f"  J2000 coords RA={raStr}  DEC={decStr}")
+   # astrometry = {"wcs":wcs,  "raStr":raStr , "decStr":decStr , "coordsJ2000":coordsJ2000 ,"wx":wx , "wy",wy  }
 
     ### send coord to telescope
     telescope=Telescope(config['telescope'])
@@ -215,15 +155,15 @@ def doFinderSolveAstro(config):
     if telescope.connect():
         print("Telescope connected")
         obsSite=myUtil.getEarthLocation(config)
-        telCoords = myUtil.convJ2000toJNowRefracted(coordsJ2000,obsSite)
+        telCoords = myUtil.convJ2000toJNowRefracted(astro["coordsJ2000"],obsSite)
         telescope.syncCoordinates(telCoords)
         telescope.disconnectServer()
     else:
         print("Cannot connect telescope {config['telescope']}")
 
-    #return coords J2000
     pi = 3.141592653589793
-    result= { "protoVersion":"1.00", "coord": {"RA": wx/180.0*pi, "DEC":wy/180.0*pi , "unit":"RADIAN", "EPOCH":"J2000"} , "coorSEX": {"RA":raStr, "DEC":decStr, "EPOCH":"J2000"}}
+    result= { 'protoVersion':'1.00', 'coord': {'RA': str(astro["wx"]/180.0*pi), 'DEC':str(astro["wy"]/180.0*pi) , 'unit':'RADIAN', 'EPOCH':'J2000'} , 'coorSEX': {'RA':astro["raStr"], 'DEC':astro["decStr"], 'EPOCH':'J2000'}}
+    print(result)
 
     return result
 

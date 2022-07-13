@@ -6,6 +6,8 @@
         "logFile": "/home/tlemoult/Documents/finder/finder.log"
     },
   
+    "logFile": "calibProcess.log",
+
     "obsSite": {
         "name" : "Chelles",
         "latDeg" : 48,
@@ -44,8 +46,8 @@
     },
     "acquisition":
     {
-        "exposureTime" : 3,
-        "nbExposure" : 10
+        "exposureTime" : 10,
+        "nbExposure" : 1
     },
     
     "calib":
@@ -55,7 +57,7 @@
     },
     
     
-    "testWithoutSky": true,
+    "testWithoutSky": false,
     "imageTest":"/home/tlemoult/Documents/finder/imgOK.fits"
 
 }

@@ -32,7 +32,7 @@ config=json.loads(json_text)
 logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 #create directory
-basePath=config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').replace(':','-').split('.')[0]
+basePath=config['path']['root']+'/'+config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').replace(':','-').split('.')[0]
 basePath+='-'+objName.replace(' ','_').replace('+','p').replace('*','s')
 print(f"basePath={basePath}")
 os.mkdir(basePath)
@@ -55,6 +55,7 @@ with open(basePath+'/observation.json', 'w') as outfile:
 # instantiate the client, for camera
 
 camSpectro=CamSpectro(config["ccdSpectro"])
+camSpectro.setObserverAndObjectName(observationJson['observer']['alias'],objName)
 print("run acquisition" )
 camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime)
 camSpectro.waitEndAcqSerie()
@@ -62,8 +63,8 @@ print("  acquisition finished")
 
 
 input('Switch on Neon, Press enter to continue: ')
-expoNeon=10
-camSpectro.newAcquSerie(basePath,"NEON-",1,expoNeon)
+spectroCalib=config['spectro']['ALPY']['calib']
+camSpectro.newAcquSerie(basePath,"NEON-",spectroCalib['nbExpo'],spectroCalib['exposure'])
 camSpectro.waitEndAcqSerie()
 
 #update json file
@@ -79,3 +80,6 @@ print("acquisition finished")
 input('Switch off Neon, Press enter to continue: ')
 
 camSpectro.disconnectServer()
+
+print(f"Wait disconnection...")
+time.sleep(5)

@@ -73,7 +73,7 @@ def solveAstro(filename,camera):
         wx, wy = wcs.wcs_pix2world(fenteXpix, fenteYpix,1)
         print('  RA={0}deg  DEC={1}deg '.format(wx, wy))
         coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
-        coordsJ2000str = coordsJ2000.to_string('dms')
+        coordsJ2000str = coordsJ2000.to_string('hmsdms')
         raStr, decStr = coordsJ2000str.split(' ')
         print(f"  J2000 coords RA={raStr}  DEC={decStr}")
 

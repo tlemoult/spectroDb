@@ -1,21 +1,59 @@
 {
     "path": {
-        "acquire": "/home/tlemoult/Documents/base/in"
+        "root": "/home/tlemoult/Documents",
+        "acquire": "/base/in",
+        "astrometry": "/astrometry" 
     },
     "logFile": "acquire.log",
+
     "ccdSpectro": {
         "server": {
             "host": "localhost",
             "port": 7624
         },
         "name": "Atik 414ex",
-        "tempSetPoint": 15,
+        "tempSetPoint": 0,
         "binning": {
             "X": 1,
             "Y": 1
         }
     },
-    
+
+    "ccdGuide": {
+        "server": {
+            "host": "localhost",
+            "port": 7624
+        },
+        "name": "Atik 314L",
+        "tempSetPoint": 0,
+        "binning": {
+            "X": 1,
+            "Y": 1
+        },
+        "expTimeAstrometry" : 15,
+        "centerX":580,
+        "centerY":421,
+        "pixelSize": 6.45,
+        "FocalLength": 820
+    },
+
+    "ccdFinder": {
+        "server": {
+            "host": "127.0.0.1",
+            "port": 7624
+        },
+        "name": "ZWO CCD ASI120MM-S",
+        "binning": {
+            "X": 2,
+            "Y": 2
+        },
+        "expTimeAstrometry" : 10,
+        "centerX":404,
+        "centerY":732,
+        "pixelSize": 3.75,
+        "FocalLength": 135
+    },
+
     "obsSite": {
         "name" : "Chelles",
         "latDeg" : 48,
@@ -32,22 +70,23 @@
             "host": "127.0.0.1",
             "port": 7624
         },
-        "name": "AstroPhysics GTOCP2"
+        "name": "AstroPhysics",
+        "delayAfterSlew":8
         },
     
-    
-    "ccdFinder": {
-        "server": {
-            "host": "127.0.0.1",
-            "port": 7624
-        },
-        "name": "ZWO CCD ASI120MM",
-        "tempSetPoint": 5,
-        "binning": {
-            "X": 2,
-            "Y": 2
+    "spectro": {
+        "ALPY": {
+            "calib": {
+                "exposure":30,
+                "nbExpo":1
+            },
+            "flat": {
+                "exposure":4,
+                "nbExpo":19
+            }
         }
     },
+ 
     
     "PHD2": {
         "server": {

@@ -143,6 +143,15 @@ class CameraClient(PyIndi.BaseClient):
         self.sendNewNumber(exp)
         self.ccdExposure=expTime
 
+    def setObserverAndObjectName(self,obsName,objectName):
+        self.logger.info(f"<<<<<<<<< setObserverAndObjectName in FITS  obsName= {obsName}  objectName= {objectName}")
+        t=self.device.getText("FITS_HEADER")
+        t[0].name = "FITS_OBSERVER"
+        t[0].text = obsName
+        t[1].name = "FITS_OBJECT"
+        t[1].text = objectName
+        self.sendNewText(t)
+
     def setTemperature(self,setPointTemperature):
         self.setPointTemperature=setPointTemperature
         self.logger.info(f"<<<<<<<<< Set Temperature set point = {setPointTemperature:.2f}")

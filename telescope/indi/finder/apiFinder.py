@@ -158,6 +158,7 @@ def doFinderSolveAstro(config):
         telCoords = myUtil.convJ2000toJNowRefracted(astro["coordsJ2000"],obsSite)
         telescope.syncCoordinates(telCoords)
         telescope.disconnectServer()
+        time.sleep(2)
     else:
         print("Cannot connect telescope {config['telescope']}")
 
@@ -183,9 +184,9 @@ def doFinderSetCenter(config,coords):
     
     fenteXpix = float(fenteXpix)
     fenteYpix = float(fenteYpix)
-    deltaXpix , deltaYpix = fenteXpix-config['centerX'] , fenteYpix-config['centerY']
-    config['centerX']= fenteXpix
-    config['centerY']= fenteYpix
+    deltaXpix , deltaYpix = fenteXpix-config['camera']['centerX'] , fenteYpix-config['camera']['centerY']
+    config['camera']['centerX']= fenteXpix
+    config['camera']['centerY']= fenteYpix
 
     #write to config file here ??
   
@@ -199,7 +200,7 @@ def doFinderSetCenter(config,coords):
 def setCenter(coords):
     global config
     if coords == 'none':
-        return "you must use a argument for this API\n" + "example:    http://localhost:5000/api/finder/setCenter/14h25m45.6s&+65d11m"
+        return "This will set the X,Y optical center configuration.\nYou must use as argument the J2000 coordinates for this API\n" + "example:    http://localhost:5000/api/finder/setCenter/14h25m45.6s&+65d11m"
     if not '&' in coords:
         return f"argument must contains & to separate alpha&delta \n argument is {coords}"
 

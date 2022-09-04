@@ -3,7 +3,7 @@
 
 import tkinter
 import serial
-import time
+import time,os
 # see:  http://pyserial.sourceforge.net/shortintro.html
 
 class simpleapp_tk(tkinter.Tk):
@@ -14,7 +14,7 @@ class simpleapp_tk(tkinter.Tk):
         self.initialize()
 
     def handler(self):
-        print("handler bye")
+        print("gui-powerBox handler bye")
         self.closeSerial()
         self.quit()
 
@@ -31,8 +31,9 @@ class simpleapp_tk(tkinter.Tk):
         self.closeSerial()
 
     def initialize(self):
-        print("use:\nsudo socat  pty,link=/dev/ttyPowerControl,group-late=dialout,mode=660  tcp:moxa1:4002")
-        self.comDevice = "/dev/ttyPowerControl"
+        print("do not forget , spectroDb/telescope/linuxScript/goSocat.sh")
+        print("  or sudo socat  pty,link=/home/tlemoult/.local/dev/ttyPowerControl,group-late=dialout,mode=660  tcp:moxa1:4002")
+        self.comDevice = os.path.expanduser("~/.local/dev/ttyPowerControl")
         print(f"com device = {self.comDevice}")
 
         self.protocol("WM_DELETE_WINDOW", self.handler)
@@ -303,7 +304,7 @@ if __name__ == "__main__":
     app.title('Chelles observatory, Arduino Power box  v1.15 2022')
     
     app.mainloop()
-    print("main bye")
+    #print("main bye")
     app.destroy()
     del app
 

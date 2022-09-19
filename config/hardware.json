@@ -1,0 +1,40 @@
+{
+    "eShel": {
+        "serial_port": {
+            "type": "moxa_tcp",
+            "port_id": 1,
+            "address": "moxaEshel",
+            "baud_rate" : 2400
+        },
+        "camera": {
+            "server": {
+                "host": "192.168.0.45",
+                "port": 7624
+            },
+            "name": "Atik 460ex",
+            "tempSetPoint": 0,
+            "binning": {
+                "X": 2,
+                "Y": 2
+            }
+        }
+    },
+
+    "testDevice": {
+        "serial_port" : {
+            "type": "local",
+            "baud_rate" : 2400,
+            "tty_path": "~/.local/dev/ttyUSB1"
+        }
+    },
+
+    "telescope": {
+        "serial_port": {
+            "type": "moxa_socat",
+            "port_id": 4,
+            "address": "moxa1",
+            "baud_rate" : 9600,
+            "tty_path": "~/.local/dev/ttyMount"
+        }
+    }
+}

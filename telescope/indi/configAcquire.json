@@ -8,7 +8,7 @@
 
     "ccdSpectro": {
         "server": {
-            "host": "localhost",
+            "host": "192.168.0.45",
             "port": 7624
         },
         "name": "Atik 414ex",
@@ -39,7 +39,7 @@
 
     "ccdFinder": {
         "server": {
-            "host": "127.0.0.1",
+            "host": "192.168.0.45",
             "port": 7624
         },
         "name": "ZWO CCD ASI120MM-S",
@@ -67,10 +67,10 @@
     
     "telescope": {
         "server": {
-            "host": "127.0.0.1",
+            "host": "192.168.0.45",
             "port": 7624
         },
-        "name": "AstroPhysics",
+        "name": "AstroPhysics GTOCP2",
         "delayAfterSlew":8
         },
     

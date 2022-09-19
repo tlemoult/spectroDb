@@ -25,13 +25,13 @@ class CameraClient(PyIndi.BaseClient):
             self.logger.error(f"Fail to connect to indi Server {self.getHost()}:{self.getPort()}")
             self.logger.error("Try to run:")
             self.logger.error("  indiserver indi_simulator_ccd")
-            raise NameError('Fail to connect to indi Server')
+            raise NameError(f'Fail to connect to indi Server {self.getHost()}:{self.getPort()}')
 
         self.logger.info("connecting to camera")
         if (not(self.waitCameraConnected())):
-            self.logger.error("Fail to connect to camera")
+            self.logger.error(f"Fail to connect to camera {self.deviceName}")
             self.disconnectServer()
-            raise NameError('Fail to connect to camera')
+            raise NameError(f'Fail to connect to camera {self.deviceName}')
 
         self.logger.info("set binnig")
         self.setBinning({'X':cameraConf["binning"]["X"],'Y':cameraConf["binning"]["Y"]})
@@ -40,6 +40,8 @@ class CameraClient(PyIndi.BaseClient):
             self.logger.info("set CCD temperature")
             self.setTemperature(cameraConf['tempSetPoint'])
             self.waitCCDTemperatureOK()
+        else:
+            print("No temperature set")
 
 
 #    def __init__(self,deviceName,host,port):

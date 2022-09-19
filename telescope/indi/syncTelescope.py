@@ -54,7 +54,7 @@ print("Telescope connected")
 
 
 # connect camera
-if True:
+if False:
     configCamera = config["ccdGuide"]
 else:
     configCamera = config["ccdFinder"]

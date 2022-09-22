@@ -1,6 +1,7 @@
-import serial,os,time
+import os,time
+from libobs import serialPort as serial
 
-comDevice = os.path.expanduser("~/.local/dev/ttyEshel")
+comDevice = "eShel"
 
 # param is one "off","led","flat","calib"
 def _send(param):
@@ -14,7 +15,7 @@ def _send(param):
 	bytesCmd = bytes(cmd)
 	print(f"byteCmd = {bytesCmd}")
 	print(f"Open serial port {comDevice}")
-	ser = serial.Serial(comDevice,2400,timeout=1)
+	ser = serial.Serial(comDevice,timeout=1)
 	ser.write(bytesCmd)
 	ser.flush()
 	ser.close()

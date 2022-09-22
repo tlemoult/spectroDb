@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 
 import tkinter
-import serial
+from libobs import serialPort as serial
 import time,os
 # see:  http://pyserial.sourceforge.net/shortintro.html
 
@@ -19,7 +19,7 @@ class simpleapp_tk(tkinter.Tk):
         self.quit()
 
     def openSerial(self):
-        self.ser = serial.Serial(self.comDevice,9600,timeout=1)
+        self.ser = serial.Serial(self.comDevice,timeout=1)
 
     def closeSerial(self):
         self.ser.close()
@@ -31,9 +31,7 @@ class simpleapp_tk(tkinter.Tk):
         self.closeSerial()
 
     def initialize(self):
-        print("do not forget , spectroDb/telescope/linuxScript/goSocat.sh")
-        print("  or sudo socat  pty,link=/home/tlemoult/.local/dev/ttyPowerControl,group-late=dialout,mode=660  tcp:moxa1:4002")
-        self.comDevice = os.path.expanduser("~/.local/dev/ttyPowerControl")
+        self.comDevice = "powerControl"
         print(f"com device = {self.comDevice}")
 
         self.protocol("WM_DELETE_WINDOW", self.handler)

@@ -20,21 +20,49 @@
         }
     },
 
-    "testDevice": {
-        "serial_port" : {
-            "type": "local",
-            "baud_rate" : 2400,
-            "tty_path": "~/.local/dev/ttyUSB1"
+    "powerControl": {
+        "serial_port": {
+            "type": "moxa_tcp",
+            "port_id": 2,
+            "address": "moxa1",
+            "baud_rate" : 9600
         }
     },
 
-    "telescope": {
+    "astrosib": {
         "serial_port": {
-            "type": "moxa_socat",
-            "port_id": 4,
+            "type": "moxa_tcp",
+            "port_id": 1,
             "address": "moxa1",
-            "baud_rate" : 9600,
-            "tty_path": "~/.local/dev/ttyMount"
-        }
+            "baud_rate" : 9600
+        },
+
+    "mount": {
+            "serial_port": {
+                "type": "moxa_socat",
+                "port_id": 4,
+                "address": "moxa1",
+                "baud_rate" : 9600,
+                "tty_path": "~/.local/dev/ttyMount"
+            }
+        },
+
+        "test_device_moxa_socat": {
+            "serial_port": {
+                "type": "moxa_socat",
+                "port_id": 2,
+                "address": "moxa1",
+                "baud_rate" : 9600,
+                "tty_path": "~/.local/dev/ttyPowerControl"
+            }
+        },
+
+        "test_device_local": {
+            "serial_port" : {
+                "type": "local",
+                "baud_rate" : 2400,
+                "tty_path": "~/.local/dev/ttyUSB1"
+            }
+        }    
     }
 }

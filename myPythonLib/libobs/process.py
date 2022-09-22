@@ -1,6 +1,6 @@
 
 import libobs.IPX800 as IPX800
-import libobs.powerControlSerial as powerControl
+import libobs.powerControl as powerControl
 import libobs.astrosib as astrosib
 import libobs.eShell as eShell
 import time
@@ -9,9 +9,6 @@ def startup_observatory():
     relay_spectro = 2
     print("Power on the eShell spectro cupBoard")
     IPX800.set("IPX800elec",relay_spectro,True)
-    time.sleep(0.5)
-    print("power off eShell calibration lamp")
-    eShell.set("off")
 
     relay_infor = 3
     print("Power up the info cubBoard")
@@ -38,7 +35,11 @@ def startup_observatory():
     relay_astrosib = 4
     print("Power up astrosib telescope")
     powerControl.set(relay_astrosib,True)
-    time.sleep(0.5)
+    time.sleep(8)
+
+    print("power off eShell calibration lamp")
+    eShell.set("off")
+
     astrosib.set_shutter('OPEN')
     astrosib.set_heater(True)
     astrosib.set_cooler(True)

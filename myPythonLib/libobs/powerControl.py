@@ -1,12 +1,13 @@
-import serial,os
+import os
+from libobs import serialPort as serial
 
 # this module drive an home made with arduino power box with relay
-comDevice = os.path.expanduser("~/.local/dev/ttyPowerControl")
+comDevice = "powerControl"
 
 def set(relay,state):
 
     print(f"Open serial port {comDevice}")
-    ser = serial.Serial(comDevice,9600,timeout=1)
+    ser = serial.Serial(comDevice,timeout=1)
 
     relay_no_byte = bytes(str(relay-1),'utf-8')
 

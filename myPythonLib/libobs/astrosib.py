@@ -1,24 +1,28 @@
-import serial,os,time
+import os,time
+from libobs import serialPort as serial
 
-comDevice = os.path.expanduser("~/.local/dev/ttyAstrosib")
+comDevice = "astrosib"
 
 def _send_serial_wait(cmd,attended_response=''):
     print(f"Open serial port {comDevice}")
-    ser = serial.Serial(comDevice,9600,timeout=1)
+    ser = serial.Serial(comDevice,timeout=1)
     print(f"  send {repr(cmd)}")
     ser.write(bytes(cmd,'utf-8'))
     print(f"  wait response = {repr(attended_response)}")
-    tot_response = ''
+
     response = ''
     while not attended_response in response:
-        response = ser.readline().decode('utf-8')
-        tot_response = tot_response + response
-        print(f"   readline() = {repr(response)}")
+        response += ser.read().decode('utf-8')
 
-    print(f"Total response = {repr(tot_response)}")
+    print(f"found in {repr(response)}")
+    while not response.endswith('\r'):
+        response += ser.read().decode('utf-8')
+
+    print(f"Total response = {repr(response)}")
     ser.flush()
     ser.close()
-    return tot_response
+    return response
+
 
 def set_shutter(state):
     if state == 'OPEN':
@@ -98,14 +102,18 @@ def wait_focus():
 def main():
     print("main demo for Astrosib telescope")
 
-    get_shutter()
-    set_heater()
-    set_cooler()
-    get_heater()
-    get_cooler()
+
+#    get_shutter()
+#    set_heater(True)
+#    set_cooler(True)
+#    get_heater()
+#    get_cooler()
+#    get_focus()
+#    set_shutter("OPEN")
+#    set_shutter("CLOSE")
+
     get_focus()
-    set_shutter("OPEN")
-    set_shutter("CLOSE")
+    exit()
 
     set_focus_abs(30811,blocking = False)
     wait_focus()

@@ -9,7 +9,8 @@
 # date: November 28th, 2012
 
 import tkinter
-import serial,time,sys,os
+import time,sys,os
+from libobs import serialPort as serial
 
 class simpleapp_tk(tkinter.Tk):
 	def __init__(self,parent):
@@ -23,8 +24,7 @@ class simpleapp_tk(tkinter.Tk):
 
 	def initialize(self):
 		print("do not forget , spectroDb/telescope/linuxScript/goSocat.sh")
-		self.comDevice = os.path.expanduser("~/.local/dev/ttyEshel")
-#		self.comDevice = os.path.expanduser("~/.local/dev/ttyDome")
+		self.comDevice = "eShel"
 		print(f"Eshel com device = {self.comDevice}")
 
 		self.miror=0b10000000
@@ -58,7 +58,7 @@ class simpleapp_tk(tkinter.Tk):
 		print(f"decimal cmd = {cmd}")
 		bytesCmd = bytes(cmd)
 		print(f"byteCmd = {bytesCmd}")
-		self.ser = serial.Serial(self.comDevice,2400,timeout=1)
+		self.ser = serial.Serial(self.comDevice,timeout=1)
 		self.ser.write(bytesCmd)
 		self.ser.flush()
 		self.ser.close()

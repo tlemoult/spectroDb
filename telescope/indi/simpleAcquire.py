@@ -1,7 +1,7 @@
 import sys,time, logging,json
 import PyIndi
 
-from myLib.camera import CameraClient as CamSpectro
+from libindi.camera import CameraClient as CamSpectro
 
 #load configuration
 json_text=open('./configAcquire.json').read()

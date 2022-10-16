@@ -1,0 +1,7 @@
+{
+    "logFile" :
+    {
+        "indi": "~/Documents/logs/indi.log",
+        "acquire": "~/Documents/logs/acquire.log"
+    }
+}

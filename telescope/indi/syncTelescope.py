@@ -1,7 +1,7 @@
 import sys
-from myLib.camera import CameraClient as Camera
-from myLib.telescope import TelescopeClient as Telescope
-import myLib.util as myUtil
+from libindi.camera import CameraClient as Camera
+from libindi.telescope import TelescopeClient as Telescope
+import libcalc.util as myUtil
 
 import json,time,logging
 import subprocess,os,sys

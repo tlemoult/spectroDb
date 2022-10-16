@@ -1,6 +1,6 @@
 import socket,logging,sys,json,time
 
-from myLib.guiderPHD import GuiderPHP2 as GuiderPHP2
+from libindi.guiderPHD import GuiderPHP2 as GuiderPHP2
 
 #exemple of asyncronus socket: https://dzone.com/articles/understanding
 # see here PHD2 protocol:  https://github.com/OpenPHDGuiding/phd2/wiki/EventMonitoring

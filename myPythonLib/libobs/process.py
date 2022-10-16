@@ -26,7 +26,8 @@ def startup_observatory():
     print("Power up mount")
     IPX800.set("IPX800info",relay_mount,True)
 
-    time.sleep(0.5)
+    print("wait startup of PowerControl etc.....")
+    time.sleep(3)
 
     relay_guide_camera = 1
     print("Power up Guide Camera")

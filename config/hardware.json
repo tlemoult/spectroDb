@@ -35,34 +35,40 @@
             "port_id": 1,
             "address": "moxa1",
             "baud_rate" : 9600
-        },
+        }
+    },
 
     "mount": {
             "serial_port": {
-                "type": "moxa_socat",
-                "port_id": 4,
-                "address": "moxa1",
-                "baud_rate" : 9600,
-                "tty_path": "~/.local/dev/ttyMount"
-            }
-        },
-
-        "test_device_moxa_socat": {
-            "serial_port": {
-                "type": "moxa_socat",
-                "port_id": 2,
-                "address": "moxa1",
-                "baud_rate" : 9600,
-                "tty_path": "~/.local/dev/ttyPowerControl"
-            }
-        },
-
-        "test_device_local": {
-            "serial_port" : {
                 "type": "local",
-                "baud_rate" : 2400,
-                "tty_path": "~/.local/dev/ttyUSB1"
+                "baud_rate" : 9600,
+                "tty_path": "/dev/ttyS5"
             }
-        }    
-    }
+        },
+
+    "dome": {
+        "server": {
+            "host": "localhost",
+            "port": 7630
+        },
+        "name": "ASCOM ScopeDomeUSBDome Dome"
+    },
+
+    "test_device_moxa_socat": {
+        "serial_port": {
+            "type": "moxa_socat",
+            "port_id": 2,
+            "address": "moxa1",
+            "baud_rate" : 9600,
+            "tty_path": "~/.local/dev/ttyPowerControl"
+        }
+    },
+
+    "test_device_local": {
+        "serial_port" : {
+            "type": "local",
+            "baud_rate" : 2400,
+            "tty_path": "~/.local/dev/ttyUSB1"
+        }
+    }    
 }

@@ -1,7 +1,7 @@
 import os,sys,time, datetime,logging,json
 import PyIndi
 
-from myLib.camera import CameraClient as CamSpectro
+from libindi.camera import CameraClient as CamSpectro
 
 n=len(sys.argv)
 

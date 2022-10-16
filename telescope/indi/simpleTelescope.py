@@ -1,8 +1,8 @@
 import sys,time, logging,json
 import PyIndi
 
-from myLib.telescope import TelescopeClient as Telescope
-import myLib.util as myUtil
+from libindi.telescope import TelescopeClient as Telescope
+import libcalc.util as myUtil
 
 from astropy import units as u
 from astropy.coordinates import SkyCoord,FK5,AltAz,EarthLocation

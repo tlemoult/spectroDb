@@ -1,8 +1,8 @@
 import sys
 sys.path.append("..")
-from myLib.camera import CameraClient as CamSpectro
-from myLib.telescope import TelescopeClient as Telescope
-import myLib.util as myUtil
+from libindi.camera import CameraClient as CamSpectro
+from libindi.telescope import TelescopeClient as Telescope
+import libcalc.util as myUtil
 
 from flask import Flask, jsonify, abort, make_response, request
 import json,time,logging

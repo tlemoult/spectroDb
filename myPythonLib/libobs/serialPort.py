@@ -51,14 +51,14 @@ class Serial:
             return data
 
     def read(self,nbChar=1):
-        print(f"ser.read() ",end="",flush=True)
+        #print(f"ser.read() ",end="",flush=True)
         if self.device_type == "moxa_tcp":
             data = self.makefile_ReadLine.read(nbChar)
-            print(f" data = {data}",flush=True)
+            #print(f" data = {data}",flush=True)
             return data
         elif self.device_type == "moxa_socat" or self.device_type == "local":
             data = self.ser.read(nbChar)
-            print(f" data = {data}",flush=True)
+            #print(f" data = {data}",flush=True)
             return data
 
 

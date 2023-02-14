@@ -2,32 +2,36 @@ import os,sys,time, datetime,logging,json
 import PyIndi
 
 from libindi.camera import CameraClient as CamSpectro
+import libobs.powerControl as powerControl
 
 n=len(sys.argv)
 
-if n!=7:
+if n!=6:
     print("syntaxe:")
-    print('    python acquire.py configAcquire.json "Project" target "OBJ NAME" nbExposure expTime')
+    print('    python acquire.py  "Project" target "OBJ NAME" nbExposure expTime')
     print('exemple:')
-    print('    python acquire.py configAcquire.json "none"   obj "HD2203"   3           600')
-    print('    python acquire.py configAcquire.json "none"   ref "HD103"   3           600')
+    print('    python acquire.py  "none"   obj "HD2203"   3           600')
+    print('    python acquire.py  "none"   ref "HD103"   3           600')
     exit()
 
 
-projectName=sys.argv[2].split('"')[0]
+projectName=sys.argv[1].split('"')[0]
 print(f"projectName={projectName}")
-objTypeArg=sys.argv[3]
+objTypeArg=sys.argv[2]
 print(f"objType={objTypeArg}")
-objName=sys.argv[4].split('"')[0]
+objName=sys.argv[3].split('"')[0]
 print(f"objName={objName}")
-nbExposure=int(sys.argv[5])
+nbExposure=int(sys.argv[4])
 print(f"nbExposure={nbExposure}")
-expTime=float(sys.argv[6])
+expTime=float(sys.argv[5])
 print(f"expTime={expTime}")
 
 #load configuration
-json_text=open(sys.argv[1]).read()
-config=json.loads(json_text)
+spectro_config = os.environ['SPECTROCONFIG']
+configFilePath = os.path.join(spectro_config,'acquire.json')
+json_text=open(configFilePath).read()
+config = json.loads(json_text)
+
 # setup log file
 logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
@@ -61,9 +65,11 @@ camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime)
 camSpectro.waitEndAcqSerie()
 print("  acquisition finished")
 
+print('Switch on the NEON lamp')
+relay_calib_neon = 5
+powerControl.set(relay_calib_neon,True)
 
-input('Switch on Neon, Press enter to continue: ')
-spectroCalib=config['spectro']['ALPY']['calib']
+spectroCalib=config['spectro']['LISA']['calib']
 camSpectro.newAcquSerie(basePath,"NEON-",spectroCalib['nbExpo'],spectroCalib['exposure'])
 camSpectro.waitEndAcqSerie()
 
@@ -73,12 +79,12 @@ observationJson['obsConfig']['ExposureTime']=expTime
 observationJson['obsConfig']['TotalExposure']=nbExposure*expTime
 observationJson['statusObs']="finished"
 with open(basePath+'/observation.json', 'w') as outfile:
-    json.dump(observationJson, outfile)
+    json.dump(observationJson, outfile, indent = 4)
 
 print("acquisition finished")
 
-input('Switch off Neon, Press enter to continue: ')
-
+print('Switch off Neon')
+powerControl.set(relay_calib_neon,False)
 camSpectro.disconnectServer()
 
 print(f"Wait disconnection...")

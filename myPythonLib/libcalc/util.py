@@ -36,13 +36,29 @@ def convJ2000toJNowRefracted(skyCoords,obsSite,pressure=101700*u.pascal,temperat
     print(f"  Refraction delta is {abs(cAltAz.alt-cAltAzRefrac.alt).value*60:.1f} arcminutes")
     return cJNowRefractedTric
 
+def scaleImage(pathFilenameSrc,pathFilenameDst,ratio):
+    from skimage.transform import resize
+    from scipy import ndimage
+    from astropy.io import fits
+
+    print("resize the source image {pathFilenameSrc} ratio = {ratio}")
+    hdulist = fits.open(pathFilenameSrc)
+
+    img=hdulist[0].data
+    orgShape = img.shape
+    print(f"source image shape = {img.shape}")
+    res= resize(img,(orgShape[0],orgShape[1]*ratio))
+    print(f"dest image shape = {res.shape}")
+
+    hdu = fits.PrimaryHDU(res)
+    hdu.writeto(pathFilenameDst,overwrite=True)
 
 def solveAstro(filename,camera):
 
     print(f"myLib.util.soveAstro: Plate Solving  file={filename}")
-    fenteXpix=camera["centerX"]
+    fenteXpix=camera["centerX"]*camera["pixelSizeX"]/camera["pixelSizeY"]
     fenteYpix=camera["centerY"]
-    scaleArcPerPixelFinder=((camera["pixelSize"]*0.001*camera["binning"]["X"])/camera["FocalLength"]) /6.28 * 360 * 60 *60
+    scaleArcPerPixelFinder=((camera["pixelSizeY"]*0.001*camera["binning"]["X"])/camera["FocalLength"]) /6.28 * 360 * 60 *60
     print(f"  Calculated Scale is {scaleArcPerPixelFinder:0.2f} ArcSecond per pixel")
     print(f"  Optical axis X={fenteXpix} Y={fenteYpix}")
 
@@ -50,7 +66,15 @@ def solveAstro(filename,camera):
     scale_low = str(scaleArcPerPixelFinder*80.0/100.0)
     scale_high = str(scaleArcPerPixelFinder*120.0/100.0)
     #solve-field --downsample 2 --tweak-order 2  --overwrite finderAutoSolver-Astro.fits
-    subprocess.call(["/usr/bin/solve-field","--cpulimit","25","--downsample", "4", "--tweak-order", "2", "--scale-units", "arcsecperpix", "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots", "--overwrite", filename])
+    with open('outputAstrometry.txt', "w") as outfile:
+        subprocess.call(
+            ["/usr/bin/solve-field",
+            "--cpulimit","25",
+            "--downsample", "4", "--tweak-order", "2", "--scale-units", "arcsecperpix", 
+            "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots",
+            "--overwrite", filename],
+            stdout=outfile
+            )
     if os.path.isfile(name+'.solved'):
         print("succes resolution astrometrique, get wcs data")
         wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)

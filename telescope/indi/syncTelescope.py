@@ -11,6 +11,7 @@ import astropy.io.fits
 from astropy.utils.iers import Conf as astropyConf
 import numpy as np
 
+
 def syncTelescope(camera,configCamera,telescope):
     global config
     
@@ -21,8 +22,11 @@ def syncTelescope(camera,configCamera,telescope):
     camera.newAcquSerie(pathAstrometry,fileSerie,1,configCamera["expTimeAstrometry"])
     camera.waitEndAcqSerie()
 
-    filePathAstrometry = pathAstrometry + '/' + fileSerie  + "1.fits"
-    astrometryResult = myUtil.solveAstro(filePathAstrometry,configCamera)
+    filePathAstrometry       = pathAstrometry + '/' + fileSerie  + "1.fits"
+    filePathAstrometryResize = pathAstrometry + '/' + fileSerie  + "Resize-1.fits"
+    myUtil.scaleImage(filePathAstrometry,filePathAstrometryResize,configCamera["pixelSizeX"]/configCamera["pixelSizeY"])
+
+    astrometryResult = myUtil.solveAstro(filePathAstrometryResize,configCamera)
     if astrometryResult == None:
         print("Echec astrometry")
         return False
@@ -37,11 +41,29 @@ def syncTelescope(camera,configCamera,telescope):
 if len(sys.argv)!=2:
     print("Invalid number of argument")
     print("correct syntax is")
-    print("  python3 syncTelescope.py configAcquire.json")
+    print("  python syncTelescope.py finder")
+    print("  python syncTelescope.py field")
     exit()
 
-print(f"Configuration file is {sys.argv[1]}")
-config=json.loads(open(sys.argv[1]).read())
+#load configuration
+spectro_config = os.environ['SPECTROCONFIG']
+configFilePath = os.path.join(spectro_config,'acquire.json')
+print(f"Configuration file is {configFilePath}")
+json_text=open(configFilePath).read()
+config = json.loads(json_text)
+
+optics = sys.argv[1]
+if optics == "field":
+    print("We use the guiding field of spectro")
+    configCamera = config["ccdGuide"]
+elif optics == "finder":
+    print("We use the electronic finder")
+    configCamera = config["ccdFinder"]
+else:
+    print(f"Cannot understood the optics, argument should be finder or field")
+    exit()
+
+
 logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 astropyConf.auto_download=False
@@ -54,10 +76,6 @@ print("Telescope connected")
 
 
 # connect camera
-if False:
-    configCamera = config["ccdGuide"]
-else:
-    configCamera = config["ccdFinder"]
 
 camera = Camera(configCamera)
 

@@ -31,9 +31,10 @@
             "Y": 1
         },
         "expTimeAstrometry" : 15,
-        "centerX":323,
+        "centerX":334,
         "centerY":282,
-        "pixelSize": 8.4,
+        "pixelSizeX": 8.6,
+        "pixelSizeY": 8.3,
         "FocalLength": 2100
     },
 
@@ -47,10 +48,11 @@
             "X": 1,
             "Y": 1
         },
-        "expTimeAstrometry" : 15,
-        "centerX":798,
-        "centerY":508,
-        "pixelSize": 3.75,
+        "expTimeAstrometry" : 5,
+        "centerX":805,
+        "centerY":504,
+        "pixelSizeX": 3.75,
+        "pixelSizeY": 3.75,
         "FocalLength": 135
     },
 

@@ -5,10 +5,12 @@ from libindi.guiderPHD import GuiderPHP2 as GuiderPHP2
 #exemple of asyncronus socket: https://dzone.com/articles/understanding
 # see here PHD2 protocol:  https://github.com/OpenPHDGuiding/phd2/wiki/EventMonitoring
 
-#load configuration file
-jsonTxt=open('./configAcquire.json').read()
-config=json.loads(jsonTxt)
-print (config)
+#load configuration
+spectro_config = os.environ['SPECTROCONFIG']
+configFilePath = os.path.join(spectro_config,'acquire.json')
+print(f"Configuration file is {configFilePath}")
+json_text=open(configFilePath).read()
+config = json.loads(json_text)
 print ("--------------")
 
 # setup log file

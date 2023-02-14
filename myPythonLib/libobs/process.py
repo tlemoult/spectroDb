@@ -5,10 +5,15 @@ import libobs.astrosib as astrosib
 import libobs.eShell as eShell
 import time
 
-def startup_observatory():
-    relay_spectro = 2
-    print("Power on the eShell spectro cupBoard")
-    IPX800.set("IPX800elec",relay_spectro,True)
+def startup_observatory(spectro='LISA'):
+
+    print(f"**** startup_observatory with spectro = {spectro}")
+
+    if spectro == 'eShel':
+        # this need early wake up.., need time to start
+        relay_spectro = 2
+        print("Power on the eShell spectro cupBoard")
+        IPX800.set("IPX800elec",relay_spectro,True)
 
     relay_infor = 3
     print("Power up the info cubBoard")
@@ -25,34 +30,59 @@ def startup_observatory():
     relay_mount = 6
     print("Power up mount")
     IPX800.set("IPX800info",relay_mount,True)
-
-    print("wait startup of PowerControl etc.....")
-    time.sleep(3)
-
-    relay_guide_camera = 1
-    print("Power up Guide Camera")
-    powerControl.set(relay_guide_camera,True)
+    timeWait = 3
+    print(f"wait {timeWait} seconds , startup of PowerControl etc.....")
+    time.sleep(timeWait)
 
     relay_astrosib = 4
-    print("Power up astrosib telescope")
     powerControl.set(relay_astrosib,True)
-    time.sleep(8)
-
-    print("power off eShell calibration lamp")
-    eShell.set("off")
+    timeWait = 3
+    print(f"wait {timeWait} Power up astrosib telescope")
+    time.sleep(timeWait)
 
     astrosib.set_shutter('OPEN')
     astrosib.set_heater(True)
     astrosib.set_cooler(True)
 
-def shutdown_observatory():
+    if spectro == 'LISA':
+        relay_spectrum_camera = 7
+        print("Power up the LISA spectra camera")
+        powerControl.set(relay_spectrum_camera,True)
 
-    print("power off eShell calibration lamp")
-    eShell.set("off")
+        print("shutdown LISA calibration lamp")
+        relay_calib_neon = 5
+        powerControl.set(relay_calib_neon,False)
+        relay_flat_lamp = 6
+        powerControl.set(relay_flat_lamp,False)
 
-    relay_spectro = 2
-    print("Power down eShell spectro cupBoard")
-    IPX800.set("IPX800elec",relay_spectro,False)
+    if spectro == 'eShel':
+        relay_guide_camera = 1
+        print("Power up Guide Camera")
+        powerControl.set(relay_guide_camera,True)
+
+        print("power off eShell calibration lamp")
+        eShell.set("off")
+
+
+def shutdown_observatory(spectro='LISA'):
+
+    if spectro == 'eShel':
+        print("power off eShell calibration lamp")
+        eShell.set("off")
+
+        relay_spectro = 2
+        print("Power down eShell spectro cupBoard")
+        IPX800.set("IPX800elec",relay_spectro,False)
+
+    elif spectro == 'LISA':
+        print("shutdown the LISA spectra camera")
+        relay_spectrum_camera = 7
+        powerControl.set(relay_spectrum_camera,False)
+        print("shutdown LISA calibration lamp")
+        relay_calib_neon = 5
+        powerControl.set(relay_calib_neon,False)
+        relay_flat_lamp = 6
+        powerControl.set(relay_flat_lamp,False)
 
     print("Shutdown Astrosib Telescope")
     astrosib.set_shutter('CLOSE')
@@ -66,8 +96,8 @@ def shutdown_observatory():
     IPX800.set("IPX800video",relay_camera,False)
 
     relay_guide_camera = 1
-    print("Power up Guide Camera")
-    powerControl.set(relay_guide_camera,True)
+    print("Power down Guide Camera")
+    powerControl.set(relay_guide_camera,False)
 
     relay_power_box = 7
     print("Power down Power Control box")

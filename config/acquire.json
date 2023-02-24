@@ -3,7 +3,8 @@
         "root": "/mnt/gdrive/astro/base",
         "acquire": "/in",
         "astrometry": "/astrometry",
-        "focus": "/focus"
+        "focus": "/focus",
+        "log" : "/log"
     },
     "logFile": "acquire.log",
 
@@ -30,9 +31,9 @@
             "X": 1,
             "Y": 1
         },
-        "expTimeAstrometry" : 15,
-        "centerX":334,
-        "centerY":282,
+        "expTimeAstrometry" : 30,
+        "centerX":322,
+        "centerY":277,
         "pixelSizeX": 8.6,
         "pixelSizeY": 8.3,
         "FocalLength": 2100
@@ -49,11 +50,11 @@
             "Y": 1
         },
         "expTimeAstrometry" : 5,
-        "centerX":805,
-        "centerY":504,
+        "centerX":677.8,
+        "centerY":542,
         "pixelSizeX": 3.75,
         "pixelSizeY": 3.75,
-        "FocalLength": 135
+        "FocalLength": 240
     },
 
     "obsSite": {

@@ -69,7 +69,7 @@ class CameraClient(PyIndi.BaseClient):
             self.device = d
 
     def newProperty(self, p):
-        self.logger.info("new property "+ p.getName() + " for device "+ p.getDeviceName())
+        #self.logger.info("new property "+ p.getName() + " for device "+ p.getDeviceName())
         if p.getName() == "CONNECTION" and p.getDeviceName() == self.deviceName:
             self.logger.info("Got property CONNECTION for "+ p.getDeviceName())
             self.connectDevice(self.device.getDeviceName())
@@ -84,7 +84,7 @@ class CameraClient(PyIndi.BaseClient):
 
     def newBLOB(self, bp):
 
-        self.logger.debug(f"new BLOB name = {bp.name}   device = {bp.bvp.device}")
+        #self.logger.debug(f"new BLOB name = {bp.name}   device = {bp.bvp.device}")
         
         if self.device==None:
             return
@@ -110,9 +110,11 @@ class CameraClient(PyIndi.BaseClient):
                 self.serieRun=False
         
     def newSwitch(self, svp):
-        self.logger.info (f"new Switch {svp.name} for device {svp.device}")
+        pass
+        #self.logger.info (f"new Switch {svp.name} for device {svp.device}")       
+
     def newNumber(self, nvp):
-        self.logger.debug(f"new Number {nvp.name} = {nvp[0].value:.2f} for device {nvp.device}")
+        #self.logger.debug(f"new Number {nvp.name} = {nvp[0].value:.2f} for device {nvp.device}")
 
         if self.device==None:
             return

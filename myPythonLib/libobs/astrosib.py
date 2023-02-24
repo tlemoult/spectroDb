@@ -4,21 +4,21 @@ from libobs import serialPort as serial
 comDevice = "astrosib"
 
 def _send_serial_wait(cmd,attended_response=''):
-    print(f"Open serial port {comDevice}")
+    #print(f"Open serial port {comDevice}")
     ser = serial.Serial(comDevice,timeout=1)
-    print(f"  send {repr(cmd)}")
+    #print(f"  send {repr(cmd)}")
     ser.write(bytes(cmd,'utf-8'))
-    print(f"  wait response = {repr(attended_response)}")
+    #print(f"  wait response = {repr(attended_response)}")
 
     response = ''
     while not attended_response in response:
         response += ser.read().decode('utf-8')
 
-    print(f"found in {repr(response)}")
+    #print(f"found in {repr(response)}")
     while not response.endswith('\r'):
         response += ser.read().decode('utf-8')
 
-    print(f"Total response = {repr(response)}")
+    #print(f"Total response = {repr(response)}")
     ser.flush()
     ser.close()
     return response
@@ -69,33 +69,33 @@ def get_cooler():
     return response
 
 def get_focus():
-    print("*** get_focus()")
+    #print("*** get_focus()")
     cmd = "FOCUSERGPOS?\r"
     response = _send_serial_wait(cmd,attended_response='FOCUSERPOS')
     if "FOCUSERPOS?" in response:
         focuser_position = int(response.split("?")[-1])
-        print(f"focuser focus is {focuser_position} step")
+        #print(f"focuser focus is {focuser_position} step")
         return focuser_position
     else:   
         return None
 
 def set_focus_abs(pos_abs,blocking=True):
-    print(f"*** set_focus to {pos_abs})")
+    #print(f"*** set_focus to {pos_abs})")
     global target_focus_abs
     target_focus_abs = pos_abs
     cmd = "FOCUSERGO?"+str(pos_abs)+"\r"
     if blocking:
-        print("Wait until end of focus mouvment")
+        #print("Wait until end of focus mouvment")
         _send_serial_wait(cmd,attended_response="FOCUSERPOS")
     else:
-        print("exit before end of mouvment")
+        #print("exit before end of mouvment")
         response = _send_serial_wait(cmd,attended_response="OK")
 
 def wait_focus():
-    print("*** Wait_focus")
+    #print("*** Wait_focus")
     actual_pos = get_focus()
     while actual_pos != target_focus_abs:
-        print(f"Wait focuser Actual_pos = {actual_pos} ,  target_pos = {target_focus_abs} , error = {abs(actual_pos-target_focus_abs)}")
+        #print(f"Wait focuser Actual_pos = {actual_pos} ,  target_pos = {target_focus_abs} , error = {abs(actual_pos-target_focus_abs)}")
         time.sleep(1)
         actual_pos = get_focus()
 

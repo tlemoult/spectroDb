@@ -35,7 +35,7 @@ print(f"Original focus Position = {focusOrigin}")
 focusStart = int(focusOrigin-focusAmplitude/2)
 focusStop  = int(focusOrigin+focusAmplitude/2)
 
-focusPosRange = range(focusStart,focusStop,focusAmplitude//focusNbPoint)
+focusPosRange = range(focusStart,focusStop,focusAmplitude//(focusNbPoint-1))
 print(f"We will test the following focus position: {list(focusPosRange)}")
 focusMeans = []
 
@@ -67,18 +67,22 @@ for focusPos in focusPosRange:
     focusMeans.append(stat['mean'])
 
     ax1.imshow(stat['img'], cmap=plt.cm.gray) 
-    ax2.plot(stat['spectrum'])
+    ax2.plot(stat['spectrum'],label=f"foc {focusPos} step")
+    ax2.legend(loc='upper right')
     plt.draw()
     plt.pause(0.1)
 
-print(f"go back to orinal focus Position = {focusOrigin}")
+print(f"go back to orginal focus Position = {focusOrigin}")
 astrosib.set_focus_abs(focusOrigin)
+
+plt.close()
+
 
 print(f"FocusRange:  {list(focusPosRange)}")
 print(f"means {focusMeans}")
 
+plt.ioff()
 plt.plot(list(focusPosRange),focusMeans)
 plt.title("Means vs focus position")
 plt.show()
-plt.draw()
-plt.pause(5)
+

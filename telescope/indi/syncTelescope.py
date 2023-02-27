@@ -64,7 +64,7 @@ else:
     exit()
 
 
-logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 astropyConf.auto_download=False
 

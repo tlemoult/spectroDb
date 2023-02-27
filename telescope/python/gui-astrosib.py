@@ -33,14 +33,22 @@ class simpleapp_tk(tkinter.Tk):
 
 		################################
 		row = 0
+		ShutterLabel = tkinter.Label(self, text="Shutter",anchor="e",fg="black")
+		ShutterLabel.grid(column=0,row=row)
+
 		buttonAon = tkinter.Button(self,text="open shutter",command=self.OnButtonClickOpenShutter)
-		buttonAon.grid(column=0,row=row,columnspan=1,sticky='EW')
+		buttonAon.grid(column=1,row=row,columnspan=1,sticky='EW')
 
 		buttonBon = tkinter.Button(self,text="close shutter",command=self.OnButtonClickCloseShutter)
-		buttonBon.grid(column=1,row=row,columnspan=1,sticky='EW')
+		buttonBon.grid(column=2,row=row,columnspan=1,sticky='EW')
+
+		#################################
+		row = row +1
+		heaterLabel = tkinter.Label(self, text="Heater",anchor="e",fg="black")
+		heaterLabel.grid(column=0,row=row)
 
 		buttonHeaterCoolerOn = tkinter.Button(self,text="Set heater and cooler",command=self.OnButtonClickHeaterCoolerOn)
-		buttonHeaterCoolerOn.grid(column=2,row=row,columnspan=1,sticky='EW')
+		buttonHeaterCoolerOn.grid(column=1,row=row,columnspan=1,sticky='EW')
 
 		###########################
 		row = row + 1

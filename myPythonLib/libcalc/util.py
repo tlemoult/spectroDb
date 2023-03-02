@@ -60,9 +60,11 @@ def solveAstro(filename,camera):
     logger.info(f"myLib.util.soveAstro: Plate Solving  file={filename}")
     fenteXpix=camera["centerX"]*camera["pixelSizeX"]/camera["pixelSizeY"]
     fenteYpix=camera["centerY"]
+    downSampleAstrometry=camera["downSampleAstrometry"]
     scaleArcPerPixelFinder=((camera["pixelSizeY"]*0.001*camera["binning"]["X"])/camera["FocalLength"]) /6.28 * 360 * 60 *60
     logger.info(f"  Calculated Scale is {scaleArcPerPixelFinder:0.2f} ArcSecond per pixel")
     logger.info(f"  Optical axis X={fenteXpix} Y={fenteYpix}")
+    logger.info(f"  downSampleAstrometry={downSampleAstrometry}")
 
     name, extension = os.path.splitext(filename)
     scale_low = str(scaleArcPerPixelFinder*80.0/100.0)
@@ -73,7 +75,7 @@ def solveAstro(filename,camera):
         subprocess.call(
             ["/usr/bin/solve-field",
             "--cpulimit","25",
-            "--downsample", "4", "--tweak-order", "2", "--scale-units", "arcsecperpix", 
+            "--downsample", str(downSampleAstrometry), "--tweak-order", "2", "--scale-units", "arcsecperpix", 
             "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots",
             "--overwrite", filename],
             stdout=outfile
@@ -96,9 +98,9 @@ def solveAstro(filename,camera):
 
 
         ### Store & Display Result
-        logger.info("  fente X=",fenteXpix," ,Y=",fenteYpix)
+        logger.info(f"  fente X={fenteXpix} Y={fenteYpix}")
         wx, wy = wcs.wcs_pix2world(fenteXpix, fenteYpix,1)
-        logger.info('  RA={0}deg  DEC={1}deg '.format(wx, wy))
+        logger.info(f"  RA={wx}deg  DEC={wy}deg ")
         coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
         coordsJ2000str = coordsJ2000.to_string('hmsdms')
         raStr, decStr = coordsJ2000str.split(' ')

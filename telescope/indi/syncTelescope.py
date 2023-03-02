@@ -26,14 +26,21 @@ def syncTelescope(camera,configCamera,telescope):
     filePathAstrometryResize = pathAstrometry + '/' + fileSerie  + "Resize-1.fits"
     myUtil.scaleImage(filePathAstrometry,filePathAstrometryResize,configCamera["pixelSizeX"]/configCamera["pixelSizeY"])
 
+    print("Start plate solving astrometry")
     astrometryResult = myUtil.solveAstro(filePathAstrometryResize,configCamera)
     if astrometryResult == None:
         print("Echec astrometry")
         return False
         
+    actual_tel_coord = telescope.getCoordinates()
+    print(f"actual telescope coordinates: ra_hms={actual_tel_coord.ra.hms}   dec_dms = {actual_tel_coord.dec.dms}")
+
     print("syncronize telescope")
-    telCoords = myUtil.convJ2000toJNowRefracted(astrometryResult["coordsJ2000"],obsSite)
-    telescope.syncCoordinates(telCoords)
+    astrometry_tel_coordinate = myUtil.convJ2000toJNowRefracted(astrometryResult["coordsJ2000"],obsSite)
+    print(f"astrometry_tel_coordinate = ra_hms={astrometry_tel_coordinate.ra.hms}   dec_dms = {astrometry_tel_coordinate.dec.dms}")
+    sep = actual_tel_coord.separation(astrometry_tel_coordinate)
+    print(f"sync separation is  {sep},  or {sep.arcminute} arcmin  {sep.arcsecond}  arcsecond")
+    telescope.syncCoordinates(astrometry_tel_coordinate)
  
     return True
 
@@ -81,6 +88,7 @@ camera = Camera(configCamera)
 
 
 syncTelescope(camera,configCamera,telescope)
+time.sleep(0.5)
 
 ###### end of the script
 telescope.disconnectServer()

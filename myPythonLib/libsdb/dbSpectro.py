@@ -10,7 +10,10 @@ def init_connection(configFilePath):
 	logLevel=0
 	json_text=open(configFilePath).read()
 	config=json.loads(json_text)
-	db= MySQLdb.connect(host=config['db']['host'],user=config['db']['userName'],password=config['db']['password'],database=config['db']['dataBase'])
+	db= MySQLdb.connect(host=config['db']['host'],
+		user=config['db']['userName'],password=config['db']['password'],
+		database=config['db']['dataBase'],
+		auth_plugin='mysql_native_password')
 	print(f"Init db connection, host = {config['db']['host']}, dataBase = {config['db']['dataBase']}, user = {config['db']['userName']}")	
 	return db
 

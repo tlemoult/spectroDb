@@ -51,9 +51,9 @@
             "Y": 1
         },
         "expTimeAstrometry" : 5,
-        "downSampleAstrometry": 4,
-        "centerX":681,
-        "centerY":566,
+        "downSampleAstrometry": 2,
+        "centerX":692.8,
+        "centerY":500.5,
         "pixelSizeX": 3.75,
         "pixelSizeY": 3.75,
         "FocalLength": 240

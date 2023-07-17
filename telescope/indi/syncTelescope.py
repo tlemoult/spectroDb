@@ -5,14 +5,19 @@ import libcalc.util as myUtil
 
 import json,time,logging
 import subprocess,os,sys
+from astropy import units as u
 from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
 import astropy.io.fits
 from astropy.utils.iers import Conf as astropyConf
 import numpy as np
 
+def coord_to_str(coords):
+    raStr = str(coords.ra.to_string(u.hour,precision=2))
+    decStr = str(coords.dec.to_string(u.degree, alwayssign=True,precision=2))
+    return f"{raStr} {decStr}"
 
-def syncTelescope(camera,configCamera,telescope):
+def syncTelescope(camera,configCamera,telescope,realCoord=None):
     global config
     
     obsSite=myUtil.getEarthLocation(config)
@@ -27,25 +32,34 @@ def syncTelescope(camera,configCamera,telescope):
     myUtil.scaleImage(filePathAstrometry,filePathAstrometryResize,configCamera["pixelSizeX"]/configCamera["pixelSizeY"])
 
     print("Start plate solving astrometry")
-    astrometryResult = myUtil.solveAstro(filePathAstrometryResize,configCamera)
+    astrometryResult = myUtil.solveAstro(filePathAstrometryResize,configCamera,realCoord)
     if astrometryResult == None:
         print("Echec astrometry")
         return False
         
     actual_tel_coord = telescope.getCoordinates()
-    print(f"actual telescope coordinates: ra_hms={actual_tel_coord.ra.hms}   dec_dms = {actual_tel_coord.dec.dms}")
+    print(f"astrometry result {astrometryResult}")
+    print(f"actual telescope JNOW apparent: {coord_to_str(actual_tel_coord)}")
 
-    print("syncronize telescope")
-    astrometry_tel_coordinate = myUtil.convJ2000toJNowRefracted(astrometryResult["coordsJ2000"],obsSite)
-    print(f"astrometry_tel_coordinate = ra_hms={astrometry_tel_coordinate.ra.hms}   dec_dms = {astrometry_tel_coordinate.dec.dms}")
+    J2000_astrometry = astrometryResult["coordsJ2000"]
+    astrometry_tel_coordinate = myUtil.convJ2000toJNowRefracted(J2000_astrometry,obsSite)
+     
+    print(f'astrometry result in J2000 {coord_to_str(J2000_astrometry)}')
+    print(f"astrometry result JNOW apparent {coord_to_str(astrometry_tel_coordinate)}")
     sep = actual_tel_coord.separation(astrometry_tel_coordinate)
     print(f"sync separation is  {sep},  or {sep.arcminute} arcmin  {sep.arcsecond}  arcsecond")
+
+    print("syncronize telescope")
     telescope.syncCoordinates(astrometry_tel_coordinate)
+    time.sleep(0.5)
+    actual_tel_coord = telescope.getCoordinates()
+    sep = actual_tel_coord.separation(astrometry_tel_coordinate)
+    print(f"New sync separation is  {sep},  or {sep.arcminute} arcmin  {sep.arcsecond}  arcsecond")
  
     return True
 
 
-if len(sys.argv)!=2:
+if len(sys.argv) < 2:
     print("Invalid number of argument")
     print("correct syntax is")
     print("  python syncTelescope.py finder")
@@ -70,6 +84,12 @@ else:
     print(f"Cannot understood the optics, argument should be finder or field")
     exit()
 
+if len(sys.argv) == 3:
+    realStarName = sys.argv[2]
+    realCoord = myUtil.getCoordFromName(realStarName)
+    print(f"realStarName = {realStarName}  realCoord = {coord_to_str(realCoord)}")
+else:
+    realCoord = None
 
 logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
 
@@ -87,7 +107,7 @@ print("Telescope connected")
 camera = Camera(configCamera)
 
 
-syncTelescope(camera,configCamera,telescope)
+syncTelescope(camera,configCamera,telescope,realCoord=realCoord)
 time.sleep(0.5)
 
 ###### end of the script

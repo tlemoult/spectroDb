@@ -41,7 +41,7 @@ class CameraClient(PyIndi.BaseClient):
             self.setTemperature(cameraConf['tempSetPoint'])
             self.waitCCDTemperatureOK()
         else:
-            print("No temperature set")
+            self.logger.info("No temperature set")
 
 
 #    def __init__(self,deviceName,host,port):
@@ -165,7 +165,7 @@ class CameraClient(PyIndi.BaseClient):
                 self.logger.info(f"Found CCD_TEMPERATURE property")
                 t[0].value=setPointTemperature
                 self.sendNewNumber(t)
-                print("\nSet temperature is OK")
+                self.logger.info("Set temperature is OK")
                 return True
 
             self.logger.info(f"Waiting CCD_TEMPERATURE property  ")
@@ -189,12 +189,12 @@ class CameraClient(PyIndi.BaseClient):
     def waitCameraConnected(self):
         for t in range(10):
             if not self.device==None:
-                print("Camera Connected")
+                self.logger.info("Camera Connected")
                 return True
-            print("\rWaiting camera connection  ",end='',flush=True)
+            #print("\rWaiting camera connection  ",end='',flush=True)
             time.sleep(0.5)
         
-        print("Time out, no camera found")
+        self.logger.info("Time out, no camera found")
         return False
 
 
@@ -211,10 +211,10 @@ class CameraClient(PyIndi.BaseClient):
                 b[0].value=binning['X']
                 b[1].value=binning['Y']
                 self.sendNewNumber(b)
-                print("\nBinning set OK")
+                self.logger.info("Binning set OK")
                 return True
 
-            print("\r  Waiting CCD_BINNNIG property  ",end='',flush=True)
+            #print("\r  Waiting CCD_BINNNIG property  ",end='',flush=True)
             time.sleep(1)
 
         self.logger.error(f"Time out.. CCD_BINNING property not found")

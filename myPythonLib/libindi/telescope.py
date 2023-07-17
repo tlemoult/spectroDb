@@ -34,7 +34,7 @@ class TelescopeClient(PyIndi.BaseClient):
         pass
     def newBLOB(self, bp):
         global blobEvent
-        print("new BLOB ", bp.name)
+        #print("new BLOB ", bp.name)
         blobEvent.set()
         pass
     def newSwitch(self, svp):
@@ -132,6 +132,7 @@ class TelescopeClient(PyIndi.BaseClient):
 
     def syncCoordinates(self,coords):
         self.logger.info(f"syncCoordinates: coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n      ra_value={coords.ra.value} dec_value={coords.dec.value}")  
+        #print(f"syncCoordinates: coords={coords}\n ra_hms={coords.ra.hms}   dec_dms = {coords.dec.dms} \n      ra_value={coords.ra.value} dec_value={coords.dec.value}")  
         self.onCoordSet("SYNC")
 
         propertyNameCoord="EQUATORIAL_EOD_COORD"

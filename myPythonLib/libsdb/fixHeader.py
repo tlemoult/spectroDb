@@ -185,7 +185,8 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 			hdulist = fits.open(path)
 			prihdr  = hdulist[0].header
 			
-			if 'IMAGETYP' in prihdr.keys():
+			if False and 'IMAGETYP' in prihdr.keys():
+				# toujours faux... il faut que je corrige ce header au niveau de l'acquisition.
 				filetype=prihdr['IMAGETYP']
 			else:
 				filetype="none"
@@ -212,6 +213,9 @@ def fix_header(objName,baseFileName,isRef,ra,dec,directory,confInstru):
 					filetype="OBJECT"
 				elif fnmatch.fnmatch(ff,"*_astro2_.fits") or fnmatch.fnmatch(ff,"*_champ.fits") or fnmatch.fnmatch(ff,"FIELD-?.fits"):
 					filetype="FIELD"
+				elif fnmatch.fnmatch(ff,"FINDER-?.fits"):
+					filetype="FINDER"
+
 
 			if filetype!="none":
 

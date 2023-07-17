@@ -79,14 +79,29 @@ class App(tk.Frame):
         self.button2 = tk.Button(self.action_frame, text="Plot altitude", command=self.button2_action)
         self.button2.grid(row=0, column=2, padx=10, pady=10, sticky="E")
 
-        self.button3 = tk.Button(self.action_frame, text="Button 3", command=self.button3_action)
-        self.button3.grid(row=1, column=0, padx=10, pady=10, sticky="E")
+        self.button_3 = tk.Button(self.action_frame, text="Button 3")
+        self.button_3.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         self.button4 = tk.Button(self.action_frame, text="Button 4", command=self.button4_action)
         self.button4.grid(row=1, column=1, padx=10, pady=10, sticky="E")
 
         self.button5 = tk.Button(self.action_frame, text="Button 5", command=self.button5_action)
         self.button5.grid(row=1, column=2, padx=10, pady=10, sticky="E")
+
+# a frame for SIMBAD
+        self.simbad_frame = tk.Frame(self)
+        self.simbad_frame.grid(row=3,column=0)
+
+        self.simbad_entry_label = tk.Label(self.simbad_frame,text='star Name')
+        self.simbad_entry_label.grid(row=0,column=0)
+
+        self.simbad_entry = tk.Entry(self.simbad_frame)
+        self.simbad_entry.grid(row=0,column=1)
+
+        self.button_SIMBAD = tk.Button(self.simbad_frame, text="Get SIMBAD coords", command=self.button_SIMBAD_action)
+        self.button_SIMBAD.grid(row=0, column=2, padx=10, pady=10, sticky="E")
+
+
 
     def load_csv(self):
         file_path = tk.filedialog.askopenfilename(initialdir = "/mnt/gdrive/astro/cibles/" , filetypes=[("PRISM files", "*.lst")])
@@ -232,8 +247,18 @@ class App(tk.Frame):
 
 
 
-    def button3_action(self):
-        print("Button3 action")
+    def button_SIMBAD_action(self):
+        targetName = self.simbad_entry.get()
+
+        J2000Target = myUtil.getCoordFromName(targetName)
+
+        raStr = str(J2000Target.ra.to_string(u.hour,precision=2))
+        decStr = str(J2000Target.dec.to_string(u.degree, alwayssign=True,precision=2))
+        print(f"Target Name = {targetName} SIMBAD coord {raStr} {decStr}")
+
+        row = [targetName,raStr,decStr]
+        self.data_table.insert("", "end", values=row)
+        self.process_button["state"] = "normal"
 
     def button4_action(self):
         print("Button4 action")

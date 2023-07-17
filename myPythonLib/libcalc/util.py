@@ -16,7 +16,8 @@ def getCoordFromName(name):
     #print(f"getCoordFromName  name = {name} :\n      {c.ra.hms}  {c.dec.dms}")
     return c
 
-def convJ2000toJNowRefracted(skyCoords,obsSite,pressure=101700*u.pascal,temperature=5*u.Celsius):
+def convJ2000toJNowRefracted(skyCoords,obsSite,pressure=101325*u.pascal,temperature=5*u.Celsius,relative_humidity=0.5):
+    #102400
     c = skyCoords
     t = Time.now()
     #print(f"Enter convJ2000toJNowRefracted()")
@@ -28,7 +29,7 @@ def convJ2000toJNowRefracted(skyCoords,obsSite,pressure=101700*u.pascal,temperat
     cAltAz = c.transform_to(AltAz(obstime=t,location=obsSite))
     #print(f"SkyCoords AltAz: {cAltAz}\n")
 
-    cAltAzRefrac = c.transform_to(AltAz(obstime=t,location=obsSite,pressure=pressure,temperature=temperature,relative_humidity=0.8,obswl=0.65*u.micron))
+    cAltAzRefrac = c.transform_to(AltAz(obstime=t,location=obsSite,pressure=pressure,temperature=temperature,relative_humidity=relative_humidity,obswl=0.65*u.micron))
     #print(f"SkyCoords cAltAzRefrac: {cAltAzRefrac}\n")
     cAltAzRefracTric = AltAz(obstime=t,location=obsSite,alt=cAltAzRefrac.alt,az=cAltAzRefrac.az)
     cJNowRefractedTric = cAltAzRefracTric.transform_to(FK5(equinox=t))
@@ -111,6 +112,75 @@ def solveAstro(filename,camera):
     else:
         logger.error("echec resolution astrometrique")
         return None
+
+
+def solveAstro(filename,camera,realCoord=None):
+#optionnal realCoord, mean we calculate the optical center
+    logger = logging.getLogger('PyQtIndi.IndiClient')
+    logger.info(f"myLib.util.soveAstro: Plate Solving  file={filename}")
+    fenteXpix=camera["centerX"]*camera["pixelSizeX"]/camera["pixelSizeY"]
+    fenteYpix=camera["centerY"]
+    downSampleAstrometry=camera["downSampleAstrometry"]
+    scaleArcPerPixelFinder=((camera["pixelSizeY"]*0.001*camera["binning"]["X"])/camera["FocalLength"]) /6.28 * 360 * 60 *60
+    logger.info(f"  Calculated Scale is {scaleArcPerPixelFinder:0.2f} ArcSecond per pixel")
+    logger.info(f"  Optical axis X={fenteXpix} Y={fenteYpix}")
+    logger.info(f"  downSampleAstrometry={downSampleAstrometry}")
+
+    name, extension = os.path.splitext(filename)
+    scale_low = str(scaleArcPerPixelFinder*80.0/100.0)
+    scale_high = str(scaleArcPerPixelFinder*120.0/100.0)
+    head, tail = os.path.split(filename)
+    #solve-field --downsample 2 --tweak-order 2  --overwrite finderAutoSolver-Astro.fits
+    with open(head+'/outputAstrometry.txt', "w") as outfile:
+        subprocess.call(
+            ["/usr/bin/solve-field",
+            "--cpulimit","25",
+            "--downsample", str(downSampleAstrometry), "--tweak-order", "2", "--scale-units", "arcsecperpix", 
+            "--scale-low", scale_low, "--scale-high", scale_high, "--no-plots",
+            "--overwrite", filename],
+            stdout=outfile
+            )
+    if os.path.isfile(name+'.solved'):
+        logger.info("succes resolution astrometrique, get wcs data")
+        wcs = astropy.wcs.WCS(astropy.io.fits.open(name+'.wcs')[0].header)
+
+        try:
+            os.remove(name+'-indx.xyls')
+            os.remove(name+'.axy')
+            os.remove(name+'.corr')
+            os.remove(name+'.match')
+            os.remove(name+'.new')
+            os.remove(name+'.rdls')
+            os.remove(name+'.solved')
+            #os.remove(name+'.wcs')
+        except:
+            logger.info("    Some file was not here.")
+
+
+        ### Store & Display Result
+        # find telescope coordinates
+        logger.info(f"  fente X={fenteXpix} Y={fenteYpix}")
+        wx, wy = wcs.wcs_pix2world(fenteXpix, fenteYpix,1)
+        logger.info(f"  RA={wx}deg  DEC={wy}deg ")
+        coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
+        coordsJ2000str = coordsJ2000.to_string('hmsdms')
+        raStr, decStr = coordsJ2000str.split(' ')
+        logger.info(f"  J2000 coords RA={raStr}  DEC={decStr}")
+
+        returnValue = {"wcs":wcs,  "raStr":raStr , "decStr":decStr , "coordsJ2000":coordsJ2000 , "wx":wx , "wy":wy }
+
+        if not realCoord == None:
+            logger.info("try to find the optical center")
+            fenteXpix, fenteYpix =(realCoord.to_pixel(wcs))    
+            returnValue['fenteXpix'] = float(fenteXpix)
+            returnValue['fenteYpix'] = float(fenteYpix)
+
+        return returnValue
+
+    else:
+        logger.error("echec resolution astrometrique")
+        return None
+
 
 if __name__ == '__main__':
     print("Demo of util lib")

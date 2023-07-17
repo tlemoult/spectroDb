@@ -12,8 +12,8 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 460ex",
-        "tempSetPoint": -5,
+        "name": "Atik 414ex",
+        "tempSetPoint": 10,
         "binning": {
             "X": 1,
             "Y": 1
@@ -25,7 +25,7 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "SX CCD LodeStar",
+        "name": "Atik 314L",
         "binning": {
             "X": 1,
             "Y": 1
@@ -33,8 +33,8 @@
         "expTimeAstrometry" : 15,
         "centerX":323,
         "centerY":282,
-        "pixelSize": 8.4,
-        "FocalLength": 2100
+        "pixelSize": 4.54,
+        "FocalLength": 830
     },
 
     "ccdFinder": {
@@ -55,14 +55,14 @@
     },
 
     "obsSite": {
-        "name" : "Chelles",
-        "latDeg" : 48,
-        "latMin" : 52,
-        "latSec" : 48.76,
-        "lonDeg" : 2,
-        "lonMin" : 34,
-        "lonSec" : 55.28,
-        "altitude" : 40
+        "name" : "OHP",
+        "latDeg" : 43,
+        "latMin" : 55,
+        "latSec" : 51,
+        "lonDeg" : 5,
+        "lonMin" : 42,
+        "lonSec" : 48,
+        "altitude" : 650
         },
     
     "telescope": {
@@ -76,9 +76,9 @@
     
     "spectro": {
 
-        "selected": "LISA",
+        "selected": "ALPY",
 
-        "LISA": {
+        "ALPY": {
             "calib": {
                 "exposure":30,
                 "nbExpo":1
@@ -117,21 +117,21 @@
         },
         "project": "none",
         "instrument": {
-            "telescop": "ASTROSIB",
-            "configName": "ASTROSIB Red0.66 LISA FENTE35 ATIK460",
-            "spectro": "LISA",
-            "detname": "ATIK460ex",
+            "telescop": "AP130EDFGT",
+            "configName": "AP130EDFGT LISA#127 Slit 19 ATIK414",
+            "spectro": "ALPY",
+            "detname": "ATIK414",
             "guideDetname": "ATIK314",
             "resol": 600
         },
 
         "site": {
-            "name": "Chelles",
+            "name": "OHP",
             "country": "FRANCE",
-            "lat": "48 52 49",
-            "lon": "02 34 55",
-            "alt": "40",
-            "UAIcode": "C61"
+            "lat": "43 55 51",
+            "lon": "05 42 48",
+            "alt": "650",
+            "UAIcode": "511"
         },
         "observer": {
             "firstName": "Thierry",

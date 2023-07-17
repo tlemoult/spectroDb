@@ -29,6 +29,7 @@ print(f"expTime={expTime}")
 #load configuration
 spectro_config = os.environ['SPECTROCONFIG']
 configFilePath = os.path.join(spectro_config,'acquire.json')
+print(f"load configuration {configFilePath=}")
 json_text=open(configFilePath).read()
 config = json.loads(json_text)
 

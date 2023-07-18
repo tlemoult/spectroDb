@@ -4,6 +4,32 @@ from astropy.time import Time
 from astropy.utils.iers import Conf as astropyConf
 import astropy.io.fits
 import subprocess,os,sys,logging
+from astroquery.simbad import Simbad
+
+def get_star_info(star_name):
+    # Recherche de l'étoile dans la base de données SIMBAD avec l'information "otype"
+    custom_simbad = Simbad()
+    custom_simbad.add_votable_fields('ra', 'dec', 'flux(V)', 'sp', 'otype')
+    result_table = custom_simbad.query_object(star_name)
+
+    if result_table is not None:
+        # Récupération des coordonnées
+        ra = result_table['RA'][0]
+        dec = result_table['DEC'][0]
+        coords = SkyCoord(ra=ra, dec=dec, unit=(u.hourangle, u.deg))
+
+        # Récupération de la magnitude V
+        magnitude_v = result_table['FLUX_V'][0]
+
+        # Récupération du type spectral
+        spectral_type = result_table['SP_TYPE'][0]
+
+        # Récupération de l'information "otype"
+        object_type = result_table['OTYPE'][0]
+
+        return coords, magnitude_v, spectral_type, object_type
+    else:
+        return None
 
 def getEarthLocation(config):
     obsSite=config["obsSite"]

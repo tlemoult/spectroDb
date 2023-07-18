@@ -120,7 +120,7 @@ class App(tk.Frame):
                 restOfData = line.lstrip('"'+name+'"').strip()
                 #print(f" restOfData=[{restOfData}]")
                 row = row + restOfData.split('  ')
-                self.data_table.insert("", "end", text=str(i), values=row)
+                self.data_table.insert("", "end", text=str(i), values=row[:5]+row[6:])
 
         self.process_button["state"] = "normal"
 
@@ -137,9 +137,11 @@ class App(tk.Frame):
         if f_save is None:
             return
         for line in self.data_table.get_children():
-            lineText = ""
-            for value in self.data_table.item(line)['values']:
+            data_fields = self.data_table.item(line)['values']
+            lineText = '"'+data_fields[0]+'"  '
+            for value in data_fields[1:-1]:
                 lineText = lineText + str(value) + '  '
+            lineText += '1  "'+data_fields[-1]+'"'
             print(f"write line {lineText}")
             f_save.write(lineText.strip()+'\n')
         f_save.close()
@@ -239,7 +241,9 @@ class App(tk.Frame):
 
         ax.set_xlabel('Time (UTC)')
         ax.set_ylabel('Altitude (degrees)')
-        ax.set_title(f'Altitude of {targetName} Over Night start at {Time.now()}')
+        title =  f'Altitude of {targetName} Over Night start at {Time.now()}\n'
+        title += f'Observatory {obs_location}'
+        ax.set_title(title)
 
         plt.grid(True)
         plt.legend(loc='upper right')
@@ -250,13 +254,14 @@ class App(tk.Frame):
     def button_SIMBAD_action(self):
         targetName = self.simbad_entry.get()
 
-        J2000Target = myUtil.getCoordFromName(targetName)
+        #J2000Target = myUtil.getCoordFromName(targetName)
+        J2000Target, v_mag, sp_type, object_type = myUtil.get_star_info(targetName)
 
         raStr = str(J2000Target.ra.to_string(u.hour,precision=2))
         decStr = str(J2000Target.dec.to_string(u.degree, alwayssign=True,precision=2))
         print(f"Target Name = {targetName} SIMBAD coord {raStr} {decStr}")
 
-        row = [targetName,raStr,decStr]
+        row = [targetName,raStr,decStr,str(v_mag),"FALSE","object_type="+str(object_type)+", sp_type="+str(sp_type)]
         self.data_table.insert("", "end", values=row)
         self.process_button["state"] = "normal"
 

@@ -96,11 +96,11 @@
 
             "ALPY": {
                 "calib": {
-                    "exposure":30,
+                    "exposure":15,
                     "nbExpo":1
                 },
                 "flat": {
-                    "exposure":20,
+                    "exposure":2,
                     "nbExpo":11
                 }
     

@@ -32,6 +32,7 @@ configFilePath = os.path.join(spectro_config,'acquire.json')
 print(f"load configuration {configFilePath=}")
 json_text=open(configFilePath).read()
 config = json.loads(json_text)
+CalibManual = True
 
 # setup log file
 logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
@@ -68,7 +69,10 @@ print("  acquisition finished")
 
 print('Switch on the NEON lamp')
 relay_calib_neon = 5
-powerControl.set(relay_calib_neon,True)
+if CalibManual:
+    input("press Enter when done")
+else:
+    powerControl.set(relay_calib_neon,True)
 
 spectroCalib=config['spectro']['LISA']['calib']
 camSpectro.newAcquSerie(basePath,"NEON-",spectroCalib['nbExpo'],spectroCalib['exposure'])
@@ -85,7 +89,10 @@ with open(basePath+'/observation.json', 'w') as outfile:
 print("acquisition finished")
 
 print('Switch off Neon')
-powerControl.set(relay_calib_neon,False)
+if CalibManual:
+    input("press Enter when done")
+else:
+    powerControl.set(relay_calib_neon,False)
 camSpectro.disconnectServer()
 
 print(f"Wait disconnection...")

@@ -51,11 +51,7 @@ def syncTelescope(camera,configCamera,telescope,realCoord=None):
 
     print("syncronize telescope")
     telescope.syncCoordinates(astrometry_tel_coordinate)
-    time.sleep(0.5)
-    actual_tel_coord = telescope.getCoordinates()
-    sep = actual_tel_coord.separation(astrometry_tel_coordinate)
-    print(f"New sync separation is  {sep},  or {sep.arcminute} arcmin  {sep.arcsecond}  arcsecond")
- 
+
     return True
 
 

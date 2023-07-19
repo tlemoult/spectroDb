@@ -24,6 +24,7 @@ class App(tk.Frame):
         self.create_widgets()
         self.config = config
         self.telescope = None
+        self.path_target_files = "/home/tlemoult/Documents/gdriveCopy/cibles/ohp2023/"
 
     def create_widgets(self):
 
@@ -79,7 +80,7 @@ class App(tk.Frame):
         self.button2 = tk.Button(self.action_frame, text="Plot altitude", command=self.button2_action)
         self.button2.grid(row=0, column=2, padx=10, pady=10, sticky="E")
 
-        self.button_3 = tk.Button(self.action_frame, text="Button 3")
+        self.button_3 = tk.Button(self.action_frame, text="edit data", command=self.edit_one_popup)
         self.button_3.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         self.button4 = tk.Button(self.action_frame, text="Button 4", command=self.button4_action)
@@ -104,7 +105,7 @@ class App(tk.Frame):
 
 
     def load_csv(self):
-        file_path = tk.filedialog.askopenfilename(initialdir = "/mnt/gdrive/astro/cibles/" , filetypes=[("PRISM files", "*.lst")])
+        file_path = tk.filedialog.askopenfilename(initialdir = self.path_target_files , filetypes=[("PRISM files", "*.lst")])
         with open(file_path, "r",encoding="latin-1", errors='ignore') as lst_file:
             print(f"Load target list in file_path = {file_path}")
             for i, line in enumerate(lst_file):
@@ -120,7 +121,7 @@ class App(tk.Frame):
                 restOfData = line.lstrip('"'+name+'"').strip()
                 #print(f" restOfData=[{restOfData}]")
                 row = row + restOfData.split('  ')
-                self.data_table.insert("", "end", text=str(i), values=row[:5]+row[6:])
+                self.data_table.insert("", "end", text=str(i), values=row[:5]+[row[6].replace('"','')])
 
         self.process_button["state"] = "normal"
 
@@ -132,8 +133,92 @@ class App(tk.Frame):
         selected_index = self.data_table.selection()
         self.data_table.delete(selected_index)
 
+    def edit_one_popup(self):
+        # Fonction pour enregistrer les modifications et fermer la fenêtre
+        def save_changes():
+            variable1.set(entry_var1.get())
+            variable2.set(entry_var2.get())
+            variable3.set(entry_var3.get())
+            variable4.set(entry_var4.get())
+            variable5.set(entry_var5.get())
+            variable6.set(entry_var6.get())
+            top.destroy()
+
+        # Création de la fenêtre pop-up
+        top = tk.Toplevel()
+        top.title("Target edit")
+
+        # recupere les valeur actuelles
+        selected_index = self.data_table.selection()
+        selected_row = self.data_table.item(selected_index)["values"]
+        print(f"Select row is {selected_row}")
+        [targetName,targetRA,targetDEC,targetMag,targetStatus,targetComment] = selected_row[0:6]
+
+        # Variables
+        variable1 = tk.StringVar()
+        variable2 = tk.StringVar()
+        variable3 = tk.StringVar()
+        variable4 = tk.StringVar()
+        variable5 = tk.StringVar()
+        variable6 = tk.StringVar()
+
+        # Valeurs initiales des variables
+        variable1.set(targetName)
+        variable2.set(targetRA)
+        variable3.set(targetDEC)
+        variable4.set(targetMag)
+        variable5.set(targetStatus)
+        variable6.set(targetComment)
+
+        # Labels et champs d'édition pour chaque variable
+        myWidth = 200
+        label_var1 = tk.Label(top, text="Name")
+        entry_var1 = tk.Entry(top, textvariable=variable1, width=myWidth)
+        label_var2 = tk.Label(top, text="RA J2000")
+        entry_var2 = tk.Entry(top, textvariable=variable2, width=myWidth)
+        label_var3 = tk.Label(top, text="DEC J2000")
+        entry_var3 = tk.Entry(top, textvariable=variable3, width=myWidth)
+        label_var4 = tk.Label(top, text="mag")
+        entry_var4 = tk.Entry(top, textvariable=variable4, width=myWidth)
+        label_var5 = tk.Label(top, text="status")
+        entry_var5 = tk.Entry(top, textvariable=variable5, width=myWidth)
+        label_var6 = tk.Label(top, text="comment")
+        entry_var6 = tk.Entry(top, textvariable=variable6, width=myWidth)
+
+        # Bouton de validation
+        button_save = tk.Button(top, text="Valider", command=save_changes)
+
+        # Placement des widgets dans la fenêtre
+        label_var1.pack()
+        entry_var1.pack()
+        label_var2.pack()
+        entry_var2.pack()
+        label_var3.pack()
+        entry_var3.pack()
+        label_var4.pack()
+        entry_var4.pack()
+        label_var5.pack()
+        entry_var5.pack()
+        label_var6.pack()
+        entry_var6.pack()
+        button_save.pack()
+
+        # Attend que la fenêtre soit fermée
+        top.wait_window(top)
+
+        # Affiche les contenus des variables après la fermeture de la fenêtre
+        print("Contenu des variables après modification :")
+        print("Variable 1:", variable1.get())
+        print("Variable 2:", variable2.get())
+        print("Variable 3:", variable3.get())
+        print("Variable 4:", variable4.get())
+        print("Variable 5:", variable5.get())
+        print("Variable 6:", variable6.get())
+   
+        self.data_table.item(selected_index,text="",values= (variable1.get(),variable2.get(),variable3.get(),variable4.get(),variable5.get(),variable6.get()))
+
     def save_csv(self):
-        f_save = tkinter.filedialog.asksaveasfile(initialdir = "/mnt/gdrive/astro/cibles/" , mode="w",defaultextension=".lst")
+        f_save = tkinter.filedialog.asksaveasfile(initialdir = self.path_target_files , mode="w",defaultextension=".lst")
         if f_save is None:
             return
         for line in self.data_table.get_children():

@@ -26,7 +26,7 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 314L",
+        "name": "ASI220MM Mini",
         "binning": {
             "X": 1,
             "Y": 1
@@ -35,8 +35,8 @@
         "downSampleAstrometry": 2,
         "centerX":324,
         "centerY":272,
-        "pixelSizeX": 4.54,
-        "pixelSizeY": 4.54,
+        "pixelSizeX": 4,
+        "pixelSizeY": 4,
         "FocalLength": 832
     },
 

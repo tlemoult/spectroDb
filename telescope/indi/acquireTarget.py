@@ -2,6 +2,7 @@ import os,sys,time, datetime,logging,json
 import PyIndi
 
 from libindi.camera import CameraClient as CamSpectro
+from libcalc.img import statSpectrum
 import libobs.powerControl as powerControl
 
 n=len(sys.argv)
@@ -16,6 +17,7 @@ if n!=6:
 
 
 projectName=sys.argv[1].split('"')[0]
+print("Acquire Target spectrum")
 print(f"projectName={projectName}")
 objTypeArg=sys.argv[2]
 print(f"objType={objTypeArg}")
@@ -35,7 +37,9 @@ config = json.loads(json_text)
 CalibManual = True
 
 # setup log file
-logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
+print(f"{logFilePath=}")
+logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 #create directory
 basePath=config['path']['root']+'/'+config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').replace(':','-').split('.')[0]
@@ -62,8 +66,8 @@ with open(basePath+'/observation.json', 'w') as outfile:
 
 camSpectro=CamSpectro(config["ccdSpectro"])
 camSpectro.setObserverAndObjectName(observationJson['observer']['alias'],objName)
-print("run acquisition" )
-camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime)
+print(f"run acquisition with camera {config['ccdSpectro']['name']}" )
+camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime,display_spectrum=True)
 camSpectro.waitEndAcqSerie()
 print("  acquisition finished")
 
@@ -74,7 +78,9 @@ if CalibManual:
 else:
     powerControl.set(relay_calib_neon,True)
 
-spectroCalib=config['spectro']['LISA']['calib']
+spectroName = config['spectro']['selected']
+print(f"{spectroName=}")
+spectroCalib=config['spectro'][spectroName]['calib']
 camSpectro.newAcquSerie(basePath,"NEON-",spectroCalib['nbExpo'],spectroCalib['exposure'])
 camSpectro.waitEndAcqSerie()
 

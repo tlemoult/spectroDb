@@ -22,7 +22,9 @@ config = json.loads(json_text)
 CalibManual = True
 
 # setup log file
-logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
+print(f"{logFilePath=}")
+logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 #create directory
 basePath=config['path']['root']+'/'+config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').replace(':','-').split('.')[0]
@@ -34,6 +36,7 @@ os.mkdir(basePath)
 camSpectro=CamSpectro(config["ccdSpectro"])
 spectroName = config['spectro']['selected']
 print(f"{spectroName=}")
+print(f"run calibration {sys.argv[1:]} with camera {config['ccdSpectro']['name']}" )
 
 if 'neon' in sys.argv:
     print('Switch on the NEON lamp')

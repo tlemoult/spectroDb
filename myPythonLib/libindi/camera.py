@@ -2,6 +2,9 @@ import sys,time,logging
 import PyIndi
 from astropy.io import fits
 
+from libcalc.img import statSpectrum
+import matplotlib.pyplot as plt
+
 class CameraClient(PyIndi.BaseClient):
     deviceName=""
     device = None
@@ -51,7 +54,7 @@ class CameraClient(PyIndi.BaseClient):
 #        self.deviceName=deviceName
 #        self.setServer(host,port)
 
-    def newAcquSerie(self,filePath,fileNameRoot,nbExposure,expTime):
+    def newAcquSerie(self,filePath,fileNameRoot,nbExposure,expTime,display_spectrum=False):
         self.logger.info("<<<<<<< New acquisition serie fileName=%s nbExposure=%d, expTime=%d"%(fileNameRoot,nbExposure,expTime))
         self.currentIndex= 1
         self.filePath=filePath
@@ -60,6 +63,9 @@ class CameraClient(PyIndi.BaseClient):
         self.expTime=expTime
         self.serieRun=True
         self.takeExposure(expTime)
+        self.display_spectrum = display_spectrum
+        self.last_image_filepath = ''
+        self.is_a_image_to_display = False
 
     def newDevice(self, d):
         self.logger.info(f"new device {d.getDeviceName()}")
@@ -100,6 +106,10 @@ class CameraClient(PyIndi.BaseClient):
             f = open(fullPath, 'wb')
             f.write(data)
             f.close()
+
+            if self.display_spectrum:
+                self.last_image_filepath = fullPath
+                self.is_a_image_to_display = True
                         
             # start new exposure for acqusition serie 
             self.currentIndex+=1
@@ -222,9 +232,32 @@ class CameraClient(PyIndi.BaseClient):
 
 
     def waitEndAcqSerie(self):
+        if self.display_spectrum:
+            plt.ion()
+            plt.show()
+            fig, (ax1, ax2) = plt.subplots(2,sharex=True,figsize=(12, 7))
+            fig.suptitle('preview spectrum')
+            ax1.set_title("2D image")
+            ax2.set_title("binned profil")
+            ax2.set_xlabel("pixel X coord")
+
         while self.serieRun==True:
+            if self.display_spectrum and self.is_a_image_to_display:
+                self.is_a_image_to_display = False
+                stat = statSpectrum(self.last_image_filepath,binnigHeight = 60)
+
+                print(f"Mean = {round(stat['mean'])} Max = {stat['max']}")
+
+                ax1.imshow(stat['img'], cmap=plt.cm.gray) 
+                ax2.plot(stat['spectrum'],label=f"exposure no {self.currentIndex-1}")
+                ax2.legend(loc='upper right')
+                plt.draw()
+                plt.pause(0.2)
+
             out=f"""Exposure: "{self.fileNameRoot}" {self.currentIndex}/{self.nbExposure}  {self.expTime-self.ccdExposure:.1f}/{self.expTime:.1f} seconds."""
             sys.stdout.write('\r'+out)
             sys.stdout.flush()
             time.sleep(1)
         print(" ")
+
+        plt.close()

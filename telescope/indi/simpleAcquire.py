@@ -1,4 +1,4 @@
-import sys,time, logging,json
+import sys,time, logging,json,os
 import PyIndi
 
 from libindi.camera import CameraClient as CamSpectro

@@ -88,6 +88,18 @@ class CameraClient(PyIndi.BaseClient):
     def removeProperty(self, p):
         self.logger.info(f"remove property {p.getName()} for device {p.getDeviceName()}")
 
+    def updateProperty(self, prop):
+        if prop.getType() == PyIndi.INDI_NUMBER:
+            self.newNumber(PyIndi.PropertyNumber(prop))
+        elif prop.getType() == PyIndi.INDI_SWITCH:
+            self.newSwitch(PyIndi.PropertySwitch(prop))
+        elif prop.getType() == PyIndi.INDI_TEXT:
+            self.newText(PyIndi.PropertyText(prop))
+        elif prop.getType() == PyIndi.INDI_LIGHT:
+            self.newLight(PyIndi.PropertyLight(prop))
+        elif prop.getType() == PyIndi.INDI_BLOB:
+            self.newBLOB(PyIndi.PropertyBlob(prop)[0])
+
     def newBLOB(self, bp):
 
         #self.logger.debug(f"new BLOB name = {bp.name}   device = {bp.bvp.device}")
@@ -120,28 +132,27 @@ class CameraClient(PyIndi.BaseClient):
                 self.serieRun=False
         
     def newSwitch(self, svp):
-        pass
-        #self.logger.info (f"new Switch {svp.name} for device {svp.device}")       
+        self.logger.info (f"new Switch {svp.getName()} for device {svp.getDeviceName()}")       
 
     def newNumber(self, nvp):
-        #self.logger.debug(f"new Number {nvp.name} = {nvp[0].value:.2f} for device {nvp.device}")
+        #self.logger.debug(f"root new Number {nvp.getName()} = {nvp[0].getValue():.2f} for device {nvp.getDeviceName()}")
 
         if self.device==None:
             return
 
-        if nvp.device == self.device.getDeviceName():
-            self.logger.info(f"new Number {nvp.name} = {nvp[0].value:.2f} for my device {nvp.device}")
+        if nvp.getDeviceName() == self.device.getDeviceName():
+            self.logger.info(f"new Number {nvp.getName()} = {nvp[0].getValue():.2f} for my device {nvp.getDeviceName()}")
 
-            if nvp.name == "CCD_TEMPERATURE":
-                self.ccdTemperature=nvp[0].value
+            if nvp.getName() == "CCD_TEMPERATURE":
+                self.ccdTemperature=nvp[0].getValue()
 
-            if nvp.name == "CCD_EXPOSURE":
-                self.ccdExposure=nvp[0].value
+            if nvp.getName() == "CCD_EXPOSURE":
+                self.ccdExposure=nvp[0].getValue()
 
     def newText(self, tvp):
-        self.logger.info(f"new Text {tvp.name} for device {tvp.device}")
+        self.logger.info(f"new Text {tvp.getName()} for device {tvp.getDeviceName()}")
     def newLight(self, lvp):
-        self.logger.info(f"new Light {lvp.name} for device {lvp.device}")
+        self.logger.info(f"new Light {lvp.getName()} for device {lvp.getDeviceName}")
     def newMessage(self, d, m):
         self.logger.info(f"new Message {d.messageQueue(m)}")
     def serverConnected(self):
@@ -152,7 +163,7 @@ class CameraClient(PyIndi.BaseClient):
     def takeExposure(self,expTime):
         self.logger.info(f"<<<<<<<< Take Exposure, duration={expTime} >>>>>>>>>")
         exp = self.device.getNumber("CCD_EXPOSURE")
-        exp[0].value  = expTime
+        exp[0].setValue(expTime)
         # send new exposure time to server/device
         self.sendNewNumber(exp)
         self.ccdExposure=expTime
@@ -173,7 +184,7 @@ class CameraClient(PyIndi.BaseClient):
             t=self.device.getNumber("CCD_TEMPERATURE")
             if not t==None:
                 self.logger.info(f"Found CCD_TEMPERATURE property")
-                t[0].value=setPointTemperature
+                t[0].setValue(setPointTemperature)
                 self.sendNewNumber(t)
                 self.logger.info("Set temperature is OK")
                 return True
@@ -218,8 +229,8 @@ class CameraClient(PyIndi.BaseClient):
             self.logger.info(f" b= {b}  type(b) = {type(b)}")
             if not b==None:
                 self.logger.info(f"Found CCD_BINING_ property")
-                b[0].value=binning['X']
-                b[1].value=binning['Y']
+                b[0].setValue(binning['X'])
+                b[1].setValue(binning['Y'])
                 self.sendNewNumber(b)
                 self.logger.info("Binning set OK")
                 return True

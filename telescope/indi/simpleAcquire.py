@@ -11,7 +11,10 @@ json_text=open(configFilePath).read()
 config = json.loads(json_text)
 
 # setup log file
-logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
+print(f"{logFilePath=}")
+logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s %(message)s')
+
 # create and connect to Camera 
 camSpectro=CamSpectro(config["ccdSpectro"])
 

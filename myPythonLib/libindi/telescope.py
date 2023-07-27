@@ -27,7 +27,19 @@ class TelescopeClient(PyIndi.BaseClient):
         if d.getDeviceName() == self.deviceName:
             self.logger.info(f"Found target device = {self.deviceName}")
             self.device = d
-            
+
+    def updateProperty(self, prop):
+        if prop.getType() == PyIndi.INDI_NUMBER:
+            self.newNumber(PyIndi.PropertyNumber(prop))
+        elif prop.getType() == PyIndi.INDI_SWITCH:
+            self.newSwitch(PyIndi.PropertySwitch(prop))
+        elif prop.getType() == PyIndi.INDI_TEXT:
+            self.newText(PyIndi.PropertyText(prop))
+        elif prop.getType() == PyIndi.INDI_LIGHT:
+            self.newLight(PyIndi.PropertyLight(prop))
+        elif prop.getType() == PyIndi.INDI_BLOB:
+            self.newBLOB(PyIndi.PropertyBlob(prop)[0])
+
     def newProperty(self, p):
         pass
     def removeProperty(self, p):
@@ -42,7 +54,7 @@ class TelescopeClient(PyIndi.BaseClient):
     def newNumber(self, nvp):
         pass
     def newText(self, tvp):
-        self.logger.info(f"new Text {tvp.name} for device {tvp.device}")
+        self.logger.info(f"new Text {tvp.getName()} for device {tvp.getDeviceName()}")
     def newLight(self, lvp):
         pass
     def newMessage(self, d, m):
@@ -91,8 +103,8 @@ class TelescopeClient(PyIndi.BaseClient):
             # Hence we can access each element of the vector using Python indexing
             # each element of the "CONNECTION" vector is a ISwitch
             telescope_connect = self.device.getSwitch("CONNECTION")
-            telescope_connect[0].s=PyIndi.ISS_ON  # the "CONNECT" switch
-            telescope_connect[1].s=PyIndi.ISS_OFF # the "DISCONNECT" switch
+            telescope_connect[0].setState(PyIndi.ISS_ON)  # the "CONNECT" switch
+            telescope_connect[1].setState(PyIndi.ISS_OFF) # the "DISCONNECT" switch
             self.sendNewSwitch(telescope_connect) # send this new value to the device
 
         self.logger.info("Telecope is connected")
@@ -105,8 +117,8 @@ class TelescopeClient(PyIndi.BaseClient):
             time.sleep(0.5)
             telescope_radec=self.device.getNumber("EQUATORIAL_EOD_COORD")
 
-        ra = telescope_radec[0].value
-        dec = telescope_radec[1].value
+        ra = telescope_radec[0].getValue()
+        dec = telescope_radec[1].getValue()
         self.logger.info(f"get telescope coordinates EPOCHJNow ra={ra} Hours   dec = {dec}")
         c = SkyCoord(ra,dec,unit=(u.hourangle, u.deg),frame='icrs', equinox=Time.now())
         return c
@@ -123,8 +135,8 @@ class TelescopeClient(PyIndi.BaseClient):
             time.sleep(0.5)
             telescope_radec=self.device.getNumber(propertyNameCoord)
         
-        telescope_radec[0].value = coords.ra.value/360*24
-        telescope_radec[1].value = coords.dec.value
+        telescope_radec[0].setValue(coords.ra.value/360*24)
+        telescope_radec[1].setValue(coords.dec.value)
         self.sendNewNumber(telescope_radec)
         while (telescope_radec.getState()==PyIndi.IPS_BUSY):
             print(f"Scope Moving to RA={coords.ra.value}  DEC= {coords.dec.value} ")
@@ -141,8 +153,8 @@ class TelescopeClient(PyIndi.BaseClient):
             time.sleep(0.5)
             telescope_radec=self.device.getNumber(propertyNameCoord)
         
-        telescope_radec[0].value = coords.ra.value/360*24
-        telescope_radec[1].value = coords.dec.value
+        telescope_radec[0].setValue(coords.ra.value/360*24)
+        telescope_radec[1].setValue(coords.dec.value)
         self.sendNewNumber(telescope_radec)
             
     
@@ -154,19 +166,19 @@ class TelescopeClient(PyIndi.BaseClient):
         
         if action == 'TRACK':
             self.logger.info(f"set telescope action onCoordSet {action}")
-            telescope_on_coord_set[0].s=PyIndi.ISS_ON
-            telescope_on_coord_set[1].s=PyIndi.ISS_OFF
-            telescope_on_coord_set[2].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[0].setState(PyIndi.ISS_ON)
+            telescope_on_coord_set[1].setState(PyIndi.ISS_OFF)
+            telescope_on_coord_set[2].setState(PyIndi.ISS_OFF)
         elif action == 'SLEW':
             self.logger.info(f"set telescope action onCoordSet {action}")
-            telescope_on_coord_set[0].s=PyIndi.ISS_OFF
-            telescope_on_coord_set[1].s=PyIndi.ISS_ON
-            telescope_on_coord_set[2].s=PyIndi.ISS_OFF
+            telescope_on_coord_set[0].setState(PyIndi.ISS_OFF)
+            telescope_on_coord_set[1].setState(PyIndi.ISS_ON)
+            telescope_on_coord_set[2].setState(PyIndi.ISS_OFF)
         elif action == 'SYNC':
             self.logger.info(f"set telescope action onCoordSet {action}")
-            telescope_on_coord_set[0].s=PyIndi.ISS_OFF
-            telescope_on_coord_set[1].s=PyIndi.ISS_OFF
-            telescope_on_coord_set[2].s=PyIndi.ISS_ON
+            telescope_on_coord_set[0].setState(PyIndi.ISS_OFF)
+            telescope_on_coord_set[1].setState(PyIndi.ISS_OFF)
+            telescope_on_coord_set[2].setState(PyIndi.ISS_ON)
         else:
             self.logger.info(f"set telescope action onCoordSet Undefined")
         self.sendNewSwitch(telescope_on_coord_set)
@@ -181,12 +193,12 @@ class TelescopeClient(PyIndi.BaseClient):
 
         if(bool):
             self.logger.info("Telescope Tracking ON")
-            telescopeTrackingSwitch[0].s=PyIndi.ISS_ON
-            telescopeTrackingSwitch[1].s=PyIndi.ISS_OFF
+            telescopeTrackingSwitch[0].setState(PyIndi.ISS_ON)
+            telescopeTrackingSwitch[1].setState(PyIndi.ISS_OFF)
         else:
             self.logger.info("Telescope Tracking OFF")
-            telescopeTrackingSwitch[0].s=PyIndi.ISS_OFF
-            telescopeTrackingSwitch[1].s=PyIndi.ISS_ON
+            telescopeTrackingSwitch[0].setState(PyIndi.ISS_OFF)
+            telescopeTrackingSwitch[1].setState(PyIndi.ISS_ON)
 
         self.sendNewSwitch(telescopeTrackingSwitch)
 

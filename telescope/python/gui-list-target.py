@@ -130,7 +130,7 @@ class App(tk.Frame):
                     continue
                 #print(f"name = {name}")
                 row = [name]
-                restOfData = line.lstrip('"'+name+'"').strip()
+                restOfData = line[len(name)+4:].strip()
                 #print(f" restOfData=[{restOfData}]")
                 row = row + restOfData.split('  ')
                 self.data_table.insert("", "end", text=str(i), values=row[:5]+[row[6].replace('"','')])

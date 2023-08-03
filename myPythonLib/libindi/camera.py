@@ -39,6 +39,9 @@ class CameraClient(PyIndi.BaseClient):
         self.logger.info("set binnig")
         self.setBinning({'X':cameraConf["binning"]["X"],'Y':cameraConf["binning"]["Y"]})
 
+        if "frame" in cameraConf.keys():
+            self.setFrame(cameraConf["frame"])
+
         if "tempSetPoint" in cameraConf.keys():
             self.logger.info("set CCD temperature")
             self.setTemperature(cameraConf['tempSetPoint'])
@@ -230,6 +233,29 @@ class CameraClient(PyIndi.BaseClient):
         self.logger.error(f"Time out.. CCD_BINNING property not found")
         return False
 
+    def setFrame(self,frame_config):
+        self.frame_config=frame_config
+        self.logger.info(f"<<<<<<< Set frame to {frame_config}=")
+
+        for t in range(10):
+            self.logger.info(f" t= {t}")
+            b=self.device.getNumber("CCD_FRAME")
+            self.logger.info(f" b= {b}  type(b) = {type(b)}")
+            if not b==None:
+                self.logger.info(f"Found CCD_FRAME property")
+                b[0].value = frame_config['X_start']
+                b[1].value = frame_config['Y_start']
+                b[2].value = frame_config['X_stop']
+                b[3].value = frame_config['Y_stop']
+                self.sendNewNumber(b)
+                self.logger.info("FRAME set OK")
+                return True
+
+            #print("\r  Waiting CCD_FRAME property  ",end='',flush=True)
+            time.sleep(1)
+
+        self.logger.error(f"Time out.. CCD_FRAME property not found")
+        return False
 
     def waitEndAcqSerie(self):
         if self.display_spectrum:

@@ -50,6 +50,12 @@
             "X": 1,
             "Y": 1
         },
+        "frame": {
+            "X_start": 0,
+            "X_stop" : 900,
+            "Y_start": 0,
+            "Y_stop": 300
+        },
         "expTimeAstrometry" : 5,
         "downSampleAstrometry": 2,
         "centerX":692.8,

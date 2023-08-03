@@ -18,7 +18,18 @@
         "binning": {
             "X": 2,
             "Y": 2
-        }
+        },
+        "frame": {
+            "X_start": 0,
+            "X_stop" : 900,
+            "Y_start": 0,
+            "Y_stop": 300
+        },
+        "offset": [ 
+                { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]
+            ,
+        "dark": [
+                { "serieName": "DARK-", "exposure":5, "nbExpo":2 } ]
     },
 
     "ccdGuide": {
@@ -49,12 +60,6 @@
         "binning": {
             "X": 1,
             "Y": 1
-        },
-        "frame": {
-            "X_start": 0,
-            "X_stop" : 900,
-            "Y_start": 0,
-            "Y_stop": 300
         },
         "expTimeAstrometry" : 5,
         "downSampleAstrometry": 2,
@@ -90,27 +95,21 @@
         "selected": "ALPY",
 
         "LISA": {
-            "calib": {
-                "exposure":30,
-                "nbExpo":1
-            },
-            "flat": {
-                "exposure":20,
-                "nbExpo":11
-            }
+            "calib": [ 
+                { "serieName": "NEON-L-", "exposure":15, "nbExpo":1 },
+                { "serieName": "NEON-S-", "exposure":5, "nbExpo":1 } ]
+            ,
+            "flat": [
+                { "serieName": "FLAT-", "exposure":15, "nbExpo":3 } ]
         },
 
-            "ALPY": {
-                "calib": {
-                    "exposure":15,
-                    "nbExpo":1
-                },
-                "flat": {
-                    "exposure":2,
-                    "nbExpo":11
-                }
-    
-
+        "ALPY": {
+            "calib": [ 
+                { "serieName": "NEON-L-", "exposure":15, "nbExpo":1 },
+                { "serieName": "NEON-S-", "exposure":5, "nbExpo":1 } ]
+                ,
+            "flat": [
+                { "serieName": "FLAT-", "exposure":10, "nbExpo":3 } ]
         }
     },
  

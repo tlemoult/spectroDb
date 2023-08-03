@@ -45,10 +45,10 @@ if 'neon' in sys.argv:
         input("press Enter when done")
     else:
         powerControl.set(relay_calib_neon,True)
-    spectroCalib=config['spectro'][spectroName]['calib']
-    camSpectro.newAcquSerie(basePath,"neon-",spectroCalib['nbExpo'],spectroCalib['exposure'])
-    camSpectro.waitEndAcqSerie()
-    print("  acquisition finished")
+    for spectroCalib in config['spectro'][spectroName]['calib']:
+        camSpectro.newAcquSerie(basePath,spectroCalib['serieName'],spectroCalib['nbExpo'],spectroCalib['exposure'])
+        camSpectro.waitEndAcqSerie()
+    print("acquisition finished")
     if CalibManual:
         input("press Enter when done")
     else:
@@ -63,9 +63,9 @@ if 'flat' in sys.argv:
     else:
         powerControl.set(relay_flat_lamp,True)
 
-    spectroFlat=config['spectro'][spectroName]['flat']
-    camSpectro.newAcquSerie(basePath,"flat-",spectroFlat['nbExpo'],spectroFlat['exposure'])
-    camSpectro.waitEndAcqSerie()
+    for spectroFlat in config['spectro'][spectroName]['flat']:
+        camSpectro.newAcquSerie(basePath,spectroCalib['serieName'],spectroFlat['nbExpo'],spectroFlat['exposure'])
+        camSpectro.waitEndAcqSerie()
     print("  acquisition finished")
 
     print('Switch off the Flat lamp')
@@ -79,14 +79,16 @@ if 'camera' in sys.argv:
     input('Put camera in the dark condition...., Press enter to continue: ')
 
     print("Offset Acquisition" )
-    camSpectro.newAcquSerie(basePath,"offset-",15,0.1)
-    camSpectro.waitEndAcqSerie()
+    for offsetConfig in config["ccdSpectro"]['offset']:
+        camSpectro.newAcquSerie(basePath,offsetConfig['serieName'],offsetConfig['nbExpo'],offsetConfig['exposure'])
+        camSpectro.waitEndAcqSerie()
     print("  acquisition finished")
 
 
     print("Dark Acquisition")
-    camSpectro.newAcquSerie(basePath,"dark-",7,300)
-    camSpectro.waitEndAcqSerie()
+    for darkConfig in config["ccdSpectro"]['dark']:
+        camSpectro.newAcquSerie(basePath,darkConfig['serieName'],darkConfig['nbExpo'],darkConfig['exposure'])
+        camSpectro.waitEndAcqSerie()
 
 
 print("acquisition finished")

@@ -26,14 +26,26 @@ class App(tk.Frame):
         self.telescope = None
         self.path_target_files = "/home/tlemoult/Documents/gdriveCopy/cibles/ohp2023/"
 
+    def sort_treeview(self,tree, col, reverse):
+        # Récupérer les éléments du Treeview et les trier en utilisant la colonne spécifiée
+        data = [(tree.set(child, col), child) for child in tree.get_children('')]
+        data.sort(reverse=reverse)
+
+        # Re-insérer les éléments triés dans le Treeview
+        for index, (val, child) in enumerate(data):
+            tree.move(child, '', index)
+
+        # Changer la commande associée au clic sur l'en-tête pour le tri inverse
+        tree.heading(col, command=lambda: self.sort_treeview(tree, col, not reverse))
+
     def create_widgets(self):
 
         self.data_table = ttk.Treeview(self, columns=("col1", "col2", "col3", "col4","col5","col6"))
         self.data_table.heading("#0", text="Row")
-        self.data_table.heading("col1", text="name")
-        self.data_table.heading("col2", text="RA")
-        self.data_table.heading("col3", text="DEC")
-        self.data_table.heading("col4", text="mag")
+        self.data_table.heading("col1", text="name", command=lambda: self.sort_treeview(self.data_table, "col1", False))
+        self.data_table.heading("col2", text="RA", command=lambda: self.sort_treeview(self.data_table, "col2", False))
+        self.data_table.heading("col3", text="DEC", command=lambda: self.sort_treeview(self.data_table, "col3", False))
+        self.data_table.heading("col4", text="mag", command=lambda: self.sort_treeview(self.data_table, "col4", False))
         self.data_table.heading("col5", text="Status")
         self.data_table.heading("col6", text="comment")
 

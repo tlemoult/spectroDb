@@ -1,4 +1,4 @@
-import sys,time,logging
+import sys,time,logging,os
 import PyIndi
 from astropy.io import fits
 
@@ -15,6 +15,7 @@ class CameraClient(PyIndi.BaseClient):
     serieRun=False
     setPointTemperature=0
     ccdTemperature=+32000
+    AdditionnalFitsKeyword={}
 
 
     def __init__(self,cameraConf):
@@ -122,6 +123,19 @@ class CameraClient(PyIndi.BaseClient):
             f.write(data)
             f.close()
 
+            # add some Key Word in FITS
+            hdulist = fits.open(fullPath)
+            prihdr  = hdulist[0].header
+            
+            for keyword in self.AdditionnalFitsKeyword:
+                fitsKeyword = self.AdditionnalFitsKeyword[keyword]
+                prihdr[keyword] = ( fitsKeyword['value'] , fitsKeyword['comment'])
+                self.logger.info(f"add FITS KEYWORD {keyword}, value= {fitsKeyword['value']} , comment= {fitsKeyword['comment']}")
+            hdulist.writeto(fullPath+'tmp')
+            hdulist.close(fullPath)
+            os.remove(fullPath)
+            os.rename(fullPath+'tmp',fullPath)
+
             if self.display_spectrum:
                 self.last_image_filepath = fullPath
                 self.is_a_image_to_display = True
@@ -179,6 +193,10 @@ class CameraClient(PyIndi.BaseClient):
         t[1].name = "FITS_OBJECT"
         t[1].text = objectName
         self.sendNewText(t)
+
+    def setAdditionnalFitsKeyword(self,key,value,comment=''):
+        self.logger.info(f"<<<<<<<<< set AdditionnalFitsKeyword  {key=} {value=} {comment=} ")
+        self.AdditionnalFitsKeyword[key] = { 'value': value,  'comment':comment}
 
     def setTemperature(self,setPointTemperature):
         self.setPointTemperature=setPointTemperature

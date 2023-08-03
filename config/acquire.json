@@ -13,11 +13,11 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 414ex",
-        "tempSetPoint": 10,
+        "name": "CCD Simulator",
+        "tempSetPoint": 0,
         "binning": {
-            "X": 1,
-            "Y": 1
+            "X": 2,
+            "Y": 2
         }
     },
 
@@ -45,10 +45,16 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "ZWO CCD ASI120MM-S",
+        "name": "CCD Simulator",
         "binning": {
             "X": 1,
             "Y": 1
+        },
+        "frame": {
+            "X_start": 0,
+            "X_stop" : 900,
+            "Y_start": 0,
+            "Y_stop": 300
         },
         "expTimeAstrometry" : 5,
         "downSampleAstrometry": 2,
@@ -75,7 +81,7 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "AstroPhysics",
+        "name": "Telescope Simulator",
         "delayAfterSlew":8
         },
     

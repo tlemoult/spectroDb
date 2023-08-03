@@ -1,0 +1,1 @@
+indiserver -vvv indi_simulator_telescope indi_simulator_ccd

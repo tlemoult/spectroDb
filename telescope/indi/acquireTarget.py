@@ -2,6 +2,7 @@ import os,sys,time, datetime,logging,json
 import PyIndi
 
 from libindi.camera import CameraClient as CamSpectro
+from libindi.telescope import TelescopeClient as Telescope
 from libcalc.img import statSpectrum
 import libobs.powerControl as powerControl
 
@@ -62,10 +63,23 @@ observationJson['obsConfig']['TotalExposure']=nbExposure*expTime
 with open(basePath+'/observation.json', 'w') as outfile:
     json.dump(observationJson, outfile)
 
+# get Telescope Coordinates
+telescope=Telescope(config['telescope'])
+print(f"try to connect to {config['telescope']['name']}")
+if not telescope.connect():
+    print("Failed to connect to telescope")
+    exit(1)
+
+telescopeCoords = telescope.getCoordinates()
+
 # instantiate the client, for camera
 
 camSpectro=CamSpectro(config["ccdSpectro"])
-camSpectro.setObserverAndObjectName(observationJson['observer']['alias'],objName)
+camSpectro.setAdditionnalFitsKeyword("OBSERVER",observationJson['observer']['alias'])
+camSpectro.setAdditionnalFitsKeyword("BSS_SITE",observationJson['site']['name'])
+camSpectro.setAdditionnalFitsKeyword("OBJNAME",objName,comment='Simbad object name')
+camSpectro.setAdditionnalFitsKeyword("CRVAL1",telescopeCoords.ra.deg,comment='approx RA in degree')
+camSpectro.setAdditionnalFitsKeyword("CRVAL2",telescopeCoords.dec.deg,comment='approx DEC in degree')
 print(f"run acquisition with camera {config['ccdSpectro']['name']}" )
 camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime,display_spectrum=True)
 camSpectro.waitEndAcqSerie()
@@ -80,9 +94,9 @@ else:
 
 spectroName = config['spectro']['selected']
 print(f"{spectroName=}")
-spectroCalib=config['spectro'][spectroName]['calib']
-camSpectro.newAcquSerie(basePath,"NEON-",spectroCalib['nbExpo'],spectroCalib['exposure'])
-camSpectro.waitEndAcqSerie()
+for spectroCalib in config['spectro'][spectroName]['calib']:
+    camSpectro.newAcquSerie(basePath,spectroCalib['serieName'],spectroCalib['nbExpo'],spectroCalib['exposure'])
+    camSpectro.waitEndAcqSerie()
 
 #update json file
 observationJson['obsConfig']['NbExposure']=nbExposure

@@ -29,7 +29,7 @@
                 { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]
             ,
         "dark": [
-                { "serieName": "DARK-", "exposure":5, "nbExpo":2 } ]
+                { "serieName": "DARK-", "exposure":600, "nbExpo":5 } ]
     },
 
     "ccdGuide": {
@@ -37,7 +37,7 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "ASI220MM Mini",
+        "name": "ZWO CCD ASI174MM Mini",
         "binning": {
             "X": 1,
             "Y": 1
@@ -46,8 +46,8 @@
         "downSampleAstrometry": 2,
         "centerX":324,
         "centerY":272,
-        "pixelSizeX": 4,
-        "pixelSizeY": 4,
+        "pixelSizeX": 5.86,
+        "pixelSizeY": 5.86,
         "FocalLength": 832
     },
 
@@ -141,10 +141,10 @@
         "project": "none",
         "instrument": {
             "telescop": "AP130EDFGT",
-            "configName": "AP130EDFGT LISA#127 Slit 19 ATIK414",
+            "configName": "AP130EDFGT ALPY ASI533MM",
             "spectro": "ALPY",
-            "detname": "ATIK414",
-            "guideDetname": "ATIK314",
+            "detname": "ASI533MM",
+            "guideDetname": "ASI174MM",
             "resol": 600
         },
 

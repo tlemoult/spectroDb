@@ -57,7 +57,10 @@ print(f"Configuration file is {configFilePath}")
 json_text=open(configFilePath).read()
 config = json.loads(json_text)
 
-logging.basicConfig(filename=config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+# setup log file
+logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
+print(f"{logFilePath=}")
+logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 astropyConf.auto_download=False
 

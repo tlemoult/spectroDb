@@ -13,23 +13,23 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Atik 414ex",
-        "tempSetPoint": 10,
+        "name": "ZWO CCD ASI533MM Pro",
+        "tempSetPoint": -12,
         "binning": {
-            "X": 2,
-            "Y": 2
+            "X": 1,
+            "Y": 1
         },
         "frame": {
             "X_start": 0,
-            "X_stop" : 900,
+            "X_stop" : 3008,
             "Y_start": 0,
-            "Y_stop": 300
+            "Y_stop": 3008
         },
         "offset": [ 
                 { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]
             ,
         "dark": [
-                { "serieName": "DARK-", "exposure":600, "nbExpo":5 } ]
+                { "serieName": "DARK-", "exposure":900, "nbExpo":7 } ]
     },
 
     "ccdGuide": {

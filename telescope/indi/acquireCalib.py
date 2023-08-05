@@ -64,7 +64,7 @@ if 'flat' in sys.argv:
         powerControl.set(relay_flat_lamp,True)
 
     for spectroFlat in config['spectro'][spectroName]['flat']:
-        camSpectro.newAcquSerie(basePath,spectroCalib['serieName'],spectroCalib['nbExpo'],spectroCalib['exposure'])
+        camSpectro.newAcquSerie(basePath,spectroFlat['serieName'],spectroFlat['nbExpo'],spectroFlat['exposure'])
         camSpectro.waitEndAcqSerie()
     print("  acquisition finished")
 

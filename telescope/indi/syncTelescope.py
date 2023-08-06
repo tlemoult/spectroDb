@@ -87,10 +87,11 @@ if len(sys.argv) == 3:
 else:
     realCoord = None
 
-logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],level=logging.DEBUG,format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 astropyConf.auto_download=False
 
+print(f"Telescope is {config['telescope']['name']}")
 telescope=Telescope(config['telescope'])
 if not telescope.connect():
     print(f"Failed to connect to telescope {telescope}")
@@ -100,6 +101,7 @@ print("Telescope connected")
 
 # connect camera
 
+print(f"Camera is {configCamera['name']}")
 camera = Camera(configCamera)
 
 

@@ -24,7 +24,7 @@ CalibManual = True
 # setup log file
 logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
 print(f"{logFilePath=}")
-logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s %(message)s')
+logging.basicConfig(filename=logFilePath,level=logging.DEBUG,format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 #create directory
 basePath=config['path']['root']+'/'+config['path']['acquire']+'/'+str(datetime.datetime.now()).replace(' ','_').replace(':','-').split('.')[0]

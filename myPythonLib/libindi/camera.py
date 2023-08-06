@@ -20,7 +20,7 @@ class CameraClient(PyIndi.BaseClient):
 
     def __init__(self,cameraConf):
         super(CameraClient, self).__init__()
-        self.logger = logging.getLogger('PyQtIndi.IndiClient')        
+        self.logger = logging.getLogger(__name__)        
         self.logger.info(f'creating an instance of CameraClient with cameraConf={cameraConf}')
         self.deviceName=cameraConf["name"]
         self.setServer(cameraConf["server"]["host"],cameraConf["server"]["port"])
@@ -72,7 +72,7 @@ class CameraClient(PyIndi.BaseClient):
         self.is_a_image_to_display = False
 
     def newDevice(self, d):
-        self.logger.info(f"new device {d.getDeviceName()}")
+        self.logger.info(f"see new device [{d.getDeviceName()}], looking for [{self.deviceName}]")
         if d.getDeviceName() == self.deviceName:
             self.logger.info(f"Found target device = {self.deviceName}")
             # save reference to the device in member variable
@@ -128,7 +128,7 @@ class CameraClient(PyIndi.BaseClient):
             prihdr  = hdulist[0].header
             
             for keyword in self.AdditionnalFitsKeyword:
-                print(f"write FITS keyword {keyword}")
+                self.logger.info(f"write FITS keyword {keyword}")
                 fitsKeyword = self.AdditionnalFitsKeyword[keyword]
                 prihdr[keyword] = ( fitsKeyword['value'] , fitsKeyword['comment'])
                 self.logger.info(f"add FITS KEYWORD {keyword}, value= {fitsKeyword['value']} , comment= {fitsKeyword['comment']}")

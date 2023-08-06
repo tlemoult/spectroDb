@@ -20,7 +20,7 @@ path= config['path']['root']+config['path']['focus']
 # setup log file
 pathFileNameLog = config['path']['root']+config['path']['log']+'/focus.log'
 print(f"Focus process, logpath = {pathFileNameLog}")
-logging.basicConfig(filename=pathFileNameLog,level=logging.WARNING,format='%(asctime)s %(message)s')
+logging.basicConfig(filename=pathFileNameLog,level=logging.WARNING,format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 # create and connect to Camera 
 camSpectro=CamSpectro(config["ccdSpectro"])
 #camSpectro.setBinning({'X':1,'Y':1})

@@ -12,7 +12,7 @@ class TelescopeClient(PyIndi.BaseClient):
     
     def __init__(self,config):
         super(TelescopeClient, self).__init__()
-        self.logger = logging.getLogger('PyQtIndi.IndiClient')        
+        self.logger = logging.getLogger(__name__)        
         self.logger.info('creating an instance of TelescopeClient')
         self.deviceName=config["name"]
         self.config=config
@@ -23,7 +23,7 @@ class TelescopeClient(PyIndi.BaseClient):
         self.setServer(host,port)
         
     def newDevice(self, d):
-        self.logger.info(f"new device {d.getDeviceName()}")
+        self.logger.info(f"see new device [{d.getDeviceName()}], looking for [{self.deviceName}]")
         if d.getDeviceName() == self.deviceName:
             self.logger.info(f"Found target device = {self.deviceName}")
             self.device = d
@@ -80,7 +80,7 @@ class TelescopeClient(PyIndi.BaseClient):
                 break
             time.sleep(0.5)
         if i == maxAttempt:
-            self.logger.error("Fail to found device name ")
+            self.logger.error("Fail to found device name [{self.deviceName}]")
             return False
 
         self.logger.info("wait CONNECTION property be defined for telescope")        

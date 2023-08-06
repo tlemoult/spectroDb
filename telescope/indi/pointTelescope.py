@@ -1,6 +1,7 @@
 import sys
 from libindi.camera import CameraClient as Camera
 from libindi.telescope import TelescopeClient as Telescope
+import libobs.telescopePoint
 import libcalc.util as myUtil
 
 import json,time,logging
@@ -10,39 +11,6 @@ from astropy.coordinates import SkyCoord
 import astropy.io.fits
 from astropy.utils.iers import Conf as astropyConf
 import numpy as np
-
-def pointTarget(cameraGuide,cameraConfig,telescope,J2000Target):
-    global config
-    
-    obsSite=myUtil.getEarthLocation(config)
-
-    fileSerie="getCoordField-"+str(loopPoint)+"-"
-    pathAstrometry =  config["path"]["root"] + config["path"]["astrometry"]
-    cameraGuide.newAcquSerie(pathAstrometry,fileSerie,1,cameraConfig["expTimeAstrometry"])
-    cameraGuide.waitEndAcqSerie()
-
-    filePathAstrometry = pathAstrometry + '/' + fileSerie  + "1.fits"
-    filePathAstrometryResize = pathAstrometry + '/' + fileSerie  + "Resize-1.fits"
-    myUtil.scaleImage(filePathAstrometry,filePathAstrometryResize,configCamera["pixelSizeX"]/configCamera["pixelSizeY"])
-
-    astrometryResult = myUtil.solveAstro(filePathAstrometryResize,cameraConfig)
-    if astrometryResult == None:
-        print("Echec astrometry")
-        return False
-        
-    print("syncronize telescope")
-    telCoords = myUtil.convJ2000toJNowRefracted(astrometryResult["coordsJ2000"],obsSite)
-    telescope.syncCoordinates(telCoords)
- 
-    
-    obsSite=myUtil.getEarthLocation(config)
-    CoordTelescopeTarget= myUtil.convJ2000toJNowRefracted(J2000Target,obsSite)
-    telescope.slewTelescope(CoordTelescopeTarget)
-    delayAfterSlew = config["telescope"]["delayAfterSlew"]
-    print(f"Wait {delayAfterSlew} seconds after slew...")
-    time.sleep(delayAfterSlew)
-
-    return True
 
 if len(sys.argv)!=2:
     print("Invalid number of argument")
@@ -107,9 +75,10 @@ else:
     J2000Target = myUtil.getCoordFromName(targetName)
 print(f"We point the object name = {targetName}  coord J2000 = {J2000Target}")
 
+obsSite=myUtil.getEarthLocation(config)
 
-for loopPoint in range(2):
-    pointTarget(camera,configCamera,telescope,J2000Target)
+for loopIndex in range(2):
+    libobs.telescopePoint.astrometry(loopIndex,camera,configCamera,telescope,J2000Target,obsSite,config)
 
 print(f"Last control before tracking")
 lastcontrolExposuretime = 8

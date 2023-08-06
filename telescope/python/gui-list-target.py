@@ -8,8 +8,10 @@ import astropy.units as u
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz, get_sun, get_moon
 from astropy.visualization import astropy_mpl_style
+import libobs.telescopePoint
 
 from libindi.telescope import TelescopeClient as Telescope
+from libindi.camera import CameraClient as Camera
 import libcalc.util as myUtil
 import numpy as np
 
@@ -24,7 +26,7 @@ class App(tk.Frame):
         self.create_widgets()
         self.config = config
         self.telescope = None
-        self.path_target_files = "/home/tlemoult/Documents/gdriveCopy/cibles/ohp2023/"
+        self.path_target_files = "/home/tlemoult/Documents/cibles/ohp2023/"
 
     def sort_treeview(self,tree, col, reverse):
         # Récupérer les éléments du Treeview et les trier en utilisant la colonne spécifiée
@@ -95,7 +97,7 @@ class App(tk.Frame):
         self.button_3 = tk.Button(self.action_frame, text="edit data", command=self.edit_one_popup)
         self.button_3.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
-        self.button4 = tk.Button(self.action_frame, text="Button 4", command=self.button4_action)
+        self.button4 = tk.Button(self.action_frame, text="Point Tel Astro", command=self.button_precise_point)
         self.button4.grid(row=1, column=1, padx=10, pady=10, sticky="E")
 
         self.button5 = tk.Button(self.action_frame, text="Button 5", command=self.button5_action)
@@ -362,11 +364,33 @@ class App(tk.Frame):
         self.data_table.insert("", "end", values=row)
         self.process_button["state"] = "normal"
 
-    def button4_action(self):
-        print("Button4 action")
+    def button_precise_point(self):
+        selected_index = self.data_table.selection()
+        selected_row = self.data_table.item(selected_index)["values"]
+        print(f"Select row is {selected_row}")
+        [targetName,targetRA,targetDEC] = selected_row[0:3]
+        strCoordJ2000 = (targetRA+' '+targetDEC).replace("°",'d').replace("''",'s').replace("'",'m')
+        J2000Target = SkyCoord(strCoordJ2000, frame='icrs')
+        print(f"We point the object name = {targetName}  coord J2000 = {J2000Target}")
+
+        obsSite=myUtil.getEarthLocation(config)
+
+        # connect camera
+        if False:
+            print("We use the guiding field of spectro")
+            configCamera = config["ccdGuide"]
+        else:
+            print("We use the electronic finder")
+            configCamera = config["ccdFinder"]
+
+        print(f"camera is {configCamera['name']}")
+        camera = Camera(configCamera)
+
+        for loopIndex in range(2):
+            libobs.telescopePoint.astrometry(loopIndex,camera,configCamera,self.telescope,J2000Target,obsSite,self.config)
 
     def button5_action(self):
-        print("Button5 action")
+        pass
 
 
 #load configuration

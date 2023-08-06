@@ -42,10 +42,16 @@
             "X": 1,
             "Y": 1
         },
+        "frame": {
+            "X_start": 384,
+            "Y_start": 55,
+            "Width" : 1000,
+            "Height": 1000
+        },
         "expTimeAstrometry" : 15,
         "downSampleAstrometry": 2,
-        "centerX":324,
-        "centerY":272,
+        "centerX":500,
+        "centerY":500,
         "pixelSizeX": 5.86,
         "pixelSizeY": 5.86,
         "FocalLength": 832
@@ -86,7 +92,7 @@
             "host": "localhost",
             "port": 7624
         },
-        "name": "Telescope Simulator",
+        "name": "AstroPhysics",
         "delayAfterSlew":8
         },
     
@@ -104,12 +110,20 @@
         },
 
         "ALPY": {
+            "calibBraket": [ 
+            { "serieName": "NEON-L300-", "exposure":300, "nbExpo":1 },
+            { "serieName": "NEON-L120-", "exposure":120, "nbExpo":1 },
+            { "serieName": "NEON-L60-", "exposure":60, "nbExpo":1 },
+            { "serieName": "NEON-L15-", "exposure":15, "nbExpo":4 },
+            { "serieName": "NEON-S15-", "exposure":5, "nbExpo":3 },
+            { "serieName": "NEON-S2-", "exposure":2, "nbExpo":5 } ]
+            ,
             "calib": [ 
-                { "serieName": "NEON-L-", "exposure":15, "nbExpo":1 },
-                { "serieName": "NEON-S-", "exposure":5, "nbExpo":1 } ]
+                { "serieName": "NEON-L", "exposure":10, "nbExpo":1 },
+                { "serieName": "NEON-S", "exposure":2, "nbExpo":1 } ]
                 ,
             "flat": [
-                { "serieName": "FLAT-", "exposure":10, "nbExpo":3 } ]
+                { "serieName": "FLAT-", "exposure":5, "nbExpo":21 } ]
         }
     },
  

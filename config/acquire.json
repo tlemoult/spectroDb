@@ -21,9 +21,9 @@
         },
         "frame": {
             "X_start": 0,
-            "X_stop" : 3008,
-            "Y_start": 0,
-            "Y_stop": 3008
+            "Y_start": 1000,
+            "Width" : 3008,
+            "Height": 1000
         },
         "offset": [ 
                 { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]

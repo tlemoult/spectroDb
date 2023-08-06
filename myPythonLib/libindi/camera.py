@@ -116,6 +116,7 @@ class CameraClient(PyIndi.BaseClient):
             prihdr  = hdulist[0].header
             
             for keyword in self.AdditionnalFitsKeyword:
+                print(f"write FITS keyword {keyword}")
                 fitsKeyword = self.AdditionnalFitsKeyword[keyword]
                 prihdr[keyword] = ( fitsKeyword['value'] , fitsKeyword['comment'])
                 self.logger.info(f"add FITS KEYWORD {keyword}, value= {fitsKeyword['value']} , comment= {fitsKeyword['comment']}")
@@ -261,12 +262,16 @@ class CameraClient(PyIndi.BaseClient):
             self.logger.info(f" b= {b}  type(b) = {type(b)}")
             if not b==None:
                 self.logger.info(f"Found CCD_FRAME property")
-                b[0].value = frame_config['X_start']
-                b[1].value = frame_config['Y_start']
-                b[2].value = frame_config['X_stop']
-                b[3].value = frame_config['Y_stop']
-                self.sendNewNumber(b)
+                b[0].setValue(frame_config['X_start'])
+                b[1].setValue(frame_config['Y_start'])
+                b[2].setValue(frame_config['Width'])
+                b[3].setValue(frame_config['Height'])
+                self.sendNewNumber(b) 
                 self.logger.info("FRAME set OK")
+                self.setAdditionnalFitsKeyword('FRXSTART',frame_config['X_start'],comment='in pixel')
+                self.setAdditionnalFitsKeyword('FRYSTART',frame_config['Y_start'],comment='in pixel')
+                self.setAdditionnalFitsKeyword('FRXWIDTH',frame_config['Width'],comment='in pixel')
+                self.setAdditionnalFitsKeyword('FRYHEIGH',frame_config['Height'],comment='in pixel')
                 return True
 
             #print("\r  Waiting CCD_FRAME property  ",end='',flush=True)

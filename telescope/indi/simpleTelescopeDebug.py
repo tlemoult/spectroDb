@@ -47,7 +47,8 @@ json_text=open(configFilePath).read()
 config = json.loads(json_text)
 
 # setup log file
-logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],level=logging.DEBUG,format='%(asctime)s %(message)s')
+logging.basicConfig(filename=config["path"]["root"] + config["path"]["log"]+'/'+config['logFile'],
+                    level=logging.DEBUG,format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 # create Telescope Client
 telescope=Telescope(config['telescope'])

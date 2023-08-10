@@ -43,6 +43,9 @@ class CameraClient(PyIndi.BaseClient):
         if "frame" in cameraConf.keys():
             self.setFrame(cameraConf["frame"])
 
+        if "controls" in cameraConf.keys():
+            self.setControls(cameraConf['controls'])
+
         if "tempSetPoint" in cameraConf.keys():
             self.logger.info("set CCD temperature")
             self.setTemperature(cameraConf['tempSetPoint'])
@@ -240,6 +243,38 @@ class CameraClient(PyIndi.BaseClient):
         self.logger.info("Time out, no camera found")
         return False
 
+    def logProperty(self,property):
+        self.logger.info(f'logProperty(name={property.getName})')
+        for b in property:
+            self.logger.info(f'  --- name="{b.getName()}"  Label="{b.getLabel()}"   value={b.getValue()}')
+
+    def setControls(self,controls):
+        self.logger.info(f"setControls() with {controls=}")
+        self.offset_value = controls['offset']
+        self.gain_value = controls['gain']
+        self.logger.info(f"<<<<<<< Set offset_value to {self.offset_value} and gain value to {self.gain_value}")
+
+        for t in range(10):
+            self.logger.info(f" t= {t}")
+            b=self.device.getNumber("CCD_CONTROLS")
+            self.logger.info(f" b= {b}  type(b) = {type(b)}")
+            if not b==None:
+                self.logger.info(f"Found CCD_CONTROLS property")
+                self.logProperty(b)
+
+                b[0].setName("Gain")
+                b[0].setValue(self.gain_value)
+                b[1].setName("Offset")
+                b[1].setValue(self.offset_value)
+                self.sendNewNumber(b)
+                self.logger.info("gain and offset value set OK")
+                return True
+
+            #print("\r  Waiting CCD_CONTROLS property  ",end='',flush=True)
+            time.sleep(1)
+
+        self.logger.error(f"Time out.. CCD_CONTROLS property not found")
+        return False
 
     def setBinning(self,binning):
         self.binning=binning
@@ -301,6 +336,7 @@ class CameraClient(PyIndi.BaseClient):
             ax1.set_title("2D image")
             ax2.set_title("binned profil")
             ax2.set_xlabel("pixel X coord")
+            plt.pause(0.2)
 
         while self.serieRun==True:
             if self.display_spectrum and self.is_a_image_to_display:

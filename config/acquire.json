@@ -25,6 +25,10 @@
             "Width" : 3008,
             "Height": 1000
         },
+        "controls": {
+            "offset" : 20,
+            "gain" : 200
+        },
         "offset": [ 
                 { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]
             ,
@@ -43,15 +47,15 @@
             "Y": 1
         },
         "frame": {
-            "X_start": 384,
-            "Y_start": 55,
+            "X_start": 640,
+            "Y_start": 150,
             "Width" : 1000,
             "Height": 1000
         },
-        "expTimeAstrometry" : 15,
+        "expTimeAstrometry" : 40,
         "downSampleAstrometry": 2,
-        "centerX":500,
-        "centerY":500,
+        "centerX":488,
+        "centerY":474,
         "pixelSizeX": 5.86,
         "pixelSizeY": 5.86,
         "FocalLength": 832
@@ -119,8 +123,8 @@
             { "serieName": "NEON-S2-", "exposure":2, "nbExpo":5 } ]
             ,
             "calib": [ 
-                { "serieName": "NEON-L", "exposure":10, "nbExpo":1 },
-                { "serieName": "NEON-S", "exposure":2, "nbExpo":1 } ]
+                { "serieName": "NEON-L", "exposure":30, "nbExpo":1 },
+                { "serieName": "NEON-S", "exposure":5, "nbExpo":1 } ]
                 ,
             "flat": [
                 { "serieName": "FLAT-", "exposure":5, "nbExpo":21 } ]

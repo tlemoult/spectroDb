@@ -46,7 +46,8 @@
             "X": 1,
             "Y": 1
         },
-        "expTimeAstrometry" : 15,
+        
+        "expTimeAstrometry" : 40,
         "downSampleAstrometry": 2,
         "centerX":324,
         "centerY":272,

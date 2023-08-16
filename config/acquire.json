@@ -46,16 +46,11 @@
             "X": 1,
             "Y": 1
         },
-        "frame": {
-            "X_start": 640,
-            "Y_start": 150,
-            "Width" : 1000,
-            "Height": 1000
-        },
+        
         "expTimeAstrometry" : 40,
         "downSampleAstrometry": 2,
-        "centerX":488,
-        "centerY":474,
+        "centerX":1106,
+        "centerY":620,
         "pixelSizeX": 5.86,
         "pixelSizeY": 5.86,
         "FocalLength": 832

@@ -81,7 +81,7 @@ camSpectro.setAdditionnalFitsKeyword("OBJNAME",objName,comment='Simbad object na
 camSpectro.setAdditionnalFitsKeyword("CRVAL1",telescopeCoords.ra.deg,comment='approx RA in degree')
 camSpectro.setAdditionnalFitsKeyword("CRVAL2",telescopeCoords.dec.deg,comment='approx DEC in degree')
 print(f"run acquisition with camera {config['ccdSpectro']['name']}" )
-camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime,display_spectrum=True)
+camSpectro.newAcquSerie(basePath,"OBJECT"+"-",nbExposure,expTime,display_spectrum=False)
 camSpectro.waitEndAcqSerie()
 print("  acquisition finished")
 

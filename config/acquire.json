@@ -25,6 +25,10 @@
             "Width" : 3008,
             "Height": 1000
         },
+        "controls": {
+            "offset" : 20,
+            "gain" : 200
+        },
         "offset": [ 
                 { "serieName": "OFFSET-", "exposure":0.1, "nbExpo":1 } ]
             ,
@@ -105,8 +109,8 @@
 
         "ALPY": {
             "calib": [ 
-                { "serieName": "NEON-L-", "exposure":15, "nbExpo":1 },
-                { "serieName": "NEON-S-", "exposure":5, "nbExpo":1 } ]
+                { "serieName": "NEON-L", "exposure":30, "nbExpo":1 },
+                { "serieName": "NEON-S", "exposure":5, "nbExpo":1 } ]
                 ,
             "flat": [
                 { "serieName": "FLAT-", "exposure":10, "nbExpo":3 } ]

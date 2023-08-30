@@ -47,13 +47,13 @@
             "Y": 1
         },
         
-        "expTimeAstrometry" : 40,
-        "downSampleAstrometry": 2,
-        "centerX":324,
-        "centerY":272,
+        "expTimeAstrometry" : 20,
+        "downSampleAstrometry": 1,
+        "centerX":988,
+        "centerY":603,
         "pixelSizeX": 5.86,
         "pixelSizeY": 5.86,
-        "FocalLength": 832
+        "FocalLength": 2000
     },
 
     "ccdFinder": {
@@ -67,9 +67,9 @@
             "Y": 1
         },
         "expTimeAstrometry" : 5,
-        "downSampleAstrometry": 2,
-        "centerX":692.8,
-        "centerY":500.5,
+        "downSampleAstrometry": 1,
+        "centerX":622,
+        "centerY":481,
         "pixelSizeX": 3.75,
         "pixelSizeY": 3.75,
         "FocalLength": 240

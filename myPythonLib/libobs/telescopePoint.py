@@ -13,7 +13,10 @@ def astrometry(loopPoint,cameraGuide,cameraConfig,telescope,J2000Target,obsSite,
     if astrometryResult == None:
         print("Echec astrometry")
         return False
-        
+
+    sep = astrometryResult["coordsJ2000"].separation(J2000Target)
+    print(f"error sync is  {sep},  or {sep.arcminute} arcmin  {sep.arcsecond}  arcsecond")
+
     print("syncronize telescope")
     telCoords = myUtil.convJ2000toJNowRefracted(astrometryResult["coordsJ2000"],obsSite)
     telescope.syncCoordinates(telCoords)

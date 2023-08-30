@@ -57,7 +57,7 @@ print("Telescope connected")
 
 
 # connect camera
-if False:
+if True:
     print("We use the guiding field of spectro")
     configCamera = config["ccdGuide"]
 else:

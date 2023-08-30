@@ -185,13 +185,13 @@ def solveAstro(filename,camera,realCoord=None):
 
         ### Store & Display Result
         # find telescope coordinates
-        logger.info(f"  fente X={fenteXpix} Y={fenteYpix}")
+        logger.info(f"  centre optique X={fenteXpix} Y={fenteYpix}")
         wx, wy = wcs.wcs_pix2world(fenteXpix, fenteYpix,1)
-        logger.info(f"  RA={wx}deg  DEC={wy}deg ")
+        logger.info(f"  J2000 centre optique RA={wx}deg  DEC={wy}deg ")
         coordsJ2000  = SkyCoord(wx,wy,frame = 'icrs',unit='deg')
         coordsJ2000str = coordsJ2000.to_string('hmsdms')
         raStr, decStr = coordsJ2000str.split(' ')
-        logger.info(f"  J2000 coords RA={raStr}  DEC={decStr}")
+        logger.info(f"  J2000 centre optique RA={raStr}  DEC={decStr}")
 
         returnValue = {"wcs":wcs,  "raStr":raStr , "decStr":decStr , "coordsJ2000":coordsJ2000 , "wx":wx , "wy":wy }
 

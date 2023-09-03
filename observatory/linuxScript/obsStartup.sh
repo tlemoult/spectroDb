@@ -1,9 +1,10 @@
 #!/bin/bash
 echo startup observatory
 
-cd ../python/
+cd ../indi/
 python startupObs.py
 
+cd ../gui/
 python gui-powerBox.py > /dev/null &
 python gui-astrosib.py > /dev/null &
 

@@ -1,7 +1,7 @@
 #!/bin/bash
-echo startup observatory
+echo shutdown observatory
 
-cd ../python/
+cd ../indi/
 python  shutdownObs.py 
 
 killall indiserver python

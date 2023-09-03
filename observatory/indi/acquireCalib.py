@@ -73,7 +73,7 @@ if 'flat' in sys.argv:
     if CalibManual:
         input("press Enter when done")
     else:
-        powerControl.set(relay_flat_lamp,True)
+        powerControl.set(relay_flat_lamp,False)
 
 if 'camera' in sys.argv:
 

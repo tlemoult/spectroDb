@@ -45,6 +45,11 @@ def startup_observatory(spectro='LISA'):
     astrosib.set_cooler(True)
 
     if spectro == 'LISA':
+
+        relay_camera_telescope = 3
+        print("Power up LISA Camera telescope 12V")
+        IPX800.set("IPX800info",relay_camera_telescope,True)
+
         relay_spectrum_camera = 7
         print("Power up the LISA spectra camera")
         powerControl.set(relay_spectrum_camera,True)
@@ -63,6 +68,11 @@ def startup_observatory(spectro='LISA'):
         print("power off eShell calibration lamp")
         eShell.set("off")
 
+    timeWait = 3
+    print(f"wait {timeWait} seconds , after startup_observatory")
+    print("allow camera startup etc..")
+    time.sleep(timeWait)
+
 
 def shutdown_observatory(spectro='LISA'):
 
@@ -75,6 +85,11 @@ def shutdown_observatory(spectro='LISA'):
         IPX800.set("IPX800elec",relay_spectro,False)
 
     elif spectro == 'LISA':
+
+        relay_camera_telescope = 3
+        print("shutdown LISA Camera telescope 12V")
+        IPX800.set("IPX800info",relay_camera_telescope,False)
+
         print("shutdown the LISA spectra camera")
         relay_spectrum_camera = 7
         powerControl.set(relay_spectrum_camera,False)

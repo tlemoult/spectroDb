@@ -19,7 +19,8 @@ spectro_config = os.environ['SPECTROCONFIG']
 configFilePath = os.path.join(spectro_config,'acquire.json')
 json_text=open(configFilePath).read()
 config = json.loads(json_text)
-CalibManual = True
+spectroName = config['spectro']['selected']
+CalibManual = config['spectro'][spectroName]['manual']
 
 # setup log file
 logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
@@ -34,7 +35,7 @@ os.mkdir(basePath)
 
 # instantiate the client, for camera
 camSpectro=CamSpectro(config["ccdSpectro"])
-spectroName = config['spectro']['selected']
+
 print(f"{spectroName=}")
 print(f"run calibration {sys.argv[1:]} with camera {config['ccdSpectro']['name']}" )
 

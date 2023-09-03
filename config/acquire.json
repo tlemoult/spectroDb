@@ -1,6 +1,6 @@
 {
     "path": {
-        "root": "/home/tlemoult/Documents/base",
+        "root": "/mnt/gdrive/astro/base",
         "acquire": "/in",
         "astrometry": "/astrometry",
         "focus": "/focus",
@@ -97,18 +97,22 @@
     
     "spectro": {
 
-        "selected": "ALPY",
+        "selected": "LISA",
 
         "LISA": {
+            "manual": false,
+
             "calib": [ 
-                { "serieName": "NEON-L-", "exposure":15, "nbExpo":1 },
+                { "serieName": "NEON-L-", "exposure":30, "nbExpo":1 },
                 { "serieName": "NEON-S-", "exposure":5, "nbExpo":1 } ]
             ,
             "flat": [
-                { "serieName": "FLAT-", "exposure":15, "nbExpo":3 } ]
+                { "serieName": "FLAT-", "exposure":10, "nbExpo":23 } ]
         },
 
         "ALPY": {
+            "manual": false,
+
             "calib": [ 
                 { "serieName": "NEON-L", "exposure":30, "nbExpo":1 },
                 { "serieName": "NEON-S", "exposure":5, "nbExpo":1 } ]

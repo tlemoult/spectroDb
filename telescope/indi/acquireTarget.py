@@ -35,7 +35,8 @@ configFilePath = os.path.join(spectro_config,'acquire.json')
 print(f"load configuration {configFilePath=}")
 json_text=open(configFilePath).read()
 config = json.loads(json_text)
-CalibManual = True
+spectroName = config['spectro']['selected']
+CalibManual = config['spectro'][spectroName]['manual']
 
 # setup log file
 logFilePath = config['path']['root']+config['path']['log']+'/'+config['logFile']
@@ -92,7 +93,7 @@ if CalibManual:
 else:
     powerControl.set(relay_calib_neon,True)
 
-spectroName = config['spectro']['selected']
+
 print(f"{spectroName=}")
 for spectroCalib in config['spectro'][spectroName]['calib']:
     camSpectro.newAcquSerie(basePath,spectroCalib['serieName'],spectroCalib['nbExpo'],spectroCalib['exposure'])

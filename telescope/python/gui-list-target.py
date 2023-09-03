@@ -26,7 +26,7 @@ class App(tk.Frame):
         self.create_widgets()
         self.config = config
         self.telescope = None
-        self.path_target_files = "/home/tlemoult/Documents/cibles/ohp2023/"
+        self.path_target_files = "/mnt/gdrive/astro/cibles/ohp2023/"
 
     def sort_treeview(self,tree, col, reverse):
         # Récupérer les éléments du Treeview et les trier en utilisant la colonne spécifiée
